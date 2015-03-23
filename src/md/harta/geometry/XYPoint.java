@@ -1,32 +1,30 @@
-package md.harta.projector;
+package md.harta.geometry;
 
 /**
  * Created by sergpank on 20.02.2015.
  */
-public class Point {
+public class XYPoint {
   private double x;
   private double y;
 
   /**
-   * Да, широта и долгота, в моей реализации не соотвествуют Х и У, мне так удобнее.
-   *
-   * @param x или широта
-   * @param y или долгота
+   * @param x
+   * @param y
    */
-  public Point(double x, double y) {
+  public XYPoint(double x, double y) {
     this.x = x;
     this.y = y;
   }
 
   /**
-   * @return x или широту
+   * @return x
    */
   public double getX() {
     return x;
   }
 
   /**
-   * @return у или долготу
+   * @return у
    */
   public double getY() {
     return y;
@@ -37,7 +35,7 @@ public class Point {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    Point point = (Point) o;
+    XYPoint point = (XYPoint) o;
 
     if (Double.compare(point.x, x) != 0) return false;
     if (Double.compare(point.y, y) != 0) return false;
@@ -59,8 +57,8 @@ public class Point {
   @Override
   public String toString() {
     return "Point{" +
-        "x[or lon]=" + x +
-        ", y[or lat]=" + y +
+        "x=" + x +
+        ", y=" + y +
         '}';
   }
 }

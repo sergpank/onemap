@@ -1,5 +1,8 @@
 package md.harta.projector;
 
+import md.harta.geometry.LatLonPoint;
+import md.harta.geometry.XYPoint;
+
 /**
  * x = R · λ;
  * y = R · ln(tg(π/4 + φ/2), где R — радиус сферы, λ — долгота в радианах, φ — широта в радианах.
@@ -19,7 +22,7 @@ public class MercatorProjector extends AbstractProjector {
   }
 
   @Override
-  public Point getXY(double lat, double lon) {
+  public XYPoint getXY(double lat, double lon) {
     double x = width / 2 + radius * Math.toRadians(lon);
     double y;
     if (lat <= maxLat) {
@@ -27,28 +30,28 @@ public class MercatorProjector extends AbstractProjector {
     } else {
       y = height;
     }
-    return new Point(x, y);
+    return new XYPoint(x, y);
   }
 
   @Override
-  public Point getLonLat(double x, double y) {
-//    double lat = Math.toDegrees(Math.atan(Math.sinh(y - height / 2)));
+  public LatLonPoint getLatLon(double x, double y) {
     double lat = Math.toDegrees(Math.atan(Math.sinh((y - height /2) / radius))) * -1;
     double lon = Math.toDegrees((x - (getWidth() / 2))/radius);
 
-    return new Point(lat, lon);
+    return new LatLonPoint(lat, lon);
+  }
+
+  @Override
+  public double getScale(LatLonPoint point) {
+    // Scale = sec(latitude)
+    // sec = 1 / cos
+    return 1 / Math.cos(Math.toRadians(point.getLat()));
   }
 
   public static void main(String[] args) {
     MercatorProjector projector = new MercatorProjector(100, 85);
-//    for(int i = -180; i <= 180; i++){
-//      Point xy = projector.getXY(0, i);
-//      System.out.println(String.format("%d \t %f", i, xy.getX()));
-//    }
-
-    for(int i = 85; i >= -85; i--){
-      Point xy = projector.getXY(i, 0);
-      System.out.println(String.format("%d \t %f", i, xy.getY()));
+    for (int i = 0; i <= 85; i++){
+      System.out.println(String.format("%d - %f", i, projector.getScale(new LatLonPoint(i, 0))));
     }
   }
 }

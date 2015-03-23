@@ -5,8 +5,7 @@ import md.harta.osm.Bounds;
 import md.harta.osm.OsmNode;
 import md.harta.osm.OsmWay;
 import md.harta.projector.AbstractProjector;
-import md.harta.projector.MercatorProjector;
-import md.harta.projector.Point;
+import md.harta.geometry.XYPoint;
 
 /**
  * Created by sergpank on 03.03.2015.
@@ -25,7 +24,7 @@ public class AbstractPainter {
     double[] yPoints = new double[way.getNodes().size()];
     for (int i = 0; i < way.getNodes().size(); i++){
       OsmNode node = way.getNodes().get(i);
-      Point xy = projector.getXY(node.getLat(), node.getLon());
+      XYPoint xy = projector.getXY(node.getLat(), node.getLon());
       xPoints[i] = xy.getX();
       yPoints[i] = xy.getY();
     }

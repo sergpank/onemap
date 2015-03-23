@@ -3,7 +3,7 @@ package md.harta;
 import md.harta.osm.OsmNode;
 import md.harta.osm.OsmWay;
 import md.harta.projector.AbstractProjector;
-import md.harta.projector.Point;
+import md.harta.geometry.XYPoint;
 import md.harta.util.OsmLoader;
 
 import javax.swing.*;
@@ -43,11 +43,11 @@ public class MapPanel extends JPanel {
   private void drawParallels(Graphics g) {
     g.setColor(Color.RED);
     for (int i = 0; i <= 90; i = i + 10){
-      Point start1 = projector.getXY(i, -180);
-      Point end1 = projector.getXY(i, 180);
+      XYPoint start1 = projector.getXY(i, -180);
+      XYPoint end1 = projector.getXY(i, 180);
       g.drawLine((int)start1.getX(), (int)start1.getY(), (int)end1.getX(), (int)end1.getY());
-      Point start2 = projector.getXY(-i, -180);
-      Point end2 = projector.getXY(-i, 180);
+      XYPoint start2 = projector.getXY(-i, -180);
+      XYPoint end2 = projector.getXY(-i, 180);
       g.drawLine((int)start2.getX(), (int)start2.getY(), (int)end2.getX(), (int)end2.getY());
       g.setColor(Color.BLACK);
     }
@@ -56,18 +56,18 @@ public class MapPanel extends JPanel {
   private void drawMeridians(Graphics g) {
     g.setColor(Color.RED);
     for (int i = 0; i <= 180; i = i + 20){
-      Point start1 = projector.getXY(90, i);
-      Point end1 = projector.getXY(-90, i);
+      XYPoint start1 = projector.getXY(90, i);
+      XYPoint end1 = projector.getXY(-90, i);
       g.drawLine((int)start1.getX(), (int)start1.getY(), (int)end1.getX(), (int)end1.getY());
-      Point start2 = projector.getXY(90, -i);
-      Point end2 = projector.getXY(-90, -i);
+      XYPoint start2 = projector.getXY(90, -i);
+      XYPoint end2 = projector.getXY(-90, -i);
       g.drawLine((int)start2.getX(), (int)start2.getY(), (int)end2.getX(), (int)end2.getY());
       g.setColor(Color.BLACK);
     }
   }
 
   private void drawNode(Graphics g, OsmNode node) {
-    Point point = getPoint(node);
+    XYPoint point = getPoint(node);
     g.fillOval((int) point.getX() - 2, (int) point.getY() - 2, 5, 5);
   }
 
@@ -78,7 +78,7 @@ public class MapPanel extends JPanel {
 
     for (int i = 0; i < nodes.size(); i++) {
       OsmNode node = nodes.get(i);
-      Point point = getPoint(node);
+      XYPoint point = getPoint(node);
       xPoints[i] = (int) point.getX();
       yPoints[i] = (int) point.getY();
     }
@@ -86,7 +86,7 @@ public class MapPanel extends JPanel {
     g.drawPolyline(xPoints, yPoints, nodes.size());
   }
 
-  private Point getPoint(OsmNode node) {
+  private XYPoint getPoint(OsmNode node) {
     return projector.getXY(node.getLat(), node.getLon());
   }
 }

@@ -1,24 +1,25 @@
 package md.harta.projector;
 
+import md.harta.geometry.LatLonPoint;
+import md.harta.geometry.LineGeometry;
+import md.harta.geometry.XYPoint;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class MercatorProjectorTest {
 
-  public static final int EARTH_RADIUS = 6371;
-
   @Test
   public void testGetXYPoint_0_0() throws Exception {
-    MercatorProjector projector = new MercatorProjector(EARTH_RADIUS, 85);
-    Point xyPoint = projector.getXY(0, 0);
+    MercatorProjector projector = new MercatorProjector(AbstractProjector.EARTH_RADIUS_M / 1000, 85);
+    XYPoint xyPoint = projector.getXY(0, 0);
     Assert.assertEquals(20015.0868, xyPoint.getX(), 0.0001);
     Assert.assertEquals(19949.5207, xyPoint.getY(), 0.0001);
   }
 
   @Test
   public void testGetXYPoint_10_10() throws Exception {
-    MercatorProjector projector = new MercatorProjector(EARTH_RADIUS, 85);
-    Point xyPoint = projector.getXY(10, 10);
+    MercatorProjector projector = new MercatorProjector(AbstractProjector.EARTH_RADIUS_M / 1000, 85);
+    XYPoint xyPoint = projector.getXY(10, 10);
 
     Assert.assertEquals(21127.03606, xyPoint.getX(), 0.0001);
     Assert.assertEquals(18831.88282, xyPoint.getY(), 0.0001);
@@ -26,8 +27,8 @@ public class MercatorProjectorTest {
 
   @Test
   public void testGetXYPoint_m10_10() throws Exception {
-    MercatorProjector projector = new MercatorProjector(EARTH_RADIUS, 85);
-    Point xyPoint = projector.getXY(-10, 10);
+    MercatorProjector projector = new MercatorProjector(AbstractProjector.EARTH_RADIUS_M / 1000, 85);
+    XYPoint xyPoint = projector.getXY(-10, 10);
 
     Assert.assertEquals(21127.03606, xyPoint.getX(), 0.0001);
     Assert.assertEquals(21067.15874, xyPoint.getY(), 0.0001);
@@ -35,8 +36,8 @@ public class MercatorProjectorTest {
 
   @Test
   public void testGetXYPoint_m10_m10() throws Exception {
-    MercatorProjector projector = new MercatorProjector(EARTH_RADIUS, 85);
-    Point xyPoint = projector.getXY(-10, -10);
+    MercatorProjector projector = new MercatorProjector(AbstractProjector.EARTH_RADIUS_M / 1000, 85);
+    XYPoint xyPoint = projector.getXY(-10, -10);
 
     Assert.assertEquals(18903.13753, xyPoint.getX(), 0.0001);
     Assert.assertEquals(21067.15874, xyPoint.getY(), 0.0001);
@@ -45,8 +46,8 @@ public class MercatorProjectorTest {
 
   @Test
   public void testGetXYPoint_10_m10() throws Exception {
-    MercatorProjector projector = new MercatorProjector(EARTH_RADIUS, 85);
-    Point xyPoint = projector.getXY(10, -10);
+    MercatorProjector projector = new MercatorProjector(AbstractProjector.EARTH_RADIUS_M / 1000, 85);
+    XYPoint xyPoint = projector.getXY(10, -10);
 
     Assert.assertEquals(18903.13753, xyPoint.getX(), 0.0001);
     Assert.assertEquals(18831.88282, xyPoint.getY(), 0.0001);
@@ -54,46 +55,46 @@ public class MercatorProjectorTest {
 
   @Test
   public void testGetLonLat_0_0() throws Exception {
-    MercatorProjector projector = new MercatorProjector(EARTH_RADIUS, 85);
-    Point xyPoint = projector.getLonLat(20015.0868, 19949.5207);
-    Assert.assertEquals(0, xyPoint.getY(), 0.0001);
-    Assert.assertEquals(0, xyPoint.getX(), 0.0001);
+    MercatorProjector projector = new MercatorProjector(AbstractProjector.EARTH_RADIUS_M / 1000, 85);
+    LatLonPoint point = projector.getLatLon(20015.0868, 19949.5207);
+    Assert.assertEquals(0, point.getLon(), 0.0001);
+    Assert.assertEquals(0, point.getLat(), 0.0001);
   }
 
   @Test
   public void testGetLonLat_10_10() throws Exception {
-    MercatorProjector projector = new MercatorProjector(EARTH_RADIUS, 85);
-    Point xyPoint = projector.getLonLat(21127.03606, 18831.88282);
+    MercatorProjector projector = new MercatorProjector(AbstractProjector.EARTH_RADIUS_M / 1000, 85);
+    LatLonPoint point = projector.getLatLon(21127.03606, 18831.88282);
 
-    Assert.assertEquals(10, xyPoint.getY(), 0.0001);
-    Assert.assertEquals(10, xyPoint.getX(), 0.0001);
+    Assert.assertEquals(10, point.getLon(), 0.0001);
+    Assert.assertEquals(10, point.getLat(), 0.0001);
   }
 
   @Test
   public void testLonLat_m10_10() throws Exception {
-    MercatorProjector projector = new MercatorProjector(EARTH_RADIUS, 85);
-    Point xyPoint = projector.getLonLat(21127.03606, 21067.15874);
+    MercatorProjector projector = new MercatorProjector(AbstractProjector.EARTH_RADIUS_M / 1000, 85);
+    LatLonPoint point = projector.getLatLon(21127.03606, 21067.15874);
 
-    Assert.assertEquals(-10, xyPoint.getX(), 0.0001);
-    Assert.assertEquals(10, xyPoint.getY(), 0.0001);
+    Assert.assertEquals(-10, point.getLat(), 0.0001);
+    Assert.assertEquals(10, point.getLon(), 0.0001);
   }
 
   @Test
   public void testGetLonLat_m10_m10() throws Exception {
-    MercatorProjector projector = new MercatorProjector(EARTH_RADIUS, 85);
-    Point xyPoint = projector.getLonLat(18903.13753, 21067.15874);
+    MercatorProjector projector = new MercatorProjector(AbstractProjector.EARTH_RADIUS_M / 1000, 85);
+    LatLonPoint point = projector.getLatLon(18903.13753, 21067.15874);
 
-    Assert.assertEquals(-10, xyPoint.getY(), 0.0001);
-    Assert.assertEquals(-10, xyPoint.getX(), 0.0001);
+    Assert.assertEquals(-10, point.getLon(), 0.0001);
+    Assert.assertEquals(-10, point.getLat(), 0.0001);
   }
 
   @Test
   public void testGetLonLat_10_m10() throws Exception {
-    MercatorProjector projector = new MercatorProjector(EARTH_RADIUS, 85);
-    Point xyPoint = projector.getLonLat(18903.13753, 18831.88282);
+    MercatorProjector projector = new MercatorProjector(AbstractProjector.EARTH_RADIUS_M / 1000, 85);
+    LatLonPoint point = projector.getLatLon(18903.13753, 18831.88282);
 
-    Assert.assertEquals(10, xyPoint.getX(), 0.0001);
-    Assert.assertEquals(-10, xyPoint.getY(), 0.0001);
+    Assert.assertEquals(10, point.getLat(), 0.0001);
+    Assert.assertEquals(-10, point.getLon(), 0.0001);
   }
 
   @Test
@@ -115,5 +116,41 @@ public class MercatorProjectorTest {
     MercatorProjector projector = new MercatorProjector(6371, 85);
     Assert.assertEquals(40030.17359, projector.getWidth(), 0.0001);
     Assert.assertEquals(39899.04157, projector.getHeight(), 0.0001);
+  }
+
+  @Test
+  public void test1Meter(){
+    MercatorProjector projector = new MercatorProjector(AbstractProjector.EARTH_RADIUS_M, 85);
+    Assert.assertEquals(40030173, projector.getWidth(), 1);
+
+    LatLonPoint pointA = new LatLonPoint(45, 0);
+    LatLonPoint pointB = new LatLonPoint(45 + LineGeometry.DEGREES_IN_METER, 0);
+    double distanceOrtodroma = LineGeometry.getDistanceOrtodroma(pointA, pointB);
+    Assert.assertEquals(1, distanceOrtodroma, 0.1);
+
+    XYPoint pointAxy = projector.getXY(pointA);
+    XYPoint pointBxy = projector.getXY(pointB);
+
+//    Assert.assertEquals(pointA, projector.getLatLon(pointAxy));
+    Assert.assertEquals(pointB, projector.getLatLon(pointBxy));
+  }
+
+  @Test
+  public void testXYtolerance(){
+    MercatorProjector projector = new MercatorProjector(AbstractProjector.EARTH_RADIUS_M, 85);
+
+//    Assert.assertEquals(projector.getLatLon(projector.getXY(45, 45)), new LatLonPoint(45, 45));
+//    Assert.assertEquals(projector.getLatLon(projector.getXY(45.1, 45.1)), new LatLonPoint(45.1, 45.1));
+//    Assert.assertEquals(projector.getLatLon(projector.getXY(45.01, 45.01)), new LatLonPoint(45.01, 45.01));
+//    Assert.assertEquals(projector.getLatLon(projector.getXY(45.001, 45.001)), new LatLonPoint(45.001, 45.001));
+//    Assert.assertEquals(projector.getLatLon(projector.getXY(45.0001, 45.0001)), new LatLonPoint(45.0001, 45.0001));
+//    Assert.assertEquals(projector.getLatLon(projector.getXY(45.00001, 45.00001)), new LatLonPoint(45.00001, 45.00001));
+//    Assert.assertEquals(projector.getLatLon(projector.getXY(45.000001, 45.000001)), new LatLonPoint(45.000001, 45.000001));
+//    Assert.assertEquals(projector.getLatLon(projector.getXY(45.0000001, 45.0000001)), new LatLonPoint(45.0000001, 45.0000001));
+//    Assert.assertEquals(projector.getLatLon(projector.getXY(45.00000001, 45.00000001)), new LatLonPoint(45.00000001, 45.00000001));
+//    Assert.assertEquals(projector.getLatLon(projector.getXY(45.000000001, 45.000000001)), new LatLonPoint(45.000000001, 45.000000001));
+//    Assert.assertEquals(projector.getLatLon(projector.getXY(45.0000000001, 45.0000000001)), new LatLonPoint(45.0000000001, 45.0000000001));
+//    Assert.assertEquals(projector.getLatLon(projector.getXY(45.00000000001, 45.00000000001)), new LatLonPoint(45.00000000001, 45.00000000001));
+    Assert.assertEquals(new LatLonPoint(45.000000000001, 45.000000000001), projector.getLatLon(projector.getXY(45.000000000001, 45.000000000001)));
   }
 }

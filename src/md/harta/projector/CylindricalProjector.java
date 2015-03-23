@@ -1,5 +1,8 @@
 package md.harta.projector;
 
+import md.harta.geometry.LatLonPoint;
+import md.harta.geometry.XYPoint;
+
 /**
  * Created by sergpank on 20.02.2015.
  */
@@ -20,7 +23,7 @@ public class CylindricalProjector extends AbstractProjector {
   }
 
   @Override
-  public Point getXY(double lat, double lon) {
+  public XYPoint getXY(double lat, double lon) {
     double x = width / 2 + lon * scale;
     double y;
     if (Math.abs(lat) >= maxLat){
@@ -32,14 +35,19 @@ public class CylindricalProjector extends AbstractProjector {
                : (radius * Math.abs(Math.tan(Math.toRadians(lat))))
        );
     }
-    return new Point(x, y);
+    return new XYPoint(x, y);
   }
 
   @Override
-  public Point getLonLat(double x, double y) {
+  public LatLonPoint getLatLon(double x, double y) {
     double lon = (x - width / 2) / scale;
     double lat = Math.toDegrees(Math.atan(((height / 2) - y) / radius));
-    return new Point(lat, lon);
+    return new LatLonPoint(lat, lon);
+  }
+
+  @Override
+  public double getScale(LatLonPoint point) {
+    return 0;
   }
 
   public static void main(String[] args) {

@@ -48,10 +48,11 @@ public class MapPanelFx extends Application {
 
     HBox menuBar = new HBox();
     Button updateButton = new Button("Update map");
-    TextField scaleField = new TextField("5000000");
+    TextField scaleField = new TextField(Integer.toString(AbstractProjector.EARTH_RADIUS_M));
     TextField pathField = new TextField("C:/botanica.osm");
     pathField.setPrefWidth(300);
-    menuBar.getChildren().addAll(updateButton, new Label("Radius: "), scaleField, new Label("  OSM file: "), pathField);
+    menuBar.getChildren().addAll(updateButton, new Label("Radius: "),
+        scaleField, new Label("  OSM file: "), pathField);
 
     Canvas canvas = new Canvas();
 
@@ -97,9 +98,8 @@ public class MapPanelFx extends Application {
     gc.setStroke(Color.BLACK);
     gc.setLineWidth(2);
 
-
-    new BuildingPainter(osmLoader.getBuildings(), projector, bounds).drawBuildings(gc);
     new HighwayPainter(osmLoader.getHighways(), projector, bounds).drawHighways(gc);
+    new BuildingPainter(osmLoader.getBuildings(), projector, bounds).drawBuildings(gc);
 
     System.out.println("DRAW!\n");
   }

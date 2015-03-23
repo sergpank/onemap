@@ -1,7 +1,7 @@
 package md.harta.osm;
 
 import md.harta.projector.AbstractProjector;
-import md.harta.projector.Point;
+import md.harta.geometry.XYPoint;
 
 /**
  * Created by sergpank on 03.03.2015.
@@ -13,11 +13,11 @@ public class Bounds {
   private double yMax;
 
   public Bounds(AbstractProjector projector, double maxLat, double minLon, double minLat, double maxLon) {
-    Point min = projector.getXY(maxLat, minLon);
+    XYPoint min = projector.getXY(maxLat, minLon);
     xMin = min.getX();
     yMin = min.getY();
 
-    Point max = projector.getXY(minLat, maxLon);
+    XYPoint max = projector.getXY(minLat, maxLon);
     xMax = max.getX();
     yMax = max.getY();
   }
