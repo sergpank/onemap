@@ -2,12 +2,10 @@ package md.harta.kml_parser;
 
 import generated.*;
 import md.harta.util.xml.XmlUtil;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,7 +67,8 @@ public class KmlParser {
 
   private Map<String, List<NodeType>> loadContinents(String kmlFile) {
     Map<String, List<NodeType>> continents = new HashMap<>();
-    NodeList nodeList = XmlUtil.getNodeList(kmlFile, "kml/Folder/Placemark/MultiGeometry/LineString");
+    Document doc = XmlUtil.parseDocument(kmlFile);
+    NodeList nodeList = XmlUtil.getNodeList(doc, "kml/Folder/Placemark/MultiGeometry/LineString");
     for (int i = 0; i < nodeList.getLength(); i++) {
       Element continent = (Element) nodeList.item(i);
       String id = continent.getAttribute("id");

@@ -4,25 +4,32 @@ import generated.NdType;
 import generated.NodeType;
 import generated.WayType;
 import md.harta.util.xml.XmlUtil;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by sergpank on 17.02.2015.
  */
-public class KmzParser extends AbstractParser {
+public class KmzParser extends AbstractParser
+{
 
-  public static void main(String[] args) {
+  public static void main(String[] args)
+  {
     KmzParser parser = new KmzParser();
-    parser.parse("ATA_adm0.kml");
+    parser.parse("/home/sergpank/Downloads/MDA_adm0.kml");
 
-    parser.findLongestWay(parser);
-
-    XmlUtil.marshalObject(createOsm(parser.longestWayNodes, Arrays.asList(parser.longestWay)),
-        new File("OsmData/" + parser.placeName + ".osm"));
+//    parser.findLongestWay(parser);
+//
+//    XmlUtil.marshalObject(createOsm(parser.longestWayNodes, Arrays.asList(parser.longestWay)),
+//        new File("OsmData/" + parser.placeName + ".osm"))
+    XmlUtil.marshalObject(createOsm(parser.allNodes, parser.allWays), new File("Moldova.osm"));
   }
 
   private List<NodeType> allNodes;
@@ -33,15 +40,19 @@ public class KmzParser extends AbstractParser {
 
   private String placeName;
 
-  public KmzParser() {
+  public KmzParser()
+  {
     allNodes = new ArrayList<>();
     allWays = new ArrayList<>();
   }
 
-  public void parse(String xmlFile) {
-    NodeList placeMarks = XmlUtil.getNodeList(xmlFile, "/kml/Document/Placemark/name");
+  public void parse(String xmlFile)
+  {
+    Document doc = XmlUtil.parseDocument(xmlFile);
+    NodeList placeMarks = XmlUtil.getNodeList(doc, "/kml/Document/Placemark/name");
 
-    for (int i = 0; i < placeMarks.getLength(); i++) {
+    for (int i = 0; i < placeMarks.getLength(); i++)
+    {
       Node item = placeMarks.item(i);
       placeName = item.getFirstChild().getNodeValue();
       System.out.println(placeName);
@@ -51,13 +62,16 @@ public class KmzParser extends AbstractParser {
 
       NodeList placeMarkCoordinates = XmlUtil.getNodeList(item, "../MultiGeometry//coordinates");
 
-      for (int j = 0; j < placeMarkCoordinates.getLength(); j++) {
+      for (int j = 0; j < placeMarkCoordinates.getLength(); j++)
+      {
         List<NodeType> polygonNodes = new ArrayList<>();
         String coordinates = placeMarkCoordinates.item(j).getFirstChild().getNodeValue();
         String[] split = coordinates.split("\n");
 
-        for (int k = 0; k < split.length; k++) {
-          if (split[k].trim().length() == 0) {
+        for (int k = 0; k < split.length; k++)
+        {
+          if (split[k].trim().length() == 0)
+          {
             continue;
           }
           String[] lonlat = split[k].split(",");
@@ -72,29 +86,36 @@ public class KmzParser extends AbstractParser {
     }
   }
 
-  public List<NodeType> getAllNodes() {
+  public List<NodeType> getAllNodes()
+  {
     return allNodes;
   }
 
-  public List<WayType> getAllWays() {
+  public List<WayType> getAllWays()
+  {
     return allWays;
   }
 
-  private void findLongestWay(KmzParser parser) {
+  private void findLongestWay(KmzParser parser)
+  {
     Map<Long, NodeType> nodeMap = new HashMap<>();
 
     longestWay = parser.getAllWays().get(0);
     longestWayNodes = new ArrayList<>();
 
-    for (NodeType node : parser.getAllNodes()){
+    for (NodeType node : parser.getAllNodes())
+    {
       nodeMap.put(node.getId(), node);
     }
-    for (WayType way : parser.getAllWays()){
-      if (way.getNd().size() > longestWay.getNd().size()){
+    for (WayType way : parser.getAllWays())
+    {
+      if (way.getNd().size() > longestWay.getNd().size())
+      {
         longestWay = way;
       }
     }
-    for (NdType nd : longestWay.getNd()){
+    for (NdType nd : longestWay.getNd())
+    {
       longestWayNodes.add(nodeMap.get(nd.getRef()));
     }
   }

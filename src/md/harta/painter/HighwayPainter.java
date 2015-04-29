@@ -22,6 +22,7 @@ public class HighwayPainter extends AbstractPainter{
   }
 
   public void drawHighways(GraphicsContext gc) {
+    System.out.println(bounds);
     gc.setFill(new Color(233.0 / 255, 229.0 / 255, 220.0 / 255, 1));
     gc.setLineWidth(1);
     for (Highway highway : highways.values()) {
@@ -29,7 +30,7 @@ public class HighwayPainter extends AbstractPainter{
       shiftPoints(polygon.getxPoints(), bounds.getxMin());
       shiftPoints(polygon.getyPoints(), bounds.getyMin());
       gc.strokePolyline(polygon.getxPoints(), polygon.getyPoints(), polygon.getPointsNumber());
-      drawLinesAsPolygons(polygon, gc);
+//      drawLinesAsPolygons(polygon, gc);
     }
   }
 

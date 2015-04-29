@@ -37,4 +37,16 @@ public class Bounds {
   public double getyMax() {
     return yMax;
   }
+
+  @Override
+  public String toString()
+  {
+    return "Bounds\n{" +
+        "xMin=" + xMin +
+        ", xMax=" + xMax +
+        ", yMin=" + yMin +
+        ", yMax=" + yMax +
+        "}\n width = " + (xMax - xMin) +
+        "\n height = " + (yMax - yMin);
+  }
 }

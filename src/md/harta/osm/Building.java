@@ -57,6 +57,11 @@ public class Building extends OsmWay{
     return levels;
   }
 
+  public String getDesign()
+  {
+    return design;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;

@@ -27,6 +27,8 @@ import md.harta.util.OsmLoader;
  */
 public class MapPanelFx extends Application {
 
+  public static final int EQUATOR_LENGTH = 3000;//AbstractProjector.EARTH_RADIUS_M * 2;
+  public static final String OSM_PATH = "Moldova.osm";//"/home/sergpank/Downloads/map.osm";
   private Bounds bounds;
   private OsmLoader osmLoader;
   private int radius;
@@ -48,8 +50,8 @@ public class MapPanelFx extends Application {
 
     HBox menuBar = new HBox();
     Button updateButton = new Button("Update map");
-    TextField scaleField = new TextField(Integer.toString(AbstractProjector.EARTH_RADIUS_M));
-    TextField pathField = new TextField("C:/botanica.osm");
+    TextField scaleField = new TextField(Integer.toString(EQUATOR_LENGTH));
+    TextField pathField = new TextField(OSM_PATH);
     pathField.setPrefWidth(300);
     menuBar.getChildren().addAll(updateButton, new Label("Radius: "),
         scaleField, new Label("  OSM file: "), pathField);

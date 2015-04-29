@@ -37,7 +37,7 @@ public class LineGeometryTest {
   public void testPerpendicularToVertical() throws Exception {
     Line line = LineGeometry.getLine(new XYPoint(1, 1), new XYPoint(1, 2));
     Line perpendicular = LineGeometry.getPerpendicular(line, new XYPoint(1, 2));
-    Assert.assertEquals(perpendicular, new Line(-0, -1, 2));
+    Assert.assertEquals(perpendicular, new Line(0, -1, 2));
   }
 
   @Test

@@ -3,6 +3,7 @@ package md.harta.util.xml;
 import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 import generated.Osm;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -21,29 +22,37 @@ import java.io.IOException;
  * Created by sergpank on 13.02.2015.
  */
 public class XmlUtil {
-  public static NodeList getNodeList(String xmlFile, String query) {
-    NodeList nodeList = null;
+
+  private static XPath xPath = XPathFactory.newInstance().newXPath();;
+
+  public static Document parseDocument(String xmlFile){
+    Document doc = null;
     try {
-      XPath xPath = XPathFactory.newInstance().newXPath();
-      Document doc = DocumentBuilderFactoryImpl.newInstance().newDocumentBuilder().parse(xmlFile);
-      nodeList = (NodeList) xPath.compile(query).evaluate(doc, XPathConstants.NODESET);
+      doc = DocumentBuilderFactoryImpl.newInstance().newDocumentBuilder().parse(xmlFile);
     } catch (SAXException e) {
       e.printStackTrace();
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ParserConfigurationException e) {
       e.printStackTrace();
+    }
+    return doc;
+  }
+
+  public static NodeList getNodeList(Document doc, String query) {
+    NodeList nodeList = null;
+    try {
+      nodeList = (NodeList) xPath.compile(query).evaluate(doc, XPathConstants.NODESET);
     } catch (XPathExpressionException e) {
       e.printStackTrace();
     }
     return nodeList;
   }
 
-  public static NodeList getNodeList(Object source, String query) {
+  public static NodeList getNodeList(Node node, String query) {
     NodeList nodeList = null;
     try {
-      XPath xPath = XPathFactory.newInstance().newXPath();
-      nodeList = (NodeList) xPath.compile(query).evaluate(source, XPathConstants.NODESET);
+      nodeList = (NodeList) xPath.compile(query).evaluate(node, XPathConstants.NODESET);
     } catch (XPathExpressionException e) {
       e.printStackTrace();
     }

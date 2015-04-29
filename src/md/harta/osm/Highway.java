@@ -32,8 +32,14 @@ public class Highway extends OsmWay {
     }
   }
 
-  public String getName() {
+  public String getName()
+  {
     return name;
+  }
+
+  public String getType()
+  {
+    return type;
   }
 
   public void setName(String name) {

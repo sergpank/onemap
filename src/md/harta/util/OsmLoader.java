@@ -2,6 +2,7 @@ package md.harta.util;
 
 import md.harta.osm.*;
 import md.harta.util.xml.XmlUtil;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -69,13 +70,19 @@ public class OsmLoader {
     this.highwayMap = new HashMap<>();
     this.buildingMap = new HashMap<>();
 
-    getNodes(xmlFile);
-    getWays(xmlFile);
-    bounds = getBounds(xmlFile);
+    Document doc = XmlUtil.parseDocument(xmlFile);
+
+    getNodes(doc);
+    getWays(doc);
+    bounds = getBounds(doc);
+    System.out.printf("Min lat = %f\n" +
+                      "Max lat = %f\n" +
+                      "Min lon = %f\n" +
+                      "Max lon = %f\n", minLat, maxLat, minLon, maxLon);
   }
 
-  OsmBounds getBounds(String xmlFile) {
-    NodeList nodeList = XmlUtil.getNodeList(xmlFile, "/osm/bounds");
+  OsmBounds getBounds(Document doc) {
+    NodeList nodeList = XmlUtil.getNodeList(doc, "/osm/bounds");
     Element item = (Element) nodeList.item(0);
     if (item != null) {
       double minlat = Double.parseDouble(item.getAttribute("minlat"));
@@ -87,8 +94,8 @@ public class OsmLoader {
     return null;
   }
 
-  private void getNodes(String xmlFile) {
-    NodeList nodeList = XmlUtil.getNodeList(xmlFile, "/osm/node");
+  private void getNodes(Document doc) {
+    NodeList nodeList = XmlUtil.getNodeList(doc, "/osm/node");
     for (int i = 0; i < nodeList.getLength(); i++) {
       Node item = nodeList.item(i);
       if (item.getNodeType() == Node.ELEMENT_NODE) {
@@ -115,8 +122,8 @@ public class OsmLoader {
     }
   }
 
-  private void getWays(String xmlFile) {
-    NodeList nodeList = XmlUtil.getNodeList(xmlFile, "/osm/way");
+  private void getWays(Document doc) {
+    NodeList nodeList = XmlUtil.getNodeList(doc, "/osm/way");
     for (int i = 0; i < nodeList.getLength(); i++) {
       Node item = nodeList.item(i);
       if (item.getNodeType() == Node.ELEMENT_NODE) {
