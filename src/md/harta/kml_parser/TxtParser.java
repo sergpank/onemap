@@ -3,7 +3,7 @@ package md.harta.kml_parser;
 import generated.NodeType;
 import generated.Osm;
 import generated.WayType;
-import md.harta.util.xml.XmlUtil;
+import md.harta.util.XmlUtil;
 
 import java.io.BufferedReader;
 import java.io.File;

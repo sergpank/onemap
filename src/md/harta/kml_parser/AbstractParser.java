@@ -1,5 +1,6 @@
 package md.harta.kml_parser;
 
+import generated.KeyValueType;
 import generated.NdType;
 import generated.NodeType;
 import generated.Osm;
@@ -37,6 +38,11 @@ public abstract class AbstractParser {
     way.getNd().addAll(nds);
     way.setVersion(1);
     way.setVisible(true);
+    KeyValueType tag = new KeyValueType();
+    tag.setK("highway");
+    tag.setV("residential");
+    way.getTag().add(tag);
+
     return way;
   }
 

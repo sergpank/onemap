@@ -1,7 +1,11 @@
 package md.harta.kml_parser;
 
-import generated.*;
-import md.harta.util.xml.XmlUtil;
+import generated.BoundsType;
+import generated.NdType;
+import generated.NodeType;
+import generated.Osm;
+import generated.WayType;
+import md.harta.util.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -15,14 +19,16 @@ import java.util.Map;
 /**
  * Created by sergpank on 13.02.2015.
  */
-public class KmlParser {
+public class KmlParser
+{
 
   private long nodeId;
   private long wayId;
   private BoundsType bounds;
   private Osm osm;
 
-  public KmlParser() {
+  public KmlParser()
+  {
     this.nodeId = 1;
     this.bounds = new BoundsType();
 
@@ -35,7 +41,8 @@ public class KmlParser {
     this.bounds.setMaxlon(-180.0);
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args)
+  {
     String kmlFile = "Kontinents.kml";
     KmlParser parser = new KmlParser();
     Map<String, List<NodeType>> continents = parser.loadContinents(kmlFile);
@@ -46,12 +53,14 @@ public class KmlParser {
 //        parser.bounds.getMinlat(), parser.bounds.getMinlon(),
 //        parser.bounds.getMaxlat(), parser.bounds.getMaxlon()));
 
-    for (Map.Entry<String, List<NodeType>> entry : continents.entrySet()) {
+    for (Map.Entry<String, List<NodeType>> entry : continents.entrySet())
+    {
       nodes.addAll(entry.getValue());
       WayType way = new WayType();
       way.setId(parser.wayId++);
       List<NdType> ndList = new ArrayList<>();
-      for (NodeType node : entry.getValue()) {
+      for (NodeType node : entry.getValue())
+      {
         NdType nd = new NdType();
         nd.setRef(node.getId());
         ndList.add(nd);
@@ -65,21 +74,26 @@ public class KmlParser {
     XmlUtil.marshalObject(parser.osm, new File("kml.osm"));
   }
 
-  private Map<String, List<NodeType>> loadContinents(String kmlFile) {
+  private Map<String, List<NodeType>> loadContinents(String kmlFile)
+  {
     Map<String, List<NodeType>> continents = new HashMap<>();
     Document doc = XmlUtil.parseDocument(kmlFile);
     NodeList nodeList = XmlUtil.getNodeList(doc, "kml/Folder/Placemark/MultiGeometry/LineString");
-    for (int i = 0; i < nodeList.getLength(); i++) {
+    for (int i = 0; i < nodeList.getLength(); i++)
+    {
       Element continent = (Element) nodeList.item(i);
       String id = continent.getAttribute("id");
       NodeList coordinates = continent.getElementsByTagName("coordinates");
-      for (int j = 0; j < coordinates.getLength(); j++) {
+      for (int j = 0; j < coordinates.getLength(); j++)
+      {
         List<NodeType> continentNodes = new ArrayList<>();
         Element coordinate = (Element) coordinates.item(j);
         String coordinateValue = coordinate.getFirstChild().getNodeValue();
         String[] nodeCoordinates = coordinateValue.split(" ");
-        for (String nodeCoordinate : nodeCoordinates) {
-          if (!nodeCoordinate.trim().isEmpty()) {
+        for (String nodeCoordinate : nodeCoordinates)
+        {
+          if (!nodeCoordinate.trim().isEmpty())
+          {
             String[] points = nodeCoordinate.split(",");
             double lat = Double.parseDouble(points[0].trim());
             double lon = Double.parseDouble(points[1].trim());
@@ -99,17 +113,22 @@ public class KmlParser {
     return continents;
   }
 
-  private void updateBounds(double lat, double lon) {
-    if(lat > bounds.getMaxlat()){
+  private void updateBounds(double lat, double lon)
+  {
+    if (lat > bounds.getMaxlat())
+    {
       bounds.setMaxlat(lat);
     }
-    if (lat < bounds.getMinlat()){
+    if (lat < bounds.getMinlat())
+    {
       bounds.setMinlat(lat);
     }
-    if(lon > bounds.getMaxlon()){
+    if (lon > bounds.getMaxlon())
+    {
       bounds.setMaxlon(lon);
     }
-    if(lon < bounds.getMinlon()){
+    if (lon < bounds.getMinlon())
+    {
       bounds.setMinlon(lon);
     }
   }

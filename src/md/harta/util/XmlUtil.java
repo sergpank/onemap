@@ -1,4 +1,4 @@
-package md.harta.util.xml;
+package md.harta.util;
 
 import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 import generated.Osm;

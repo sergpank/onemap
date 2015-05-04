@@ -19,7 +19,7 @@ import md.harta.osm.Bounds;
 import md.harta.painter.BuildingPainter;
 import md.harta.painter.HighwayPainter;
 import md.harta.projector.AbstractProjector;
-import md.harta.projector.MercatorProjector;
+import md.harta.projector.SimpleProjector;
 import md.harta.util.OsmLoader;
 
 /**
@@ -88,7 +88,7 @@ public class MapPanelFx extends Application {
   }
 
   private void drawMap(Canvas canvas) {
-    MercatorProjector projector = new MercatorProjector(radius, 85);
+    AbstractProjector projector = new SimpleProjector(radius);//new MercatorProjector(radius, 85);
     setBounds(projector);
     canvas.setHeight(bounds.getyMax() - bounds.getyMin());
     canvas.setWidth(bounds.getxMax() - bounds.getxMin());

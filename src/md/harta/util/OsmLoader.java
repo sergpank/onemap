@@ -1,7 +1,6 @@
 package md.harta.util;
 
 import md.harta.osm.*;
-import md.harta.util.xml.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

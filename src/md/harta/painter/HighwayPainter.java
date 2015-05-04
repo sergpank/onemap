@@ -2,10 +2,14 @@ package md.harta.painter;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import md.harta.geometry.*;
+import md.harta.geometry.CanvasPolygon;
+import md.harta.geometry.LatLonPoint;
+import md.harta.geometry.Line;
+import md.harta.geometry.LineGeometry;
+import md.harta.geometry.XYPoint;
 import md.harta.osm.Bounds;
 import md.harta.osm.Highway;
-import md.harta.projector.MercatorProjector;
+import md.harta.projector.AbstractProjector;
 
 import java.util.Map;
 
@@ -16,7 +20,7 @@ public class HighwayPainter extends AbstractPainter{
   public static final int ROAD_WIDTH = 1;
   private Map<Long, Highway> highways;
 
-  public HighwayPainter(Map<Long, Highway> highways, MercatorProjector projector, Bounds bounds) {
+  public HighwayPainter(Map<Long, Highway> highways, AbstractProjector projector, Bounds bounds) {
     super(projector, bounds);
     this.highways = highways;
   }

@@ -3,7 +3,7 @@ package md.harta.kml_parser;
 import generated.NdType;
 import generated.NodeType;
 import generated.WayType;
-import md.harta.util.xml.XmlUtil;
+import md.harta.util.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -23,13 +23,13 @@ public class KmzParser extends AbstractParser
   public static void main(String[] args)
   {
     KmzParser parser = new KmzParser();
-    parser.parse("/home/sergpank/Downloads/MDA_adm0.kml");
+    parser.parse("/home/sergpank/Downloads/MDA_adm1_UTF_8.kml");
 
 //    parser.findLongestWay(parser);
 //
 //    XmlUtil.marshalObject(createOsm(parser.longestWayNodes, Arrays.asList(parser.longestWay)),
 //        new File("OsmData/" + parser.placeName + ".osm"))
-    XmlUtil.marshalObject(createOsm(parser.allNodes, parser.allWays), new File("Moldova.osm"));
+    XmlUtil.marshalObject(createOsm(parser.allNodes, parser.allWays), new File("Moldova_1.osm"));
   }
 
   private List<NodeType> allNodes;
