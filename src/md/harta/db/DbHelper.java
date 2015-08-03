@@ -10,15 +10,19 @@ import java.sql.SQLException;
 public class DbHelper
 {
   private static Connection connection;
-  private static String url = "jdbc:postgresql://localhost:5434/harta";
+  public static String dbName = "harta";
+  private static String url = "jdbc:postgresql://localhost:5434/";
   private static String login = "postgres";
   private static String password = "jkl123";
 
-  static
+  private static void init()
   {
     try
     {
-      connection = DriverManager.getConnection(url, login, password);
+      if (connection == null)
+      {
+        connection = DriverManager.getConnection(url + dbName, login, password);
+      }
     }
     catch (SQLException e)
     {
@@ -28,6 +32,22 @@ public class DbHelper
 
   public static Connection getConnection()
   {
+    init();
+    return connection;
+  }
+
+  public static Connection getConnection(String dbName)
+  {
+    DbHelper.dbName = dbName;
+    init();
+    return connection;
+  }
+
+  public static Connection getNewConnection(String dbName)
+  {
+    DbHelper.dbName = dbName;
+    connection = null;
+    init();
     return connection;
   }
 }

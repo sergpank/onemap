@@ -23,13 +23,13 @@ public class KmzParser extends AbstractParser
   public static void main(String[] args)
   {
     KmzParser parser = new KmzParser();
-    parser.parse("/home/sergpank/Downloads/MDA_adm1_UTF_8.kml");
+    parser.parse("/home/sergpank/Downloads/UKR_adm0.kml");
 
 //    parser.findLongestWay(parser);
 //
 //    XmlUtil.marshalObject(createOsm(parser.longestWayNodes, Arrays.asList(parser.longestWay)),
 //        new File("OsmData/" + parser.placeName + ".osm"))
-    XmlUtil.marshalObject(createOsm(parser.allNodes, parser.allWays), new File("Moldova_1.osm"));
+    XmlUtil.marshalObject(createOsm(parser.allNodes, parser.allWays), new File("Ukraine_0.osm"));
   }
 
   private List<NodeType> allNodes;
@@ -55,7 +55,7 @@ public class KmzParser extends AbstractParser
     {
       Node item = placeMarks.item(i);
       placeName = item.getFirstChild().getNodeValue();
-      System.out.println(placeName);
+//      System.out.println(placeName);
 
       List<NodeType> placeNodes = new ArrayList<>();
       List<WayType> placeWays = new ArrayList<>();
@@ -77,7 +77,7 @@ public class KmzParser extends AbstractParser
           String[] lonlat = split[k].split(",");
           polygonNodes.add(createNode(lonlat));
         }
-        placeWays.add(createWay(polygonNodes));
+        placeWays.add(createWay(polygonNodes, placeName));
         placeNodes.addAll(polygonNodes);
       }
 

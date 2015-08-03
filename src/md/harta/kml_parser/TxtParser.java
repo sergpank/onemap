@@ -31,7 +31,7 @@ public class TxtParser extends AbstractParser {
           NodeType node = createNode(lonlat);
           wayNodes.add(node);
         }
-        ways.add(createWay(wayNodes));
+        ways.add(createWay(wayNodes, "NOT_SET"));
         nodes.addAll(wayNodes);
       }
       KmzParser kmzParser = new KmzParser();

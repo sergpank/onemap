@@ -17,6 +17,14 @@ public class XYPoint {
   }
 
   /**
+   * @param height - should be negative
+   */
+  public void liftUp(double height)
+  {
+    y += height;
+  }
+
+  /**
    * @return x
    */
   public double getX() {
@@ -60,5 +68,16 @@ public class XYPoint {
         "x=" + x +
         ", y=" + y +
         '}';
+  }
+
+  public boolean equals(XYPoint point, double eps)
+  {
+    if (this == point) return true;
+    if (point == null || getClass() != point.getClass()) return false;
+
+    if (Math.abs(Double.compare(point.x, x)) > eps) return false;
+    if (Math.abs(Double.compare(point.y, y)) > eps) return false;
+
+    return true;
   }
 }

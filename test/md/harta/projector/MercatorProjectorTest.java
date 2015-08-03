@@ -1,7 +1,7 @@
 package md.harta.projector;
 
+import md.harta.geometry.GeometryUtil;
 import md.harta.geometry.LatLonPoint;
-import md.harta.geometry.LineGeometry;
 import md.harta.geometry.XYPoint;
 import org.junit.Assert;
 import org.junit.Test;
@@ -124,8 +124,8 @@ public class MercatorProjectorTest {
     Assert.assertEquals(40030173, projector.getWidth(), 1);
 
     LatLonPoint pointA = new LatLonPoint(45, 0);
-    LatLonPoint pointB = new LatLonPoint(45 + LineGeometry.DEGREES_IN_METER, 0);
-    double distanceOrtodroma = LineGeometry.getDistanceOrtodroma(pointA, pointB);
+    LatLonPoint pointB = new LatLonPoint(45 + GeometryUtil.DEGREES_IN_METER, 0);
+    double distanceOrtodroma = GeometryUtil.getDistanceOrtodroma(pointA, pointB);
     Assert.assertEquals(1, distanceOrtodroma, 0.1);
 
     XYPoint pointAxy = projector.getXY(pointA);

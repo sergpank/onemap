@@ -26,7 +26,7 @@ public abstract class AbstractParser {
     return node;
   }
 
-  protected static WayType createWay(List<NodeType> nodes){
+  protected static WayType createWay(List<NodeType> nodes, String name){
     WayType way = new WayType();
     way.setId(wayId++);
     List<NdType> nds = new ArrayList<>();
@@ -38,10 +38,14 @@ public abstract class AbstractParser {
     way.getNd().addAll(nds);
     way.setVersion(1);
     way.setVisible(true);
-    KeyValueType tag = new KeyValueType();
-    tag.setK("highway");
-    tag.setV("residential");
-    way.getTag().add(tag);
+    KeyValueType borderTag = new KeyValueType();
+    borderTag.setK("border");
+    borderTag.setV("local");
+    way.getTag().add(borderTag);
+    KeyValueType nameTag = new KeyValueType();
+    nameTag.setK("name");
+    nameTag.setV(name);
+    way.getTag().add(nameTag);
 
     return way;
   }

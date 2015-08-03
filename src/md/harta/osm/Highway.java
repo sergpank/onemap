@@ -1,5 +1,6 @@
 package md.harta.osm;
 
+import md.harta.projector.AbstractProjector;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -15,8 +16,8 @@ public class Highway extends OsmWay {
   private String name;
   private String type;
 
-  public Highway(long id, List<OsmNode> nodes, Element element) {
-    super(id, nodes);
+  public Highway(long id, List<OsmNode> nodes, Element element, AbstractProjector projector) {
+    super(id, nodes, projector);
 
     NodeList tags = element.getElementsByTagName("tag");
     for (int i = 0; i < tags.getLength(); i++){
@@ -30,6 +31,13 @@ public class Highway extends OsmWay {
           name = item.getAttribute("v");
       }
     }
+  }
+
+  public Highway(Long id, String name, String type, List<OsmNode> nodes, AbstractProjector projector)
+  {
+    super(id, nodes, projector);
+    this.name = name;
+    this.type = type;
   }
 
   public String getName()
@@ -55,6 +63,7 @@ public class Highway extends OsmWay {
     Highway highway = (Highway) o;
 
     if (name != null ? !name.equals(highway.name) : highway.name != null) return false;
+    if (type != null ? !type.equals(highway.type) : highway.type != null) return false;
 
     return true;
   }
@@ -63,6 +72,7 @@ public class Highway extends OsmWay {
   public int hashCode() {
     int result = super.hashCode();
     result = 31 * result + (name == null ? 0 : name.hashCode());
+    result = 31 * result + (type == null ? 0 : type.hashCode());
     return result;
   }
 }

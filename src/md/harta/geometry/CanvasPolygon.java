@@ -28,6 +28,26 @@ public class CanvasPolygon{
     return xPoints;
   }
 
+  public int[] getIntXPoints()
+  {
+    int[] points = new int[xPoints.length];
+    for (int i = 0; i < xPoints.length; i++)
+    {
+      points[i] = (int)xPoints[i];
+    }
+    return points;
+  }
+
+  public int[] getIntYPoints()
+  {
+    int[] points = new int[yPoints.length];
+    for (int i = 0; i < yPoints.length; i++)
+    {
+      points[i] = (int)yPoints[i];
+    }
+    return points;
+  }
+
   public double[] getyPoints() {
     return yPoints;
   }
