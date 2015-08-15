@@ -31,7 +31,7 @@ public class HighwayPainter extends AbstractPainter
     double roadWidth = getRoadWidthPixels(projector, 4);
     for (Highway highway : highways)
     {
-      addLabel(drawer, labels, highway);
+      addLabel(labels, highway);
       CanvasPolygon polygon = createPolygon(highway);
       if (level < 16)
       {
@@ -55,7 +55,7 @@ public class HighwayPainter extends AbstractPainter
     }
   }
 
-  private void addLabel(AbstractDrawer drawer, List<Label> labels, Highway highway)
+  private void addLabel(List<Label> labels, Highway highway)
   {
     XYPoint minXY = shiftPoint(new XYPoint(highway.getBounds().getxMin(), highway.getBounds().getyMin()));
     XYPoint maxXY = shiftPoint(new XYPoint(highway.getBounds().getxMax(), highway.getBounds().getyMax()));

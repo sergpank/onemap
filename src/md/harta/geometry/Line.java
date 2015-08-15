@@ -4,25 +4,44 @@ package md.harta.geometry;
  * Created by sergpank on 05.03.2015.
  */
 public class Line {
+  private XYPoint leftPoint;
+  private XYPoint rightPoint;
+
   private double a;
   private double b;
   private double c;
 
-  private double slope;
+  private Double slope;
 
   public Line(double a, double b, double c) {
     this.a = a;
     this.b = b;
     this.c = c;
+  }
+  
+  public Line(XYPoint pointA, XYPoint pointB)
+  {
+    a = pointA.getY() - pointB.getY();
+    b = pointB.getX() - pointA.getX();
+    c = pointA.getX() * pointB.getY() - pointB.getX() * pointA.getY();
 
-    if (b ==0){
-      slope = Math.PI / 2;
-    } else {
-      double x1 = 10;
-      double x2 = 20;
-      double y1 = (a * x1 + c) / (b * -1);
-      double y2 = (a * x2 + c) / (b * -1);
-      slope = b == 0 ? Math.PI / 2 : Math.atan((y2 - y1) / (x2 - x1));
+    if (pointA.getX() < pointB.getX())
+    {
+      leftPoint = pointA;
+      rightPoint = pointB;
+    }
+    else if (pointA.getX() == pointB.getX())
+    {
+      if (pointA.getY() > pointB.getY())
+      {
+        leftPoint = pointA;
+        rightPoint = pointB;
+      }
+    }
+    else
+    {
+      leftPoint = pointB;
+      rightPoint = pointA;
     }
   }
 
@@ -48,7 +67,26 @@ public class Line {
     return c;
   }
 
-  public double getSlope() {
+  public double getSlope() 
+  {
+    if (slope == null)
+    {
+      if (b ==0)
+      {
+        if (leftPoint.getY() > rightPoint.getX())
+          slope = -Math.PI / 2;
+        else
+          slope = Math.PI / 2;
+      }
+      else
+      {
+        double x1 = 10;
+        double x2 = 20;
+        double y1 = (a * x1 + c) / (b * -1);
+        double y2 = (a * x2 + c) / (b * -1);
+        slope = b == 0 ? Math.PI / 2 : Math.atan((y2 - y1) / (x2 - x1));
+      }
+    }
     return slope;
   }
 
@@ -65,6 +103,31 @@ public class Line {
     if (Double.compare(line.slope, slope) != 0) return false;
 
     return true;
+  }
+
+  public boolean isIdentical(Line l)
+  {
+    if (a == l.a)
+    {
+      if (b == l.b)
+      {
+        if (slope == l.slope)
+        {
+          return true;
+        }
+      }
+    }
+    else if (a == -l.a)
+    {
+      if (b == l.b)
+      {
+        if (slope == -l.slope || ((c >= 0 && l.c <=0) || (c <=0 && l.c >=0)))
+        {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   @Override
@@ -90,5 +153,15 @@ public class Line {
         ", c=" + c +
         ", slope=" + slope +
         '}';
+  }
+
+  public XYPoint getLeftPoint()
+  {
+    return leftPoint;
+  }
+
+  public XYPoint getRightPoint()
+  {
+    return rightPoint;
   }
 }

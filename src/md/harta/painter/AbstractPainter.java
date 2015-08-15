@@ -34,7 +34,7 @@ public class AbstractPainter {
     return new CanvasPolygon(way.getId(), xPoints, yPoints);
   }
 
-  protected void shiftPoints(double shift, double ... points) {
+  protected void shiftPoints(double shift, double[] points) {
     for(int i = 0; i < points.length; i++){
       points[i] = points[i] - shift;
     }

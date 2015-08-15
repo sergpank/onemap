@@ -46,9 +46,10 @@ public class MapPanelTile extends JPanel {
 //    map.loader = new DbLoader("debug");
 //    map.loader.load("debug", projector);
     map.loader = new OsmLoader();
-    map.loader.load("osm/только_круг.osm", projector);
-//    map.loader.load("osm/греческая_площадь.osm", projector);
+//    map.loader.load("osm/только_круг.osm", projector);
+    map.loader.load("osm/греческая_площадь.osm", projector);
 //    map.loader.load("osm/map.osm", projector);
+//    map.loader.load("osm/test_data.osm", projector);
 
     JScrollPane scrollPane = new JScrollPane(map);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -59,7 +60,7 @@ public class MapPanelTile extends JPanel {
     frame.add(map.createControlPanel(), BorderLayout.WEST);
     frame.pack();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setSize(800, 600);
+    frame.setSize(1000, 700);
     frame.setVisible(true);
   }
 

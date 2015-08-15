@@ -64,9 +64,15 @@ public class GeometryUtil
     double delta = distance / 2 * scale;
     XYPoint xyPoint = projector.getXY(point.getLat(), point.getLon());
     if (line.getA() == 0){
-      // Значит это вертикальная линия и тангенс угла наклона(90) = бесконечности
+      // Значит это горизонтальная
+      return new XYPoint[]{new XYPoint(xyPoint.getX(), xyPoint.getY() - delta),
+                           new XYPoint(xyPoint.getX(), xyPoint.getY() + delta)};
+    }
+    else if (line.getB() == 0)
+    {
+      // Значит это вертикальная линия
       return new XYPoint[]{new XYPoint(xyPoint.getX() - delta, xyPoint.getY()),
-                           new XYPoint(xyPoint.getX() + delta, xyPoint.getY())};
+          new XYPoint(xyPoint.getX() + delta, xyPoint.getY())};
     }
     Line perpendicular = getPerpendicular(line, xyPoint);
 

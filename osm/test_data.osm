@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.3.3 (31921 thorn-01.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <bounds minlat="46.9960500" minlon="28.8679000" maxlat="46.9983500" maxlon="28.8728900"/>
+
+ <node id="1" lat="46.996" lon="28.867"/>
+ <node id="2" lat="46.998" lon="28.869"/>
+ <node id="3" lat="46.996" lon="28.8691"/>
+ <node id="4" lat="46.994" lon="28.870"/>
+ <node id="5" lat="46.994" lon="28.867"/>
+ <node id="6" lat="46.996" lon="28.866"/>
+ <node id="7" lat="46.997" lon="28.865"/>
+ <node id="8" lat="46.997" lon="28.867"/>
+ <node id="9" lat="46.995" lon="28.866"/>
+
+ <node id="10" lat="46.996" lon="28.868"/>
+ <node id="11" lat="46.997" lon="28.869"/>
+ <node id="12" lat="46.996" lon="28.870"/>
+ <node id="13" lat="46.997" lon="28.871"/>
+ <node id="14" lat="46.996" lon="28.872"/>
+
+ <way id="2">
+  <nd ref="1"/>
+  <nd ref="2"/>
+  <tag k="highway" v="residential"/>
+  <tag k="name" v=" 2. Северо - Восток"/>
+ </way>
+
+ <way id="3">
+  <nd ref="1"/>
+  <nd ref="3"/>
+  <tag k="highway" v="residential"/>
+  <tag k="name" v=" 3. Восток"/>
+ </way>
+
+ <way id="4">
+   <nd ref="1"/>
+   <nd ref="4"/>
+   <tag k="highway" v="residential"/>
+   <tag k="name" v=" 4. Юго - Восток"/>
+ </way>
+
+ <way id="5">
+   <nd ref="1"/>
+   <nd ref="5"/>
+   <tag k="highway" v="residential"/>
+   <tag k="name" v=" 5. Юг"/>
+ </way>
+
+
+  <way id="6">
+   <nd ref="1"/>
+   <nd ref="6"/>
+   <tag k="highway" v="residential"/>
+   <tag k="name" v=" 6. Запад"/>
+  </way>
+
+  <way id="7">
+     <nd ref="1"/>
+     <nd ref="7"/>
+     <tag k="highway" v="residential"/>
+     <tag k="name" v=" 7. Северо - Запад."/>
+   </way>
+
+   <way id="8">
+     <nd ref="1"/>
+     <nd ref="8"/>
+     <tag k="highway" v="residential"/>
+     <tag k="name" v=" 8. Север."/>
+   </way>
+
+  <way id="9">
+    <nd ref="1"/>
+    <nd ref="9"/>
+    <tag k="highway" v="residential"/>
+    <tag k="name" v=" 9. Юго-Запад"/>
+  </way>
+
+  <way id="10">
+      <nd ref="10"/>
+      <nd ref="11"/>
+      <nd ref="12"/>
+      <nd ref="13"/>
+      <nd ref="14"/>
+      <tag k="highway" v="residential"/>
+      <tag k="name" v="Долгая и длинная дорога в облака ведёт меня сама на встречу к радости и счастью."/>
+    </way>
+
+</osm>

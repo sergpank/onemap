@@ -19,9 +19,9 @@ public class Label
   public Label(String text, XYPoint center, String fontName, int fontSize)
   {
     this.text = text;
-    this.font = font;
+    this.font = new Font(fontName, fontSize);
     this.center = center;
-    FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(new Font(fontName, fontSize));
+    FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(font);
     float lineHeight = fontMetrics.getLineHeight();
     float lineWidth = fontMetrics.computeStringWidth(text);
     this.bounds = new Bounds(center.getX() - lineWidth / 2, center.getY() - lineHeight / 2,

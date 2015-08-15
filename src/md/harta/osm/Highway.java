@@ -16,6 +16,12 @@ public class Highway extends OsmWay {
   private String name;
   private String type;
 
+  @Override
+  public String toString()
+  {
+    return name + super.toString();
+  }
+
   public Highway(long id, List<OsmNode> nodes, Element element, AbstractProjector projector) {
     super(id, nodes, projector);
 
