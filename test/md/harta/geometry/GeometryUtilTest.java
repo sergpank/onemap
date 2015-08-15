@@ -317,8 +317,8 @@ public class GeometryUtilTest
     Line line = GeometryUtil.getLine(leftPoint, rightPoint);
     Circle circle = new Circle(new XYPoint(15, 15), 5);
 
-    XYPoint intersection = GeometryUtil.getLineCircleIntersection(line, circle, leftPoint, rightPoint);
-    Assert.assertEquals(new XYPoint(15, 20), intersection);
+    XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
+    Assert.assertEquals(new XYPoint(15, 20), intersection[0]);
   }
 
   @Test
@@ -329,8 +329,8 @@ public class GeometryUtilTest
     Line line = GeometryUtil.getLine(leftPoint, rightPoint);
     Circle circle = new Circle(new XYPoint(25, 18), 5);
 
-    XYPoint intersection = GeometryUtil.getLineCircleIntersection(line, circle, leftPoint, rightPoint);
-    Assert.assertEquals(new XYPoint(25, 20), intersection);
+    XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
+    Assert.assertEquals(new XYPoint(25, 20), intersection[0]);
   }
 
   @Test
@@ -341,8 +341,8 @@ public class GeometryUtilTest
     Line line = GeometryUtil.getLine(leftPoint, rightPoint);
     Circle circle = new Circle(new XYPoint(10, 10), 5);
 
-    XYPoint intersection = GeometryUtil.getLineCircleIntersection(line, circle, leftPoint, rightPoint);
-    Assert.assertEquals(new XYPoint(10, 15), intersection);
+    XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
+    Assert.assertEquals(new XYPoint(10, 15), intersection[0]);
   }
 
   @Test
@@ -353,7 +353,7 @@ public class GeometryUtilTest
     Line line = GeometryUtil.getLine(leftPoint, rightPoint);
     Circle circle = new Circle(new XYPoint(10, 10), 5);
 
-    XYPoint intersection = GeometryUtil.getLineCircleIntersection(line, circle, leftPoint, rightPoint);
-    Assert.assertEquals(new XYPoint(10 + 5 / Math.sqrt(2), 10 + 5 / Math.sqrt(2)), intersection);
+    XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
+    Assert.assertEquals(new XYPoint(10 + 5 / Math.sqrt(2), 10 + 5 / Math.sqrt(2)), intersection[0]);
   }
 }

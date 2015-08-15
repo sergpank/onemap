@@ -194,7 +194,7 @@ public class GeometryUtil
    * because the beginning of circle is on the beginning of the road,
    * and the road beginning is the most left point of the road.
    */
-  public static XYPoint getLineCircleIntersection(Line line, Circle circle, XYPoint startPoint, XYPoint endPoint)
+  public static XYPoint[] getLineCircleIntersection(Line line, Circle circle)
   {
     XYPoint point1 = null;
     XYPoint point2 = null;
@@ -227,55 +227,13 @@ public class GeometryUtil
       double x1 = (-(b / a)) * y1 - (c / a);
       double x2 = (-(b / a)) * y2 - (c / a);
 
-      point1 = new XYPoint(x1, y1);
-      point2 = new XYPoint(x2, y2);
-
-      if (!pointBetween(point1, startPoint, endPoint))
-      {
-        point1 = null;
-      }
-      if (!pointBetween(point2, startPoint, endPoint))
-      {
-        point2 = null;
-      }
-
-      if (point1 != null)
-      {
-        return point1;
-      }
-      else
-      {
-        if (point1 == null && point2 == null)
-        {
-          return null;
-        }
-        if (point1 == null)
-        {
-          if (point2 == null)
-          {
-            return null;
-          }
-          else
-          {
-            return point2;
-          }
-        }
-        else if (point2 == null)
-        {
-          return null;
-        }
-        else
-        {
-          return point2;
-        }
-      }
+      return new XYPoint[]{new XYPoint(x1, y1), new XYPoint(x2, y2)};
     }
     else // this is special case - horizontal line
     {
       double x = circle.getCenter().getX();
-      double y = ((-a) * (x + circle.getRadius()) - c) / b;
-
-      return new XYPoint(x, y);
+      double y = circle.getCenter().getY();
+      return new XYPoint[]{new XYPoint(x - circle.getRadius(), y), new XYPoint(x + circle.getRadius(), y)};
     }
   }
 }

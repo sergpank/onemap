@@ -20,6 +20,8 @@ import md.harta.tile.TilePalette;
  */
 public class HighwayPainter extends AbstractPainter
 {
+  public static final int ROAD_WIDTH_METERS = 8;
+
   public HighwayPainter(AbstractProjector projector, Bounds bounds)
   {
     super(projector, bounds);
@@ -28,7 +30,7 @@ public class HighwayPainter extends AbstractPainter
   public void drawHighways(AbstractDrawer drawer, Collection<Highway> highways, int level)
   {
     List<Label> labels = new ArrayList<>();
-    double roadWidth = getRoadWidthPixels(projector, 4);
+    double roadWidth = getRoadWidthPixels(projector, ROAD_WIDTH_METERS);
     for (Highway highway : highways)
     {
       addLabel(labels, highway);

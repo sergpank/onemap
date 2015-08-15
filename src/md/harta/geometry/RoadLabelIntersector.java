@@ -13,32 +13,39 @@ public class RoadLabelIntersector
 {
   private Bounds bounds;
   private int charWidth;
+  private int charHeight;
 
-  public RoadLabelIntersector(Bounds bounds, int charWidth)
+  public RoadLabelIntersector(Bounds bounds, int charWidth, int charHeight)
   {
     this.bounds = bounds;
     this.charWidth = charWidth;
+    this.charHeight = charHeight;
   }
 
   public List<Intersection> getIntersections(Highway highway, Label label, AbstractProjector projector)
   {
     double highwayLength = GeometryUtil.getHighwayLength(highway, projector);
 
-    int labelWidth = label.getText().length() * charWidth;
+    int labelWidth = label.getText().length() * charWidth + label.getText().length();
     System.out.println(label.getText());
     System.out.println("charWidth: " + charWidth);
     System.out.println("labelWidth: " + labelWidth);
     if (highwayLength < labelWidth)
     {
-      System.err.printf("Road length (%f) < label length (%f)", highwayLength, labelWidth);
+      System.err.printf("Road length (%f) < label length (%d)", highwayLength, labelWidth);
       return null;
     }
     List<Line> segments = highwayToLines(highway, projector);
 
-    // Таким образом название дороги будет расположено по центру
-    double shift = (highwayLength - labelWidth) / 2;
+    int repeats = (int) (Math.ceil(highwayLength / (labelWidth * 3)));
+    double distance = (highwayLength - (labelWidth * repeats)) / (repeats + 1);
 
-    List<Intersection> intersections = calculateIntersections(label, segments, shift);
+    List<Intersection> intersections = new ArrayList<>();
+    for (int i = 0; i < repeats; i++)
+    {
+      double shift = distance + (labelWidth * i) + (distance * i);
+      intersections.addAll(calculateIntersections(label, segments, shift));
+    }
     return intersections;
   }
 
@@ -95,7 +102,7 @@ public class RoadLabelIntersector
         }
       }
 
-      shift += charWidth;
+      shift += charWidth + 1;
 
       Intersection intersection = new Intersection(intersectionPoint, line.getSlope());
       intersections.add(intersection);
@@ -109,7 +116,10 @@ public class RoadLabelIntersector
     double dx = Math.cos(line.getSlope()) * shift;
     double dy = Math.sin(line.getSlope()) * shift;
 
-    return new XYPoint(line.getLeftPoint().getX() + dx, line.getLeftPoint().getY() + dy);
+    XYPoint intersection = new XYPoint(line.getLeftPoint().getX() + dx, line.getLeftPoint().getY() + dy);
+    return intersection;
+//    Line perpendicular = GeometryUtil.getPerpendicular(line, intersection);
+//    return GeometryUtil.getLineCircleIntersection(perpendicular, new Circle(intersection, charHeight / 2))[1];
   }
 
   protected List<Line> highwayToLines(Highway highway, AbstractProjector projector)

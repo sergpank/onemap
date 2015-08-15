@@ -16,10 +16,12 @@ import org.junit.Test;
  */
 public class RoadLabelIntersectorTest extends TestCase
 {
+  int charHeight = 10;
+
   @Test
   public void testDirectLineToSegments()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5, charHeight);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -38,7 +40,7 @@ public class RoadLabelIntersectorTest extends TestCase
   @Test
   public void testReverseLineToSegments()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5, charHeight);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -57,7 +59,7 @@ public class RoadLabelIntersectorTest extends TestCase
   @Test
   public void testHorizontalLineToSegments()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5, charHeight);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -76,7 +78,7 @@ public class RoadLabelIntersectorTest extends TestCase
   @Test
   public void testVerticalLineToSegments()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5, charHeight);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -159,7 +161,7 @@ public class RoadLabelIntersectorTest extends TestCase
   @Test
   public void testIntersectionPointsDiagonalUp()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5, charHeight);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -181,7 +183,7 @@ public class RoadLabelIntersectorTest extends TestCase
   @Test
   public void testIntersectionPointsDiagonalDown()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5, charHeight);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -203,7 +205,7 @@ public class RoadLabelIntersectorTest extends TestCase
   @Test
   public void testIntersectionPointsHorizontal()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5, charHeight);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -226,7 +228,7 @@ public class RoadLabelIntersectorTest extends TestCase
   public void testIntersectionPointsHorizontalReverse()
   {
     int symbolWidth = (int)Math.ceil(getSymbolWidth(12, TilePalette.FONT_NAME));
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), symbolWidth);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), symbolWidth, charHeight);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -256,7 +258,7 @@ public class RoadLabelIntersectorTest extends TestCase
   @Test
   public void testIntersectionPointsVertical()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5, charHeight);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -287,7 +289,7 @@ public class RoadLabelIntersectorTest extends TestCase
   @Test
   public void testIntersectionPointsVerticalReverse()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5, charHeight);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();

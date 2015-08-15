@@ -43,22 +43,21 @@ public class TextPainter extends AbstractPainter
     FontMetrics fontMetrics = drawer.getFontMetrics(font);
 
     String text = label.getText();
-    int labelLength = label.getText().length();
 
-    int height = fontMetrics.getHeight();
+    int charHeight = fontMetrics.getHeight();
     // There is one pixel distance between characters
     int charWidth = fontMetrics.charWidth('A');
-    int width = charWidth * labelLength + labelLength;
+    int labelWidth = charWidth * label.getText().length() + label.getText().length();
 
     // XYPoint center = getIntersectionPoint(label.getHighway(), label.getCenter());
     XYPoint roadStartPoint = getRoadStartPoint(label);
     int xShift = (int) roadStartPoint.getX();
-    int yShift = (int) roadStartPoint.getY() + height / 2;
+    int yShift = (int) roadStartPoint.getY() + charHeight / 2;
     double roadLength = GeometryUtil.getHighwayLength(label.getHighway(), projector);
 
     System.out.printf("%s - %d : %d\n", text, xShift, yShift);
     System.out.printf("Start at: %f : %f\n", roadStartPoint.getX(), roadStartPoint.getY());
-    System.out.printf("Width = %d; Height = %d\n", width, height);
+    System.out.printf("Width = %d; Height = %d\n", labelWidth, charHeight);
 
     Bounds highwayBounds = label.getHighway().getBounds();
     XYPoint minXY = shiftPoint(projector.getXY(highwayBounds.getMinLat(), highwayBounds.getMinLon()));
@@ -67,12 +66,14 @@ public class TextPainter extends AbstractPainter
 
     System.out.println("Road length = " + roadLength + "\n");
 
-    List<Intersection> intersections = new RoadLabelIntersector(bounds, charWidth).getIntersections(label.getHighway(), label, projector);
-    if (roadLength > labelLength)
+    if (roadLength > labelWidth)
     {
-      for (int i = 0; i < label.getText().length(); i++)
+      RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, charWidth, charHeight);
+      List<Intersection> intersections = intersector.getIntersections(label.getHighway(), label, projector);
+      for (int i = 0; i < intersections.size(); i++)
       {
-        GlyphVector glyphVector = font.createGlyphVector(drawer.getFontRenderContext(), label.getText().charAt(i) + "");
+        String character = label.getText().charAt(i % label.getText().length()) + "";
+        GlyphVector glyphVector = font.createGlyphVector(drawer.getFontRenderContext(), character);
         Intersection intersection = intersections.get(i);
 
         drawer.translate((int)intersection.getPoint().getX(), (int)intersection.getPoint().getY());
