@@ -34,16 +34,19 @@ public class RoadLabelIntersector
       return null;
     }
     List<Line> segments = highwayToLines(highway, projector);
-    List<Intersection> intersections = calculateIntersections(label, segments);
+
+    // Таким образом название дороги будет расположено по центру
+    double shift = (highwayLength - labelWidth) / 2;
+
+    List<Intersection> intersections = calculateIntersections(label, segments, shift);
     return intersections;
   }
 
-  private List<Intersection> calculateIntersections(Label label, List<Line> segments)
+  private List<Intersection> calculateIntersections(Label label, List<Line> segments, double shift)
   {
     List<Intersection> intersections = new ArrayList<>();
 
     int segmentIndex = 0;
-    double shift = 0;
 
     for (int i = 0; i < label.getText().length(); i++)
     {
@@ -53,30 +56,48 @@ public class RoadLabelIntersector
 
       if (intersectionPoint.getX() > line.getRightPoint().getX())
       {
-        XYPoint previousIntersection = intersections.get(intersections.size() - 1).getPoint();
-        double distanceFromThePreviousIntersectionToTheEndOfPreviousSegment = GeometryUtil.getDistanceBetweenPoints(previousIntersection, line.getRightPoint());
-        shift = charWidth - distanceFromThePreviousIntersectionToTheEndOfPreviousSegment;
-
-        ++segmentIndex;
-        if (segmentIndex < segments.size())
+        if (intersections.size() == 0)
         {
-          Line nextLine = segments.get(segmentIndex);
-          intersectionPoint = calcIntersectionPoint(nextLine, shift);
+          for (; segmentIndex < segments.size(); segmentIndex++)
+          {
+            line = segments.get(segmentIndex);
+            double segmentLength = GeometryUtil.getDistanceBetweenPoints(line.getLeftPoint(), line.getRightPoint());
+            if (segmentLength < shift)
+            {
+              shift -= segmentLength;
+            }
+            else
+            {
+              Line nextLine = segments.get(segmentIndex);
+              intersectionPoint = calcIntersectionPoint(nextLine, shift);
+              break;
+            }
+          }
         }
         else
         {
-          intersectionPoint = new XYPoint(0, 0);
-          --segmentIndex;
+          XYPoint previousIntersection = intersections.get(intersections.size() - 1).getPoint();
+          // Расстояние от последнего пересечения до конца предыдущего сегмента
+          double rest = GeometryUtil.getDistanceBetweenPoints(previousIntersection, line.getRightPoint());
+          shift = charWidth - rest;
+
+          ++segmentIndex;
+          if (segmentIndex < segments.size())
+          {
+            Line nextLine = segments.get(segmentIndex);
+            intersectionPoint = calcIntersectionPoint(nextLine, shift);
+          }
+          else
+          {
+            intersectionPoint = new XYPoint(0, 0);
+            --segmentIndex;
+          }
         }
       }
 
       shift += charWidth;
 
       Intersection intersection = new Intersection(intersectionPoint, line.getSlope());
-//      System.out.printf("%s :: %.2f:%.2f ---> {%.2f;%.2f - %.2f;%.2f}\n", label.getText().charAt(i),
-//          intersection.getPoint().getX(), intersection.getPoint().getY(),
-//          line.getLeftPoint().getX(), line.getLeftPoint().getY(),
-//          line.getRightPoint().getX(), line.getRightPoint().getY());
       intersections.add(intersection);
     }
 

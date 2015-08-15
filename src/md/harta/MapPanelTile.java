@@ -47,8 +47,8 @@ public class MapPanelTile extends JPanel {
 //    map.loader.load("debug", projector);
     map.loader = new OsmLoader();
 //    map.loader.load("osm/только_круг.osm", projector);
-    map.loader.load("osm/греческая_площадь.osm", projector);
-//    map.loader.load("osm/map.osm", projector);
+//    map.loader.load("osm/греческая_площадь.osm", projector);
+    map.loader.load("osm/map.osm", projector);
 //    map.loader.load("osm/test_data.osm", projector);
 
     JScrollPane scrollPane = new JScrollPane(map);
