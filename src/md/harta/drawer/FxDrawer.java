@@ -1,6 +1,5 @@
 package md.harta.drawer;
 
-import java.awt.FontMetrics;
 import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import javafx.scene.canvas.GraphicsContext;
@@ -27,14 +26,14 @@ public class FxDrawer extends AbstractDrawer
   @Override
   public void setStrokeColor(java.awt.Color color)
   {
-    gc.setStroke(new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()));
+    gc.setStroke(new Color(color.getRed() / 255., color.getGreen() / 255., color.getBlue() / 255., color.getAlpha() / 255.));
 //    gc.setStroke(Color.RED);
   }
 
   @Override
   public void setFillColor(java.awt.Color color)
   {
-    gc.setFill(new Color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()));
+    gc.setFill(new Color(color.getRed() / 255., color.getGreen() / 255., color.getBlue() / 255., color.getAlpha() / 255.));
 //    gc.setFill(Color.BLACK);
   }
 
@@ -89,12 +88,6 @@ public class FxDrawer extends AbstractDrawer
 
   @Override
   public void setAAEnabled(boolean enabled)
-  {
-    throw new NotImplementedException();
-  }
-
-  @Override
-  public FontMetrics getFontMetrics(java.awt.Font font)
   {
     throw new NotImplementedException();
   }

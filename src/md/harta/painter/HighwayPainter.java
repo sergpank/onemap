@@ -20,7 +20,7 @@ import md.harta.tile.TilePalette;
  */
 public class HighwayPainter extends AbstractPainter
 {
-  public static final int ROAD_WIDTH_METERS = 8;
+  public static final int ROAD_WIDTH_METERS = 6;
 
   public HighwayPainter(AbstractProjector projector, Bounds bounds)
   {
@@ -35,10 +35,11 @@ public class HighwayPainter extends AbstractPainter
     {
       addLabel(labels, highway);
       CanvasPolygon polygon = createPolygon(highway);
-      if (level < 16)
+      if (level < 13)
       {
         drawer.setLineWidth(1);
         shiftPolygon(polygon);
+        drawer.setStrokeColor(TilePalette.HIGHWAY_COLOR);
         drawer.drawPolyLine(polygon);
       }
       else
@@ -111,6 +112,7 @@ public class HighwayPainter extends AbstractPainter
     shiftPoints(bounds.getyMin(), yPoints);
 
     drawer.setFillColor(TilePalette.HIGHWAY_COLOR);
+    drawer.setStrokeColor(TilePalette.HIGHWAY_COLOR);
     drawer.fillPolygon(xPoints, yPoints);
 
 //    drawer.setStrokeColor(TilePalette.FONT_COLOR);

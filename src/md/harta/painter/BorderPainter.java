@@ -16,6 +16,7 @@ import md.harta.projector.AbstractProjector;
 import md.harta.tile.TileCutter;
 import md.harta.tile.TilePalette;
 import md.harta.util.BoxIntersector;
+import md.harta.util.TextUtil;
 
 /**
  * Created by sergpank on 05.05.15.
@@ -83,19 +84,12 @@ public class BorderPainter extends AbstractPainter
     XYPoint center = null;
     if (label != null)
     {
-      font = getFont(label, regionWidth);
-      center = getLabelCenter(polygon, label, font.getName(), font.getSize());
+      float stringWidth = TextUtil.getStringWidth(label, FONT_NAME, FONT_SIZE);
+      float stringHeight = TextUtil.getStringHeight(FONT_NAME, FONT_SIZE);
+      center = getLabelCenter(polygon, label, stringWidth, stringHeight);
     }
     //System.out.printf("%s - %d\n", label, (int) font.getSize());
     return new Label(label, center, font.getName(), (int) font.getSize());
-  }
-
-  private Font getFont(String label, double regionWidth)
-  {
-//    FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(new Font(FONT_NAME, FONT_SIZE));
-//    float labelWidth = fontMetrics.computeStringWidth(label);
-//    return calcFontSize(label, regionWidth, FONT_SIZE, labelWidth > regionWidth);
-    return new Font(FONT_NAME, FONT_SIZE);
   }
 
   private Font calcFontSize(String label, double regionWidth, int fontSize, boolean labelWasWider)

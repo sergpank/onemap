@@ -1,8 +1,6 @@
 package md.harta.drawer;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import md.harta.geometry.CanvasPolygon;
@@ -36,8 +34,6 @@ public abstract class AbstractDrawer
   public abstract void fillOval(double xCenter, double yCenter, double width, double height);
 
   public abstract void setAAEnabled(boolean enabled);
-
-  public abstract FontMetrics getFontMetrics(Font font);
 
   public abstract FontRenderContext getFontRenderContext();
 

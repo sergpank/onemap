@@ -38,7 +38,7 @@ public class MapPanelFx extends Application {
   private AbstractProjector projector;
 
   public static void main(String[] args) {
-    osmPath =  "osm/dom.osm";
+    osmPath =  "osm/Hanul_Morii.osm";
     loader = new OsmLoader();
     launch();
   }
@@ -76,9 +76,9 @@ public class MapPanelFx extends Application {
     updateButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent event) {
-        int radius = (int)ScaleCalculator.getRadiusForLevel(scaleCombo.getValue());
         String dataPath = pathField.getText();
-        updateMap(radius, canvas, dataPath);
+        Integer level = scaleCombo.getValue();
+        updateMap(level, canvas, dataPath);
       }
     });
     ScrollPane sp = new ScrollPane();
@@ -87,17 +87,18 @@ public class MapPanelFx extends Application {
     return root;
   }
 
-  private void updateMap(int radius, Canvas canvas, String dataPath) {
+  private void updateMap(int level, Canvas canvas, String dataPath) {
     System.out.println("CLEAR!");
-    System.out.println("Radius = \"" + radius + "\"");
+    System.out.println("Level = \"" + level + "\"");
 
     canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     loader.load(dataPath, projector);
 
-    drawMap(canvas, radius);
+    drawMap(canvas, level);
   }
 
-  private void drawMap(Canvas canvas, int radius) {
+  private void drawMap(Canvas canvas, int level) {
+    int radius = (int)ScaleCalculator.getRadiusForLevel(level);
     projector = new MercatorProjector(radius, 85);
     Bounds bounds = new Bounds(projector, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
 
@@ -111,8 +112,8 @@ public class MapPanelFx extends Application {
     gc.setStroke(Color.BLACK);
     gc.setLineWidth(2);
 
-    new HighwayPainter(projector, bounds).drawHighways(new FxDrawer(gc), loader.getHighways(projector).values(), 0);
-    new BuildingPainter(loader.getBuildings(projector), projector, bounds).drawBuildings(gc);
+    new HighwayPainter(projector, bounds).drawHighways(new FxDrawer(gc), loader.getHighways(projector).values(), level);
+    new BuildingPainter(projector, bounds).drawBuildings(new FxDrawer(gc), loader.getBuildings(projector).values(), level);
 //    new BorderPainter(projector, bounds).drawBorders(drawer, loader.getBorders(), 0, 0, null);
 
     System.out.println("DRAW!\n");

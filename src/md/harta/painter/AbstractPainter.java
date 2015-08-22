@@ -1,11 +1,8 @@
 package md.harta.painter;
 
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
-import javafx.scene.text.Font;
+import md.harta.geometry.Bounds;
 import md.harta.geometry.CanvasPolygon;
 import md.harta.geometry.XYPoint;
-import md.harta.geometry.Bounds;
 import md.harta.osm.OsmNode;
 import md.harta.osm.OsmWay;
 import md.harta.projector.AbstractProjector;
@@ -54,7 +51,7 @@ public class AbstractPainter {
     }
   }
 
-  protected XYPoint getLabelCenter(CanvasPolygon polygon, String label, String fontName, double fontSize) {
+  protected XYPoint getLabelCenter(CanvasPolygon polygon, String label, float stringWidth, float stringHeight) {
     double minX = Double.MAX_VALUE;
     double maxX = Double.MIN_VALUE;
     double minY = Double.MAX_VALUE;
@@ -76,15 +73,13 @@ public class AbstractPainter {
       }
     }
 
-    return getLabelCenter(label, fontName, fontSize, new XYPoint((minX + maxX) / 2, (minY + maxY) / 2));
+    return getLabelCenter(label, stringWidth, stringHeight, new XYPoint((minX + maxX) / 2, (minY + maxY) / 2));
   }
 
-  public XYPoint getLabelCenter(String label, String fontName, double fontSize, XYPoint center)
+  public XYPoint getLabelCenter(String label, float stringWidth, float stringHeight, XYPoint center)
   {
-    FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(new Font(fontName, fontSize));
-
-    float xShift = fontMetrics.computeStringWidth(label) / 2;
-    float yShift = fontMetrics.getLineHeight() / 2;
+    float xShift = stringWidth / 2;
+    float yShift = stringHeight / 2;
 
     return new XYPoint(center.getX() - xShift, center.getY() + yShift);
   }

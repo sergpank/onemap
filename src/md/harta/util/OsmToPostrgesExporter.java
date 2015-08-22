@@ -17,10 +17,10 @@ public class OsmToPostrgesExporter
   public static void main(String[] args)
   {
     OsmLoader osmLoader = new OsmLoader();
-    String dbName = "debug";
+    String dbName = "HanulMorii";
     DatabaseCreator.createDb(dbName);
     Connection connection = DbHelper.getNewConnection(dbName);
-    for (String osm : Arrays.asList("osm/map.osm"))
+    for (String osm : Arrays.asList("osm/HanulMorii.osm"))
     {
       osmLoader.load(osm, null);
       Map<Long, OsmNode> nodes = osmLoader.getNodes();

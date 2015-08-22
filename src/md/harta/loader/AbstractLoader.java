@@ -25,6 +25,7 @@ public abstract class AbstractLoader
   public abstract Map<Long, Building> getBuildings(AbstractProjector projector);
   public abstract Collection<Border> getBorders(int level, Bounds tileBounds, Map<Long, OsmNode> nodes, AbstractProjector projector);
   public abstract Collection<Highway> getHighways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector);
+  public abstract Collection<Building> getBuildings(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector);
   public abstract Bounds getBounds();
 
   public double getMinLon()

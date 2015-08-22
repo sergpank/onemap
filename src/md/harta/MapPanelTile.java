@@ -20,7 +20,9 @@ import md.harta.geometry.Bounds;
 import md.harta.geometry.XYPoint;
 import md.harta.loader.AbstractLoader;
 import md.harta.loader.OsmLoader;
+import md.harta.osm.Building;
 import md.harta.osm.Highway;
+import md.harta.painter.BuildingPainter;
 import md.harta.painter.HighwayPainter;
 import md.harta.projector.AbstractProjector;
 import md.harta.projector.MercatorProjector;
@@ -33,13 +35,15 @@ import md.harta.util.ScaleCalculator;
  */
 public class MapPanelTile extends JPanel {
 
-  public static final int LEVEL = 17;
+  public static int level = 17;
   private AbstractProjector projector;
   private AbstractLoader loader;
+  private Collection<Highway> highways;
+  private Collection<Building> buildings;
 
   public static void main(String[] args)
   {
-    double radiusForLevel = ScaleCalculator.getRadiusForLevel(LEVEL);
+    double radiusForLevel = ScaleCalculator.getRadiusForLevel(level);
     MercatorProjector projector = new MercatorProjector(radiusForLevel, MercatorProjector.MAX_LAT);
     MapPanelTile map = new MapPanelTile(new OsmLoader(), projector);
 
@@ -49,7 +53,11 @@ public class MapPanelTile extends JPanel {
 //    map.loader.load("osm/только_круг.osm", projector);
 //    map.loader.load("osm/греческая_площадь.osm", projector);
 //    map.loader.load("osm/map.osm", projector);
-    map.loader.load("osm/test_data.osm", projector);
+    map.loader.load("osm/Hanul_Morii.osm", projector);
+//    map.loader.load("osm/test_data.osm", projector);
+
+    map.highways = map.loader.getHighways(projector).values();
+    map.buildings = map.loader.getBuildings(projector).values();
 
     JScrollPane scrollPane = new JScrollPane(map);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -69,11 +77,11 @@ public class MapPanelTile extends JPanel {
     JPanel panel = new JPanel();
     panel.setLayout(new GridLayout(0, 2, 5, 5));
 
-    TileCutter tileCutter = new TileCutter(projector, TileGenerator.TILE_SIZE, LEVEL, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
+    TileCutter tileCutter = new TileCutter(projector, TileGenerator.TILE_SIZE, level, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
     tileCutter.cut();
-    JComboBox<Integer> levelCombo = createCombo(ScaleCalculator.MIN_SCALE_LEVEL, ScaleCalculator.MAX_SCALE_LEVEL, LEVEL);
-    JComboBox<Integer> xCombo = createCombo(tileCutter.getMinTileXindex(), tileCutter.getMaxTileXindex(), LEVEL);
-    JComboBox<Integer> yCombo = createCombo(tileCutter.getMinTileYindex(), tileCutter.getMaxTileYindex(), LEVEL);
+    JComboBox<Integer> levelCombo = createCombo(ScaleCalculator.MIN_SCALE_LEVEL, ScaleCalculator.MAX_SCALE_LEVEL, level);
+    JComboBox<Integer> xCombo = createCombo(tileCutter.getMinTileXindex(), tileCutter.getMaxTileXindex(), level);
+    JComboBox<Integer> yCombo = createCombo(tileCutter.getMinTileYindex(), tileCutter.getMaxTileYindex(), level);
 
     int pos = 0;
     panel.add(new JLabel("DB / OSM : "), pos++);
@@ -91,7 +99,8 @@ public class MapPanelTile extends JPanel {
 
     repaintButton.addActionListener(
         e -> {
-          projector = new MercatorProjector(ScaleCalculator.getRadiusForLevel((int) levelCombo.getSelectedItem()), MercatorProjector.MAX_LAT);
+          level = (int) levelCombo.getSelectedItem();
+          projector = new MercatorProjector(ScaleCalculator.getRadiusForLevel(level), MercatorProjector.MAX_LAT);
           this.repaint();
         });
 
@@ -144,12 +153,16 @@ public class MapPanelTile extends JPanel {
 
     ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-    Collection<Highway> highways = loader.getHighways(projector).values();
-    Bounds bounds = new Bounds(projector, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
-    HighwayPainter highwayPainter = new HighwayPainter(projector, bounds);
-    highwayPainter.drawHighways(new TileDrawer((Graphics2D) g), highways, LEVEL);
 
-    drawGrid(bounds, (Graphics2D)g);
+    Bounds bounds = new Bounds(projector, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
+
+    HighwayPainter highwayPainter = new HighwayPainter(projector, bounds);
+    BuildingPainter buildingPainter = new BuildingPainter(projector, bounds);
+
+    highwayPainter.drawHighways(new TileDrawer((Graphics2D) g), highways, level);
+    buildingPainter.drawBuildings(new TileDrawer((Graphics2D) g), buildings, level);
+
+    drawGrid(bounds, (Graphics2D) g);
   }
 
   private void drawParallels(Graphics g) {

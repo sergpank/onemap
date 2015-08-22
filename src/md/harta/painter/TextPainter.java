@@ -1,7 +1,6 @@
 package md.harta.painter;
 
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Shape;
 import java.awt.font.GlyphVector;
 import java.util.List;
@@ -16,6 +15,7 @@ import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
 import md.harta.projector.AbstractProjector;
 import md.harta.tile.TilePalette;
+import md.harta.util.TextUtil;
 
 /**
  * Created by sergpank on 07.07.15.
@@ -39,14 +39,11 @@ public class TextPainter extends AbstractPainter
 
   private void drawTiltString(AbstractDrawer drawer, Label label)
   {
-    Font font = new Font(TilePalette.FONT_NAME, Font.PLAIN, TilePalette.FONT_SIZE);
-    FontMetrics fontMetrics = drawer.getFontMetrics(font);
+    Font font = new Font(TilePalette.HIGHWAY_FONT_NAME, Font.PLAIN, TilePalette.HIGHWAY_FONT_SIZE);
 
-    String text = label.getText();
-
-    int charHeight = fontMetrics.getHeight();
+    int charHeight = (int) TextUtil.getStringHeight(TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
     // There is one pixel distance between characters
-    int charWidth = fontMetrics.charWidth('A');
+    int charWidth = (int) TextUtil.getStringWidth("a", TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
     int labelWidth = charWidth * label.getText().length() + label.getText().length();
 
     // XYPoint center = getIntersectionPoint(label.getHighway(), label.getCenter());
@@ -55,16 +52,16 @@ public class TextPainter extends AbstractPainter
     int yShift = (int) roadStartPoint.getY() + charHeight / 2;
     double roadLength = GeometryUtil.getHighwayLength(label.getHighway(), projector);
 
-    System.out.printf("%s - %d : %d\n", text, xShift, yShift);
-    System.out.printf("Start at: %f : %f\n", roadStartPoint.getX(), roadStartPoint.getY());
-    System.out.printf("Width = %d; Height = %d\n", labelWidth, charHeight);
+//    System.out.printf("%s - %d : %d\n", text, xShift, yShift);
+//    System.out.printf("Start at: %f : %f\n", roadStartPoint.getX(), roadStartPoint.getY());
+//    System.out.printf("Width = %d; Height = %d\n", labelWidth, charHeight);
 
     Bounds highwayBounds = label.getHighway().getBounds();
     XYPoint minXY = shiftPoint(projector.getXY(highwayBounds.getMinLat(), highwayBounds.getMinLon()));
     XYPoint maxXY = shiftPoint(projector.getXY(highwayBounds.getMaxLat(), highwayBounds.getMaxLon()));
-    System.out.printf("Road bounding box = {(%s); (%s)}\n", minXY, maxXY);
-
-    System.out.println("Road length = " + roadLength + "\n");
+//    System.out.printf("Road bounding box = {(%s); (%s)}\n", minXY, maxXY);
+//
+//    System.out.println("Road length = " + roadLength + "\n");
 
     if (roadLength > labelWidth)
     {

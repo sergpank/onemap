@@ -27,9 +27,9 @@ public class RoadLabelIntersector
     double highwayLength = GeometryUtil.getHighwayLength(highway, projector);
 
     int labelWidth = label.getText().length() * charWidth + label.getText().length();
-    System.out.println(label.getText());
-    System.out.println("charWidth: " + charWidth);
-    System.out.println("labelWidth: " + labelWidth);
+//    System.out.println(label.getText());
+//    System.out.println("charWidth: " + charWidth);
+//    System.out.println("labelWidth: " + labelWidth);
     if (highwayLength < labelWidth)
     {
       System.err.printf("Road length (%f) < label length (%d)", highwayLength, labelWidth);
@@ -61,7 +61,7 @@ public class RoadLabelIntersector
 
       XYPoint intersectionPoint = calcIntersectionPoint(line, shift);
 
-      if (intersectionPoint.getX() > line.getRightPoint().getX())
+      if ((GeometryUtil.getDistanceBetweenPoints(line.getLeftPoint(), line.getRightPoint()) - shift) <= (charWidth))
       {
         if (intersections.size() == 0)
         {
@@ -117,9 +117,9 @@ public class RoadLabelIntersector
     double dy = Math.sin(line.getSlope()) * shift;
 
     XYPoint intersection = new XYPoint(line.getLeftPoint().getX() + dx, line.getLeftPoint().getY() + dy);
-    return intersection;
-//    Line perpendicular = GeometryUtil.getPerpendicular(line, intersection);
-//    return GeometryUtil.getLineCircleIntersection(perpendicular, new Circle(intersection, charHeight / 2))[1];
+//    return intersection;
+    Line perpendicular = GeometryUtil.getPerpendicular(line, intersection);
+    return GeometryUtil.getLineCircleIntersection(perpendicular, new Circle(intersection, charHeight / 3.))[1];
   }
 
   protected List<Line> highwayToLines(Highway highway, AbstractProjector projector)

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import md.harta.db.BorderDao;
+import md.harta.db.BuildingDao;
 import md.harta.db.DbHelper;
 import md.harta.db.HighwayDao;
 import md.harta.db.NodeDao;
@@ -99,6 +100,12 @@ public class DbLoader extends AbstractLoader
   public Collection<Highway> getHighways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
   {
     return new HighwayDao(connection).load(level, tileBounds, nodeMap, projector);
+  }
+
+  @Override
+  public Collection<Building> getBuildings(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  {
+    return new BuildingDao(connection).load(level, tileBounds, nodeMap, projector);
   }
 
   @Override

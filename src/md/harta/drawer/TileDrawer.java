@@ -43,14 +43,14 @@ public class TileDrawer extends AbstractDrawer
   public void drawPolyLine(CanvasPolygon polygon)
   {
     graphics.setStroke(new BasicStroke(1));
-//    graphics.drawPolyline(polygon.getIntXPoints(), polygon.getIntYPoints(), polygon.getPointsNumber());
-    int[] xPoints = polygon.getIntXPoints();
-    int[] yPoints = polygon.getIntYPoints();
-    for (int i = 1; i < polygon.getPointsNumber(); i++)
-    {
-      graphics.drawLine(xPoints[i - 1], yPoints[i-1], xPoints[i], yPoints[i]);
-    }
-    graphics.drawLine(xPoints[polygon.getPointsNumber() - 1], yPoints[polygon.getPointsNumber() - 1], xPoints[0], yPoints[0]);
+    graphics.drawPolyline(polygon.getIntXPoints(), polygon.getIntYPoints(), polygon.getPointsNumber());
+//    int[] xPoints = polygon.getIntXPoints();
+//    int[] yPoints = polygon.getIntYPoints();
+//    for (int i = 1; i < polygon.getPointsNumber(); i++)
+//    {
+//      graphics.drawLine(xPoints[i - 1], yPoints[i-1], xPoints[i], yPoints[i]);
+//    }
+//    graphics.drawLine(xPoints[polygon.getPointsNumber() - 1], yPoints[polygon.getPointsNumber() - 1], xPoints[0], yPoints[0]);
   }
 
   @Override
@@ -64,7 +64,7 @@ public class TileDrawer extends AbstractDrawer
   {
     if (text != null)
     {
-      graphics.setFont(new Font(TilePalette.FONT_NAME, Font.BOLD, TilePalette.FONT_SIZE));
+      graphics.setFont(new Font(TilePalette.BUILDING_FONT_NAME, Font.BOLD, TilePalette.BUILDING_FONT_SIZE));
       graphics.drawString(text, (float) xCenter, (float) yCenter);
     }
   }
@@ -130,12 +130,6 @@ public class TileDrawer extends AbstractDrawer
       graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
       graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
     }
-  }
-
-  @Override
-  public FontMetrics getFontMetrics(Font font)
-  {
-    return graphics.getFontMetrics();
   }
 
   @Override

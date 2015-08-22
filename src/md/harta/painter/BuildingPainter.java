@@ -1,50 +1,59 @@
 package md.harta.painter;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import java.awt.Color;
+import java.util.Collection;
+import md.harta.drawer.AbstractDrawer;
+import md.harta.geometry.Bounds;
 import md.harta.geometry.CanvasPolygon;
 import md.harta.geometry.XYPoint;
-import md.harta.geometry.Bounds;
 import md.harta.osm.Building;
 import md.harta.projector.AbstractProjector;
-
-import java.util.Map;
+import md.harta.tile.TilePalette;
+import md.harta.util.TextUtil;
 
 /**
  * Created by sergpank on 03.03.2015.
  */
 public class BuildingPainter extends AbstractPainter{
-  private final Map<Long, Building> buildingMap;
-  private final Font font;
 
-  public BuildingPainter(Map<Long, Building> buildingMap, AbstractProjector projector, Bounds bounds) {
+  public BuildingPainter(AbstractProjector projector, Bounds bounds) {
     super(projector, bounds);
-    this.buildingMap = buildingMap;
-
-    font = new Font("Arial", 12);
   }
 
-  public void drawBuildings(GraphicsContext gc){
-    gc.setFont(font);
-    for (Map.Entry<Long, Building> entry : buildingMap.entrySet()) {
-      CanvasPolygon polygon = createPolygon(entry.getValue());
-      gc.setFill(new Color(233.0 / 255, 229.0 / 255, 220.0 / 255, 1));
+  public void drawBuildings(AbstractDrawer drawer, Collection<Building> buildings, int level){
+    drawer.setFont("Arial", 12);
+    for (Building building : buildings) {
+      CanvasPolygon polygon = createPolygon(building);
       shiftPoints(bounds.getxMin(), polygon.getxPoints());
       shiftPoints(bounds.getyMin(), polygon.getyPoints());
-      gc.fillPolygon(polygon.getxPoints(), polygon.getyPoints(), polygon.getPointsNumber());
-      gc.strokePolyline(polygon.getxPoints(), polygon.getyPoints(), polygon.getPointsNumber());
-      drawHouseNumber(gc, polygon);
+
+      drawer.setFillColor(new Color(197, 87, 199));
+      drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
+
+      drawer.setStrokeColor(Color.BLACK);
+      drawer.drawPolyLine(polygon);
+
+      if (level >= 17)
+      {
+        drawHouseNumber(drawer, polygon, building);
+      }
     }
   }
 
-  private void drawHouseNumber(GraphicsContext gc, CanvasPolygon polygon) {
-    String houseNumber = buildingMap.get(polygon.getId()).getHouseNumber();
+  private void drawHouseNumber(AbstractDrawer drawer, CanvasPolygon polygon, Building building) {
+    String houseNumber = building.getHouseNumber();
     if (houseNumber != null) {
-      gc.setFill(Color.BLACK);
-      XYPoint xy = getLabelCenter(polygon, houseNumber, font.getName(), font.getSize());
+      double w = building.getBounds().getxMax() - building.getBounds().getxMin();
+      double h = building.getBounds().getyMax() - building.getBounds().getyMin();
+      float stringWidth  = TextUtil.getStringWidth(houseNumber, TilePalette.BUILDING_FONT_NAME, TilePalette.BUILDING_FONT_SIZE);
+      float stringHeight = TextUtil.getStringHeight(TilePalette.BUILDING_FONT_NAME, TilePalette.BUILDING_FONT_SIZE);
+      if (((w * h) / (stringWidth * stringHeight)) >= 3)
+      {
+        drawer.setFillColor(Color.BLACK);
+        XYPoint xy = getLabelCenter(polygon, houseNumber, stringWidth, stringHeight);
 
-      gc.fillText(houseNumber, xy.getX(), xy.getY());
+        drawer.fillText(houseNumber, xy.getX(), xy.getY());
+      }
     }
   }
 }

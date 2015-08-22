@@ -77,6 +77,7 @@ public class DatabaseCreator
 
   private static Connection createDbIfNotExists(String dbName)
   {
+    dbName = dbName.toLowerCase();
     try (Connection connection = DbHelper.getConnection(""))
     {
       try (Statement statement = connection.createStatement())
@@ -84,9 +85,11 @@ public class DatabaseCreator
         ResultSet rs = statement.executeQuery("SELECT 1 FROM pg_database WHERE datname = '" + dbName + "'");
         if (!rs.next())
         {
+          System.out.printf("Dtabase \"%s\" does not exist.\n", dbName);
           try (Statement stmt = connection.createStatement())
           {
             stmt.execute("CREATE DATABASE " + dbName);
+            System.out.printf("Dtabase \"%s\" is created.\n", dbName);
           }
         }
         else

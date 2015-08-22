@@ -54,7 +54,13 @@ public class OsmLoader extends AbstractLoader{
   @Override
   public Collection<Highway> getHighways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
   {
-    throw new NotImplementedException();
+    return getHighways(projector).values();
+  }
+
+  @Override
+  public Collection<Building> getBuildings(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  {
+    return getBuildings(projector).values();
   }
 
   public Map<Long, Border> getBorders()
@@ -82,10 +88,10 @@ public class OsmLoader extends AbstractLoader{
     getNodes(doc);
     getWays(doc, projector);
     bounds = getBounds(doc);
-    System.out.printf("Min lat = %f\n" +
-                      "Max lat = %f\n" +
-                      "Min lon = %f\n" +
-                      "Max lon = %f\n\n", minLat, maxLat, minLon, maxLon);
+//    System.out.printf("Min lat = %f\n" +
+//                      "Max lat = %f\n" +
+//                      "Min lon = %f\n" +
+//                      "Max lon = %f\n\n", minLat, maxLat, minLon, maxLon);
   }
 
   private OsmBounds getBounds(Document doc) {
@@ -171,7 +177,7 @@ public class OsmLoader extends AbstractLoader{
       String key = item.getAttribute("k");
       if (key.equals("building")){
         String value = item.getAttribute("v");
-        return value.equals("yes");
+        return value.equals("yes") || value.equals("house");
       }
     }
     return false;
