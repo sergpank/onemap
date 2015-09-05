@@ -1,0 +1,27 @@
+<project name="osm_classes" basedir="." default="generate">
+
+    <property name="source_dir" value="src"/>
+    <property name="package" value="generated"/>
+    <property name="output_dir" value="${source_dir}/${package}"/>
+    <property name="xsd" value="harta.xsd"/>
+
+    <target name="cleanup">
+        <delete dir="${output_dir}"/>
+    </target>
+
+    <target name="prepare">
+        <mkdir dir="${output_dir}"/>
+    </target>
+
+    <target name="generate">
+        <exec executable="xjc">
+            <arg value="-d"/>
+            <arg value="${source_dir}"/>
+            <arg value="-p"/>
+            <arg value="${package}"/>
+            <arg value="${xsd}"/>
+        </exec>
+    </target>
+
+    <target name="all" depends="cleanup, prepare, generate"/>
+</project>
