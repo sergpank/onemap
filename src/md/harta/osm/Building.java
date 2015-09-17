@@ -42,6 +42,16 @@ public class Building extends OsmWay{
     }
   }
 
+  public Building(long id, List<OsmNode> nodes, String houseNumber, String street, String height, int levels,
+                  String design, AbstractProjector projector) {
+    super(id, nodes, projector);
+    this.houseNumber = houseNumber;
+    this.street = street;
+    this.height = height;
+    this.levels = levels;
+    this.design = design;
+  }
+
   public String getHouseNumber() {
     return houseNumber;
   }

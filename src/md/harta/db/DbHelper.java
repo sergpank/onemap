@@ -11,7 +11,7 @@ public class DbHelper
 {
   private static Connection connection;
   public static String dbName = "harta";
-  private static String url = "jdbc:postgresql://localhost:5434/";
+  private static String url = "jdbc:postgresql://localhost:5432/";
   private static String login = "postgres";
   private static String password = "jkl123";
 

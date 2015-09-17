@@ -71,7 +71,7 @@ public class TileCutter
     LatLonPoint maxLatLon = projector.getLatLon(maxXY);
 
     return new Bounds(minXY.getX(), minXY.getY(), maxXY.getX(), maxXY.getY(),
-        minLatLon.getLat(), minLatLon.getLon(), maxLatLon.getLat(), maxLatLon.getLon());
+        maxLatLon.getLat(), minLatLon.getLon(), minLatLon.getLat(), maxLatLon.getLon());
   }
 
   public int getMinTileXindex()

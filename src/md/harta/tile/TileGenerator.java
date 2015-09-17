@@ -8,14 +8,21 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import javax.imageio.ImageIO;
+
+import md.harta.db.DbHelper;
+import md.harta.db.NodeDao;
 import md.harta.drawer.AbstractDrawer;
 import md.harta.drawer.TileDrawer;
 import md.harta.geometry.Bounds;
 import md.harta.loader.AbstractLoader;
+import md.harta.loader.DbLoader;
 import md.harta.loader.OsmLoader;
 import md.harta.osm.Building;
 import md.harta.osm.Highway;
+import md.harta.osm.OsmNode;
 import md.harta.painter.BuildingPainter;
 import md.harta.painter.HighwayPainter;
 import md.harta.projector.AbstractProjector;
@@ -28,7 +35,7 @@ import md.harta.util.ScaleCalculator;
 public class TileGenerator
 {
   public static final int TILE_SIZE = 256;
-  public static final String TILE_DIR = "/home/sergpank/WORK/harta/tiles";
+  public static final String TILE_DIR = "/home/serg/WORK/harta/tiles";
 
   public static void main(String[] args)
   {
@@ -37,41 +44,43 @@ public class TileGenerator
 //    double maxLat = 48.4901695251467;//loader.getMaxLat();
 //    double maxLon = 30.1637401580812;//loader.getMaxLon();
 
-    String database = "Hanul_Morii";
-    File tilesFoder = new File(TILE_DIR, database);
-    tilesFoder.mkdirs();
+    String database = "hanulmorii";
+    File tilesFolder = new File(TILE_DIR, database);
+    tilesFolder.mkdirs();
 
-//    AbstractLoader loader = new DbLoader(database);
-    AbstractLoader loader = new OsmLoader();
+    AbstractLoader loader = new DbLoader(database);
+//    AbstractLoader loader = new OsmLoader();
 //    loader.load("osm/Hanul_Morii.osm", null);
 
-//    NodeDao nodeDao = new NodeDao(DbHelper.getConnection(database));
-//    Bounds bounds = nodeDao.getBounds();
+    NodeDao nodeDao = new NodeDao(DbHelper.getConnection(database));
+    Bounds bounds = nodeDao.getBounds();
 //    Bounds bounds = loader.getBounds();
-//    System.out.println(bounds);
+    System.out.println(bounds);
 
-//    Collection<OsmNode> nodes = nodeDao.loadAll(null);
+    Collection<OsmNode> nodes = nodeDao.loadAll(null);
 //    Collection<OsmNode> nodes = loader.getNodes().values();
-//    Map<Long, OsmNode> nodeMap = new HashMap<>(nodes.size());
-//    for (OsmNode node : nodes)
-//    {
-//      nodeMap.put(node.getId(), node);
-//    }
+    Map<Long, OsmNode> nodeMap = new HashMap<>(nodes.size());
+    for (OsmNode node : nodes)
+    {
+      nodeMap.put(node.getId(), node);
+    }
 
+    long globalstart = System.currentTimeMillis();
     for (int level = 10; level <= 20; level++)
     {
-      new File(tilesFoder, Integer.toString(level)).mkdirs();
+      long start = System.currentTimeMillis();
+      new File(tilesFolder, Integer.toString(level)).mkdirs();
 
       AbstractProjector projector = new MercatorProjector(ScaleCalculator.getRadiusForLevel(level), 85);
       loader.load("osm/Hanul_Morii.osm", projector);
-      Bounds bounds = loader.getBounds();
+//      Bounds bounds = loader.getBounds();
 
       TileCutter tileCutter = new TileCutter(projector, TILE_SIZE, level,
           bounds.getMinLat(), bounds.getMinLon(), bounds.getMaxLat(), bounds.getMaxLon());
       tileCutter.cut();
 
-      Collection<Highway> highways = loader.getHighways(level, null, null, projector);
-      Collection<Building> buildings = loader.getBuildings(level, null, null, projector);
+//      Collection<Highway> highways = loader.getHighways(level, null, null, projector);
+//      Collection<Building> buildings = loader.getBuildings(level, null, null, projector);
 
       long numTiles = (tileCutter.getMaxTileXindex() - tileCutter.getMinTileXindex() + 1) * (tileCutter.getMaxTileYindex() - tileCutter.getMinTileYindex() + 1);
       long progressStep = 1;
@@ -87,10 +96,10 @@ public class TileGenerator
         for (int x = tileCutter.getMinTileXindex(); x <= tileCutter.getMaxTileXindex(); x++)
 //        for (int x = 76045; x <= 76045; x++)
         {
-          if (((++tileCnt) % progressStep) == 0)
-          {
-            System.out.printf("%d ---> %.0f %% (%d of %d)\n", level, (double)tileCnt / numTiles * 100, tileCnt, numTiles);
-          }
+//          if (((++tileCnt) % progressStep) == 0)
+//          {
+//            System.out.printf("%d ---> %.0f %% (%d of %d)\n", level, (double)tileCnt / numTiles * 100, tileCnt, numTiles);
+//          }
           BufferedImage bi = new BufferedImage(TILE_SIZE, TILE_SIZE, BufferedImage.TYPE_INT_ARGB);
           Graphics2D graphics = bi.createGraphics();
 
@@ -101,8 +110,8 @@ public class TileGenerator
           AbstractDrawer drawer = new TileDrawer(graphics);
           drawer.setAAEnabled(true);
 
-//          Collection<Highway> highways = loader.getHighways(level, tileBounds, nodeMap, projector);
-//          Collection<Building> buildings = loader.getBuildings(level, tileBounds, nodeMap, projector);
+          Collection<Highway> highways = loader.getHighways(level, tileBounds, nodeMap, projector);
+          Collection<Building> buildings = loader.getBuildings(level, tileBounds, nodeMap, projector);
           new HighwayPainter(projector, tileBounds).drawHighways(drawer, highways, level);
           new BuildingPainter(projector, tileBounds).drawBuildings(drawer, buildings, level);
 
@@ -111,7 +120,10 @@ public class TileGenerator
           writeTile(bi, level, x, y, database);
         }
       }
+      long end = System.currentTimeMillis();
+      System.out.println(level + " -> " + (end - start) + " ms");
     }
+    System.out.println((System.currentTimeMillis() - globalstart) / 1000. / 60. + " min");
   }
 
   private static void addTileNumberAndBorder(int x, int y, int level, Graphics2D graphics)

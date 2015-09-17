@@ -31,6 +31,10 @@ public class HighwayDao extends Dao<Highway>
 
   public static final String SELECT_ALL = "SELECT * FROM highways";
 
+//  public static final String SELECT_TILE = "SELECT * FROM highways " +
+//      "WHERE (min_lon BETWEEN ? AND ? OR max_lon BETWEEN ? AND ?) " +
+//      "AND (min_lat BETWEEN ? AND ? OR max_lat BETWEEN ? and ?)";
+
   public static final String SELECT_TILE = "SELECT * FROM highways WHERE " +
       "NOT( ((max_lon < ?) OR (min_lon > ?)) " +
       " AND ((max_lat < ?) OR (min_lat > ?)) )";
@@ -116,15 +120,20 @@ public class HighwayDao extends Dao<Highway>
   @Override
   public Collection<Highway> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodes, AbstractProjector projector)
   {
-    long start = System.currentTimeMillis();
+//    long start = System.currentTimeMillis();
     List<Highway> highways = new ArrayList<>();
     try (PreparedStatement stmt = connection.prepareStatement(SELECT_TILE))
     {
       int i = 1;
       stmt.setDouble(i++, box.getMinLon());
       stmt.setDouble(i++, box.getMaxLon());
+//      stmt.setDouble(i++, box.getMinLon());
+//      stmt.setDouble(i++, box.getMaxLon());
+
       stmt.setDouble(i++, box.getMinLat());
       stmt.setDouble(i++, box.getMaxLat());
+//      stmt.setDouble(i++, box.getMinLat());
+//      stmt.setDouble(i++, box.getMaxLat());
 
       try (ResultSet resultSet = stmt.executeQuery())
       {
@@ -140,8 +149,8 @@ public class HighwayDao extends Dao<Highway>
       e.printStackTrace();
     }
 
-    long end = System.currentTimeMillis();
-    System.out.println("Highway select: " + (end - start) + " ms");
+//    long end = System.currentTimeMillis();
+//    System.out.println("Highway select: " + (end - start) + " ms");
 
     return highways;
   }
