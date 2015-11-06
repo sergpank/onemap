@@ -12,7 +12,7 @@ import md.harta.osm.Building;
 import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
 
-public class OsmToPostrgesExporter
+public class OsmToPostgresExporter
 {
   public static void main(String[] args)
   {

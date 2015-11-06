@@ -68,7 +68,7 @@ public class TileGenerator
     long globalstart = System.currentTimeMillis();
     for (int level = 10; level <= 20; level++)
     {
-      long start = System.currentTimeMillis();
+//      long start = System.currentTimeMillis();
       new File(tilesFolder, Integer.toString(level)).mkdirs();
 
       AbstractProjector projector = new MercatorProjector(ScaleCalculator.getRadiusForLevel(level), 85);
@@ -88,13 +88,11 @@ public class TileGenerator
       {
         progressStep = numTiles / 100;
       }
-
+      long start = System.currentTimeMillis();
       long tileCnt = 0;
       for (int y = tileCutter.getMinTileYindex(); y <= tileCutter.getMaxTileYindex(); y++)
-//      for (int y = 45885; y <= 45885; y++)
       {
         for (int x = tileCutter.getMinTileXindex(); x <= tileCutter.getMaxTileXindex(); x++)
-//        for (int x = 76045; x <= 76045; x++)
         {
 //          if (((++tileCnt) % progressStep) == 0)
 //          {
@@ -118,10 +116,11 @@ public class TileGenerator
           addTileNumberAndBorder(x, y, level, graphics);
 
           writeTile(bi, level, x, y, database);
+          tileCnt++;
         }
       }
       long end = System.currentTimeMillis();
-      System.out.println(level + " -> " + (end - start) + " ms");
+      System.out.printf("%d -> %d ms; %d ms per tile\n", level, (end - start), (end - start) / tileCnt);
     }
     System.out.println((System.currentTimeMillis() - globalstart) / 1000. / 60. + " min");
   }

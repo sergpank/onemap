@@ -11,6 +11,9 @@ import md.harta.db.DbHelper;
  */
 public class DatabaseCreator
 {
+  public static final String INSERT_SQL = "INSERT INTO highways_gis " +
+      "(highway_id, highway_name, highway_type, highway_nodes, min_lat, max_lat, min_lon, max_lon)" +
+      " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
   public static final String DROP_TABLE = "DROP TABLE %s";
 
@@ -140,15 +143,15 @@ public class DatabaseCreator
   private static String getCreateHighwaysTable()
   {
     return "CREATE TABLE highways ( " +
-        "highway_id bigint, " +
-        "highway_name text, " +
-        "highway_type text, " +
-        "highway_nodes bigint[], " +
-        "min_lat double precision, " +
-        "max_lat double precision, " +
-        "min_lon double precision, " +
-        "max_lon double precision," +
-        "CONSTRAINT highways_pkey PRIMARY KEY (highway_id) )";
+           "highway_id bigint, " +
+           "highway_name text, " +
+           "highway_type text, " +
+           "highway_nodes bigint[], " +
+           "min_lat double precision, " +
+           "max_lat double precision, " +
+           "min_lon double precision, " +
+           "max_lon double precision," +
+           "CONSTRAINT highways_pkey PRIMARY KEY (highway_id) )";
   }
 
   private static String getCreateNodesTable()
