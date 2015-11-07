@@ -20,13 +20,13 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 /**
  * Created by sergpank on 15.05.15.
  */
-public class DbLoader extends AbstractLoader
+public class PostgresLoader extends AbstractLoader
 {
   private Map<Long, OsmNode> nodes;
   private Map<Long, Border> borders;
   private Connection connection;
 
-  public DbLoader(String dbName)
+  public PostgresLoader(String dbName)
   {
     this.connection = DbHelper.getConnection(dbName);
   }

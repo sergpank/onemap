@@ -127,13 +127,9 @@ public class HighwayDao extends Dao<Highway>
       int i = 1;
       stmt.setDouble(i++, box.getMinLon());
       stmt.setDouble(i++, box.getMaxLon());
-//      stmt.setDouble(i++, box.getMinLon());
-//      stmt.setDouble(i++, box.getMaxLon());
 
       stmt.setDouble(i++, box.getMinLat());
       stmt.setDouble(i++, box.getMaxLat());
-//      stmt.setDouble(i++, box.getMinLat());
-//      stmt.setDouble(i++, box.getMaxLat());
 
       try (ResultSet resultSet = stmt.executeQuery())
       {

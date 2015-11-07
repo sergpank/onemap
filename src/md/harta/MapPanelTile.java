@@ -47,7 +47,7 @@ public class MapPanelTile extends JPanel {
     MercatorProjector projector = new MercatorProjector(radiusForLevel, MercatorProjector.MAX_LAT);
     MapPanelTile map = new MapPanelTile(new OsmLoader(), projector);
 
-//    map.loader = new DbLoader("debug");
+//    map.loader = new PostgresLoader("debug");
 //    map.loader.load("debug", projector);
     map.loader = new OsmLoader();
 //    map.loader.load("osm/только_круг.osm", projector);

@@ -1,16 +1,15 @@
 package md.harta.db;
 
 import md.harta.geometry.Bounds;
+import md.harta.osm.Building;
 import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
 import md.harta.projector.AbstractProjector;
+import org.postgis.PGgeometry;
+import org.postgis.Point;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 
 /**
  * Created by serg on 11/7/15.
@@ -20,6 +19,18 @@ public class HighwayGisDao extends GisDao<Highway>
   public static final String INSERT_SQL = "INSERT INTO highways_gis " +
       "(highway_id, highway_name, highway_type, highway_geometry)" +
       " VALUES (?, ?, ?, %s);";
+
+  public static final String SELECT_TILE = "SELECT highway_id, highway_name, highway_type, highway_geometry " +
+      "FROM highways_gis " +
+      "WHERE " +
+      "ST_Intersects(" +
+      "ST_GeomFromText('Polygon((" +
+      "%f %f," +
+      "%f %f," +
+      "%f %f," +
+      "%f %f," +
+      "%f %f" +
+      "))'), highway_geometry)";
 
   public HighwayGisDao(Connection connection)
   {
@@ -57,9 +68,41 @@ public class HighwayGisDao extends GisDao<Highway>
   }
 
   @Override
-  public Collection<Highway> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodes, AbstractProjector projector)
+  public Collection<Highway> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodeCash, AbstractProjector projector)
   {
-    return null;
+    Set<Highway> highways = new HashSet<>();
+    try (Statement stmt = connection.createStatement())
+    {
+      String sql = String.format(SELECT_TILE,
+          box.getMinLon(), box.getMinLat(),
+          box.getMinLon(), box.getMaxLat(),
+          box.getMaxLon(), box.getMaxLat(),
+          box.getMaxLon(), box.getMinLat(),
+          box.getMinLon(), box.getMinLat()
+      );
+      ResultSet rs = stmt.executeQuery(sql);
+      while (rs.next())
+      {
+        long id = rs.getLong("highway_id");
+        String name = rs.getString("highway_name");
+        String type = rs.getString("highway_type");
+
+        ArrayList<OsmNode> nodes = new ArrayList<>();
+        PGgeometry geometry = (PGgeometry)rs.getObject("highway_geometry");
+        for (int i = 0; i < geometry.getGeometry().numPoints(); i++)
+        {
+          Point point = geometry.getGeometry().getPoint(i);
+          nodes.add(new OsmNode(i, point.getY(), point.getX()));
+        }
+
+        highways.add(new Highway(id, name, type, nodes, projector));
+      }
+    }
+    catch (SQLException e)
+    {
+      e.printStackTrace();
+    }
+    return highways;
   }
 
   @Override

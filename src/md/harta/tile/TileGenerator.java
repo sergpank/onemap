@@ -18,8 +18,8 @@ import md.harta.drawer.AbstractDrawer;
 import md.harta.drawer.TileDrawer;
 import md.harta.geometry.Bounds;
 import md.harta.loader.AbstractLoader;
-import md.harta.loader.DbLoader;
-import md.harta.loader.OsmLoader;
+import md.harta.loader.PostgisLoader;
+import md.harta.loader.PostgresLoader;
 import md.harta.osm.Building;
 import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
@@ -48,7 +48,8 @@ public class TileGenerator
     File tilesFolder = new File(TILE_DIR, database);
     tilesFolder.mkdirs();
 
-    AbstractLoader loader = new DbLoader(database);
+    AbstractLoader loader = new PostgisLoader(database);
+//    AbstractLoader loader = new PostgresLoader(database);
 //    AbstractLoader loader = new OsmLoader();
 //    loader.load("osm/Hanul_Morii.osm", null);
 

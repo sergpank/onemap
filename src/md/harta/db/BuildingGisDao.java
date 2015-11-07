@@ -4,13 +4,11 @@ import md.harta.geometry.Bounds;
 import md.harta.osm.Building;
 import md.harta.osm.OsmNode;
 import md.harta.projector.AbstractProjector;
+import org.postgis.PGgeometry;
+import org.postgis.Point;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 
 /**
  * Created by serg on 11/6/15.
@@ -20,6 +18,17 @@ public class BuildingGisDao extends GisDao<Building>
   public static final String INSERT_SQL = "INSERT INTO buildings_gis " +
       "(building_id, housenumber, height, street, design, levels, building_geometry) " +
       "VALUES (?, ?, ?, ?, ?, ?, %s)";
+
+  public static final String SELECT_TILE = "SELECT building_id, housenumber, height, street, design, levels, building_geometry " +
+      "FROM buildings_gis " +
+      "WHERE ST_Intersects(" +
+      "ST_GeomFromText('Polygon((" +
+      "%f %f," +
+      "%f %f," +
+      "%f %f," +
+      "%f %f," +
+      "%f %f" +
+      "))'), building_geometry)";
 
   public BuildingGisDao(Connection connection)
   {
@@ -59,13 +68,49 @@ public class BuildingGisDao extends GisDao<Building>
   @Override
   public Building load(long id, AbstractProjector projector)
   {
+
     return null;
   }
 
   @Override
-  public Collection<Building> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodes, AbstractProjector projector)
+  public Collection<Building> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodeCache, AbstractProjector projector)
   {
-    return null;
+    Set<Building> buildings = new HashSet<>();
+    try (Statement stmt = connection.createStatement())
+    {
+      String sql = String.format(SELECT_TILE,
+          box.getMinLon(), box.getMinLat(),
+          box.getMinLon(), box.getMaxLat(),
+          box.getMaxLon(), box.getMaxLat(),
+          box.getMaxLon(), box.getMinLat(),
+          box.getMinLon(), box.getMinLat()
+          );
+      ResultSet rs = stmt.executeQuery(sql);
+      while (rs.next())
+      {
+        long id = rs.getLong("building_id");
+        String houseNumber = rs.getString("housenumber");
+        String street = rs.getString("street");
+        String height = rs.getString("height");
+        int levels = rs.getInt("levels");
+        String design = rs.getString("design");
+
+        ArrayList<OsmNode> nodes = new ArrayList<>();
+        PGgeometry geometry = (PGgeometry)rs.getObject("building_geometry");
+        for (int i = 0; i < geometry.getGeometry().numPoints() - 1; i++)
+        {
+          Point point = geometry.getGeometry().getPoint(i);
+          nodes.add(new OsmNode(i, point.getY(), point.getX()));
+        }
+
+        buildings.add(new Building(id, nodes, houseNumber, street, height, levels, design, projector));
+      }
+    }
+    catch (SQLException e)
+    {
+      e.printStackTrace();
+    }
+    return buildings;
   }
 
   @Override

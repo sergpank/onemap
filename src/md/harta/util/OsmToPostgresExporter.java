@@ -31,8 +31,13 @@ public class OsmToPostgresExporter
       BuildingDao buildingDao = new BuildingDao(connection);
       HighwayDao highwayDao = new HighwayDao(connection);
 
+      System.out.println("Saving nodes:");
       nodes.values().forEach(node -> nodeDao.save(node));
+
+      System.out.println("Saving buildings:");
       buildings.values().forEach(building -> buildingDao.save(building));
+
+      System.out.println("Saving highways:");
       highways.values().forEach(highway -> highwayDao.save(highway));
     }
   }
