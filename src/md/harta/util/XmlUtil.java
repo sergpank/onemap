@@ -23,7 +23,7 @@ import java.io.IOException;
  */
 public class XmlUtil {
 
-  private static XPath xPath = XPathFactory.newInstance().newXPath();;
+  private static XPath xPath = XPathFactory.newInstance().newXPath();
 
   public static Document parseDocument(String xmlFile){
     Document doc = null;
