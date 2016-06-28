@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class Natural extends OsmWay
 {
+  public static final String WATER = "water";
+
   String type;
 
   public Natural(long id, List<OsmNode> nodes, Element element, AbstractProjector projector)
@@ -30,6 +32,11 @@ public class Natural extends OsmWay
           break;
       }
     }
+  }
+
+  public boolean isWater()
+  {
+    return type.equalsIgnoreCase(WATER);
   }
 
   public String getType()

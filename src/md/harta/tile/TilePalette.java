@@ -27,4 +27,6 @@ public class TilePalette
   public static final String BUILDING_FONT_NAME = "Arial";
 
   public static final Color PARK_COLOR = new Color(195, 225, 134);
+
+  public static final Color WATER_COLOR = new Color(137, 205, 242);
 }

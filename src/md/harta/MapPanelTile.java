@@ -27,6 +27,7 @@ import md.harta.osm.Natural;
 import md.harta.painter.BuildingPainter;
 import md.harta.painter.HighwayPainter;
 import md.harta.painter.LeisurePainter;
+import md.harta.painter.NaturePainter;
 import md.harta.projector.AbstractProjector;
 import md.harta.projector.MercatorProjector;
 import md.harta.tile.TileCutter;
@@ -58,7 +59,8 @@ public class MapPanelTile extends JPanel {
 //    map.loader.load("osm/только_круг.osm", projector);
 //    map.loader.load("osm/греческая_площадь.osm", projector);
 //    map.loader.load("osm/map.osm", projector);
-    map.loader.load("osm/парк_победы.osm", projector);
+//    map.loader.load("osm/парк_победы.osm", projector);
+    map.loader.load("osm/ботанический_сад.osm", projector);
 //    map.loader.load("osm/test_data.osm", projector);
 
     map.highways = map.loader.getHighways(projector).values();
@@ -169,7 +171,7 @@ public class MapPanelTile extends JPanel {
     BuildingPainter buildingPainter = new BuildingPainter(projector, bounds);
 
     leisurePainter.drawParks(new TileDrawer((Graphics2D) g), leisure, level);
-    naturePainter.
+    naturePainter.drawWater(new TileDrawer((Graphics2D)g), nature, level);
     highwayPainter.drawHighways(new TileDrawer((Graphics2D) g), highways, level);
     buildingPainter.drawBuildings(new TileDrawer((Graphics2D) g), buildings, level);
 
