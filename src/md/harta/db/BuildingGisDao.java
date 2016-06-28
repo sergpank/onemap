@@ -38,6 +38,12 @@ public class BuildingGisDao extends GisDao<Building>
   @Override
   public void save(Building building)
   {
+    if (building.getNodes().size() < 3)
+    {
+      System.out.printf("Unable to save building %s %s, not enough nodes: %d\n",
+          building.getStreet(), building.getHouseNumber(), building.getNodes().size());
+      return;
+    }
     try(PreparedStatement pStmt = connection.prepareStatement(String.format(INSERT_SQL, createPolygon(building.getNodes()))))
     {
       int pos = 1;
@@ -52,6 +58,7 @@ public class BuildingGisDao extends GisDao<Building>
     }
     catch (SQLException e)
     {
+      System.out.println(building);
       e.printStackTrace();
     }
   }

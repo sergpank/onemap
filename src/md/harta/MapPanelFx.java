@@ -38,7 +38,7 @@ public class MapPanelFx extends Application {
   private AbstractProjector projector;
 
   public static void main(String[] args) {
-    osmPath =  "osm/Hanul_Morii.osm";
+    osmPath =  "osm/парк_победы.osm";
     loader = new OsmLoader();
     launch();
   }

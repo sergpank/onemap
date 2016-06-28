@@ -27,10 +27,10 @@ public class BuildingPainter extends AbstractPainter{
       shiftPoints(bounds.getxMin(), polygon.getxPoints());
       shiftPoints(bounds.getyMin(), polygon.getyPoints());
 
-      drawer.setFillColor(new Color(197, 87, 199));
+      drawer.setFillColor(TilePalette.BUILDING_COLOR);
       drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
 
-      drawer.setStrokeColor(Color.BLACK);
+      drawer.setStrokeColor(TilePalette.BUILDING_BORDER_COLOR);
       drawer.drawPolyLine(polygon);
 
       if (level >= 17)
@@ -49,7 +49,7 @@ public class BuildingPainter extends AbstractPainter{
       float stringHeight = TextUtil.getStringHeight(TilePalette.BUILDING_FONT_NAME, TilePalette.BUILDING_FONT_SIZE);
       if (((w * h) / (stringWidth * stringHeight)) >= 3)
       {
-        drawer.setFillColor(Color.BLACK);
+        drawer.setFillColor(TilePalette.BUILDING_FONT_COLOR);
         XYPoint xy = getLabelCenter(polygon, houseNumber, stringWidth, stringHeight);
 
         drawer.fillText(houseNumber, xy.getX(), xy.getY());

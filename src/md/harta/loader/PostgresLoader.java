@@ -1,6 +1,9 @@
 package md.harta.loader;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,10 +13,7 @@ import md.harta.db.DbHelper;
 import md.harta.db.HighwayDao;
 import md.harta.db.NodeDao;
 import md.harta.geometry.Bounds;
-import md.harta.osm.Border;
-import md.harta.osm.Building;
-import md.harta.osm.Highway;
-import md.harta.osm.OsmNode;
+import md.harta.osm.*;
 import md.harta.projector.AbstractProjector;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -91,6 +91,18 @@ public class PostgresLoader extends AbstractLoader
   }
 
   @Override
+  public Map<Long, Leisure> getLeisure(AbstractProjector projector)
+  {
+    return null;
+  }
+
+  @Override
+  public Map<Long, Natural> getNature(AbstractProjector projector)
+  {
+    return null;
+  }
+
+  @Override
   public Collection<Border> getBorders(int level, Bounds tileBounds, Map<Long, OsmNode> nodes, AbstractProjector projector)
   {
     return new BorderDao(connection).load(level, tileBounds, nodes, projector);
@@ -109,8 +121,37 @@ public class PostgresLoader extends AbstractLoader
   }
 
   @Override
+  public Collection<Leisure> getLeisure(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  {
+    return null;
+  }
+
+  @Override
+  public Collection<Natural> getNature(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  {
+    return null;
+  }
+
+  @Override
   public Bounds getBounds()
   {
-    throw new NotImplementedException();
+    Bounds bounds = null;
+    try(Statement st = connection.createStatement())
+    {
+      try (ResultSet rs = st.executeQuery("select min(lon), min(lat), max(lon), max(lat) from nodes"))
+      {
+        rs.next();
+        double minLon = rs.getDouble(1);
+        double minLat = rs.getDouble(2);
+        double maxLon = rs.getDouble(3);
+        double maxLat = rs.getDouble(4);
+        bounds = new Bounds(null, minLat, minLon, maxLat, maxLon);
+      }
+    }
+    catch (SQLException e)
+    {
+      e.printStackTrace();
+    }
+    return bounds;
   }
 }

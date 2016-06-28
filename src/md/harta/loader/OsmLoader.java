@@ -2,11 +2,7 @@ package md.harta.loader;
 
 import java.util.Collection;
 import md.harta.geometry.Bounds;
-import md.harta.osm.Border;
-import md.harta.osm.Building;
-import md.harta.osm.Highway;
-import md.harta.osm.OsmBounds;
-import md.harta.osm.OsmNode;
+import md.harta.osm.*;
 import md.harta.projector.AbstractProjector;
 import md.harta.util.XmlUtil;
 import org.w3c.dom.Document;
@@ -24,10 +20,12 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  * Created by sergpank on 20.01.2015.
  */
 public class OsmLoader extends AbstractLoader{
-  private Map<Long, OsmNode> nodeMap;
-  private HashMap<Long, Highway> highwayMap;
-  private HashMap<Long, Building> buildingMap;
-  private HashMap<Long, Border> borderMap;
+  private Map<Long, OsmNode> nodeMap = new HashMap<>();
+  private HashMap<Long, Highway> highwayMap = new HashMap<>();
+  private HashMap<Long, Building> buildingMap = new HashMap<>();
+  private HashMap<Long, Leisure> leisureMap = new HashMap<>();
+  private HashMap<Long, Natural> natureMap = new HashMap<>();
+  private HashMap<Long, Border> borderMap = new HashMap<>();
   private OsmBounds bounds;
 
   public OsmLoader() {
@@ -43,6 +41,18 @@ public class OsmLoader extends AbstractLoader{
 
   public Map<Long, Building> getBuildings(AbstractProjector projector) {
     return buildingMap;
+  }
+
+  @Override
+  public Map<Long, Leisure> getLeisure(AbstractProjector projector)
+  {
+    return leisureMap;
+  }
+
+  @Override
+  public Map<Long, Natural> getNature(AbstractProjector projector)
+  {
+    return natureMap;
   }
 
   @Override
@@ -63,6 +73,18 @@ public class OsmLoader extends AbstractLoader{
     return getBuildings(projector).values();
   }
 
+  @Override
+  public Collection<Leisure> getLeisure(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  {
+    return leisureMap.values();
+  }
+
+  @Override
+  public Collection<Natural> getNature(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  {
+    return natureMap.values();
+  }
+
   public Map<Long, Border> getBorders()
   {
     return borderMap;
@@ -77,11 +99,6 @@ public class OsmLoader extends AbstractLoader{
     minLat = Double.MAX_VALUE;
     maxLon = Double.MIN_VALUE;
     maxLat = Double.MIN_VALUE;
-
-    this.nodeMap = new HashMap<>();
-    this.highwayMap = new HashMap<>();
-    this.buildingMap = new HashMap<>();
-    this.borderMap = new HashMap<>();
 
     Document doc = XmlUtil.parseDocument(xmlFile);
 
@@ -149,6 +166,16 @@ public class OsmLoader extends AbstractLoader{
           Highway highway = new Highway(id, wayNodes, element, projector);
           highwayMap.put(id, highway);
         }
+        else if (isLeisure(element))
+        {
+          Leisure leisure = new Leisure(id, wayNodes, element, projector);
+          leisureMap.put(id, leisure);
+        }
+        else if (isNatural(element))
+        {
+          Natural natural = new Natural(id, wayNodes, element, projector);
+          natureMap.put(id, natural);
+        }
         else if (isBorder(element))
         {
           Border border = new Border(id, wayNodes, element, projector);
@@ -156,6 +183,32 @@ public class OsmLoader extends AbstractLoader{
         }
       }
     }
+  }
+
+  private boolean isNatural(Element element)
+  {
+    NodeList tags = getTags(element);
+    for (int i = 0; i < tags.getLength(); i++){
+      Element item = (Element) tags.item(i);
+      String key = item.getAttribute("k");
+      if (key.equals("natural")){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean isLeisure(Element element)
+  {
+    NodeList tags = getTags(element);
+    for (int i = 0; i < tags.getLength(); i++){
+      Element item = (Element) tags.item(i);
+      String key = item.getAttribute("k");
+      if (key.equals("leisure")){
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean isHighway(Element element) {

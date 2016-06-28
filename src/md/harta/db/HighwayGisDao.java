@@ -40,6 +40,11 @@ public class HighwayGisDao extends GisDao<Highway>
   @Override
   public void save(Highway highway)
   {
+    if (highway.getNodes().size() < 2)
+    {
+      System.out.printf("Unable to save highway with 1 point: %s\n", highway.getName());
+      return;
+    }
     try(PreparedStatement pStmt = connection.prepareStatement(String.format(INSERT_SQL, createLineString(highway.getNodes()))))
     {
       int pos = 1;
@@ -73,12 +78,14 @@ public class HighwayGisDao extends GisDao<Highway>
     Set<Highway> highways = new HashSet<>();
     try (Statement stmt = connection.createStatement())
     {
+      double dLat = box.getMaxLat() - box.getMinLat();
+      double dLon = box.getMaxLon() - box.getMinLon();
       String sql = String.format(SELECT_TILE,
-          box.getMinLon(), box.getMinLat(),
-          box.getMinLon(), box.getMaxLat(),
-          box.getMaxLon(), box.getMaxLat(),
-          box.getMaxLon(), box.getMinLat(),
-          box.getMinLon(), box.getMinLat()
+          box.getMinLon() - dLon, box.getMinLat() - dLat,
+          box.getMinLon() - dLon, box.getMaxLat() + dLat,
+          box.getMaxLon() + dLon, box.getMaxLat() + dLat,
+          box.getMaxLon() + dLon, box.getMinLat() - dLat,
+          box.getMinLon() - dLon, box.getMinLat() - dLat
       );
       ResultSet rs = stmt.executeQuery(sql);
       while (rs.next())

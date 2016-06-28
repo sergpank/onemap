@@ -22,8 +22,11 @@ import md.harta.loader.AbstractLoader;
 import md.harta.loader.OsmLoader;
 import md.harta.osm.Building;
 import md.harta.osm.Highway;
+import md.harta.osm.Leisure;
+import md.harta.osm.Natural;
 import md.harta.painter.BuildingPainter;
 import md.harta.painter.HighwayPainter;
+import md.harta.painter.LeisurePainter;
 import md.harta.projector.AbstractProjector;
 import md.harta.projector.MercatorProjector;
 import md.harta.tile.TileCutter;
@@ -40,6 +43,8 @@ public class MapPanelTile extends JPanel {
   private AbstractLoader loader;
   private Collection<Highway> highways;
   private Collection<Building> buildings;
+  private Collection<Leisure> leisure;
+  private Collection<Natural> nature;
 
   public static void main(String[] args)
   {
@@ -53,11 +58,13 @@ public class MapPanelTile extends JPanel {
 //    map.loader.load("osm/только_круг.osm", projector);
 //    map.loader.load("osm/греческая_площадь.osm", projector);
 //    map.loader.load("osm/map.osm", projector);
-    map.loader.load("osm/Hanul_Morii.osm", projector);
+    map.loader.load("osm/парк_победы.osm", projector);
 //    map.loader.load("osm/test_data.osm", projector);
 
     map.highways = map.loader.getHighways(projector).values();
     map.buildings = map.loader.getBuildings(projector).values();
+    map.leisure = map.loader.getLeisure(projector).values();
+    map.nature = map.loader.getNature(projector).values();
 
     JScrollPane scrollPane = new JScrollPane(map);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -156,9 +163,13 @@ public class MapPanelTile extends JPanel {
 
     Bounds bounds = new Bounds(projector, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
 
+    LeisurePainter leisurePainter = new LeisurePainter(projector, bounds);
+    NaturePainter naturePainter = new NaturePainter(projector, bounds);
     HighwayPainter highwayPainter = new HighwayPainter(projector, bounds);
     BuildingPainter buildingPainter = new BuildingPainter(projector, bounds);
 
+    leisurePainter.drawParks(new TileDrawer((Graphics2D) g), leisure, level);
+    naturePainter.
     highwayPainter.drawHighways(new TileDrawer((Graphics2D) g), highways, level);
     buildingPainter.drawBuildings(new TileDrawer((Graphics2D) g), buildings, level);
 

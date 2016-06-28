@@ -23,21 +23,25 @@ public class Building extends OsmWay{
     for (int i = 0; i < tags.getLength(); i++) {
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
+      String value = item.getAttribute("v");
       switch (key) {
         case "addr:housenumber":
-          houseNumber = item.getAttribute("v");
+          houseNumber = value;
           break;
         case "addr:street":
-          street = item.getAttribute("v");
+          street = value;
           break;
         case "building:height":
-          height = item.getAttribute("v");
+          height = value;
           break;
         case "building:levels":
-          levels = Integer.valueOf(item.getAttribute("v"));
+          if (value.matches("\\d*"))
+          {
+            levels = Integer.valueOf(value);
+          }
           break;
         case "design":
-          design = item.getAttribute("v");
+          design = value;
       }
     }
   }
@@ -71,6 +75,18 @@ public class Building extends OsmWay{
   public String getDesign()
   {
     return design;
+  }
+
+  @Override
+  public String toString()
+  {
+    return "Building{" +
+        "houseNumber='" + houseNumber + '\'' +
+        ", street='" + street + '\'' +
+        ", height='" + height + '\'' +
+        ", design='" + design + '\'' +
+        ", levels=" + levels +
+        "}\n" + super.toString();
   }
 
   @Override

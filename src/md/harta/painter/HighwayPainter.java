@@ -30,7 +30,7 @@ public class HighwayPainter extends AbstractPainter
   public void drawHighways(AbstractDrawer drawer, Collection<Highway> highways, int level)
   {
     List<Label> labels = new ArrayList<>();
-    double roadWidth = getRoadWidthPixels(projector, ROAD_WIDTH_METERS);
+    double roadWidth = getRoadWidthPixels(projector);
     for (Highway highway : highways)
     {
       addLabel(labels, highway);
@@ -133,9 +133,9 @@ public class HighwayPainter extends AbstractPainter
     drawer.fillOval(endPoint.getX() - endDiameter / 2.0, endPoint.getY() - endDiameter / 2.0, endDiameter, endDiameter);
   }
 
-  private double getRoadWidthPixels(AbstractProjector projector, int roadWidthMeters)
+  public static double getRoadWidthPixels(AbstractProjector projector)
   {
-    double roadWidth = GeometryUtil.DEGREES_IN_METER * roadWidthMeters;
+    double roadWidth = GeometryUtil.DEGREES_IN_METER * ROAD_WIDTH_METERS;
     XYPoint center = projector.getXY(0, 0);
     XYPoint xyLon = projector.getXY(0, roadWidth);
 

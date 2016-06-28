@@ -25,6 +25,11 @@ public class DatabaseCreator
       createTable(con, getCreateHighwaysTable(), "highways");
       createTable(con, getCreateBuildingsTable(), "buildings");
       createTable(con, getCreateBordersTable(), "borders");
+
+      con.createStatement().execute("CREATE EXTENSION IF NOT EXISTS Postgis;");
+
+      createTable(con, getCreateHighwaysGisTable(), "highways_gis");
+      createTable(con, getCreateBuildingsGisTable(), "buildings_gis");
     }
     catch (SQLException e)
     {
@@ -34,17 +39,22 @@ public class DatabaseCreator
 
   private static void createTable(Connection con, String query, String tableName)
   {
+    try (Statement statement = con.createStatement())
+    {
+      statement.execute(query);
+      System.out.printf("Table \"%s\" is created.\n", tableName);
+    }
+    catch (SQLException e)
+    {
+      e.printStackTrace();
+    }
+  }
+
+  private static void reCreateTable(Connection con, String query, String tableName)
+  {
     if (!tableExists(con, tableName))
     {
-      try (Statement statement = con.createStatement())
-      {
-        statement.execute(query);
-        System.out.printf("Table \"%s\" is created.\n", tableName);
-      }
-      catch (SQLException e)
-      {
-        e.printStackTrace();
-      }
+      createTable(con, query, tableName);
     }
     else
     {
@@ -110,7 +120,7 @@ public class DatabaseCreator
 
   private static String getCreateBordersTable()
   {
-    return "CREATE TABLE borders (" +
+    return "CREATE TABLE IF NOT EXISTS borders (" +
         "  border_id bigserial NOT NULL," +
         "  name text," +
         "  min_level integer," +
@@ -125,7 +135,7 @@ public class DatabaseCreator
 
   private static String getCreateBuildingsTable()
   {
-    return "CREATE TABLE buildings ( " +
+    return "CREATE TABLE IF NOT EXISTS buildings ( " +
         "building_id bigint, " +
         "housenumber text, " +
         "street text, " +
@@ -142,7 +152,7 @@ public class DatabaseCreator
 
   private static String getCreateHighwaysTable()
   {
-    return "CREATE TABLE highways ( " +
+    return "CREATE TABLE IF NOT EXISTS highways ( " +
            "highway_id bigint, " +
            "highway_name text, " +
            "highway_type text, " +
@@ -153,10 +163,37 @@ public class DatabaseCreator
            "max_lon double precision," +
            "CONSTRAINT highways_pkey PRIMARY KEY (highway_id) )";
   }
+  
+  private static String getCreateBuildingsGisTable()
+  {
+    return "CREATE TABLE IF NOT EXISTS buildings_gis " +
+        "( " +
+        "  building_id bigint NOT NULL, " +
+        "  housenumber text, " +
+        "  street text, " +
+        "  height text, " +
+        "  design text, " +
+        "  levels integer, " +
+        "  building_geometry geometry, " +
+        "  CONSTRAINT buildings_gis_pkey PRIMARY KEY (building_id)" +
+        ")";
+  }
+  
+  private static String getCreateHighwaysGisTable()
+  {
+    return "CREATE TABLE IF NOT EXISTS highways_gis " +
+        "( " +
+        "  highway_id bigint NOT NULL, " +
+        "  highway_name text, " +
+        "  highway_type text, " +
+        "  highway_geometry geometry, " +
+        "  CONSTRAINT highways_gis_pkey PRIMARY KEY (highway_id) " +
+        ")";
+  }
 
   private static String getCreateNodesTable()
   {
-    return "CREATE TABLE nodes (" +
+    return "CREATE TABLE IF NOT EXISTS nodes (" +
         "node_id bigserial NOT NULL, " +
         "lat double precision, " +
         "lon double precision, " +
