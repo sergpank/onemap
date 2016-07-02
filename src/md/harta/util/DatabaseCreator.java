@@ -191,6 +191,13 @@ public class DatabaseCreator
         ")";
   }
 
+  private static String createLeisureTable()
+  {
+    return "CREATE TABLE IF NOT EXISTS leisure (" +
+        "leisure_id bigserial NOT NULL, " +
+        ""
+  }
+
   private static String getCreateNodesTable()
   {
     return "CREATE TABLE IF NOT EXISTS nodes (" +

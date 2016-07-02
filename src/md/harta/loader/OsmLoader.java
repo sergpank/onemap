@@ -21,11 +21,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class OsmLoader extends AbstractLoader{
   private Map<Long, OsmNode> nodeMap = new HashMap<>();
-  private HashMap<Long, Highway> highwayMap = new HashMap<>();
   private HashMap<Long, Building> buildingMap = new HashMap<>();
-  private HashMap<Long, Leisure> leisureMap = new HashMap<>();
-  private HashMap<Long, Natural> natureMap = new HashMap<>();
-  private HashMap<Long, Border> borderMap = new HashMap<>();
+  private HashMap<Long, Highway>  highwayMap = new HashMap<>();
+  private HashMap<Long, Leisure>  leisureMap = new HashMap<>();
+  private HashMap<Long, Natural>  natureMap = new HashMap<>();
+  private HashMap<Long, Border>   borderMap = new HashMap<>();
   private OsmBounds bounds;
 
   public OsmLoader() {
@@ -102,8 +102,16 @@ public class OsmLoader extends AbstractLoader{
 
     Document doc = XmlUtil.parseDocument(xmlFile);
 
+    nodeMap.clear();
     getNodes(doc);
+
+    buildingMap.clear();
+    highwayMap.clear();
+    leisureMap.clear();
+    natureMap.clear();
+    borderMap.clear();
     getWays(doc, projector);
+
     bounds = getBounds(doc);
 //    System.out.printf("Min lat = %f\n" +
 //                      "Max lat = %f\n" +

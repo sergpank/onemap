@@ -33,25 +33,34 @@ import md.harta.projector.MercatorProjector;
 import md.harta.tile.TileCutter;
 import md.harta.tile.TileGenerator;
 import md.harta.util.ScaleCalculator;
+import org.apache.log4j.xml.DOMConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by sergpank on 07.02.2015.
  */
 public class MapPanelTile extends JPanel {
 
-  public static int level = 17;
+  private static final Logger LOG = LoggerFactory.getLogger(MapPanelTile.class);
+
+  public static int level = 14;
   private AbstractProjector projector;
   private AbstractLoader loader;
   private Collection<Highway> highways;
   private Collection<Building> buildings;
   private Collection<Leisure> leisure;
   private Collection<Natural> nature;
+  private static MapPanelTile map;
+  private JTextField dataField;
 
   public static void main(String[] args)
   {
+    DOMConfigurator.configure("log4j.xml");
+
     double radiusForLevel = ScaleCalculator.getRadiusForLevel(level);
     MercatorProjector projector = new MercatorProjector(radiusForLevel, MercatorProjector.MAX_LAT);
-    MapPanelTile map = new MapPanelTile(new OsmLoader(), projector);
+    map = new MapPanelTile(new OsmLoader(), projector);
 
 //    map.loader = new PostgresLoader("debug");
 //    map.loader.load("debug", projector);
@@ -60,8 +69,9 @@ public class MapPanelTile extends JPanel {
 //    map.loader.load("osm/греческая_площадь.osm", projector);
 //    map.loader.load("osm/map.osm", projector);
 //    map.loader.load("osm/парк_победы.osm", projector);
-    map.loader.load("osm/ботанический_сад.osm", projector);
-//    map.loader.load("osm/test_data.osm", projector);
+    String dataSource = "osm/88.osm";
+    map.loader.load(dataSource, projector);
+    //    map.loader.load("osm/test_data.osm", projector);
 
     map.highways = map.loader.getHighways(projector).values();
     map.buildings = map.loader.getBuildings(projector).values();
@@ -75,6 +85,7 @@ public class MapPanelTile extends JPanel {
     JFrame frame = new JFrame("Tile drawer live debug");
     frame.add(scrollPane, BorderLayout.CENTER);
     frame.add(map.createControlPanel(), BorderLayout.WEST);
+    map.dataField.setText(dataSource);
     frame.pack();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setSize(1000, 700);
@@ -94,7 +105,8 @@ public class MapPanelTile extends JPanel {
 
     int pos = 0;
     panel.add(new JLabel("DB / OSM : "), pos++);
-    panel.add(new JTextField(), pos++);
+    dataField = new JTextField();
+    panel.add(dataField, pos++);
     panel.add(new JLabel("Level : "), pos++);
     panel.add(levelCombo, pos++);
     panel.add(new JLabel("X : "), pos++);
@@ -110,7 +122,13 @@ public class MapPanelTile extends JPanel {
         e -> {
           level = (int) levelCombo.getSelectedItem();
           projector = new MercatorProjector(ScaleCalculator.getRadiusForLevel(level), MercatorProjector.MAX_LAT);
-          this.repaint();
+          String data = dataField.getText();
+          if (data != null && !data.isEmpty())
+          {
+            LOG.info("Loading map: " + data);
+            map.loader.load(data, projector);
+            this.repaint();
+          }
         });
 
     return panel;
