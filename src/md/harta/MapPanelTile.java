@@ -20,14 +20,8 @@ import md.harta.geometry.Bounds;
 import md.harta.geometry.XYPoint;
 import md.harta.loader.AbstractLoader;
 import md.harta.loader.OsmLoader;
-import md.harta.osm.Building;
-import md.harta.osm.Highway;
-import md.harta.osm.Leisure;
-import md.harta.osm.Natural;
-import md.harta.painter.BuildingPainter;
-import md.harta.painter.HighwayPainter;
-import md.harta.painter.LeisurePainter;
-import md.harta.painter.NaturePainter;
+import md.harta.osm.*;
+import md.harta.painter.*;
 import md.harta.projector.AbstractProjector;
 import md.harta.projector.MercatorProjector;
 import md.harta.tile.TileCutter;
@@ -44,13 +38,14 @@ public class MapPanelTile extends JPanel {
 
   private static final Logger LOG = LoggerFactory.getLogger(MapPanelTile.class);
 
-  public static int level = 14;
+  public static int level = 16;
   private AbstractProjector projector;
   private AbstractLoader loader;
   private Collection<Highway> highways;
   private Collection<Building> buildings;
   private Collection<Leisure> leisure;
   private Collection<Natural> nature;
+  private Collection<Waterway> waterways;
   private static MapPanelTile map;
   private JTextField dataField;
 
@@ -69,14 +64,13 @@ public class MapPanelTile extends JPanel {
 //    map.loader.load("osm/греческая_площадь.osm", projector);
 //    map.loader.load("osm/map.osm", projector);
 //    map.loader.load("osm/парк_победы.osm", projector);
-    String dataSource = "osm/88.osm";
-    map.loader.load(dataSource, projector);
-    //    map.loader.load("osm/test_data.osm", projector);
+    map.loader.load("osm/ботанический_сад.osm", projector);
 
     map.highways = map.loader.getHighways(projector).values();
     map.buildings = map.loader.getBuildings(projector).values();
     map.leisure = map.loader.getLeisure(projector).values();
     map.nature = map.loader.getNature(projector).values();
+    map.waterways = map.loader.getWaterways(projector).values();
 
     JScrollPane scrollPane = new JScrollPane(map);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -85,7 +79,7 @@ public class MapPanelTile extends JPanel {
     JFrame frame = new JFrame("Tile drawer live debug");
     frame.add(scrollPane, BorderLayout.CENTER);
     frame.add(map.createControlPanel(), BorderLayout.WEST);
-    map.dataField.setText(dataSource);
+    map.dataField.setText("osm/ботанический_сад.osm");
     frame.pack();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     frame.setSize(1000, 700);
@@ -185,11 +179,13 @@ public class MapPanelTile extends JPanel {
 
     LeisurePainter leisurePainter = new LeisurePainter(projector, bounds);
     NaturePainter naturePainter = new NaturePainter(projector, bounds);
+    WaterwayPainter waterwayPainter = new WaterwayPainter(projector, bounds);
     HighwayPainter highwayPainter = new HighwayPainter(projector, bounds);
     BuildingPainter buildingPainter = new BuildingPainter(projector, bounds);
 
     leisurePainter.drawParks(new TileDrawer((Graphics2D) g), leisure, level);
     naturePainter.drawWater(new TileDrawer((Graphics2D)g), nature, level);
+    waterwayPainter.drawWaterways(new TileDrawer((Graphics2D)g), waterways, level);
     highwayPainter.drawHighways(new TileDrawer((Graphics2D) g), highways, level);
     buildingPainter.drawBuildings(new TileDrawer((Graphics2D) g), buildings, level);
 

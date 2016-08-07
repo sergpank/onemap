@@ -1,6 +1,5 @@
 package md.harta.painter;
 
-import java.awt.Color;
 import java.util.Collection;
 import md.harta.drawer.AbstractDrawer;
 import md.harta.geometry.Bounds;
@@ -31,7 +30,7 @@ public class BuildingPainter extends AbstractPainter{
       drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
 
       drawer.setStrokeColor(TilePalette.BUILDING_BORDER_COLOR);
-      drawer.drawPolyLine(polygon);
+      drawer.drawPolyLine(polygon, 1);
 
       if (level >= 17)
       {

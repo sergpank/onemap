@@ -40,9 +40,9 @@ public class TileDrawer extends AbstractDrawer
   }
 
   @Override
-  public void drawPolyLine(CanvasPolygon polygon)
+  public void drawPolyLine(CanvasPolygon polygon, int width)
   {
-    graphics.setStroke(new BasicStroke(1));
+    graphics.setStroke(new BasicStroke(width));
     graphics.drawPolyline(polygon.getIntXPoints(), polygon.getIntYPoints(), polygon.getPointsNumber());
 //    int[] xPoints = polygon.getIntXPoints();
 //    int[] yPoints = polygon.getIntYPoints();

@@ -28,6 +28,10 @@ public abstract class AbstractLoader
 
   public abstract Map<Long, Natural> getNature(AbstractProjector projector);
 
+  public abstract Map<Long, Waterway> getWaterways(AbstractProjector projector);
+
+  public abstract Map<Long, Landuse> getLanduse(AbstractProjector projector);
+
   public abstract Collection<Border> getBorders(int level, Bounds tileBounds, Map<Long, OsmNode> nodes, AbstractProjector projector);
 
   public abstract Collection<Highway> getHighways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector);
@@ -37,6 +41,10 @@ public abstract class AbstractLoader
   public abstract Collection<Leisure> getLeisure(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector);
 
   public abstract Collection<Natural> getNature(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector);
+
+  public abstract Collection<Waterway> getWaterways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector);
+
+  public abstract Collection<Landuse> getLanduse(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector);
 
   public abstract Bounds getBounds();
 

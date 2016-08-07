@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class Highway extends OsmWay {
 
+  public static final String HIGHWAY = "highway";
   public static final int WIDTH_METERS = 4;
 
   private String name;
@@ -30,7 +31,7 @@ public class Highway extends OsmWay {
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
       switch(key){
-        case "highway":
+        case HIGHWAY:
           type = item.getAttribute("v");
           break;
         case "name":

@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class Leisure extends OsmWay
 {
+  public static final String LEISURE = "leisure";
   public static final String PARK = "park";
   String type;
 
@@ -24,7 +25,7 @@ public class Leisure extends OsmWay
       String key = item.getAttribute("k");
       String value = item.getAttribute("v");
       switch (key) {
-        case "leisure":
+        case LEISURE:
           type = value;
           break;
         default:

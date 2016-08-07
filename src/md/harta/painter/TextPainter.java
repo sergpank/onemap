@@ -48,6 +48,10 @@ public class TextPainter extends AbstractPainter
 
     // XYPoint center = getIntersectionPoint(label.getHighway(), label.getCenter());
     XYPoint roadStartPoint = getRoadStartPoint(label);
+    if (roadStartPoint == null)
+    {
+      return;
+    }
     int xShift = (int) roadStartPoint.getX();
     int yShift = (int) roadStartPoint.getY() + charHeight / 2;
     double roadLength = GeometryUtil.getHighwayLength(label.getHighway(), projector);
@@ -92,6 +96,10 @@ public class TextPainter extends AbstractPainter
   private XYPoint getRoadStartPoint(Label label)
   {
     List<OsmNode> nodes = label.getHighway().getNodes();
+    if (nodes.isEmpty())
+    {
+      return null;
+    }
     OsmNode firstNode = nodes.get(0);
     OsmNode lastNode = nodes.get(nodes.size() - 1);
 

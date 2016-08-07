@@ -5,6 +5,7 @@ import md.harta.osm.Leisure;
 import md.harta.osm.OsmNode;
 import md.harta.projector.AbstractProjector;
 
+import java.sql.Connection;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,10 @@ import java.util.Map;
  */
 public class LeisureDao extends Dao<Leisure>
 {
+  public LeisureDao(Connection connection) {
+    super(connection);
+  }
+
   @Override
   public void save(Leisure entity)
   {

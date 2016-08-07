@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class Border extends OsmWay
 {
+  public static final String BORDER = "border";
   private String name;
   private String type;
 
@@ -30,11 +31,11 @@ public class Border extends OsmWay
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
       switch(key){
+        case BORDER:
+          type = item.getAttribute("v");
+          break;
         case "name":
           name = item.getAttribute("v");
-          break;
-        case "border":
-          type = item.getAttribute("v");
           break;
       }
     }

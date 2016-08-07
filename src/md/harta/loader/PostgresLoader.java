@@ -93,13 +93,23 @@ public class PostgresLoader extends AbstractLoader
   @Override
   public Map<Long, Leisure> getLeisure(AbstractProjector projector)
   {
-    return null;
+    throw new NotImplementedException();
   }
 
   @Override
   public Map<Long, Natural> getNature(AbstractProjector projector)
   {
-    return null;
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public Map<Long, Waterway> getWaterways(AbstractProjector projector) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public Map<Long, Landuse> getLanduse(AbstractProjector projector) {
+    throw new NotImplementedException();
   }
 
   @Override
@@ -123,13 +133,23 @@ public class PostgresLoader extends AbstractLoader
   @Override
   public Collection<Leisure> getLeisure(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
   {
-    return null;
+    throw new NotImplementedException();
   }
 
   @Override
   public Collection<Natural> getNature(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
   {
-    return null;
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public Collection<Waterway> getWaterways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector) {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public Collection<Landuse> getLanduse(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector) {
+    throw new NotImplementedException();
   }
 
   @Override

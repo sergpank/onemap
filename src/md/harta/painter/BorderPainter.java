@@ -44,7 +44,7 @@ public class BorderPainter extends AbstractPainter
 
       shiftPoints(this.bounds.getxMin(), polygon.getxPoints());
       shiftPoints(this.bounds.getyMin(), polygon.getyPoints());
-      drawer.drawPolyLine(polygon);
+      drawer.drawPolyLine(polygon, 1);
       labels.add(createRegionLabel(polygon, border.getName(), width));
     }
 

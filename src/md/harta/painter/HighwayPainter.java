@@ -29,6 +29,9 @@ public class HighwayPainter extends AbstractPainter
 
   public void drawHighways(AbstractDrawer drawer, Collection<Highway> highways, int level)
   {
+    drawer.setStrokeColor(TilePalette.HIGHWAY_COLOR);
+    drawer.setFillColor(TilePalette.HIGHWAY_COLOR);
+
     List<Label> labels = new ArrayList<>();
     double roadWidth = getRoadWidthPixels(projector);
     for (Highway highway : highways)
@@ -39,12 +42,10 @@ public class HighwayPainter extends AbstractPainter
       {
         drawer.setLineWidth(1);
         shiftPolygon(polygon);
-        drawer.setStrokeColor(TilePalette.HIGHWAY_COLOR);
-        drawer.drawPolyLine(polygon);
+        drawer.drawPolyLine(polygon, 1);
       }
       else
       {
-        drawer.setFillColor(TilePalette.HIGHWAY_COLOR);
         drawLinesAsPolygons(polygon, drawer, roadWidth);
       }
     }

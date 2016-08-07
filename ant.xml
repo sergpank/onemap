@@ -1,4 +1,4 @@
-<project name="osm_classes" basedir="." default="generate">
+<project name="osm_classes" basedir="." default="all">
 
     <property name="source_dir" value="src"/>
     <property name="package" value="generated"/>

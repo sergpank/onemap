@@ -6,6 +6,7 @@ import md.harta.db.HighwayGisDao;
 import md.harta.geometry.Bounds;
 import md.harta.osm.*;
 import md.harta.projector.AbstractProjector;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -63,6 +64,16 @@ public class PostgisLoader extends AbstractLoader
   }
 
   @Override
+  public Map<Long, Waterway> getWaterways(AbstractProjector projector) {
+    return null;
+  }
+
+  @Override
+  public Map<Long, Landuse> getLanduse(AbstractProjector projector) {
+    throw new NotImplementedException();
+  }
+
+  @Override
   public Collection<Border> getBorders(int level, Bounds tileBounds, Map<Long, OsmNode> nodes, AbstractProjector projector)
   {
     return null;
@@ -89,6 +100,16 @@ public class PostgisLoader extends AbstractLoader
   @Override
   public Collection<Natural> getNature(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
   {
+    return null;
+  }
+
+  @Override
+  public Collection<Waterway> getWaterways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector) {
+    return null;
+  }
+
+  @Override
+  public Collection<Landuse> getLanduse(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector) {
     return null;
   }
 

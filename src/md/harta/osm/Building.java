@@ -10,6 +10,9 @@ import java.util.List;
  * Created by sergpank on 28.02.2015.
  */
 public class Building extends OsmWay{
+  public static final String BUILDING = "building";
+
+  private String type;
   private String houseNumber;
   private String street;
   private String height;
@@ -25,6 +28,9 @@ public class Building extends OsmWay{
       String key = item.getAttribute("k");
       String value = item.getAttribute("v");
       switch (key) {
+        case BUILDING:
+          type = value;
+          break;
         case "addr:housenumber":
           houseNumber = value;
           break;

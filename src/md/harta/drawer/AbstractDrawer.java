@@ -19,7 +19,7 @@ public abstract class AbstractDrawer
 
   public abstract void drawLine(XYPoint start, XYPoint end);
 
-  public abstract void drawPolyLine(CanvasPolygon polygon);
+  public abstract void drawPolyLine(CanvasPolygon polygon, int width);
 
   public abstract void setFont(String name, double size);
 

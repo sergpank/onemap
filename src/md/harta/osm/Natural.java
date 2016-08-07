@@ -11,6 +11,7 @@ import java.util.List;
  */
 public class Natural extends OsmWay
 {
+  public static final String NATURAL = "natural";
   public static final String WATER = "water";
 
   String type;
@@ -25,7 +26,7 @@ public class Natural extends OsmWay
       String key = item.getAttribute("k");
       String value = item.getAttribute("v");
       switch (key) {
-        case "natural":
+        case NATURAL:
           type = value;
           break;
         default:

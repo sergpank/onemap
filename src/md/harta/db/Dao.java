@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import generated.BoundsType;
 import md.harta.geometry.Bounds;
 import md.harta.osm.OsmNode;
+import md.harta.osm.OsmWay;
 import md.harta.projector.AbstractProjector;
 
 /**
@@ -18,6 +21,38 @@ public abstract class Dao<T>
   public Dao(Connection connection)
   {
     this.connection = connection;
+  }
+
+  public BoundsType getBounds(List<OsmNode> nodes)
+  {
+    double minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
+
+    for (OsmNode node : nodes)
+    {
+      maxLat = node.getLat() > maxLat ? node.getLat() : maxLat;
+      minLat = node.getLat() < minLat ? node.getLat() : minLat;
+      maxLon = node.getLon() > maxLon ? node.getLon() : maxLon;
+      minLon = node.getLon() < minLon ? node.getLon() : minLon;
+    }
+
+    BoundsType bounds = new BoundsType();
+    bounds.setMinlat(minLat);
+    bounds.setMaxlat(maxLat);
+    bounds.setMinlon(minLon);
+    bounds.setMaxlon(maxLon);
+
+    return bounds;
+  }
+
+  public Long[] getNodeIds(List<OsmNode> nodes)
+  {
+    Long[] ids = new Long[nodes.size()];
+    for (int i = 0; i < nodes.size(); i++)
+    {
+      ids[i] = nodes.get(i).getId();
+    }
+
+    return ids;
   }
 
   public abstract void save(T entity);

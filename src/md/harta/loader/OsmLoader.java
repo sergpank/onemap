@@ -26,6 +26,8 @@ public class OsmLoader extends AbstractLoader{
   private HashMap<Long, Leisure>  leisureMap = new HashMap<>();
   private HashMap<Long, Natural>  natureMap = new HashMap<>();
   private HashMap<Long, Border>   borderMap = new HashMap<>();
+  private HashMap<Long, Waterway> waterwayMap = new HashMap<>();
+  private HashMap<Long, Landuse>  landuseMap = new HashMap<>();
   private OsmBounds bounds;
 
   public OsmLoader() {
@@ -53,6 +55,16 @@ public class OsmLoader extends AbstractLoader{
   public Map<Long, Natural> getNature(AbstractProjector projector)
   {
     return natureMap;
+  }
+
+  @Override
+  public Map<Long, Waterway> getWaterways(AbstractProjector projector) {
+    return waterwayMap;
+  }
+
+  @Override
+  public Map<Long, Landuse> getLanduse(AbstractProjector projector) {
+    return landuseMap;
   }
 
   @Override
@@ -85,6 +97,18 @@ public class OsmLoader extends AbstractLoader{
     return natureMap.values();
   }
 
+  @Override
+  public Collection<Waterway> getWaterways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  {
+    return waterwayMap.values();
+  }
+
+  @Override
+  public Collection<Landuse> getLanduse(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  {
+    return landuseMap.values();
+  }
+
   public Map<Long, Border> getBorders()
   {
     return borderMap;
@@ -109,8 +133,10 @@ public class OsmLoader extends AbstractLoader{
     highwayMap.clear();
     leisureMap.clear();
     natureMap.clear();
+    waterwayMap.clear();
     borderMap.clear();
-    getWays(doc, projector);
+
+    readOsm(doc, projector);
 
     bounds = getBounds(doc);
 //    System.out.printf("Min lat = %f\n" +
@@ -148,7 +174,7 @@ public class OsmLoader extends AbstractLoader{
     }
   }
 
-  private void getWays(Document doc, AbstractProjector projector) {
+  private void readOsm(Document doc, AbstractProjector projector) {
     NodeList nodeList = XmlUtil.getNodeList(doc, "/osm/way");
     for (int i = 0; i < nodeList.getLength(); i++)
     {
@@ -184,13 +210,36 @@ public class OsmLoader extends AbstractLoader{
           Natural natural = new Natural(id, wayNodes, element, projector);
           natureMap.put(id, natural);
         }
+        else if (isWaterway(element))
+        {
+          Waterway waterway = new Waterway(id, wayNodes, element, projector);
+          waterwayMap.put(id, waterway);
+        }
         else if (isBorder(element))
         {
           Border border = new Border(id, wayNodes, element, projector);
           borderMap.put(id, border);
         }
+        else if (isItWhatWeNeed(element, Landuse.LANDUSE))
+        {
+          Landuse landuse = new Landuse(id, wayNodes, element, projector);
+          landuseMap.put(id, landuse);
+        }
       }
     }
+  }
+
+  private boolean isItWhatWeNeed(Element element, String whatWeNeed)
+  {
+    NodeList tags = getTags(element);
+    for (int i = 0; i < tags.getLength(); i++){
+      Element item = (Element) tags.item(i);
+      String key = item.getAttribute("k");
+      if (key.equals(whatWeNeed)){
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean isNatural(Element element)
@@ -199,7 +248,20 @@ public class OsmLoader extends AbstractLoader{
     for (int i = 0; i < tags.getLength(); i++){
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
-      if (key.equals("natural")){
+      if (key.equals(Natural.NATURAL)){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean isWaterway(Element element)
+  {
+    NodeList tags = getTags(element);
+    for (int i = 0; i < tags.getLength(); i++){
+      Element item = (Element) tags.item(i);
+      String key = item.getAttribute("k");
+      if (key.equals(Waterway.WATERWAY)){
         return true;
       }
     }
@@ -212,7 +274,7 @@ public class OsmLoader extends AbstractLoader{
     for (int i = 0; i < tags.getLength(); i++){
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
-      if (key.equals("leisure")){
+      if (key.equals(Leisure.LEISURE)){
         return true;
       }
     }
@@ -224,7 +286,7 @@ public class OsmLoader extends AbstractLoader{
     for (int i = 0; i < tags.getLength(); i++){
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
-      if (key.equals("highway")){
+      if (key.equals(Highway.HIGHWAY)){
         return true;
       }
     }
@@ -236,9 +298,10 @@ public class OsmLoader extends AbstractLoader{
     for(int i = 0; i < tags.getLength(); i++){
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
-      if (key.equals("building")){
-        String value = item.getAttribute("v");
-        return value.equals("yes") || value.equals("house");
+      if (key.equals(Building.BUILDING)){
+//        String value = item.getAttribute("v");
+//        return value.equals("yes") || value.equals("house");
+        return true;
       }
     }
     return false;
@@ -251,7 +314,7 @@ public class OsmLoader extends AbstractLoader{
     {
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
-      if (key.equals("border"))
+      if (key.equals(Border.BORDER))
       {
         return true;
       }
