@@ -59,12 +59,12 @@ public class MapPanelTile extends JPanel {
 
 //    map.loader = new PostgresLoader("debug");
 //    map.loader.load("debug", projector);
-    map.loader = new OsmLoader();
+//    map.loader = new OsmLoader();
 //    map.loader.load("osm/только_круг.osm", projector);
 //    map.loader.load("osm/греческая_площадь.osm", projector);
 //    map.loader.load("osm/map.osm", projector);
 //    map.loader.load("osm/парк_победы.osm", projector);
-    map.loader.load("osm/ботанический_сад.osm", projector);
+//    map.loader.load("osm/ботанический_сад.osm", projector);
 
     map.highways = map.loader.getHighways(projector).values();
     map.buildings = map.loader.getBuildings(projector).values();

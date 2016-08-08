@@ -230,7 +230,7 @@ public class DatabaseCreator
 
   private static String getCreateWaterwayTable()
   {
-    return "CREATE TABLE IF NOT EXISTS waterway (" +
+    return "CREATE TABLE IF NOT EXISTS waterways (" +
         "waterway_id bigint NOT NULL, " +
         "waterway_type text, " +
         "waterway_name text, " +
@@ -244,7 +244,7 @@ public class DatabaseCreator
 
   private static String getCreateWaterwayGisTable()
   {
-    return "CREATE TABLE IF NOT EXISTS gis.waterway_gis (" +
+    return "CREATE TABLE IF NOT EXISTS gis.waterways_gis (" +
         "waterway_id bigint NOT NULL, " +
         "waterway_type text, " +
         "waterway_name text, " +

@@ -25,6 +25,8 @@ public class HighwayDao extends Dao<Highway>
 //  delete from nodes where node_id in (select unnest(highway_nodes) from highways where highway_id = 25652283)
 //  delete from highways where highway_id = 25652283
 
+  public static final String TABLE = "highways";
+
   public static final String INSERT_SQL = "INSERT INTO highways " +
       "(highway_id, highway_name, highway_type, highway_nodes, min_lat, max_lat, min_lon, max_lon)" +
       " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
@@ -34,10 +36,6 @@ public class HighwayDao extends Dao<Highway>
 //  public static final String SELECT_TILE = "SELECT * FROM highways " +
 //      "WHERE (min_lon BETWEEN ? AND ? OR max_lon BETWEEN ? AND ?) " +
 //      "AND (min_lat BETWEEN ? AND ? OR max_lat BETWEEN ? and ?)";
-
-  public static final String SELECT_TILE = "SELECT * FROM highways WHERE " +
-      "NOT( ((max_lon < ?) OR (min_lon > ?)) " +
-      " AND ((max_lat < ?) OR (min_lat > ?)) )";
 
   public HighwayDao(Connection connection)
   {
@@ -122,7 +120,7 @@ public class HighwayDao extends Dao<Highway>
   {
 //    long start = System.currentTimeMillis();
     List<Highway> highways = new ArrayList<>();
-    try (PreparedStatement stmt = connection.prepareStatement(SELECT_TILE))
+    try (PreparedStatement stmt = connection.prepareStatement(String.format(SELECT_TILE, TABLE)))
     {
       int i = 1;
       stmt.setDouble(i++, box.getMinLon());

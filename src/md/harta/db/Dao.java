@@ -16,6 +16,10 @@ import md.harta.projector.AbstractProjector;
  */
 public abstract class Dao<T>
 {
+  public static final String SELECT_TILE = "SELECT * FROM %s WHERE " +
+      "NOT( ((max_lon < ?) OR (min_lon > ?)) " +
+      " AND ((max_lat < ?) OR (min_lat > ?)) )";
+
   protected Connection connection;
 
   public Dao(Connection connection)

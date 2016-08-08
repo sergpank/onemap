@@ -7,11 +7,8 @@ import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import md.harta.db.BorderDao;
-import md.harta.db.BuildingDao;
-import md.harta.db.DbHelper;
-import md.harta.db.HighwayDao;
-import md.harta.db.NodeDao;
+
+import md.harta.db.*;
 import md.harta.geometry.Bounds;
 import md.harta.osm.*;
 import md.harta.projector.AbstractProjector;
@@ -144,7 +141,7 @@ public class PostgresLoader extends AbstractLoader
 
   @Override
   public Collection<Waterway> getWaterways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector) {
-    throw new NotImplementedException();
+    return new WaterwayDao(connection).load(level, tileBounds, nodeMap, projector);
   }
 
   @Override
