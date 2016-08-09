@@ -1,20 +1,5 @@
 package md.harta;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.RenderingHints;
-import java.util.Collection;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import md.harta.drawer.TileDrawer;
 import md.harta.geometry.Bounds;
 import md.harta.geometry.XYPoint;
@@ -31,6 +16,12 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.Collection;
+
 /**
  * Created by sergpank on 07.02.2015.
  */
@@ -46,6 +37,7 @@ public class MapPanelTile extends JPanel {
   private Collection<Leisure> leisure;
   private Collection<Natural> nature;
   private Collection<Waterway> waterways;
+  private Collection<Landuse> landuse;
   private static MapPanelTile map;
   private JTextField dataField;
 
@@ -59,18 +51,15 @@ public class MapPanelTile extends JPanel {
 
 //    map.loader = new PostgresLoader("debug");
 //    map.loader.load("debug", projector);
-//    map.loader = new OsmLoader();
-//    map.loader.load("osm/только_круг.osm", projector);
-//    map.loader.load("osm/греческая_площадь.osm", projector);
-//    map.loader.load("osm/map.osm", projector);
-//    map.loader.load("osm/парк_победы.osm", projector);
-//    map.loader.load("osm/ботанический_сад.osm", projector);
+    map.loader = new OsmLoader();
+    map.loader.load("osm/ботанический_сад.osm", projector);
 
     map.highways = map.loader.getHighways(projector).values();
     map.buildings = map.loader.getBuildings(projector).values();
     map.leisure = map.loader.getLeisure(projector).values();
     map.nature = map.loader.getNature(projector).values();
     map.waterways = map.loader.getWaterways(projector).values();
+    map.landuse = map.loader.getLanduse(projector).values();
 
     JScrollPane scrollPane = new JScrollPane(map);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -78,7 +67,7 @@ public class MapPanelTile extends JPanel {
 
     JFrame frame = new JFrame("Tile drawer live debug");
     frame.add(scrollPane, BorderLayout.CENTER);
-    frame.add(map.createControlPanel(), BorderLayout.WEST);
+    frame.add(map.createControlPanel(), BorderLayout.NORTH);
     map.dataField.setText("osm/ботанический_сад.osm");
     frame.pack();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -89,24 +78,19 @@ public class MapPanelTile extends JPanel {
   private JPanel createControlPanel()
   {
     JPanel panel = new JPanel();
-    panel.setLayout(new GridLayout(0, 2, 5, 5));
+    panel.setLayout(new FlowLayout());
 
     TileCutter tileCutter = new TileCutter(projector, TileGenerator.TILE_SIZE, level, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
     tileCutter.cut();
     JComboBox<Integer> levelCombo = createCombo(ScaleCalculator.MIN_SCALE_LEVEL, ScaleCalculator.MAX_SCALE_LEVEL, level);
-    JComboBox<Integer> xCombo = createCombo(tileCutter.getMinTileXindex(), tileCutter.getMaxTileXindex(), level);
-    JComboBox<Integer> yCombo = createCombo(tileCutter.getMinTileYindex(), tileCutter.getMaxTileYindex(), level);
 
     int pos = 0;
     panel.add(new JLabel("DB / OSM : "), pos++);
     dataField = new JTextField();
+    dataField.setPreferredSize(new Dimension(400, 30));
     panel.add(dataField, pos++);
     panel.add(new JLabel("Level : "), pos++);
     panel.add(levelCombo, pos++);
-    panel.add(new JLabel("X : "), pos++);
-    panel.add(xCombo, pos++);
-    panel.add(new JLabel("Y : "), pos++);
-    panel.add(yCombo, pos++);
 
     JButton repaintButton = new JButton("Repaint");
     panel.add(new JLabel("Button:"), pos++);
@@ -114,18 +98,32 @@ public class MapPanelTile extends JPanel {
 
     repaintButton.addActionListener(
         e -> {
-          level = (int) levelCombo.getSelectedItem();
-          projector = new MercatorProjector(ScaleCalculator.getRadiusForLevel(level), MercatorProjector.MAX_LAT);
-          String data = dataField.getText();
-          if (data != null && !data.isEmpty())
-          {
-            LOG.info("Loading map: " + data);
-            map.loader.load(data, projector);
-            this.repaint();
-          }
+          repaintMap(levelCombo);
         });
 
+    dataField.addKeyListener(new KeyAdapter(){
+      @Override
+      public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+          repaintMap(levelCombo);
+        }
+      }
+    });
+
     return panel;
+  }
+
+  private void repaintMap(JComboBox<Integer> levelCombo) {
+    level = (int) levelCombo.getSelectedItem();
+    projector = new MercatorProjector(ScaleCalculator.getRadiusForLevel(level), MercatorProjector.MAX_LAT);
+    String data = dataField.getText();
+    if (data != null && !data.isEmpty())
+    {
+      LOG.info("Loading map: " + data);
+      map.loader.load(data, projector);
+      this.repaint();
+    }
   }
 
   private JComboBox<Integer> createCombo(int min, int max, int level)
@@ -180,16 +178,18 @@ public class MapPanelTile extends JPanel {
     LeisurePainter leisurePainter = new LeisurePainter(projector, bounds);
     NaturePainter naturePainter = new NaturePainter(projector, bounds);
     WaterwayPainter waterwayPainter = new WaterwayPainter(projector, bounds);
+    LandusePainter landusePainter = new LandusePainter(projector, bounds);
     HighwayPainter highwayPainter = new HighwayPainter(projector, bounds);
     BuildingPainter buildingPainter = new BuildingPainter(projector, bounds);
 
     leisurePainter.drawParks(new TileDrawer((Graphics2D) g), leisure, level);
     naturePainter.drawWater(new TileDrawer((Graphics2D)g), nature, level);
+    landusePainter.drawLanduse(new TileDrawer((Graphics2D)g), landuse, level);
     waterwayPainter.drawWaterways(new TileDrawer((Graphics2D)g), waterways, level);
     highwayPainter.drawHighways(new TileDrawer((Graphics2D) g), highways, level);
     buildingPainter.drawBuildings(new TileDrawer((Graphics2D) g), buildings, level);
 
-    drawGrid(bounds, (Graphics2D) g);
+//    drawGrid(bounds, (Graphics2D) g);
   }
 
   private void drawParallels(Graphics g) {

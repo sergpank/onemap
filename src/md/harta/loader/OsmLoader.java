@@ -135,7 +135,7 @@ public class OsmLoader extends AbstractLoader{
     natureMap.clear();
     waterwayMap.clear();
     borderMap.clear();
-
+    landuseMap.clear();
     readOsm(doc, projector);
 
     bounds = getBounds(doc);
