@@ -5,6 +5,8 @@ import java.util.List;
 import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
 import md.harta.projector.AbstractProjector;
+import md.harta.tile.TilePalette;
+import md.harta.util.TextUtil;
 
 /**
  * Created by sergpank on 11.08.15.
@@ -12,13 +14,13 @@ import md.harta.projector.AbstractProjector;
 public class RoadLabelIntersector
 {
   private Bounds bounds;
-  private int charWidth;
+  private int labelWidth;
   private int charHeight;
 
-  public RoadLabelIntersector(Bounds bounds, int charWidth, int charHeight)
+  public RoadLabelIntersector(Bounds bounds, int labelWidth, int charHeight)
   {
     this.bounds = bounds;
-    this.charWidth = charWidth;
+    this.labelWidth = labelWidth;
     this.charHeight = charHeight;
   }
 
@@ -26,7 +28,6 @@ public class RoadLabelIntersector
   {
     double highwayLength = GeometryUtil.getHighwayLength(highway, projector);
 
-    int labelWidth = label.getText().length() * charWidth + label.getText().length();
 //    System.out.println(label.getText());
 //    System.out.println("charWidth: " + charWidth);
 //    System.out.println("labelWidth: " + labelWidth);
@@ -57,6 +58,8 @@ public class RoadLabelIntersector
 
     for (int i = 0; i < label.getText().length(); i++)
     {
+      String ch = Character.toString(label.getText().charAt(i));
+      int charWidth = (int) TextUtil.getStringWidth(ch, TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
       Line line = segments.get(segmentIndex);
 
       XYPoint intersectionPoint = calcIntersectionPoint(line, shift);

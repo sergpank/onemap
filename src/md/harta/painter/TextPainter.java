@@ -42,9 +42,6 @@ public class TextPainter extends AbstractPainter
     Font font = new Font(TilePalette.HIGHWAY_FONT_NAME, Font.PLAIN, TilePalette.HIGHWAY_FONT_SIZE);
 
     int charHeight = (int) TextUtil.getStringHeight(TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
-    // There is one pixel distance between characters
-    int charWidth = (int) TextUtil.getStringWidth("a", TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
-    int labelWidth = charWidth * label.getText().length() + label.getText().length();
 
     // XYPoint center = getIntersectionPoint(label.getHighway(), label.getCenter());
     XYPoint roadStartPoint = getRoadStartPoint(label);
@@ -67,9 +64,11 @@ public class TextPainter extends AbstractPainter
 //
 //    System.out.println("Road length = " + roadLength + "\n");
 
+    int labelWidth = calcLabelWidth(label);
+
     if (roadLength > labelWidth)
     {
-      RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, charWidth, charHeight);
+      RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, labelWidth, charHeight);
       List<Intersection> intersections = intersector.getIntersections(label.getHighway(), label, projector);
       for (int i = 0; i < intersections.size(); i++)
       {
@@ -87,6 +86,19 @@ public class TextPainter extends AbstractPainter
         drawer.translate(-(int)intersection.getPoint().getX(), -(int)intersection.getPoint().getY());
       }
     }
+  }
+
+  private int calcLabelWidth(Label label)
+  {
+    String text = label.getText();
+    int labelWidth = text.length(); // interval between letters = 1 pixel
+
+    for (char character : text.toCharArray())
+    {
+      int charWidth = (int) TextUtil.getStringWidth(Character.toString(character), TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
+      labelWidth += charWidth;
+    }
+    return labelWidth;
   }
 
   /**

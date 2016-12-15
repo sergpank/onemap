@@ -29,7 +29,9 @@ public class MapPanelTile extends JPanel {
 
   private static final Logger LOG = LoggerFactory.getLogger(MapPanelTile.class);
 
-  public static int level = 16;
+  public static int LEVEL = 18;
+  public static String DATA_SOURCE = "osm/греческая_площадь.osm";
+
   private AbstractProjector projector;
   private AbstractLoader loader;
   private Collection<Highway> highways;
@@ -45,14 +47,14 @@ public class MapPanelTile extends JPanel {
   {
     DOMConfigurator.configure("log4j.xml");
 
-    double radiusForLevel = ScaleCalculator.getRadiusForLevel(level);
+    double radiusForLevel = ScaleCalculator.getRadiusForLevel(LEVEL);
     MercatorProjector projector = new MercatorProjector(radiusForLevel, MercatorProjector.MAX_LAT);
     map = new MapPanelTile(new OsmLoader(), projector);
 
 //    map.loader = new PostgresLoader("debug");
 //    map.loader.load("debug", projector);
     map.loader = new OsmLoader();
-    map.loader.load("osm/ботанический_сад.osm", projector);
+    map.loader.load(DATA_SOURCE, projector);
 
     map.highways = map.loader.getHighways(projector).values();
     map.buildings = map.loader.getBuildings(projector).values();
@@ -68,9 +70,9 @@ public class MapPanelTile extends JPanel {
     JFrame frame = new JFrame("Tile drawer live debug");
     frame.add(scrollPane, BorderLayout.CENTER);
     frame.add(map.createControlPanel(), BorderLayout.NORTH);
-    map.dataField.setText("osm/ботанический_сад.osm");
+    map.dataField.setText(DATA_SOURCE);
     frame.pack();
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.setSize(1000, 700);
     frame.setVisible(true);
   }
@@ -80,9 +82,9 @@ public class MapPanelTile extends JPanel {
     JPanel panel = new JPanel();
     panel.setLayout(new FlowLayout());
 
-    TileCutter tileCutter = new TileCutter(projector, TileGenerator.TILE_SIZE, level, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
+    TileCutter tileCutter = new TileCutter(projector, TileGenerator.TILE_SIZE, LEVEL, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
     tileCutter.cut();
-    JComboBox<Integer> levelCombo = createCombo(ScaleCalculator.MIN_SCALE_LEVEL, ScaleCalculator.MAX_SCALE_LEVEL, level);
+    JComboBox<Integer> levelCombo = createCombo(ScaleCalculator.MIN_SCALE_LEVEL, ScaleCalculator.MAX_SCALE_LEVEL, LEVEL);
 
     int pos = 0;
     panel.add(new JLabel("DB / OSM : "), pos++);
@@ -115,8 +117,8 @@ public class MapPanelTile extends JPanel {
   }
 
   private void repaintMap(JComboBox<Integer> levelCombo) {
-    level = (int) levelCombo.getSelectedItem();
-    projector = new MercatorProjector(ScaleCalculator.getRadiusForLevel(level), MercatorProjector.MAX_LAT);
+    LEVEL = (int) levelCombo.getSelectedItem();
+    projector = new MercatorProjector(ScaleCalculator.getRadiusForLevel(LEVEL), MercatorProjector.MAX_LAT);
     String data = dataField.getText();
     if (data != null && !data.isEmpty())
     {
@@ -182,12 +184,12 @@ public class MapPanelTile extends JPanel {
     HighwayPainter highwayPainter = new HighwayPainter(projector, bounds);
     BuildingPainter buildingPainter = new BuildingPainter(projector, bounds);
 
-    leisurePainter.drawParks(new TileDrawer((Graphics2D) g), leisure, level);
-    naturePainter.drawWater(new TileDrawer((Graphics2D)g), nature, level);
-    landusePainter.drawLanduse(new TileDrawer((Graphics2D)g), landuse, level);
-    waterwayPainter.drawWaterways(new TileDrawer((Graphics2D)g), waterways, level);
-    highwayPainter.drawHighways(new TileDrawer((Graphics2D) g), highways, level);
-    buildingPainter.drawBuildings(new TileDrawer((Graphics2D) g), buildings, level);
+    leisurePainter.drawParks(new TileDrawer((Graphics2D) g), leisure, LEVEL);
+    naturePainter.drawWater(new TileDrawer((Graphics2D)g), nature, LEVEL);
+    landusePainter.drawLanduse(new TileDrawer((Graphics2D)g), landuse, LEVEL);
+    waterwayPainter.drawWaterways(new TileDrawer((Graphics2D)g), waterways, LEVEL);
+    highwayPainter.drawHighways(new TileDrawer((Graphics2D) g), highways, LEVEL);
+    buildingPainter.drawBuildings(new TileDrawer((Graphics2D) g), buildings, LEVEL);
 
 //    drawGrid(bounds, (Graphics2D) g);
   }
