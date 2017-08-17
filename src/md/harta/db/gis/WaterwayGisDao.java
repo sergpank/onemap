@@ -1,4 +1,4 @@
-package md.harta.db;
+package md.harta.db.gis;
 
 import md.harta.geometry.Bounds;
 import md.harta.osm.OsmNode;

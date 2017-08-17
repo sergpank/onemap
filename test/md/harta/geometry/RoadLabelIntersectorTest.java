@@ -19,6 +19,17 @@ public class RoadLabelIntersectorTest extends TestCase
   int charHeight = 10;
 
   @Test
+  public void testGreekStreetOdessa()
+  {
+    Bounds bounds = new Bounds(3.9284041629477546E7, 2.374463388867807E7, 3.928453098358557E7, 2.374468367487468E7);
+    new Label("Грецька вулиця", )
+    RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, );
+
+
+    List<Intersection> intersections = intersector.getIntersections();
+  }
+
+  @Test
   public void testDirectLineToSegments()
   {
     RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5, charHeight);
@@ -151,11 +162,11 @@ public class RoadLabelIntersectorTest extends TestCase
     Line line = new Line(new XYPoint(10, 10), new XYPoint(10, 20));
     double slope = line.getSlope();
 
-    double dx = Math.cos(slope) * 10;
-    double dy = Math.sin(slope) * 10;
+    double dx = Math.cos(slope);
+    double dy = Math.sin(slope);
 
     assertEquals(0, dx, 0.00001);
-    assertEquals(10, dy, 0.00001);
+    assertEquals(-1, dy, 0.00001);
   }
 
   @Test
@@ -249,41 +260,9 @@ public class RoadLabelIntersectorTest extends TestCase
     expected.add(new Intersection(new XYPoint(startPoint.getX() + symbolWidth, startPoint.getY()), 0));
     expected.add(new Intersection(new XYPoint(startPoint.getX() + symbolWidth * 2, startPoint.getY()), 0));
 
-    for (int i = 0; i < actual.size(); i++)
-    {
-      assertEquals(expected.get(i), actual.get(i));
-    }
-  }
-
-  @Test
-  public void testIntersectionPointsVertical()
-  {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new Bounds(10, 10, 1000, 1000), 5, charHeight);
-    SimpleProjector projector = new SimpleProjector(1);
-
-    List<OsmNode> nodes = new ArrayList<>();
-    nodes.add(new OsmNode(1, 10, 10));
-    nodes.add(new OsmNode(2, 20, 10));
-    nodes.add(new OsmNode(3, 40, 10));
-
-    Highway highway = new Highway(1l, "1", "no_type", nodes, projector);
-    int fontSize = 12;
-    Label label = new Label("aaa", new XYPoint(100, 100), TilePalette.FONT_NAME, fontSize);
-
-    List<Intersection> actual = intersector.getIntersections(highway, label, projector);
-
-    double symbolWidth = getSymbolWidth(fontSize, TilePalette.FONT_NAME);
-    XYPoint startPoint = projector.getXY(10, 10);
-
-    List<Intersection> expected = new ArrayList<>();
-    expected.add(new Intersection(startPoint, 0));
-    expected.add(new Intersection(new XYPoint(startPoint.getX() + symbolWidth, startPoint.getY()), 0));
-    expected.add(new Intersection(new XYPoint(startPoint.getX() + symbolWidth * 2, startPoint.getY()), 0));
-
-    for (int i = 0; i < actual.size(); i++)
-    {
-      assertEquals(expected.get(i), actual.get(i));
-    }
+    assertEquals(expected.get(0), actual.get(0));
+    assertEquals(expected.get(1), actual.get(1));
+    assertEquals(expected.get(2), actual.get(2));
   }
 
   @Test

@@ -1,4 +1,4 @@
-package md.harta.db;
+package md.harta.db.dao;
 
 import md.harta.geometry.Bounds;
 import md.harta.osm.Leisure;

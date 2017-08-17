@@ -1,4 +1,4 @@
-package md.harta.db;
+package md.harta.db.dao;
 
 import java.sql.*;
 import java.util.ArrayList;

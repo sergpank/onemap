@@ -1,4 +1,4 @@
-package md.harta.experiments;
+package md.experiments;
 
 import java.awt.Dimension;
 import java.awt.Graphics;

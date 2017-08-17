@@ -1,5 +1,6 @@
 package md.harta.painter;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -129,7 +130,7 @@ public class HighwayPainter extends AbstractPainter
     startPoint = shiftPoint(startPoint);
     endPoint = shiftPoint(endPoint);
 
-    drawer.setFillColor(TilePalette.HIGHWAY_COLOR);
+    drawer.setFillColor(Color.ORANGE);
     drawer.fillOval(startPoint.getX() - startDiameter / 2.0, startPoint.getY() - startDiameter / 2.0, startDiameter, startDiameter);
     drawer.fillOval(endPoint.getX() - endDiameter / 2.0, endPoint.getY() - endDiameter / 2.0, endDiameter, endDiameter);
   }

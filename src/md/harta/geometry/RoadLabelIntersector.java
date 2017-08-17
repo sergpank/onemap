@@ -28,9 +28,6 @@ public class RoadLabelIntersector
   {
     double highwayLength = GeometryUtil.getHighwayLength(highway, projector);
 
-//    System.out.println(label.getText());
-//    System.out.println("charWidth: " + charWidth);
-//    System.out.println("labelWidth: " + labelWidth);
     if (highwayLength < labelWidth)
     {
       System.err.printf("Road length (%f) < label length (%d)", highwayLength, labelWidth);
@@ -58,20 +55,20 @@ public class RoadLabelIntersector
 
     for (int i = 0; i < label.getText().length(); i++)
     {
-      String ch = Character.toString(label.getText().charAt(i));
-      int charWidth = (int) TextUtil.getStringWidth(ch, TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
+      char ch = label.getText().charAt(i);
+      int charWidth = calcCharWidth(ch);
       Line line = segments.get(segmentIndex);
 
       XYPoint intersectionPoint = calcIntersectionPoint(line, shift);
 
-      if ((GeometryUtil.getDistanceBetweenPoints(line.getLeftPoint(), line.getRightPoint()) - shift) <= (charWidth))
+      if ((line.calcLength() - shift) <= (charWidth))
       {
         if (intersections.size() == 0)
         {
           for (; segmentIndex < segments.size(); segmentIndex++)
           {
             line = segments.get(segmentIndex);
-            double segmentLength = GeometryUtil.getDistanceBetweenPoints(line.getLeftPoint(), line.getRightPoint());
+            double segmentLength = line.calcLength();
             if (segmentLength < shift)
             {
               shift -= segmentLength;
@@ -89,7 +86,8 @@ public class RoadLabelIntersector
           XYPoint previousIntersection = intersections.get(intersections.size() - 1).getPoint();
           // Расстояние от последнего пересечения до конца предыдущего сегмента
           double rest = GeometryUtil.getDistanceBetweenPoints(previousIntersection, line.getRightPoint());
-          shift = charWidth - rest;
+          int previousCharWidth = 0;//calcCharWidth(label.getText().charAt(i - 1));
+          shift = charWidth - rest - previousCharWidth;
 
           ++segmentIndex;
           if (segmentIndex < segments.size())
@@ -109,9 +107,21 @@ public class RoadLabelIntersector
 
       Intersection intersection = new Intersection(intersectionPoint, line.getSlope());
       intersections.add(intersection);
+
+      if (label.getText().equals("Грецька вулиця"))
+      {
+        System.out.printf("\"%s\" : %d, %s\n", ch, charWidth, intersection);
+      }
     }
 
+    System.out.println();
+
     return intersections;
+  }
+
+  private int calcCharWidth(char ch) {
+    String s = Character.toString(ch);
+    return (int) TextUtil.getStringWidth(s, TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
   }
 
   private XYPoint calcIntersectionPoint(Line line, double shift)
@@ -120,7 +130,6 @@ public class RoadLabelIntersector
     double dy = Math.sin(line.getSlope()) * shift;
 
     XYPoint intersection = new XYPoint(line.getLeftPoint().getX() + dx, line.getLeftPoint().getY() + dy);
-//    return intersection;
     Line perpendicular = GeometryUtil.getPerpendicular(line, intersection);
     return GeometryUtil.getLineCircleIntersection(perpendicular, new Circle(intersection, charHeight / 3.))[1];
   }

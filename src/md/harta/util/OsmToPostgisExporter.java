@@ -1,12 +1,11 @@
 package md.harta.util;
 
 import md.harta.db.*;
-import md.harta.geometry.Bounds;
+import md.harta.db.gis.BuildingGisDao;
+import md.harta.db.gis.HighwayGisDao;
 import md.harta.loader.OsmLoader;
 import md.harta.osm.Building;
 import md.harta.osm.Highway;
-import md.harta.osm.OsmNode;
-import md.harta.projector.MercatorProjector;
 
 import java.sql.Connection;
 import java.util.Arrays;

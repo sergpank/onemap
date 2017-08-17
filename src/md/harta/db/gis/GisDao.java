@@ -1,5 +1,6 @@
-package md.harta.db;
+package md.harta.db.gis;
 
+import md.harta.db.dao.Dao;
 import md.harta.osm.OsmNode;
 
 import java.sql.Connection;

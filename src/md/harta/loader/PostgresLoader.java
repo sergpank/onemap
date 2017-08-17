@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import md.harta.db.*;
+import md.harta.db.dao.*;
 import md.harta.geometry.Bounds;
 import md.harta.osm.*;
 import md.harta.projector.AbstractProjector;

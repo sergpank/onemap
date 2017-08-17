@@ -5,6 +5,10 @@ import java.util.Arrays;
 import java.util.Map;
 
 import md.harta.db.*;
+import md.harta.db.dao.BuildingDao;
+import md.harta.db.dao.HighwayDao;
+import md.harta.db.dao.NodeDao;
+import md.harta.db.dao.WaterwayDao;
 import md.harta.loader.OsmLoader;
 import md.harta.osm.Building;
 import md.harta.osm.Highway;

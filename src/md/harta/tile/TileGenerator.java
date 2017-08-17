@@ -7,19 +7,20 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import javax.imageio.ImageIO;
 
 import md.harta.db.DbHelper;
-import md.harta.db.NodeDao;
+import md.harta.db.dao.NodeDao;
 import md.harta.drawer.AbstractDrawer;
 import md.harta.drawer.TileDrawer;
 import md.harta.geometry.Bounds;
 import md.harta.loader.AbstractLoader;
 import md.harta.loader.PostgisLoader;
-import md.harta.loader.PostgresLoader;
 import md.harta.osm.Building;
 import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
@@ -28,7 +29,6 @@ import md.harta.painter.HighwayPainter;
 import md.harta.projector.AbstractProjector;
 import md.harta.projector.MercatorProjector;
 import md.harta.util.ScaleCalculator;
-import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,17 +45,24 @@ public class TileGenerator
 
   private static Logger LOG = LoggerFactory.getLogger(TileGenerator.class);
 
+  private String database = "chisinau";
+  private long tileCnt = 0;
+
   public static void main(String[] args)
   {
-//    PropertyConfigurator.configure("log4j.properties");
     DOMConfigurator.configure("log4j.xml");
+    //    PropertyConfigurator.configure("log4j.properties");
 
+    new TileGenerator().generate();
+  }
+
+  public void generate()
+  {
 //    double minLat = 45.4601058959962;//loader.getMinLat();
 //    double minLon = 26.6213111877442;//loader.getMinLon();
 //    double maxLat = 48.4901695251467;//loader.getMaxLat();
 //    double maxLon = 30.1637401580812;//loader.getMaxLon();
 
-    String database = "chisinau";
     File tilesFolder = new File(TILE_DIR, database);
     tilesFolder.mkdirs();
 
@@ -77,14 +84,22 @@ public class TileGenerator
       nodeMap.put(node.getId(), node);
     }
 
-    long globalStart = System.currentTimeMillis();
+    LocalDateTime generationStart = LocalDateTime.now();
+
+    generateLevel(tilesFolder, loader, bounds, nodeMap);
+
+    LOG.info("{} min", Duration.between(generationStart, LocalDateTime.now()).toMinutes());
+  }
+
+  private void generateLevel(File tilesFolder, AbstractLoader loader, Bounds bounds, Map<Long, OsmNode> nodeMap)
+  {
     for (int level = START_LEVEL; level <= END_LEVEL; level++)
     {
 //      long start = System.currentTimeMillis();
       new File(tilesFolder, Integer.toString(level)).mkdirs();
 
       AbstractProjector projector = new MercatorProjector(ScaleCalculator.getRadiusForLevel(level), 85);
-      int tileExtension = 0;//(int) HighwayPainter.getRoadWidthPixels(projector) * 4;
+      //(int) HighwayPainter.getRoadWidthPixels(projector) * 4;
 //      loader.load("osm/Hanul_Morii.osm", projector);
 //      Bounds bounds = loader.getBounds();
 
@@ -101,44 +116,56 @@ public class TileGenerator
       {
         progressStep = numTiles / 100;
       }
-      long start = System.currentTimeMillis();
-      long tileCnt = 0;
-      for (int y = tileCutter.getMinTileYindex(); y <= tileCutter.getMaxTileYindex(); y++)
-      {
-        for (int x = tileCutter.getMinTileXindex(); x <= tileCutter.getMaxTileXindex(); x++)
-        {
+      generateLevelTiles(loader, nodeMap, level, projector, tileCutter);
+    }
+  }
+
+  private void generateLevelTiles(AbstractLoader loader, Map<Long, OsmNode> nodeMap, int level,
+                                         AbstractProjector projector, TileCutter tileCutter)
+  {
+    long start = System.currentTimeMillis();
+
+    for (int y = tileCutter.getMinTileYindex(); y <= tileCutter.getMaxTileYindex(); y++)
+    {
+      generateRow(level, y, tileCutter, loader, projector, nodeMap, database);
+    }
+
+    long end = System.currentTimeMillis();
+    LOG.info("{} -> {} ms; {} ms per tile", level, (end - start), (end - start) / tileCnt);
+  }
+
+  private void generateRow(int level, int y, TileCutter tileCutter, AbstractLoader loader, AbstractProjector projector, Map<Long, OsmNode> nodeMap, String dbName)
+  {
+    for (int x = tileCutter.getMinTileXindex(); x <= tileCutter.getMaxTileXindex(); x++)
+    {
 //          if (((++tileCnt) % progressStep) == 0)
 //          {
 //            System.out.printf("%d ---> %.0f %% (%d of %d)\n", level, (double)tileCnt / numTiles * 100, tileCnt, numTiles);
 //          }
-          BufferedImage bi = new BufferedImage(TILE_SIZE, TILE_SIZE, BufferedImage.TYPE_INT_ARGB);
-          Graphics2D graphics = bi.createGraphics();
+      BufferedImage bi = new BufferedImage(TILE_SIZE, TILE_SIZE, BufferedImage.TYPE_INT_ARGB);
+      Graphics2D graphics = bi.createGraphics();
 
-          graphics.setPaint(TilePalette.BACKGROUND_COLOR);
-          graphics.fillRect(0, 0, TILE_SIZE, TILE_SIZE);
+      graphics.setPaint(TilePalette.BACKGROUND_COLOR);
+      graphics.fillRect(0, 0, TILE_SIZE, TILE_SIZE);
 
-          Bounds tileBounds = tileCutter.getTileBounds(x, y, tileExtension);
-          AbstractDrawer drawer = new TileDrawer(graphics);
-          drawer.setAAEnabled(true);
+      Bounds tileBounds = tileCutter.getTileBounds(x, y, 0);
+      AbstractDrawer drawer = new TileDrawer(graphics);
+      drawer.setAAEnabled(true);
 
-          Collection<Highway> highways = loader.getHighways(level, tileBounds, nodeMap, projector);
-          Collection<Building> buildings = loader.getBuildings(level, tileBounds, nodeMap, projector);
-          new HighwayPainter(projector, tileBounds).drawHighways(drawer, highways, level);
-          new BuildingPainter(projector, tileBounds).drawBuildings(drawer, buildings, level);
+      Collection<Highway> highways = loader.getHighways(level, tileBounds, nodeMap, projector);
+      Collection<Building> buildings = loader.getBuildings(level, tileBounds, nodeMap, projector);
+      new HighwayPainter(projector, tileBounds).drawHighways(drawer, highways, level);
+      new BuildingPainter(projector, tileBounds).drawBuildings(drawer, buildings, level);
 
-//          addTileNumberAndBorder(x, y, level, graphics);
+      drawTileNumber(x, y, level, graphics);
+      drawTileBorder(graphics);
 
-          writeTile(bi, level, x, y, database);
-          tileCnt++;
-        }
-      }
-      long end = System.currentTimeMillis();
-      LOG.info("{} -> {} ms; {} ms per tile", level, (end - start), (end - start) / tileCnt);
+      writeTile(bi, level, x, y, dbName);
+      tileCnt++;
     }
-    LOG.info("{} min", (System.currentTimeMillis() - globalStart) / 1000. / 60.);
   }
 
-  private static void addTileNumberAndBorder(int x, int y, int level, Graphics2D graphics)
+  private void drawTileNumber(int x, int y, int level, Graphics2D graphics)
   {
     String levelLabel = level + "";
     String xyLabel = String.format("(%d; %d)", x, y);
@@ -158,14 +185,17 @@ public class TileGenerator
     graphics.setColor(Color.RED);
     graphics.drawString(levelLabel, 128 - levelWidth / 2, 128 + h / 2);
     graphics.drawString(xyLabel, 128 - xyWidth / 2, 128 + h / 2 * 3 + 8);
+  }
 
+  private void drawTileBorder(Graphics2D graphics)
+  {
     graphics.drawLine(0, 0, 255, 0);
     graphics.drawLine(256, 0, 255, 255);
     graphics.drawLine(255, 255, 0, 255);
     graphics.drawLine(0, 255, 0, 0);
   }
 
-  private static void writeTile(BufferedImage bi, int level, int x, int y, String dbName)
+  private void writeTile(BufferedImage bi, int level, int x, int y, String dbName)
   {
     try
     {

@@ -1,4 +1,4 @@
-package md.harta.experiments;
+package md.experiments;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

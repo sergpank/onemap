@@ -1,7 +1,6 @@
-package md.harta.db;
+package md.harta.db.dao;
 
 import md.harta.geometry.Bounds;
-import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
 import md.harta.osm.Waterway;
 import md.harta.projector.AbstractProjector;

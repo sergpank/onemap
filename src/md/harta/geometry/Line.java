@@ -37,6 +37,11 @@ public class Line {
         leftPoint = pointA;
         rightPoint = pointB;
       }
+      else
+      {
+        leftPoint = pointB;
+        rightPoint = pointA;
+      }
     }
     else
     {
@@ -73,7 +78,7 @@ public class Line {
     {
       if (b ==0)
       {
-        if (leftPoint.getY() > rightPoint.getX())
+        if (leftPoint.getY() > rightPoint.getY())
           slope = -Math.PI / 2;
         else
           slope = Math.PI / 2;
@@ -121,7 +126,7 @@ public class Line {
     {
       if (b == l.b)
       {
-        if (slope == -l.slope || ((c >= 0 && l.c <=0) || (c <=0 && l.c >=0)))
+        if ( ((slope == null && l.slope == null) || (slope == -l.slope)) || ((c >= 0 && l.c <=0) || (c <=0 && l.c >=0)))
         {
           return true;
         }
@@ -148,7 +153,9 @@ public class Line {
   @Override
   public String toString() {
     return "Line{" +
-        "a=" + a +
+        "left=" + leftPoint +
+        ", right=" + rightPoint +
+        ", a=" + a +
         ", b=" + b +
         ", c=" + c +
         ", slope=" + slope +
@@ -163,5 +170,10 @@ public class Line {
   public XYPoint getRightPoint()
   {
     return rightPoint;
+  }
+
+  public double calcLength()
+  {
+    return GeometryUtil.getDistanceBetweenPoints(leftPoint, rightPoint);
   }
 }

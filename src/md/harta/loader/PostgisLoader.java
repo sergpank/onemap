@@ -1,8 +1,8 @@
 package md.harta.loader;
 
-import md.harta.db.BuildingGisDao;
+import md.harta.db.gis.BuildingGisDao;
 import md.harta.db.DbHelper;
-import md.harta.db.HighwayGisDao;
+import md.harta.db.gis.HighwayGisDao;
 import md.harta.geometry.Bounds;
 import md.harta.osm.*;
 import md.harta.projector.AbstractProjector;
