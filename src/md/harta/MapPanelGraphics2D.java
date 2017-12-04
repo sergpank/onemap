@@ -82,7 +82,7 @@ public class MapPanelGraphics2D extends JPanel {
     JPanel panel = new JPanel();
     panel.setLayout(new FlowLayout());
 
-    TileCutter tileCutter = new TileCutter(projector, TileGenerator.TILE_SIZE, LEVEL, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
+    TileCutter tileCutter = new TileCutter(projector, TileGenerator.TILE_SIZE, LEVEL, loader.getBounds());
     tileCutter.cut();
     JComboBox<Integer> levelCombo = createCombo(ScaleCalculator.MIN_SCALE_LEVEL, ScaleCalculator.MAX_SCALE_LEVEL, LEVEL);
 
@@ -99,9 +99,7 @@ public class MapPanelGraphics2D extends JPanel {
     panel.add(repaintButton, pos++);
 
     repaintButton.addActionListener(
-        e -> {
-          repaintMap(levelCombo);
-        });
+        e -> repaintMap(levelCombo));
 
     dataField.addKeyListener(new KeyAdapter(){
       @Override

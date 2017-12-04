@@ -18,13 +18,8 @@ public class MercatorProjector extends AbstractProjector {
   private double radius;
   private double maxLat;
 
-  public MercatorProjector(int level)
-  {
-    this.radius = ScaleCalculator.getRadiusForLevel(level);
-    this.maxLat = MAX_LAT;
-
-    width = radius * Math.toRadians(MAX_LON) * 2;
-    height = radius * Math.log(Math.tan(Math.PI / 4 + Math.toRadians(maxLat)/2)) * 2;
+  public MercatorProjector(int level) {
+    this(ScaleCalculator.getRadiusForLevel(level), MAX_LAT);
   }
 
   public MercatorProjector(double radius, double maxLat) {

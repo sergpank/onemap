@@ -5,12 +5,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import md.harta.db.DbHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by sergpank on 30.06.15.
  */
 public class DatabaseCreator
 {
+  private static Logger log = LoggerFactory.getLogger(DatabaseCreator.class);
+
   public static final String DROP_TABLE = "DROP TABLE %s";
 
   public static void createDb(String dbName)
@@ -102,11 +106,11 @@ public class DatabaseCreator
         ResultSet rs = statement.executeQuery("SELECT 1 FROM pg_database WHERE datname = '" + dbName + "'");
         if (!rs.next())
         {
-          System.out.printf("Dtabase \"%s\" does not exist.\n", dbName);
+          log.info("Dtabase {} does not exist.\n", dbName);
           try (Statement stmt = connection.createStatement())
           {
             stmt.execute("CREATE DATABASE " + dbName);
-            System.out.printf("Dtabase \"%s\" is created.\n", dbName);
+            log.info("Dtabase {} is created.\n", dbName);
           }
         }
         else

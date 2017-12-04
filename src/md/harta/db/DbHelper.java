@@ -13,7 +13,7 @@ public class DbHelper
   public static String dbName = "harta";
   private static String url = "jdbc:postgresql://localhost:5432/";
   private static String login = "postgres";
-  private static String password = "jkl123";
+  private static String password = "postgres";
 
   private static void init()
   {

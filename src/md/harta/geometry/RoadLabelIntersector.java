@@ -114,8 +114,6 @@ public class RoadLabelIntersector
       }
     }
 
-    System.out.println();
-
     return intersections;
   }
 

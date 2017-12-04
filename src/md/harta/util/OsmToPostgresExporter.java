@@ -14,16 +14,23 @@ import md.harta.osm.Building;
 import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
 import md.harta.osm.Waterway;
+import org.apache.log4j.xml.DOMConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class OsmToPostgresExporter
 {
+  private static final Logger log = LoggerFactory.getLogger(OsmToPostgresExporter.class);
+
   public static void main(String[] args)
   {
+    DOMConfigurator.configure("log4j.xml");
+
     OsmLoader osmLoader = new OsmLoader();
-    String dbName = "gradina_botanica";
+    String dbName = "botanica";
     DatabaseCreator.createDb(dbName);
     Connection connection = DbHelper.getNewConnection(dbName);
-    for (String osm : Arrays.asList("osm/ботанический_сад.osm"))
+    for (String osm : Arrays.asList("osm/botanica.osm"))
     {
       osmLoader.load(osm, null);
       Map<Long, OsmNode> nodes = osmLoader.getNodes();
@@ -36,17 +43,17 @@ public class OsmToPostgresExporter
       HighwayDao highwayDao = new HighwayDao(connection);
       WaterwayDao waterwayDao = new WaterwayDao(connection);
 
-      System.out.println("Saving nodes:");
-      nodes.values().forEach(node -> nodeDao.save(node));
+      log.info("Saving nodes:");
+      nodes.values().forEach(nodeDao::save);
 
-      System.out.println("Saving buildings:");
-      buildings.values().forEach(building -> buildingDao.save(building));
+      log.info("Saving buildings:");
+      buildings.values().forEach(buildingDao::save);
 
-      System.out.println("Saving highways:");
-      highways.values().forEach(highway -> highwayDao.save(highway));
+      log.info("Saving highways:");
+      highways.values().forEach(highwayDao::save);
 
-      System.out.println("Saving waterways:");
-      waterways.values().forEach(waterway -> waterwayDao.save(waterway));
+      log.info("Saving waterways:");
+      waterways.values().forEach(waterwayDao::save);
     }
   }
 }

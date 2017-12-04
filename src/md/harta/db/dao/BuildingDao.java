@@ -137,13 +137,9 @@ public class BuildingDao extends Dao<Building>
       int i = 1;
       pStmt.setDouble(i++, box.getMinLon());
       pStmt.setDouble(i++, box.getMaxLon());
-//      pStmt.setDouble(i++, box.getMinLon());
-//      pStmt.setDouble(i++, box.getMaxLon());
 
       pStmt.setDouble(i++, box.getMinLat());
       pStmt.setDouble(i++, box.getMaxLat());
-//      pStmt.setDouble(i++, box.getMinLat());
-//      pStmt.setDouble(i++, box.getMaxLat());
       try (ResultSet rs = pStmt.executeQuery())
       {
         while (rs.next())

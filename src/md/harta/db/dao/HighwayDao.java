@@ -45,7 +45,7 @@ public class HighwayDao extends Dao<Highway>
   @Override
   public void save(Highway highway)
   {
-    try (PreparedStatement pStmt = connection.prepareStatement(INSERT_SQL);)
+    try (PreparedStatement pStmt = connection.prepareStatement(INSERT_SQL))
     {
       prepareStatement(pStmt, highway);
       pStmt.execute();
@@ -59,7 +59,7 @@ public class HighwayDao extends Dao<Highway>
   @Override
   public void saveAll(List<Highway> highways)
   {
-    try (PreparedStatement pStmt = connection.prepareStatement(INSERT_SQL);)
+    try (PreparedStatement pStmt = connection.prepareStatement(INSERT_SQL))
     {
       int batchSize = 0;
       for (Highway highway : highways)
@@ -118,7 +118,6 @@ public class HighwayDao extends Dao<Highway>
   @Override
   public Collection<Highway> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodes, AbstractProjector projector)
   {
-//    long start = System.currentTimeMillis();
     List<Highway> highways = new ArrayList<>();
     try (PreparedStatement stmt = connection.prepareStatement(String.format(SELECT_TILE, TABLE)))
     {
@@ -142,9 +141,6 @@ public class HighwayDao extends Dao<Highway>
     {
       e.printStackTrace();
     }
-
-//    long end = System.currentTimeMillis();
-//    System.out.println("Highway select: " + (end - start) + " ms");
 
     return highways;
   }

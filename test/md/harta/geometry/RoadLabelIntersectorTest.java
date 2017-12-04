@@ -18,16 +18,16 @@ public class RoadLabelIntersectorTest extends TestCase
 {
   int charHeight = 10;
 
-  @Test
-  public void testGreekStreetOdessa()
-  {
-    Bounds bounds = new Bounds(3.9284041629477546E7, 2.374463388867807E7, 3.928453098358557E7, 2.374468367487468E7);
-    new Label("Грецька вулиця", )
-    RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, );
-
-
-    List<Intersection> intersections = intersector.getIntersections();
-  }
+//  @Test
+//  public void testGreekStreetOdessa()
+//  {
+//    Bounds bounds = new Bounds(3.9284041629477546E7, 2.374463388867807E7, 3.928453098358557E7, 2.374468367487468E7);
+//    new Label("Грецька вулиця", )
+//    RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, );
+//
+//
+//    List<Intersection> intersections = intersector.getIntersections();
+//  }
 
   @Test
   public void testDirectLineToSegments()

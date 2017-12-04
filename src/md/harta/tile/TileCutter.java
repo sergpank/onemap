@@ -17,20 +17,13 @@ public class TileCutter
   private double minLon;
   private double maxLat;
   private double maxLon;
-  private XYPoint minXY;
-  private XYPoint maxXY;
 
   private int minXindex;
   private int minYindex;
   private int maxXindex;
   private int maxYindex;
 
-  //  Min lat = 45.460106
-  //  Max lat = 48.490170
-  //  Min lon = 26.621311
-  //  Max lon = 30.163740
-  public TileCutter(AbstractProjector projector, int tileSize, int level,
-                    double minLat, double minLon, double maxLat, double maxLon)
+  public TileCutter(AbstractProjector projector, int tileSize, int level, Bounds bounds)
   {
     if (level < ScaleCalculator.MIN_SCALE_LEVEL || level > ScaleCalculator.MAX_SCALE_LEVEL)
     {
@@ -39,16 +32,16 @@ public class TileCutter
     }
     this.projector = projector;
     this.tileSize = tileSize;
-    this.minLat = minLat;
-    this.minLon = minLon;
-    this.maxLat = maxLat;
-    this.maxLon = maxLon;
+    this.minLat = bounds.getMinLat();
+    this.minLon = bounds.getMinLon();
+    this.maxLat = bounds.getMaxLat();
+    this.maxLon = bounds.getMaxLon();
   }
 
   public void cut()
   {
-    minXY = projector.getXY(minLat, minLon);
-    maxXY = projector.getXY(maxLat, maxLon);
+    XYPoint minXY = projector.getXY(minLat, minLon);
+    XYPoint maxXY = projector.getXY(maxLat, maxLon);
 
     minXindex = (int) (minXY.getX() / tileSize);
     minYindex = (int) (maxXY.getY() / tileSize);
