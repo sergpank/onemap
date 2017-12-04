@@ -66,13 +66,13 @@ public class HighwayGisDao extends GisDao<Highway>
   }
 
   @Override
-  public Highway load(long id, AbstractProjector projector)
+  public Highway load(long id)
   {
     return null;
   }
 
   @Override
-  public Collection<Highway> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodeCash, AbstractProjector projector)
+  public Collection<Highway> load(int zoomLevel, Bounds box, AbstractProjector projector)
   {
     Set<Highway> highways = new HashSet<>();
     try (Statement stmt = connection.createStatement())

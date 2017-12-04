@@ -1,21 +1,15 @@
 package md.harta.db.dao;
 
-import java.sql.Array;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import md.harta.geometry.Bounds;
 import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
 import md.harta.projector.AbstractProjector;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by sergpank on 22.04.15.
@@ -37,9 +31,12 @@ public class HighwayDao extends Dao<Highway>
 //      "WHERE (min_lon BETWEEN ? AND ? OR max_lon BETWEEN ? AND ?) " +
 //      "AND (min_lat BETWEEN ? AND ? OR max_lat BETWEEN ? and ?)";
 
+  private NodeDao nodeDao;
+
   public HighwayDao(Connection connection)
   {
     super(connection);
+    this.nodeDao = new NodeDao(connection);
   }
 
   @Override
@@ -110,13 +107,13 @@ public class HighwayDao extends Dao<Highway>
   }
 
   @Override
-  public Highway load(long id, AbstractProjector projector)
+  public Highway load(long id)
   {
     throw new NotImplementedException();
   }
 
   @Override
-  public Collection<Highway> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodes, AbstractProjector projector)
+  public Collection<Highway> load(int zoomLevel, Bounds box, AbstractProjector projector)
   {
     List<Highway> highways = new ArrayList<>();
     try (PreparedStatement stmt = connection.prepareStatement(String.format(SELECT_TILE, TABLE)))
@@ -132,7 +129,7 @@ public class HighwayDao extends Dao<Highway>
       {
         while (resultSet.next())
         {
-          Highway highway = readHighway(resultSet, nodes, projector);
+          Highway highway = readHighway(resultSet, projector);
           highways.add(highway);
         }
       }
@@ -145,7 +142,7 @@ public class HighwayDao extends Dao<Highway>
     return highways;
   }
 
-  private Highway readHighway(ResultSet resultSet, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  private Highway readHighway(ResultSet resultSet, AbstractProjector projector)
       throws SQLException
   {
     long id = resultSet.getLong("highway_id");
@@ -157,7 +154,7 @@ public class HighwayDao extends Dao<Highway>
     while (nodeSet.next())
     {
       long nodeId = nodeSet.getLong(2);
-      nodes.add(nodeMap.get(nodeId));
+      nodes.add(nodeDao.load(nodeId));
     }
     return new Highway(id, name, type, nodes, projector);
   }
@@ -165,12 +162,6 @@ public class HighwayDao extends Dao<Highway>
   @Override
   public Collection<Highway> loadAll(AbstractProjector projector)
   {
-    Collection<OsmNode> nodes = new NodeDao(connection).loadAll(null);
-    Map<Long, OsmNode> nodeMap = new HashMap<>(nodes.size());
-    for (OsmNode node : nodes)
-    {
-      nodeMap.put(node.getId(), node);
-    }
     List<Highway> highways = new ArrayList<>();
     try (Statement st = connection.createStatement())
     {
@@ -178,7 +169,7 @@ public class HighwayDao extends Dao<Highway>
       {
         while (rs.next())
         {
-          highways.add(readHighway(rs, nodeMap, projector));
+          highways.add(readHighway(rs, projector));
         }
       }
     }

@@ -73,14 +73,14 @@ public class BuildingGisDao extends GisDao<Building>
   }
 
   @Override
-  public Building load(long id, AbstractProjector projector)
+  public Building load(long id)
   {
 
     return null;
   }
 
   @Override
-  public Collection<Building> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodeCache, AbstractProjector projector)
+  public Collection<Building> load(int zoomLevel, Bounds box, AbstractProjector projector)
   {
     Set<Building> buildings = new HashSet<>();
     try (Statement stmt = connection.createStatement())

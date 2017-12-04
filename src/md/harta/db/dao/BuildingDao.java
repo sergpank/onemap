@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+
 import md.harta.geometry.Bounds;
 import md.harta.osm.Building;
 import md.harta.osm.OsmNode;
@@ -31,9 +31,12 @@ public class BuildingDao extends Dao<Building>
 //      "WHERE ((min_lon BETWEEN ? AND ?) OR (max_lon BETWEEN ? AND ?)) " +
 //      "AND ((min_lat BETWEEN ? AND ?) OR (max_lat BETWEEN ? and ?))";
 
+  private NodeDao nodeDao;
+
   public BuildingDao(Connection connection)
   {
     super(connection);
+    this.nodeDao = new NodeDao(connection);
   }
 
   public void save(Building building)
@@ -123,13 +126,13 @@ public class BuildingDao extends Dao<Building>
   }
 
   @Override
-  public Building load(long id, AbstractProjector projector)
+  public Building load(long id)
   {
     return null;
   }
 
   @Override
-  public Collection<Building> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Building> load(int zoomLevel, Bounds box, AbstractProjector projector)
   {
     List<Building> buildings = new ArrayList<>();
     try (PreparedStatement pStmt = connection.prepareStatement(SELECT_TILE))
@@ -151,7 +154,7 @@ public class BuildingDao extends Dao<Building>
           while (nodeSet.next())
           {
             long nodeId = nodeSet.getLong(2);
-            nodes.add(nodeMap.get(nodeId));
+            nodes.add(nodeDao.load(nodeId));
           }
           String houseNumber = rs.getString("housenumber");
           String street = rs.getString("street");

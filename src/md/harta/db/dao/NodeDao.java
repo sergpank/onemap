@@ -79,7 +79,7 @@ public class NodeDao extends Dao<OsmNode>
   }
 
   @Override
-  public OsmNode load(long id, AbstractProjector projector)
+  public OsmNode load(long id)
   {
     OsmNode node = null;
     try (PreparedStatement pStmt = connection.prepareStatement(SELECT_NODE))
@@ -104,7 +104,7 @@ public class NodeDao extends Dao<OsmNode>
   }
 
   @Override
-  public Collection<OsmNode> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodes, AbstractProjector projector)
+  public Collection<OsmNode> load(int zoomLevel, Bounds box, AbstractProjector projector)
   {
     throw new NotImplementedException();
   }

@@ -68,43 +68,43 @@ public class OsmLoader extends AbstractLoader{
   }
 
   @Override
-  public Collection<Border> getBorders(int level, Bounds tileBounds, Map<Long, OsmNode> nodes, AbstractProjector projector)
+  public Collection<Border> getBorders(int level, Bounds tileBounds, AbstractProjector projector)
   {
     throw new NotImplementedException();
   }
 
   @Override
-  public Collection<Highway> getHighways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Highway> getHighways(int level, Bounds tileBounds, AbstractProjector projector)
   {
     return getHighways(projector).values();
   }
 
   @Override
-  public Collection<Building> getBuildings(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Building> getBuildings(int level, Bounds tileBounds, AbstractProjector projector)
   {
     return getBuildings(projector).values();
   }
 
   @Override
-  public Collection<Leisure> getLeisure(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Leisure> getLeisure(int level, Bounds tileBounds, AbstractProjector projector)
   {
     return leisureMap.values();
   }
 
   @Override
-  public Collection<Natural> getNature(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Natural> getNature(int level, Bounds tileBounds, AbstractProjector projector)
   {
     return natureMap.values();
   }
 
   @Override
-  public Collection<Waterway> getWaterways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Waterway> getWaterways(int level, Bounds tileBounds, AbstractProjector projector)
   {
     return waterwayMap.values();
   }
 
   @Override
-  public Collection<Landuse> getLanduse(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Landuse> getLanduse(int level, Bounds tileBounds, AbstractProjector projector)
   {
     return landuseMap.values();
   }

@@ -1,15 +1,13 @@
 package md.harta.db.dao;
 
-import java.sql.Connection;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import generated.BoundsType;
 import md.harta.geometry.Bounds;
 import md.harta.osm.OsmNode;
-import md.harta.osm.OsmWay;
 import md.harta.projector.AbstractProjector;
+
+import java.sql.Connection;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by sergpank on 18.05.15.
@@ -63,9 +61,9 @@ public abstract class Dao<T>
 
   public abstract void saveAll(List<T> entities);
 
-  public abstract T load(long id, AbstractProjector projector);
+  public abstract T load(long id);
 
-  public abstract Collection<T> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodes, AbstractProjector projector);
+  public abstract Collection<T> load(int zoomLevel, Bounds box, AbstractProjector projector);
 
   public abstract Collection<T> loadAll(AbstractProjector projector);
 

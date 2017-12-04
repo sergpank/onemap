@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+
 import md.harta.geometry.Bounds;
 import md.harta.osm.Border;
 import md.harta.osm.OsmNode;
@@ -31,9 +31,12 @@ public class BorderDao extends Dao<Border>
       "     AND ((max_lat < ?) OR (min_lat > ?)) )";
   public static final String RAION = "raion";
 
+  private NodeDao nodeDao;
+
   public BorderDao(Connection connection)
   {
     super(connection);
+    this.nodeDao = new NodeDao(connection);
   }
 
   @Override
@@ -84,13 +87,13 @@ public class BorderDao extends Dao<Border>
   }
 
   @Override
-  public Border load(long id, AbstractProjector projector)
+  public Border load(long id)
   {
     return null;
   }
 
   @Override
-  public Collection<Border> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodes, AbstractProjector projector)
+  public Collection<Border> load(int zoomLevel, Bounds box, AbstractProjector projector)
   {
     long start = System.currentTimeMillis();
     List<Border> borders = new ArrayList<>();
@@ -108,7 +111,7 @@ public class BorderDao extends Dao<Border>
       {
         while (resultSet.next())
         {
-          Border border = readBorder(resultSet, nodes);
+          Border border = readBorder(resultSet);
           borders.add(border);
         }
       }
@@ -131,7 +134,7 @@ public class BorderDao extends Dao<Border>
     {
       while (rs.next())
       {
-        Border border = readBorder(rs, null);
+        Border border = readBorder(rs);
         borders.add(border);
       }
     }
@@ -142,7 +145,7 @@ public class BorderDao extends Dao<Border>
     return borders;
   }
 
-  private Border readBorder(ResultSet rs, Map<Long, OsmNode> nodeMap) throws SQLException
+  private Border readBorder(ResultSet rs) throws SQLException
   {
     // border_id, name, min_level, max_level, border_nodes, min_lat, max_lat, min_lon, max_lon
     List<OsmNode> nodes = new ArrayList<>();
@@ -159,7 +162,7 @@ public class BorderDao extends Dao<Border>
       while (nodeSet.next())
       {
         long nodeId = nodeSet.getLong(2);
-        nodes.add(nodeMap.get(nodeId));
+        nodes.add(nodeDao.load(nodeId));
       }
     }
     return new Border(id, minLat, minLon, maxLat, maxLon, nodes, name, RAION);

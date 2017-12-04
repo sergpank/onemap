@@ -111,42 +111,42 @@ public class PostgresLoader extends AbstractLoader
   }
 
   @Override
-  public Collection<Border> getBorders(int level, Bounds tileBounds, Map<Long, OsmNode> nodes, AbstractProjector projector)
+  public Collection<Border> getBorders(int level, Bounds tileBounds, AbstractProjector projector)
   {
-    return new BorderDao(connection).load(level, tileBounds, nodes, projector);
+    return new BorderDao(connection).load(level, tileBounds, projector);
   }
 
   @Override
-  public Collection<Highway> getHighways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Highway> getHighways(int level, Bounds tileBounds, AbstractProjector projector)
   {
-    return new HighwayDao(connection).load(level, tileBounds, nodeMap, projector);
+    return new HighwayDao(connection).load(level, tileBounds, projector);
   }
 
   @Override
-  public Collection<Building> getBuildings(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Building> getBuildings(int level, Bounds tileBounds, AbstractProjector projector)
   {
-    return new BuildingDao(connection).load(level, tileBounds, nodeMap, projector);
+    return new BuildingDao(connection).load(level, tileBounds, projector);
   }
 
   @Override
-  public Collection<Leisure> getLeisure(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
-  {
-    throw new NotImplementedException();
-  }
-
-  @Override
-  public Collection<Natural> getNature(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Leisure> getLeisure(int level, Bounds tileBounds, AbstractProjector projector)
   {
     throw new NotImplementedException();
   }
 
   @Override
-  public Collection<Waterway> getWaterways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector) {
-    return new WaterwayDao(connection).load(level, tileBounds, nodeMap, projector);
+  public Collection<Natural> getNature(int level, Bounds tileBounds, AbstractProjector projector)
+  {
+    throw new NotImplementedException();
   }
 
   @Override
-  public Collection<Landuse> getLanduse(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector) {
+  public Collection<Waterway> getWaterways(int level, Bounds tileBounds, AbstractProjector projector) {
+    return new WaterwayDao(connection).load(level, tileBounds, projector);
+  }
+
+  @Override
+  public Collection<Landuse> getLanduse(int level, Bounds tileBounds, AbstractProjector projector) {
     throw new NotImplementedException();
   }
 

@@ -7,7 +7,6 @@ import md.harta.loader.AbstractLoader;
 import md.harta.loader.PostgresLoader;
 import md.harta.osm.Building;
 import md.harta.osm.Highway;
-import md.harta.osm.OsmNode;
 import md.harta.projector.AbstractProjector;
 import md.harta.projector.MercatorProjector;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -18,8 +17,6 @@ import java.io.File;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by sergpank on 23.05.15.
@@ -55,22 +52,14 @@ public class TileGenerator
 //    Bounds bounds = loader.getBounds();
     System.out.println(bounds);
 
-    Collection<OsmNode> nodes = nodeDao.loadAll(null);
-//    Collection<OsmNode> nodes = loader.getNodes().values();
-    Map<Long, OsmNode> nodeMap = new HashMap<>(nodes.size());
-    for (OsmNode node : nodes)
-    {
-      nodeMap.put(node.getId(), node);
-    }
-
     LocalDateTime generationStart = LocalDateTime.now();
 
-    generateLevel(tilesFolder, loader, bounds, nodeMap);
+    generateLevel(tilesFolder, loader, bounds);
 
-    LOG.info("{} min", Duration.between(generationStart, LocalDateTime.now()).getSeconds());
+    LOG.info("{} seconds", Duration.between(generationStart, LocalDateTime.now()).getSeconds());
   }
 
-  private void generateLevel(File tilesFolder, AbstractLoader loader, Bounds bounds, Map<Long, OsmNode> nodeMap)
+  private void generateLevel(File tilesFolder, AbstractLoader loader, Bounds bounds)
   {
     for (int level = props.startLevel(); level <= props.endLevel(); level++)
     {
@@ -81,12 +70,11 @@ public class TileGenerator
       TileCutter tileCutter = new TileCutter(projector, TILE_SIZE, level, bounds);
       tileCutter.cut();
 
-      generateLevelTiles(loader, nodeMap, level, projector, tileCutter);
+      generateLevelTiles(loader, level, projector, tileCutter);
     }
   }
 
-  private void generateLevelTiles(AbstractLoader loader, Map<Long, OsmNode> nodeMap, int level,
-                                  AbstractProjector projector, TileCutter tileCutter)
+  private void generateLevelTiles(AbstractLoader loader, int level, AbstractProjector projector, TileCutter tileCutter)
   {
     long tileCnt = 0;
     long start = System.currentTimeMillis();
@@ -98,8 +86,8 @@ public class TileGenerator
       {
         Bounds tileBounds = tileCutter.getTileBounds(x, y, 0);
 
-        Collection<Highway> highways = loader.getHighways(level, tileBounds, nodeMap, projector);
-        Collection<Building> buildings = loader.getBuildings(level, tileBounds, nodeMap, projector);
+        Collection<Highway> highways = loader.getHighways(level, tileBounds, projector);
+        Collection<Building> buildings = loader.getBuildings(level, tileBounds, projector);
 
         tileWriter.drawTile(level, x, y, tileBounds, projector, highways, buildings);
 

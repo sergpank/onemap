@@ -10,7 +10,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by serg on 07-Aug-16.
@@ -22,8 +21,11 @@ public class WaterwayDao extends Dao<Waterway> {
   private static final String INSERT_SQL = "INSERT INTO waterways (waterway_id, waterway_type, waterway_name, waterway_nodes, min_lat, max_lat, min_lon, max_lon) " +
       "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
+  private NodeDao nodeDao;
+
   public WaterwayDao(Connection connection) {
     super(connection);
+    this.nodeDao = new NodeDao(connection);
   }
 
   @Override
@@ -55,12 +57,12 @@ public class WaterwayDao extends Dao<Waterway> {
   }
 
   @Override
-  public Waterway load(long id, AbstractProjector projector) {
+  public Waterway load(long id) {
     throw new NotImplementedException();
   }
 
   @Override
-  public Collection<Waterway> load(int zoomLevel, Bounds box, Map<Long, OsmNode> nodes, AbstractProjector projector) {
+  public Collection<Waterway> load(int zoomLevel, Bounds box, AbstractProjector projector) {
     List<Waterway> waterways = new ArrayList<>();
     try (PreparedStatement stmt = connection.prepareStatement(String.format(SELECT_TILE, TABLE)))
     {
@@ -75,7 +77,7 @@ public class WaterwayDao extends Dao<Waterway> {
       {
         while (resultSet.next())
         {
-          Waterway waterway = readWaterway(resultSet, nodes, projector);
+          Waterway waterway = readWaterway(resultSet, projector);
           waterways.add(waterway);
         }
       }
@@ -88,7 +90,7 @@ public class WaterwayDao extends Dao<Waterway> {
     return waterways;
   }
 
-  private Waterway readWaterway(ResultSet resultSet, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  private Waterway readWaterway(ResultSet resultSet, AbstractProjector projector)
       throws SQLException {
     long id = resultSet.getLong("highway_id");
     String name = resultSet.getString("waterway_type");
@@ -99,7 +101,7 @@ public class WaterwayDao extends Dao<Waterway> {
     while (nodeSet.next())
     {
       long nodeId = nodeSet.getLong(2);
-      nodes.add(nodeMap.get(nodeId));
+      nodes.add(nodeDao.load(nodeId));
     }
     return new Waterway(id, name, type, nodes, projector);
   }

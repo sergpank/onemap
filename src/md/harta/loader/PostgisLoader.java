@@ -74,42 +74,42 @@ public class PostgisLoader extends AbstractLoader
   }
 
   @Override
-  public Collection<Border> getBorders(int level, Bounds tileBounds, Map<Long, OsmNode> nodes, AbstractProjector projector)
+  public Collection<Border> getBorders(int level, Bounds tileBounds, AbstractProjector projector)
   {
     return null;
   }
 
   @Override
-  public Collection<Highway> getHighways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Highway> getHighways(int level, Bounds tileBounds, AbstractProjector projector)
   {
-    return new HighwayGisDao(connection).load(level, tileBounds, nodeMap, projector);
+    return new HighwayGisDao(connection).load(level, tileBounds, projector);
   }
 
   @Override
-  public Collection<Building> getBuildings(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Building> getBuildings(int level, Bounds tileBounds, AbstractProjector projector)
   {
-    return new BuildingGisDao(connection).load(level, tileBounds, nodeMap, projector);
+    return new BuildingGisDao(connection).load(level, tileBounds, projector);
   }
 
   @Override
-  public Collection<Leisure> getLeisure(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
-  {
-    return null;
-  }
-
-  @Override
-  public Collection<Natural> getNature(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector)
+  public Collection<Leisure> getLeisure(int level, Bounds tileBounds, AbstractProjector projector)
   {
     return null;
   }
 
   @Override
-  public Collection<Waterway> getWaterways(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector) {
+  public Collection<Natural> getNature(int level, Bounds tileBounds, AbstractProjector projector)
+  {
     return null;
   }
 
   @Override
-  public Collection<Landuse> getLanduse(int level, Bounds tileBounds, Map<Long, OsmNode> nodeMap, AbstractProjector projector) {
+  public Collection<Waterway> getWaterways(int level, Bounds tileBounds, AbstractProjector projector) {
+    return null;
+  }
+
+  @Override
+  public Collection<Landuse> getLanduse(int level, Bounds tileBounds, AbstractProjector projector) {
     return null;
   }
 
