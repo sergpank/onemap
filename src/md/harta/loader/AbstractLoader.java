@@ -1,10 +1,10 @@
 package md.harta.loader;
 
+import md.harta.geometry.BoundsLatLon;
+import md.harta.osm.*;
+
 import java.util.Collection;
 import java.util.Map;
-import md.harta.geometry.Bounds;
-import md.harta.osm.*;
-import md.harta.projector.AbstractProjector;
 
 /**
  * Created by sergpank on 15.05.15.
@@ -18,35 +18,35 @@ public abstract class AbstractLoader
 
   public abstract Map<Long, OsmNode> getNodes();
 
-  public abstract void load(String dataSource, AbstractProjector projector);
+  public abstract void load(String dataSource);
 
-  public abstract Map<Long, Highway> getHighways(AbstractProjector projector);
+  public abstract Map<Long, Highway> getHighways();
 
-  public abstract Map<Long, Building> getBuildings(AbstractProjector projector);
+  public abstract Map<Long, Building> getBuildings();
 
-  public abstract Map<Long, Leisure> getLeisure(AbstractProjector projector);
+  public abstract Map<Long, Leisure> getLeisure();
 
-  public abstract Map<Long, Natural> getNature(AbstractProjector projector);
+  public abstract Map<Long, Natural> getNature();
 
-  public abstract Map<Long, Waterway> getWaterways(AbstractProjector projector);
+  public abstract Map<Long, Waterway> getWaterways();
 
-  public abstract Map<Long, Landuse> getLanduse(AbstractProjector projector);
+  public abstract Map<Long, Landuse> getLanduse();
 
-  public abstract Collection<Border> getBorders(int level, Bounds tileBounds, AbstractProjector projector);
+  public abstract Collection<Border> getBorders(int level, BoundsLatLon tileBounds);
 
-  public abstract Collection<Highway> getHighways(int level, Bounds tileBounds, AbstractProjector projector);
+  public abstract Collection<Highway> getHighways(int level, BoundsLatLon tileBounds);
 
-  public abstract Collection<Building> getBuildings(int level, Bounds tileBounds, AbstractProjector projector);
+  public abstract Collection<Building> getBuildings(int level, BoundsLatLon tileBounds);
 
-  public abstract Collection<Leisure> getLeisure(int level, Bounds tileBounds, AbstractProjector projector);
+  public abstract Collection<Leisure> getLeisure(int level, BoundsLatLon tileBounds);
 
-  public abstract Collection<Natural> getNature(int level, Bounds tileBounds, AbstractProjector projector);
+  public abstract Collection<Natural> getNature(int level, BoundsLatLon tileBounds);
 
-  public abstract Collection<Waterway> getWaterways(int level, Bounds tileBounds, AbstractProjector projector);
+  public abstract Collection<Waterway> getWaterways(int level, BoundsLatLon tileBounds);
 
-  public abstract Collection<Landuse> getLanduse(int level, Bounds tileBounds, AbstractProjector projector);
+  public abstract Collection<Landuse> getLanduse(int level, BoundsLatLon tileBounds);
 
-  public abstract Bounds getBounds();
+  public abstract BoundsLatLon getBounds();
 
   public double getMinLon()
   {
