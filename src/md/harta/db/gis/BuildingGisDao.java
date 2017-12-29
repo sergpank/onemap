@@ -1,9 +1,8 @@
 package md.harta.db.gis;
 
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.osm.Building;
 import md.harta.osm.OsmNode;
-import md.harta.projector.AbstractProjector;
 import org.postgis.PGgeometry;
 import org.postgis.Point;
 
@@ -80,7 +79,7 @@ public class BuildingGisDao extends GisDao<Building>
   }
 
   @Override
-  public Collection<Building> load(int zoomLevel, Bounds box, AbstractProjector projector)
+  public Collection<Building> load(int zoomLevel, BoundsLatLon box)
   {
     Set<Building> buildings = new HashSet<>();
     try (Statement stmt = connection.createStatement())
@@ -110,7 +109,7 @@ public class BuildingGisDao extends GisDao<Building>
           nodes.add(new OsmNode(i, point.getY(), point.getX()));
         }
 
-        buildings.add(new Building(id, nodes, houseNumber, street, height, levels, design, projector));
+        buildings.add(new Building(id, nodes, houseNumber, street, height, levels, design));
       }
     }
     catch (SQLException e)
@@ -121,13 +120,13 @@ public class BuildingGisDao extends GisDao<Building>
   }
 
   @Override
-  public Collection<Building> loadAll(AbstractProjector projector)
+  public Collection<Building> loadAll()
   {
     return null;
   }
 
   @Override
-  public Bounds getBounds()
+  public BoundsLatLon getBounds()
   {
     return null;
   }

@@ -7,10 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import javafx.scene.text.Font;
 import md.harta.drawer.AbstractDrawer;
-import md.harta.geometry.Bounds;
-import md.harta.geometry.CanvasPolygon;
-import md.harta.geometry.Label;
-import md.harta.geometry.XYPoint;
+import md.harta.geometry.*;
 import md.harta.osm.Border;
 import md.harta.projector.AbstractProjector;
 import md.harta.tile.TileCutter;
@@ -26,7 +23,7 @@ public class BorderPainter extends AbstractPainter
   public static final String FONT_NAME = "Tahoma";
   public static final int FONT_SIZE = 14;
 
-  public BorderPainter(AbstractProjector projector, Bounds bounds)
+  public BorderPainter(AbstractProjector projector, BoundsXY bounds)
   {
     super(projector, bounds);
   }
@@ -39,11 +36,11 @@ public class BorderPainter extends AbstractPainter
     for (Border border : borders)
     {
       CanvasPolygon polygon = createPolygon(border);
-      Bounds bounds = new Bounds(projector, border.getBounds());
-      double width = bounds.getxMax() - bounds.getxMin();
+      BoundsXY bounds =border.getBounds().toXY(projector);
+      double width = bounds.getXmax() - bounds.getXmin();
 
-      shiftPoints(this.bounds.getxMin(), polygon.getxPoints());
-      shiftPoints(this.bounds.getyMin(), polygon.getyPoints());
+      shiftPoints(this.bounds.getXmin(), polygon.getxPoints());
+      shiftPoints(this.bounds.getYmin(), polygon.getyPoints());
       drawer.drawPolyLine(polygon, 1);
       labels.add(createRegionLabel(polygon, border.getName(), width));
     }

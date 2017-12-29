@@ -21,9 +21,9 @@ public class OsmToPostgisExporter
     Connection connection = DbHelper.getNewConnection(dbName);
     for (String osm : Arrays.asList("osm/chisinau.osm"))
     {
-      osmLoader.load(osm, null);
-      Map<Long, Building> buildings = osmLoader.getBuildings(null);
-      Map<Long, Highway> highways = osmLoader.getHighways(null);
+      osmLoader.load(osm);
+      Map<Long, Building> buildings = osmLoader.getBuildings();
+      Map<Long, Highway> highways = osmLoader.getHighways();
 
       BuildingGisDao buildingDao = new BuildingGisDao(connection);
       HighwayGisDao highwayDao = new HighwayGisDao(connection);
@@ -35,7 +35,7 @@ public class OsmToPostgisExporter
       highways.values().forEach(highway -> highwayDao.save(highway));
 
       //--46.9957461;46.9988352;28.8679837;28.8736379
-//      buildingDao.load(15, new Bounds(null, 46.9957461, 28.8679837, 46.9988352, 28.8736379), null, new MercatorProjector(15));
+//      buildingDao.load(15, new BoundsLatLon(null, 46.9957461, 28.8679837, 46.9988352, 28.8736379), null, new MercatorProjector(15));
     }
   }
 }

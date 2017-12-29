@@ -12,7 +12,7 @@ public class Label
 {
   private String text;
   private Font font;
-  private Bounds bounds;
+  private BoundsXY bounds;
   private XYPoint center;
   private Highway highway;
 
@@ -24,8 +24,8 @@ public class Label
     FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(font);
     float lineHeight = fontMetrics.getLineHeight();
     float lineWidth = fontMetrics.computeStringWidth(text);
-    this.bounds = new Bounds(center.getX() - lineWidth / 2, center.getY() - lineHeight / 2,
-                             center.getX() + lineWidth / 2, center.getY() + lineHeight / 2);
+    this.bounds = new BoundsXY(center.getX() - lineWidth / 2, center.getY() - lineHeight / 2,
+                               center.getX() + lineWidth / 2, center.getY() + lineHeight / 2);
   }
 
   /**
@@ -47,7 +47,7 @@ public class Label
     return font;
   }
 
-  public Bounds getBounds()
+  public BoundsXY getBounds()
   {
     return bounds;
   }

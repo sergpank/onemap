@@ -1,11 +1,10 @@
 package md.harta.loader;
 
-import md.harta.db.gis.BuildingGisDao;
 import md.harta.db.DbHelper;
+import md.harta.db.gis.BuildingGisDao;
 import md.harta.db.gis.HighwayGisDao;
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.osm.*;
-import md.harta.projector.AbstractProjector;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Connection;
@@ -24,7 +23,8 @@ public class PostgisLoader extends AbstractLoader
 
   public PostgisLoader(String dbName)
   {
-    this.connection = DbHelper.getConnection(dbName);;
+    this.connection = DbHelper.getConnection(dbName);
+    ;
   }
 
   @Override
@@ -34,87 +34,91 @@ public class PostgisLoader extends AbstractLoader
   }
 
   @Override
-  public void load(String dataSource, AbstractProjector projector)
+  public void load(String dataSource)
   {
 
   }
 
   @Override
-  public Map<Long, Highway> getHighways(AbstractProjector projector)
+  public Map<Long, Highway> getHighways()
   {
     return null;
   }
 
   @Override
-  public Map<Long, Building> getBuildings(AbstractProjector projector)
+  public Map<Long, Building> getBuildings()
   {
     return null;
   }
 
   @Override
-  public Map<Long, Leisure> getLeisure(AbstractProjector projector)
+  public Map<Long, Leisure> getLeisure()
   {
     return null;
   }
 
   @Override
-  public Map<Long, Natural> getNature(AbstractProjector projector)
+  public Map<Long, Natural> getNature()
   {
     return null;
   }
 
   @Override
-  public Map<Long, Waterway> getWaterways(AbstractProjector projector) {
+  public Map<Long, Waterway> getWaterways()
+  {
     return null;
   }
 
   @Override
-  public Map<Long, Landuse> getLanduse(AbstractProjector projector) {
+  public Map<Long, Landuse> getLanduse()
+  {
     throw new NotImplementedException();
   }
 
   @Override
-  public Collection<Border> getBorders(int level, Bounds tileBounds, AbstractProjector projector)
+  public Collection<Border> getBorders(int level, BoundsLatLon tileBounds)
   {
     return null;
   }
 
   @Override
-  public Collection<Highway> getHighways(int level, Bounds tileBounds, AbstractProjector projector)
+  public Collection<Highway> getHighways(int level, BoundsLatLon tileBounds)
   {
-    return new HighwayGisDao(connection).load(level, tileBounds, projector);
+    return new HighwayGisDao(connection).load(level, tileBounds);
   }
 
   @Override
-  public Collection<Building> getBuildings(int level, Bounds tileBounds, AbstractProjector projector)
+  public Collection<Building> getBuildings(int level, BoundsLatLon tileBounds)
   {
-    return new BuildingGisDao(connection).load(level, tileBounds, projector);
+    return new BuildingGisDao(connection).load(level, tileBounds);
   }
 
   @Override
-  public Collection<Leisure> getLeisure(int level, Bounds tileBounds, AbstractProjector projector)
-  {
-    return null;
-  }
-
-  @Override
-  public Collection<Natural> getNature(int level, Bounds tileBounds, AbstractProjector projector)
+  public Collection<Leisure> getLeisure(int level, BoundsLatLon tileBounds)
   {
     return null;
   }
 
   @Override
-  public Collection<Waterway> getWaterways(int level, Bounds tileBounds, AbstractProjector projector) {
+  public Collection<Natural> getNature(int level, BoundsLatLon tileBounds)
+  {
     return null;
   }
 
   @Override
-  public Collection<Landuse> getLanduse(int level, Bounds tileBounds, AbstractProjector projector) {
+  public Collection<Waterway> getWaterways(int level, BoundsLatLon tileBounds)
+  {
     return null;
   }
 
   @Override
-  public Bounds getBounds()
+  public Collection<Landuse> getLanduse(int level, BoundsLatLon tileBounds)
+  {
+    return null;
+  }
+
+  @Override
+  public BoundsLatLon getBounds()
   {
     double minLonBuilding = 0;
     double minLatBuilding = 0;
@@ -149,7 +153,12 @@ public class PostgisLoader extends AbstractLoader
     {
       e.printStackTrace();
     }
-    return new Bounds(null, Math.min(minLatBuilding, minLatHighway), Math.min(minLonBuilding, minLonHighway),
-        Math.max(maxLatBuilding, maxLatHighway), Math.max(maxLonBuilding, maxLonHighway));
+
+    double minLat = Math.min(minLatBuilding, minLatHighway);
+    double minLon = Math.min(minLonBuilding, minLonHighway);
+    double maxLat = Math.max(maxLatBuilding, maxLatHighway);
+    double maxLon = Math.max(maxLonBuilding, maxLonHighway);
+
+    return new BoundsLatLon(minLat, minLon, maxLat, maxLon);
   }
 }

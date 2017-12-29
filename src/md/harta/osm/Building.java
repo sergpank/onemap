@@ -1,6 +1,5 @@
 package md.harta.osm;
 
-import md.harta.projector.AbstractProjector;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -19,8 +18,8 @@ public class Building extends OsmWay{
   private String design;
   private int levels;
 
-  public Building(long id, List<OsmNode> nodes, Element element, AbstractProjector projector) {
-    super(id, nodes, projector);
+  public Building(long id, List<OsmNode> nodes, Element element) {
+    super(id, nodes);
 
     NodeList tags = element.getElementsByTagName("tag");
     for (int i = 0; i < tags.getLength(); i++) {
@@ -52,9 +51,8 @@ public class Building extends OsmWay{
     }
   }
 
-  public Building(long id, List<OsmNode> nodes, String houseNumber, String street, String height, int levels,
-                  String design, AbstractProjector projector) {
-    super(id, nodes, projector);
+  public Building(long id, List<OsmNode> nodes, String houseNumber, String street, String height, int levels, String design) {
+    super(id, nodes);
     this.houseNumber = houseNumber;
     this.street = street;
     this.height = height;

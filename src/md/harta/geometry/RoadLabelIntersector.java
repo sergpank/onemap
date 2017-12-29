@@ -13,11 +13,17 @@ import md.harta.util.TextUtil;
  */
 public class RoadLabelIntersector
 {
-  private Bounds bounds;
+  private BoundsXY bounds;
   private int labelWidth;
   private int charHeight;
 
-  public RoadLabelIntersector(Bounds bounds, int labelWidth, int charHeight)
+  /**
+   * Constructor
+   * @param bounds Bounds of are that is being rendered (in pixels)
+   * @param labelWidth Width of label in pixels
+   * @param charHeight Height of font character in pixels
+   */
+  public RoadLabelIntersector(BoundsXY bounds, int labelWidth, int charHeight)
   {
     this.bounds = bounds;
     this.labelWidth = labelWidth;
@@ -162,7 +168,7 @@ public class RoadLabelIntersector
 
   protected XYPoint shiftPoint(XYPoint point)
   {
-    return new XYPoint(point.getX() - bounds.getxMin(), point.getY() - bounds.getyMin());
+    return new XYPoint(point.getX() - bounds.getXmin(), point.getY() - bounds.getYmin());
   }
 
   private List<Line> getSegmentsDirect(List<OsmNode> nodes, AbstractProjector projector)

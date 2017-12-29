@@ -1,20 +1,16 @@
 package md.harta.painter;
 
+import md.harta.drawer.AbstractDrawer;
+import md.harta.geometry.*;
+import md.harta.geometry.Label;
+import md.harta.osm.Highway;
+import md.harta.projector.AbstractProjector;
+import md.harta.tile.TilePalette;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import md.harta.drawer.AbstractDrawer;
-import md.harta.geometry.Bounds;
-import md.harta.geometry.CanvasPolygon;
-import md.harta.geometry.GeometryUtil;
-import md.harta.geometry.Label;
-import md.harta.geometry.LatLonPoint;
-import md.harta.geometry.Line;
-import md.harta.geometry.XYPoint;
-import md.harta.osm.Highway;
-import md.harta.projector.AbstractProjector;
-import md.harta.tile.TilePalette;
 
 /**
  * Created by sergpank on 03.03.2015.
@@ -23,7 +19,7 @@ public class HighwayPainter extends AbstractPainter
 {
   public static final int ROAD_WIDTH_METERS = 6;
 
-  public HighwayPainter(AbstractProjector projector, Bounds bounds)
+  public HighwayPainter(AbstractProjector projector, BoundsXY bounds)
   {
     super(projector, bounds);
   }
@@ -62,8 +58,9 @@ public class HighwayPainter extends AbstractPainter
 
   private void addLabel(List<Label> labels, Highway highway)
   {
-    XYPoint minXY = shiftPoint(new XYPoint(highway.getBounds().getxMin(), highway.getBounds().getyMin()));
-    XYPoint maxXY = shiftPoint(new XYPoint(highway.getBounds().getxMax(), highway.getBounds().getyMax()));
+    BoundsXY bounds = highway.getBounds().toXY(projector);
+    XYPoint minXY = shiftPoint(new XYPoint(bounds.getXmin(), bounds.getYmin()));
+    XYPoint maxXY = shiftPoint(new XYPoint(bounds.getXmax(), bounds.getYmax()));
 
 //    drawer.setFillColor(Color.RED);
 //    drawer.setStrokeColor(Color.RED);
@@ -86,7 +83,7 @@ public class HighwayPainter extends AbstractPainter
       XYPoint startPoint = new XYPoint(polygon.getxPoints()[i], polygon.getyPoints()[i]);
       XYPoint endPoint = new XYPoint(polygon.getxPoints()[i + 1], polygon.getyPoints()[i + 1]);
 
-        Line line = GeometryUtil.getLine(startPoint, endPoint);
+        Line line = new Line(startPoint, endPoint);
 
         LatLonPoint latLonStart = projector.getLatLon(startPoint);
         LatLonPoint latLonEnd = projector.getLatLon(endPoint);
@@ -110,8 +107,8 @@ public class HighwayPainter extends AbstractPainter
             startPoints[0].getY(), startPoints[1].getY(), endPoints[1].getY(), endPoints[0].getY(), startPoints[0].getY()
         };
 
-    shiftPoints(bounds.getxMin(), xPoints);
-    shiftPoints(bounds.getyMin(), yPoints);
+    shiftPoints(bounds.getXmin(), xPoints);
+    shiftPoints(bounds.getYmin(), yPoints);
 
     drawer.setFillColor(TilePalette.HIGHWAY_COLOR);
     drawer.setStrokeColor(TilePalette.HIGHWAY_COLOR);

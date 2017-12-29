@@ -1,9 +1,8 @@
 package md.harta.db.dao;
 
 import generated.BoundsType;
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.osm.OsmNode;
-import md.harta.projector.AbstractProjector;
 
 import java.sql.Connection;
 import java.util.Collection;
@@ -63,9 +62,9 @@ public abstract class Dao<T>
 
   public abstract T load(long id);
 
-  public abstract Collection<T> load(int zoomLevel, Bounds box, AbstractProjector projector);
+  public abstract Collection<T> load(int zoomLevel, BoundsLatLon box);
 
-  public abstract Collection<T> loadAll(AbstractProjector projector);
+  public abstract Collection<T> loadAll();
 
-  public abstract Bounds getBounds();
+  public abstract BoundsLatLon getBounds();
 }

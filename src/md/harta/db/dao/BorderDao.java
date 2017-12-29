@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.osm.Border;
 import md.harta.osm.OsmNode;
-import md.harta.projector.AbstractProjector;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
@@ -93,7 +92,7 @@ public class BorderDao extends Dao<Border>
   }
 
   @Override
-  public Collection<Border> load(int zoomLevel, Bounds box, AbstractProjector projector)
+  public Collection<Border> load(int zoomLevel, BoundsLatLon box)
   {
     long start = System.currentTimeMillis();
     List<Border> borders = new ArrayList<>();
@@ -126,7 +125,7 @@ public class BorderDao extends Dao<Border>
   }
 
   @Override
-  public Collection<Border> loadAll(AbstractProjector projector)
+  public Collection<Border> loadAll()
   {
     List<Border> borders = new ArrayList<>();
     try (PreparedStatement pStmt = connection.prepareStatement(SELECT_ALL);
@@ -169,9 +168,9 @@ public class BorderDao extends Dao<Border>
   }
 
   @Override
-  public Bounds getBounds()
+  public BoundsLatLon getBounds()
   {
-    Bounds bounds = null;
+    BoundsLatLon bounds;
 
     try (PreparedStatement pStmt = connection.prepareStatement(SELECT_BOUNDS))
     {
@@ -182,7 +181,7 @@ public class BorderDao extends Dao<Border>
         double minLon = resultSet.getDouble("min_lon");
         double maxLat = resultSet.getDouble("max_lat");
         double maxLon = resultSet.getDouble("max_lon");
-        bounds = new Bounds(null, minLat, minLon, maxLat, maxLon);
+        bounds = new BoundsLatLon(minLat, minLon, maxLat, maxLon);
       }
     }
     catch (SQLException e)

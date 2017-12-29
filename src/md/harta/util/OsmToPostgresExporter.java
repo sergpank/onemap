@@ -32,11 +32,11 @@ public class OsmToPostgresExporter
     Connection connection = DbHelper.getNewConnection(dbName);
     for (String osm : Arrays.asList("osm/botanica.osm"))
     {
-      osmLoader.load(osm, null);
+      osmLoader.load(osm);
       Map<Long, OsmNode> nodes = osmLoader.getNodes();
-      Map<Long, Building> buildings = osmLoader.getBuildings(null);
-      Map<Long, Highway> highways = osmLoader.getHighways(null);
-      Map<Long, Waterway> waterways = osmLoader.getWaterways(null);
+      Map<Long, Building> buildings = osmLoader.getBuildings();
+      Map<Long, Highway> highways = osmLoader.getHighways();
+      Map<Long, Waterway> waterways = osmLoader.getWaterways();
 
       NodeDao nodeDao = new NodeDao(connection);
       BuildingDao buildingDao = new BuildingDao(connection);

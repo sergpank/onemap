@@ -1,7 +1,7 @@
 package md.harta.painter;
 
 import md.harta.drawer.AbstractDrawer;
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsXY;
 import md.harta.geometry.CanvasPolygon;
 import md.harta.osm.Natural;
 import md.harta.projector.AbstractProjector;
@@ -14,7 +14,7 @@ import java.util.Collection;
  */
 public class NaturePainter extends AbstractPainter
 {
-  public NaturePainter(AbstractProjector projector, Bounds bounds)
+  public NaturePainter(AbstractProjector projector, BoundsXY bounds)
   {
     super(projector, bounds);
   }
@@ -27,8 +27,8 @@ public class NaturePainter extends AbstractPainter
       if (natural.isWater())
       {
         CanvasPolygon polygon = createPolygon(natural);
-        shiftPoints(bounds.getxMin(), polygon.getxPoints());
-        shiftPoints(bounds.getyMin(), polygon.getyPoints());
+        shiftPoints(bounds.getXmin(), polygon.getxPoints());
+        shiftPoints(bounds.getYmin(), polygon.getyPoints());
         drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
       }
     }

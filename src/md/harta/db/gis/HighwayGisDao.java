@@ -1,9 +1,8 @@
 package md.harta.db.gis;
 
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
-import md.harta.projector.AbstractProjector;
 import org.postgis.PGgeometry;
 import org.postgis.Point;
 
@@ -72,7 +71,7 @@ public class HighwayGisDao extends GisDao<Highway>
   }
 
   @Override
-  public Collection<Highway> load(int zoomLevel, Bounds box, AbstractProjector projector)
+  public Collection<Highway> load(int zoomLevel, BoundsLatLon box)
   {
     Set<Highway> highways = new HashSet<>();
     try (Statement stmt = connection.createStatement())
@@ -101,7 +100,7 @@ public class HighwayGisDao extends GisDao<Highway>
           nodes.add(new OsmNode(i, point.getY(), point.getX()));
         }
 
-        highways.add(new Highway(id, name, type, nodes, projector));
+        highways.add(new Highway(id, name, type, nodes));
       }
     }
     catch (SQLException e)
@@ -112,13 +111,13 @@ public class HighwayGisDao extends GisDao<Highway>
   }
 
   @Override
-  public Collection<Highway> loadAll(AbstractProjector projector)
+  public Collection<Highway> loadAll()
   {
     return null;
   }
 
   @Override
-  public Bounds getBounds()
+  public BoundsLatLon getBounds()
   {
     return null;
   }

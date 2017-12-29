@@ -1,8 +1,7 @@
 package md.harta.db.dao;
 
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.osm.Leisure;
-import md.harta.projector.AbstractProjector;
 
 import java.sql.Connection;
 import java.util.Collection;
@@ -36,19 +35,19 @@ public class LeisureDao extends Dao<Leisure>
   }
 
   @Override
-  public Collection<Leisure> load(int zoomLevel, Bounds box, AbstractProjector projector)
+  public Collection<Leisure> load(int zoomLevel, BoundsLatLon box)
   {
     return null;
   }
 
   @Override
-  public Collection<Leisure> loadAll(AbstractProjector projector)
+  public Collection<Leisure> loadAll()
   {
     return null;
   }
 
   @Override
-  public Bounds getBounds()
+  public BoundsLatLon getBounds()
   {
     return null;
   }

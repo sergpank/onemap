@@ -19,7 +19,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import md.harta.drawer.FxDrawer;
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
+import md.harta.geometry.BoundsXY;
 import md.harta.loader.AbstractLoader;
 import md.harta.loader.OsmLoader;
 import md.harta.painter.BuildingPainter;
@@ -92,7 +93,7 @@ public class MapPanelFx extends Application {
     System.out.println("Level = \"" + level + "\"");
 
     canvas.getGraphicsContext2D().clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-    loader.load(dataPath, projector);
+    loader.load(dataPath);
 
     drawMap(canvas, level);
   }
@@ -100,20 +101,20 @@ public class MapPanelFx extends Application {
   private void drawMap(Canvas canvas, int level) {
     int radius = (int)ScaleCalculator.getRadiusForLevel(level);
     projector = new MercatorProjector(radius, 85);
-    Bounds bounds = new Bounds(projector, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
+    BoundsXY bounds = new BoundsLatLon(loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon()).toXY(projector);
 
-    canvas.setHeight(bounds.getyMax() - bounds.getyMin());
-    canvas.setWidth(bounds.getxMax() - bounds.getxMin());
+    canvas.setHeight(bounds.getYmax() - bounds.getYmin());
+    canvas.setWidth(bounds.getXmax() - bounds.getXmin());
 
     GraphicsContext gc = canvas.getGraphicsContext2D();
     gc.setFill(new Color(176.0 / 256, 210.0 / 256, 255.0 / 256, 1));
-    gc.fillRect(0, 0, bounds.getxMax(), bounds.getyMax());
+    gc.fillRect(0, 0, bounds.getXmax(), bounds.getYmax());
 
     gc.setStroke(Color.BLACK);
     gc.setLineWidth(2);
 
-    new HighwayPainter(projector, bounds).drawHighways(new FxDrawer(gc), loader.getHighways(projector).values(), level);
-    new BuildingPainter(projector, bounds).drawBuildings(new FxDrawer(gc), loader.getBuildings(projector).values(), level);
+    new HighwayPainter(projector, bounds).drawHighways(new FxDrawer(gc), loader.getHighways().values(), level);
+    new BuildingPainter(projector, bounds).drawBuildings(new FxDrawer(gc), loader.getBuildings().values(), level);
 //    new BorderPainter(projector, bounds).drawBorders(drawer, loader.getBorders(), 0, 0, null);
 
     System.out.println("DRAW!\n");

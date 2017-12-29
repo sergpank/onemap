@@ -2,7 +2,8 @@ package md.harta.tile;
 
 import md.harta.drawer.AbstractDrawer;
 import md.harta.drawer.TileDrawer;
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
+import md.harta.geometry.BoundsXY;
 import md.harta.osm.Building;
 import md.harta.osm.Highway;
 import md.harta.painter.BuildingPainter;
@@ -32,7 +33,7 @@ public class TileFileWriter
     this.dbName = dbName;
   }
 
-  public void drawTile(int level, int x, int y, Bounds tileBounds, AbstractProjector projector,
+  public void drawTile(int level, int x, int y, BoundsXY tileBounds, AbstractProjector projector,
                        Collection<Highway> highways, Collection<Building> buildings) {
     BufferedImage bi = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = bi.createGraphics();

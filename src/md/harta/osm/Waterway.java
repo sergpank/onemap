@@ -1,6 +1,5 @@
 package md.harta.osm;
 
-import md.harta.projector.AbstractProjector;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -15,14 +14,14 @@ public class Waterway extends OsmWay {
   private String type;
   private String name;
 
-  public Waterway(long id, String type, String name, List<OsmNode> nodes, AbstractProjector projector) {
-    super(id, nodes, projector);
+  public Waterway(long id, String type, String name, List<OsmNode> nodes) {
+    super(id, nodes);
     this.type = type;
     this.name = name;
   }
 
-  public Waterway(Long id, List<OsmNode> nodes, Element element, AbstractProjector projector) {
-    super(id, nodes, projector);
+  public Waterway(Long id, List<OsmNode> nodes, Element element) {
+    super(id, nodes);
 
     NodeList tags = element.getElementsByTagName("tag");
     for (int i = 0; i < tags.getLength(); i++) {

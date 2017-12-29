@@ -15,6 +15,19 @@ public class SimpleProjector extends AbstractProjector {
   }
 
   @Override
+  /*
+    (0;0) is in the Upper-Right corner:
+
+    0;0  |-------(180;0)-------|360;0
+         |          |          |
+         |          |          |
+         |          |          |
+    0;90 |-------(180;90)------|360;90
+         |          |          |
+         |          |          |
+         |          |          |
+    0;180|-------(180;180)-----|360;180
+   */
   public XYPoint getXY(double lat, double lon) {
     double x = width / 2 + lon * scale;
     double y = (lat >= 0) ? (height / 2 - lat * scale) : (height / 2 + Math.abs(lat * scale));
@@ -31,5 +44,16 @@ public class SimpleProjector extends AbstractProjector {
   @Override
   public double getScale(LatLonPoint point) {
     return 0;
+  }
+
+  public static void main(String[] args)
+  {
+    SimpleProjector projector = new SimpleProjector(1);
+
+    System.out.println(projector.getXY(90, -180));
+    System.out.println(projector.getXY(90, 180));
+    System.out.println(projector.getXY(-90, -180));
+    System.out.println(projector.getXY(-90, 180));
+    System.out.println(projector.getXY(0, 0));
   }
 }

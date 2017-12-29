@@ -2,7 +2,7 @@ package md.harta.tile;
 
 import md.harta.db.DbHelper;
 import md.harta.db.dao.NodeDao;
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.loader.AbstractLoader;
 import md.harta.loader.PostgresLoader;
 import md.harta.osm.Building;
@@ -48,8 +48,8 @@ public class TileGenerator
 //    loader.load("osm/botanica.osm", null);
 
     NodeDao nodeDao = new NodeDao(DbHelper.getConnection(props.dbName()));
-    Bounds bounds = nodeDao.getBounds();
-//    Bounds bounds = loader.getBounds();
+    BoundsLatLon bounds = nodeDao.getBounds();
+//    BoundsLatLon bounds = loader.getBounds();
     System.out.println(bounds);
 
     LocalDateTime generationStart = LocalDateTime.now();
@@ -59,7 +59,7 @@ public class TileGenerator
     LOG.info("{} seconds", Duration.between(generationStart, LocalDateTime.now()).getSeconds());
   }
 
-  private void generateLevel(File tilesFolder, AbstractLoader loader, Bounds bounds)
+  private void generateLevel(File tilesFolder, AbstractLoader loader, BoundsLatLon bounds)
   {
     for (int level = props.startLevel(); level <= props.endLevel(); level++)
     {
@@ -84,12 +84,12 @@ public class TileGenerator
     {
       for (int x = tileCutter.getMinTileXindex(); x <= tileCutter.getMaxTileXindex(); x++)
       {
-        Bounds tileBounds = tileCutter.getTileBounds(x, y, 0);
+        BoundsLatLon tileBounds = tileCutter.getTileBounds(x, y, 0);
 
-        Collection<Highway> highways = loader.getHighways(level, tileBounds, projector);
-        Collection<Building> buildings = loader.getBuildings(level, tileBounds, projector);
+        Collection<Highway> highways = loader.getHighways(level, tileBounds);
+        Collection<Building> buildings = loader.getBuildings(level, tileBounds);
 
-        tileWriter.drawTile(level, x, y, tileBounds, projector, highways, buildings);
+        tileWriter.drawTile(level, x, y, tileBounds.toXY(projector), projector, highways, buildings);
 
         tileCnt++;
       }

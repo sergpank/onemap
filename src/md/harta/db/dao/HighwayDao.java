@@ -1,6 +1,6 @@
 package md.harta.db.dao;
 
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
 import md.harta.projector.AbstractProjector;
@@ -113,7 +113,7 @@ public class HighwayDao extends Dao<Highway>
   }
 
   @Override
-  public Collection<Highway> load(int zoomLevel, Bounds box, AbstractProjector projector)
+  public Collection<Highway> load(int zoomLevel, BoundsLatLon box)
   {
     List<Highway> highways = new ArrayList<>();
     try (PreparedStatement stmt = connection.prepareStatement(String.format(SELECT_TILE, TABLE)))
@@ -129,7 +129,7 @@ public class HighwayDao extends Dao<Highway>
       {
         while (resultSet.next())
         {
-          Highway highway = readHighway(resultSet, projector);
+          Highway highway = readHighway(resultSet);
           highways.add(highway);
         }
       }
@@ -142,7 +142,7 @@ public class HighwayDao extends Dao<Highway>
     return highways;
   }
 
-  private Highway readHighway(ResultSet resultSet, AbstractProjector projector)
+  private Highway readHighway(ResultSet resultSet)
       throws SQLException
   {
     long id = resultSet.getLong("highway_id");
@@ -156,11 +156,11 @@ public class HighwayDao extends Dao<Highway>
       long nodeId = nodeSet.getLong(2);
       nodes.add(nodeDao.load(nodeId));
     }
-    return new Highway(id, name, type, nodes, projector);
+    return new Highway(id, name, type, nodes);
   }
 
   @Override
-  public Collection<Highway> loadAll(AbstractProjector projector)
+  public Collection<Highway> loadAll()
   {
     List<Highway> highways = new ArrayList<>();
     try (Statement st = connection.createStatement())
@@ -169,7 +169,7 @@ public class HighwayDao extends Dao<Highway>
       {
         while (rs.next())
         {
-          highways.add(readHighway(rs, projector));
+          highways.add(readHighway(rs));
         }
       }
     }
@@ -181,7 +181,7 @@ public class HighwayDao extends Dao<Highway>
   }
 
   @Override
-  public Bounds getBounds()
+  public BoundsLatLon getBounds()
   {
     throw new NotImplementedException();
   }

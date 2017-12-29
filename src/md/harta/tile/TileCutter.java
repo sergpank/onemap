@@ -1,6 +1,6 @@
 package md.harta.tile;
 
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.geometry.LatLonPoint;
 import md.harta.geometry.XYPoint;
 import md.harta.projector.AbstractProjector;
@@ -23,7 +23,7 @@ public class TileCutter
   private int maxXindex;
   private int maxYindex;
 
-  public TileCutter(AbstractProjector projector, int tileSize, int level, Bounds bounds)
+  public TileCutter(AbstractProjector projector, int tileSize, int level, BoundsLatLon bounds)
   {
     if (level < ScaleCalculator.MIN_SCALE_LEVEL || level > ScaleCalculator.MAX_SCALE_LEVEL)
     {
@@ -60,15 +60,14 @@ public class TileCutter
    *                      If tile should not be extended - just pass 0
    * @return Bounding box of a specific tile in XY format
    */
-  public Bounds getTileBounds(int x, int y, int tileExtension)
+  public BoundsLatLon getTileBounds(int x, int y, int tileExtension)
   {
     XYPoint minXY = new XYPoint(x * tileSize - tileExtension, y * tileSize - tileExtension);
     XYPoint maxXY = new XYPoint((x + 1) * tileSize + tileExtension, (y + 1) * tileSize + tileExtension);
     LatLonPoint minLatLon = projector.getLatLon(minXY);
     LatLonPoint maxLatLon = projector.getLatLon(maxXY);
 
-    return new Bounds(minXY.getX(), minXY.getY(), maxXY.getX(), maxXY.getY(),
-        maxLatLon.getLat(), minLatLon.getLon(), minLatLon.getLat(), maxLatLon.getLon());
+    return new BoundsLatLon(minLatLon.getLat(), minLatLon.getLon(), maxLatLon.getLat(), maxLatLon.getLon());
   }
 
   public int getMinTileXindex()

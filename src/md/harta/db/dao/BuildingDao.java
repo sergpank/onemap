@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.osm.Building;
 import md.harta.osm.OsmNode;
-
-import md.harta.projector.AbstractProjector;
 
 /**
  * Created by sergpank on 23.04.15.
@@ -132,7 +130,7 @@ public class BuildingDao extends Dao<Building>
   }
 
   @Override
-  public Collection<Building> load(int zoomLevel, Bounds box, AbstractProjector projector)
+  public Collection<Building> load(int zoomLevel, BoundsLatLon box)
   {
     List<Building> buildings = new ArrayList<>();
     try (PreparedStatement pStmt = connection.prepareStatement(SELECT_TILE))
@@ -161,7 +159,7 @@ public class BuildingDao extends Dao<Building>
           String height = rs.getString("height");
           int levels = rs.getInt("levels");
           String design = rs.getString("design");
-          buildings.add(new Building(id, nodes,houseNumber, street, height, levels, design, projector));
+          buildings.add(new Building(id, nodes,houseNumber, street, height, levels, design));
         }
       }
     }
@@ -173,13 +171,13 @@ public class BuildingDao extends Dao<Building>
   }
 
   @Override
-  public Collection<Building> loadAll(AbstractProjector projector)
+  public Collection<Building> loadAll()
   {
     return null;
   }
 
   @Override
-  public Bounds getBounds()
+  public BoundsLatLon getBounds()
   {
     return null;
   }

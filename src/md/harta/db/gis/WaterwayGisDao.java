@@ -1,8 +1,7 @@
 package md.harta.db.gis;
 
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.osm.Waterway;
-import md.harta.projector.AbstractProjector;
 
 import java.sql.Connection;
 import java.util.Collection;
@@ -32,17 +31,17 @@ public class WaterwayGisDao extends GisDao<Waterway> {
   }
 
   @Override
-  public Collection<Waterway> load(int zoomLevel, Bounds box, AbstractProjector projector) {
+  public Collection<Waterway> load(int zoomLevel, BoundsLatLon box) {
     return null;
   }
 
   @Override
-  public Collection<Waterway> loadAll(AbstractProjector projector) {
+  public Collection<Waterway> loadAll() {
     return null;
   }
 
   @Override
-  public Bounds getBounds() {
+  public BoundsLatLon getBounds() {
     return null;
   }
 }

@@ -1,6 +1,5 @@
 package md.harta.osm;
 
-import md.harta.projector.AbstractProjector;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -15,9 +14,9 @@ public class Leisure extends OsmWay
   public static final String PARK = "park";
   String type;
 
-  public Leisure(long id, List<OsmNode> nodes, Element element, AbstractProjector projector)
+  public Leisure(long id, List<OsmNode> nodes, Element element)
   {
-    super(id, nodes, projector);
+    super(id, nodes);
 
     NodeList tags = element.getElementsByTagName("tag");
     for (int i = 0; i < tags.getLength(); i++) {

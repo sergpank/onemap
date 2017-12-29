@@ -1,20 +1,15 @@
 package md.harta.loader;
 
-import java.util.Collection;
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.osm.*;
-import md.harta.projector.AbstractProjector;
 import md.harta.util.XmlUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.util.*;
 
 /**
  * Created by sergpank on 20.01.2015.
@@ -37,74 +32,74 @@ public class OsmLoader extends AbstractLoader{
     return nodeMap;
   }
 
-  public Map<Long, Highway> getHighways(AbstractProjector projector) {
+  public Map<Long, Highway> getHighways() {
     return highwayMap;
   }
 
-  public Map<Long, Building> getBuildings(AbstractProjector projector) {
+  public Map<Long, Building> getBuildings() {
     return buildingMap;
   }
 
   @Override
-  public Map<Long, Leisure> getLeisure(AbstractProjector projector)
+  public Map<Long, Leisure> getLeisure()
   {
     return leisureMap;
   }
 
   @Override
-  public Map<Long, Natural> getNature(AbstractProjector projector)
+  public Map<Long, Natural> getNature()
   {
     return natureMap;
   }
 
   @Override
-  public Map<Long, Waterway> getWaterways(AbstractProjector projector) {
+  public Map<Long, Waterway> getWaterways() {
     return waterwayMap;
   }
 
   @Override
-  public Map<Long, Landuse> getLanduse(AbstractProjector projector) {
+  public Map<Long, Landuse> getLanduse() {
     return landuseMap;
   }
 
   @Override
-  public Collection<Border> getBorders(int level, Bounds tileBounds, AbstractProjector projector)
+  public Collection<Border> getBorders(int level, BoundsLatLon tileBounds)
   {
     throw new NotImplementedException();
   }
 
   @Override
-  public Collection<Highway> getHighways(int level, Bounds tileBounds, AbstractProjector projector)
+  public Collection<Highway> getHighways(int level, BoundsLatLon tileBounds)
   {
-    return getHighways(projector).values();
+    return getHighways().values();
   }
 
   @Override
-  public Collection<Building> getBuildings(int level, Bounds tileBounds, AbstractProjector projector)
+  public Collection<Building> getBuildings(int level, BoundsLatLon tileBounds)
   {
-    return getBuildings(projector).values();
+    return getBuildings().values();
   }
 
   @Override
-  public Collection<Leisure> getLeisure(int level, Bounds tileBounds, AbstractProjector projector)
+  public Collection<Leisure> getLeisure(int level, BoundsLatLon tileBounds)
   {
     return leisureMap.values();
   }
 
   @Override
-  public Collection<Natural> getNature(int level, Bounds tileBounds, AbstractProjector projector)
+  public Collection<Natural> getNature(int level, BoundsLatLon tileBounds)
   {
     return natureMap.values();
   }
 
   @Override
-  public Collection<Waterway> getWaterways(int level, Bounds tileBounds, AbstractProjector projector)
+  public Collection<Waterway> getWaterways(int level, BoundsLatLon tileBounds)
   {
     return waterwayMap.values();
   }
 
   @Override
-  public Collection<Landuse> getLanduse(int level, Bounds tileBounds, AbstractProjector projector)
+  public Collection<Landuse> getLanduse(int level, BoundsLatLon tileBounds)
   {
     return landuseMap.values();
   }
@@ -118,7 +113,7 @@ public class OsmLoader extends AbstractLoader{
     return bounds;
   }
 
-  public void load(String xmlFile, AbstractProjector projector) {
+  public void load(String xmlFile) {
     minLon = Double.MAX_VALUE;
     minLat = Double.MAX_VALUE;
     maxLon = Double.MIN_VALUE;
@@ -136,13 +131,9 @@ public class OsmLoader extends AbstractLoader{
     waterwayMap.clear();
     borderMap.clear();
     landuseMap.clear();
-    readOsm(doc, projector);
+    readOsm(doc);
 
     bounds = getBounds(doc);
-//    System.out.printf("Min lat = %f\n" +
-//                      "Max lat = %f\n" +
-//                      "Min lon = %f\n" +
-//                      "Max lon = %f\n\n", minLat, maxLat, minLon, maxLon);
   }
 
   private OsmBounds getBounds(Document doc) {
@@ -174,7 +165,7 @@ public class OsmLoader extends AbstractLoader{
     }
   }
 
-  private void readOsm(Document doc, AbstractProjector projector) {
+  private void readOsm(Document doc) {
     NodeList nodeList = XmlUtil.getNodeList(doc, "/osm/way");
     for (int i = 0; i < nodeList.getLength(); i++)
     {
@@ -192,37 +183,37 @@ public class OsmLoader extends AbstractLoader{
         }
         if (isBuilding(element))
         {
-          Building building = new Building(id, wayNodes, element, projector);
+          Building building = new Building(id, wayNodes, element);
           buildingMap.put(id, building);
         }
         else if (isHighway(element))
         {
-          Highway highway = new Highway(id, wayNodes, element, projector);
+          Highway highway = new Highway(id, wayNodes, element);
           highwayMap.put(id, highway);
         }
         else if (isLeisure(element))
         {
-          Leisure leisure = new Leisure(id, wayNodes, element, projector);
+          Leisure leisure = new Leisure(id, wayNodes, element);
           leisureMap.put(id, leisure);
         }
         else if (isNatural(element))
         {
-          Natural natural = new Natural(id, wayNodes, element, projector);
+          Natural natural = new Natural(id, wayNodes, element);
           natureMap.put(id, natural);
         }
         else if (isWaterway(element))
         {
-          Waterway waterway = new Waterway(id, wayNodes, element, projector);
+          Waterway waterway = new Waterway(id, wayNodes, element);
           waterwayMap.put(id, waterway);
         }
         else if (isBorder(element))
         {
-          Border border = new Border(id, wayNodes, element, projector);
+          Border border = new Border(id, wayNodes, element);
           borderMap.put(id, border);
         }
         else if (isItWhatWeNeed(element, Landuse.LANDUSE))
         {
-          Landuse landuse = new Landuse(id, wayNodes, element, projector);
+          Landuse landuse = new Landuse(id, wayNodes, element);
           landuseMap.put(id, landuse);
         }
       }
@@ -328,8 +319,8 @@ public class OsmLoader extends AbstractLoader{
   }
 
   @Override
-  public Bounds getBounds()
+  public BoundsLatLon getBounds()
   {
-    return new Bounds(null, minLat, minLon, maxLat, maxLon);
+    return new BoundsLatLon(minLat, minLon, maxLat, maxLon);
   }
 }

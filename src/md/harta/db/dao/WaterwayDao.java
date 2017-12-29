@@ -1,6 +1,6 @@
 package md.harta.db.dao;
 
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
 import md.harta.osm.OsmNode;
 import md.harta.osm.Waterway;
 import md.harta.projector.AbstractProjector;
@@ -62,7 +62,7 @@ public class WaterwayDao extends Dao<Waterway> {
   }
 
   @Override
-  public Collection<Waterway> load(int zoomLevel, Bounds box, AbstractProjector projector) {
+  public Collection<Waterway> load(int zoomLevel, BoundsLatLon box) {
     List<Waterway> waterways = new ArrayList<>();
     try (PreparedStatement stmt = connection.prepareStatement(String.format(SELECT_TILE, TABLE)))
     {
@@ -77,7 +77,7 @@ public class WaterwayDao extends Dao<Waterway> {
       {
         while (resultSet.next())
         {
-          Waterway waterway = readWaterway(resultSet, projector);
+          Waterway waterway = readWaterway(resultSet);
           waterways.add(waterway);
         }
       }
@@ -90,7 +90,7 @@ public class WaterwayDao extends Dao<Waterway> {
     return waterways;
   }
 
-  private Waterway readWaterway(ResultSet resultSet, AbstractProjector projector)
+  private Waterway readWaterway(ResultSet resultSet)
       throws SQLException {
     long id = resultSet.getLong("highway_id");
     String name = resultSet.getString("waterway_type");
@@ -103,16 +103,16 @@ public class WaterwayDao extends Dao<Waterway> {
       long nodeId = nodeSet.getLong(2);
       nodes.add(nodeDao.load(nodeId));
     }
-    return new Waterway(id, name, type, nodes, projector);
+    return new Waterway(id, name, type, nodes);
   }
 
   @Override
-  public Collection<Waterway> loadAll(AbstractProjector projector) {
+  public Collection<Waterway> loadAll() {
     return null;
   }
 
   @Override
-  public Bounds getBounds() {
+  public BoundsLatLon getBounds() {
     return null;
   }
 }

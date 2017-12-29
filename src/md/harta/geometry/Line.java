@@ -1,5 +1,7 @@
 package md.harta.geometry;
 
+import java.util.Objects;
+
 /**
  * Created by sergpank on 05.03.2015.
  */
@@ -13,18 +15,21 @@ public class Line {
 
   private Double slope;
 
+  /**
+   * This is not safe declaration of line.
+   * Use it carefully, only if you know what you are doing.
+   */
+  @Deprecated
   public Line(double a, double b, double c) {
     this.a = a;
     this.b = b;
     this.c = c;
+
+    this.slope = calcSlope();
   }
   
   public Line(XYPoint pointA, XYPoint pointB)
   {
-    a = pointA.getY() - pointB.getY();
-    b = pointB.getX() - pointA.getX();
-    c = pointA.getX() * pointB.getY() - pointB.getX() * pointA.getY();
-
     if (pointA.getX() < pointB.getX())
     {
       leftPoint = pointA;
@@ -48,6 +53,20 @@ public class Line {
       leftPoint = pointB;
       rightPoint = pointA;
     }
+    // (x - x1) / (x2 - x1) = (y - y1) / (y2 - y1)
+    // --->
+    // (y2 - y1) * x - (x2 - x1) * y + (x2 * y1 - x1 * y2) = 0
+    // Ax + By + C = 0
+    // --->
+    // A = (y2 - y1)
+    // B = - (x2 - x1) = (x1 - x2)
+    // C = (x2*y1 - x1*y2)
+
+    a = rightPoint.getY() - leftPoint.getY();
+    b = leftPoint.getX() - rightPoint.getX();
+    c = rightPoint.getX() * leftPoint.getY() - leftPoint.getX() * rightPoint.getY();
+
+    this.slope = calcSlope();
   }
 
   public double getX(double y){
@@ -72,26 +91,9 @@ public class Line {
     return c;
   }
 
+  // Line slope in radians
   public double getSlope() 
   {
-    if (slope == null)
-    {
-      if (b ==0)
-      {
-        if (leftPoint.getY() > rightPoint.getY())
-          slope = -Math.PI / 2;
-        else
-          slope = Math.PI / 2;
-      }
-      else
-      {
-        double x1 = 10;
-        double x2 = 20;
-        double y1 = (a * x1 + c) / (b * -1);
-        double y2 = (a * x2 + c) / (b * -1);
-        slope = b == 0 ? Math.PI / 2 : Math.atan((y2 - y1) / (x2 - x1));
-      }
-    }
     return slope;
   }
 
@@ -112,24 +114,11 @@ public class Line {
 
   public boolean isIdentical(Line l)
   {
-    if (a == l.a)
-    {
-      if (b == l.b)
-      {
-        if (slope == l.slope)
-        {
-          return true;
-        }
-      }
-    }
-    else if (a == -l.a)
-    {
-      if (b == l.b)
-      {
-        if ( ((slope == null && l.slope == null) || (slope == -l.slope)) || ((c >= 0 && l.c <=0) || (c <=0 && l.c >=0)))
-        {
-          return true;
-        }
+    if (Objects.equals(this.slope, l.slope)) {
+      if ((this.a == l.a || this.a == -l.a)
+          && (this.b == l.b || this.b == -l.b)
+          && (this.c == l.c || this.c == -l.c)) {
+        return true;
       }
     }
     return false;
@@ -175,5 +164,11 @@ public class Line {
   public double calcLength()
   {
     return GeometryUtil.getDistanceBetweenPoints(leftPoint, rightPoint);
+  }
+
+  // Calculate line slope in radians
+  private double calcSlope()
+  {
+    return (b == 0) ? (Math.PI / 2) : (a == 0) ? 0 : Math.atan(a / (-b));
   }
 }

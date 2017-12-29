@@ -1,28 +1,24 @@
 package md.harta.painter;
 
-import java.awt.Font;
-import java.awt.Shape;
-import java.awt.font.GlyphVector;
-import java.util.List;
 import md.harta.drawer.AbstractDrawer;
-import md.harta.geometry.Bounds;
-import md.harta.geometry.GeometryUtil;
-import md.harta.geometry.Intersection;
+import md.harta.geometry.*;
 import md.harta.geometry.Label;
-import md.harta.geometry.RoadLabelIntersector;
-import md.harta.geometry.XYPoint;
 import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
 import md.harta.projector.AbstractProjector;
 import md.harta.tile.TilePalette;
 import md.harta.util.TextUtil;
 
+import java.awt.*;
+import java.awt.font.GlyphVector;
+import java.util.List;
+
 /**
  * Created by sergpank on 07.07.15.
  */
 public class TextPainter extends AbstractPainter
 {
-  public TextPainter(AbstractProjector projector, Bounds bounds)
+  public TextPainter(AbstractProjector projector, BoundsXY bounds)
   {
     super(projector, bounds);
   }
@@ -57,7 +53,7 @@ public class TextPainter extends AbstractPainter
 //    System.out.printf("Start at: %f : %f\n", roadStartPoint.getX(), roadStartPoint.getY());
 //    System.out.printf("Width = %d; Height = %d\n", labelWidth, charHeight);
 
-    Bounds highwayBounds = label.getHighway().getBounds();
+    BoundsLatLon highwayBounds = label.getHighway().getBounds();
     XYPoint minXY = shiftPoint(projector.getXY(highwayBounds.getMinLat(), highwayBounds.getMinLon()));
     XYPoint maxXY = shiftPoint(projector.getXY(highwayBounds.getMaxLat(), highwayBounds.getMaxLon()));
 //    System.out.printf("Road bounding box = {(%s); (%s)}\n", minXY, maxXY);

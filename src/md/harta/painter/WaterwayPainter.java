@@ -1,7 +1,7 @@
 package md.harta.painter;
 
 import md.harta.drawer.TileDrawer;
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsXY;
 import md.harta.geometry.CanvasPolygon;
 import md.harta.osm.Waterway;
 import md.harta.projector.AbstractProjector;
@@ -14,7 +14,7 @@ import java.util.Collection;
  */
 public class WaterwayPainter extends AbstractPainter {
 
-  public WaterwayPainter(AbstractProjector projector, Bounds bounds) {
+  public WaterwayPainter(AbstractProjector projector, BoundsXY bounds) {
     super(projector, bounds);
   }
 

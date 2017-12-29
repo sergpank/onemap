@@ -1,6 +1,6 @@
 package md.harta.painter;
 
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsXY;
 import md.harta.geometry.CanvasPolygon;
 import md.harta.geometry.XYPoint;
 import md.harta.osm.OsmNode;
@@ -11,10 +11,10 @@ import md.harta.projector.AbstractProjector;
  * Created by sergpank on 03.03.2015.
  */
 public class AbstractPainter {
-  protected Bounds bounds;
+  protected BoundsXY bounds;
   protected AbstractProjector projector;
 
-  public AbstractPainter(AbstractProjector projector, Bounds bounds) {
+  public AbstractPainter(AbstractProjector projector, BoundsXY bounds) {
     this.projector = projector;
     this.bounds = bounds;
   }
@@ -39,15 +39,15 @@ public class AbstractPainter {
 
   protected XYPoint shiftPoint(XYPoint point)
   {
-    return new XYPoint(point.getX() - bounds.getxMin(), point.getY() - bounds.getyMin());
+    return new XYPoint(point.getX() - bounds.getXmin(), point.getY() - bounds.getYmin());
   }
 
   protected void shiftPolygon(CanvasPolygon polygon)
   {
     for (int i = 0; i < polygon.getxPoints().length; i++)
     {
-      polygon.getxPoints()[i] = polygon.getxPoints()[i] - bounds.getxMin();
-      polygon.getyPoints()[i] = polygon.getyPoints()[i] - bounds.getyMin();
+      polygon.getxPoints()[i] = polygon.getxPoints()[i] - bounds.getXmin();
+      polygon.getyPoints()[i] = polygon.getyPoints()[i] - bounds.getYmin();
     }
   }
 

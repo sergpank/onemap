@@ -1,6 +1,5 @@
 package md.harta.osm;
 
-import md.harta.projector.AbstractProjector;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -17,8 +16,8 @@ public class Landuse extends OsmWay{
 
   private String type;
 
-  public Landuse(long id, List<OsmNode> nodes, Element element, AbstractProjector projector) {
-    super(id, nodes, projector);
+  public Landuse(long id, List<OsmNode> nodes, Element element) {
+    super(id, nodes);
 
     NodeList tags = element.getElementsByTagName("tag");
     for (int i = 0; i < tags.getLength(); i++){

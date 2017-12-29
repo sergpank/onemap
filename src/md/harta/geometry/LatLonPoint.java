@@ -8,8 +8,8 @@ public class LatLonPoint {
   private double lon;
 
   /**
-   * @param lat или широта
-   * @param lon или долгота
+   * @param lat широта
+   * @param lon долгота
    */
   public LatLonPoint(double lat, double lon) {
     this.lat = lat;
@@ -17,14 +17,14 @@ public class LatLonPoint {
   }
 
   /**
-   * @return x или широту
+   * @return Latitude (Широту)
    */
   public double getLat() {
     return lat;
   }
 
   /**
-   * @return у или долготу
+   * @return Longitude (Долготу)
    */
   public double getLon() {
     return lon;

@@ -24,10 +24,45 @@ public class GeometryUtil
    * @return Line as coefficients for normal form of line equation Ax + By + C = 0
    */
   public static Line getLine(XYPoint leftPoint, XYPoint rightPoint){
-    double a = leftPoint.getY() - rightPoint.getY();
-    double b = rightPoint.getX() - leftPoint.getX();
-    double c = leftPoint.getX() * rightPoint.getY() - rightPoint.getX() * leftPoint.getY();
+    double a = rightPoint.getY() - leftPoint.getY();
+    double b = leftPoint.getX() - rightPoint.getX();
+    double c = rightPoint.getX() * leftPoint.getY() - leftPoint.getX() * rightPoint.getY();
     return new Line(a, b, c);
+  }
+
+  public static void main(String[] args)
+  {
+    System.out.println("diagonal right-to-left high");
+    System.out.println(getLine(new XYPoint(10, 10), new XYPoint(0, 30)));
+    System.out.println(getLine(new XYPoint(0, 30), new XYPoint(10, 10)));
+
+    System.out.println("diagoanl left-to-right high");
+    System.out.println(getLine(new XYPoint(10, 10), new XYPoint(20, 30)));
+    System.out.println(getLine(new XYPoint(20, 30), new XYPoint(10, 10)));
+
+    System.out.println("diagonal left-to-right right");
+    System.out.println(getLine(new XYPoint(10, 10), new XYPoint(20, 20)));
+    System.out.println(getLine(new XYPoint(20, 20), new XYPoint(10, 10)));
+
+    System.out.println("diagonal right-to-left right");
+    System.out.println(getLine(new XYPoint(10, 10), new XYPoint(20, 0)));
+    System.out.println(getLine(new XYPoint(20, 0), new XYPoint(10, 10)));
+
+    System.out.println("diagonal left-to-right low");
+    System.out.println(getLine(new XYPoint(10, 10), new XYPoint(30, 20)));
+    System.out.println(getLine(new XYPoint(30, 20), new XYPoint(10, 10)));
+
+    System.out.println("diagonal right-to-left low");
+    System.out.println(getLine(new XYPoint(10, 10), new XYPoint(30, 0)));
+    System.out.println(getLine(new XYPoint(30, 0), new XYPoint(10, 10)));
+
+    System.out.println("horizontal");
+    System.out.println(getLine(new XYPoint(10, 10), new XYPoint(20, 10)));
+    System.out.println(getLine(new XYPoint(20, 10), new XYPoint(10, 10)));
+
+    System.out.println("vertical");
+    System.out.println(getLine(new XYPoint(10, 10), new XYPoint(10, 20)));
+    System.out.println(getLine(new XYPoint(10, 20), new XYPoint(10, 10)));
   }
 
   /**
@@ -120,8 +155,8 @@ public class GeometryUtil
     double lonA = Math.toRadians(pointA.getLon());
     double lonB = Math.toRadians(pointB.getLon());
     double delta = Math.acos(
-        Math.sin(latA) * Math.sin(latB) +
-            Math.cos(latA) * Math.cos(latB) * Math.cos(lonB - lonA));
+              (Math.sin(latA) * Math.sin(latB))
+            + (Math.cos(latA) * Math.cos(latB) * Math.cos(lonB - lonA)));
     double distance = AbstractProjector.EARTH_RADIUS_M * delta;
     return distance;
   }
@@ -196,44 +231,114 @@ public class GeometryUtil
    */
   public static XYPoint[] getLineCircleIntersection(Line line, Circle circle)
   {
-    XYPoint point1 = null;
-    XYPoint point2 = null;
-
-    double x0 = circle.getCenter().getX();
-    double y0 = circle.getCenter().getY();
-
-    double a = line.getA();
-    double b = line.getB();
-    double c = line.getC();
-
-    // Variables for the square equation: B^2 - 4AC
-    if (a != 0)
+    if (line.getA() == 0)
     {
-      double A = Math.pow(b, 2) / Math.pow(a, 2) + 1;
-      double B = 2 * (b / a) * (c / a + x0) - 2 * y0;
-      double C = Math.pow(c / a + x0, 2) + Math.pow(y0, 2) - Math.pow(circle.getRadius(), 2);
-
-      double D = Math.pow(B, 2) - 4 * A * C;
-
-      if (D < 0)
-      {
-        // No intersection
-        return null;
-      }
-
-      double y1 = ((-B) - Math.sqrt(D)) / (2 * A);
-      double y2 = ((-B) + Math.sqrt(D)) / (2 * A);
-
-      double x1 = (-(b / a)) * y1 - (c / a);
-      double x2 = (-(b / a)) * y2 - (c / a);
-
-      return new XYPoint[]{new XYPoint(x1, y1), new XYPoint(x2, y2)};
+      return calcHorizontalIntersection(line, circle);
+    }
+    if (line.getB() == 0)
+    {
+      return calcVerticalIntersection(line, circle);
     }
     else // this is special case - horizontal line
     {
-      double x = circle.getCenter().getX();
-      double y = circle.getCenter().getY();
-      return new XYPoint[]{new XYPoint(x - circle.getRadius(), y), new XYPoint(x + circle.getRadius(), y)};
+      return calcGeneralIntersection(line, circle);
     }
+  }
+
+  private static XYPoint[] calcHorizontalIntersection(Line line, Circle circle)
+  {
+    double y = line.getLeftPoint().getY();
+    double yc = circle.getCenter().getY();
+    double xc = circle.getCenter().getX();
+
+    if (Math.abs(y - yc) > circle.getRadius())
+    {
+      // not intersection in such case
+      return null;
+    }
+    else if (Math.abs(y - yc) == circle.getRadius())
+    {
+      // there is only 1 intersection
+      return new XYPoint[]{new XYPoint(xc, y)};
+    }
+    //there are 2 intersections
+    double dy = yc - y;
+    double dist = Math.sqrt(circle.getRadius() * circle.getRadius() - dy * dy);
+    return new XYPoint[]{new XYPoint(xc - dist, y),
+                         new XYPoint(xc + dist, y)};
+  }
+
+  private static XYPoint[] calcVerticalIntersection(Line line, Circle circle)
+  {
+    double x = line.getLeftPoint().getX();
+    double yc = circle.getCenter().getY();
+    double xc = circle.getCenter().getX();
+
+    if (Math.abs(x - xc) > circle.getRadius())
+    {
+      // not intersection in such case
+      return null;
+    }
+    else if (Math.abs(x - xc) == circle.getRadius())
+    {
+      // there is only 1 intersection
+      return new XYPoint[]{new XYPoint(x, yc)};
+    }
+    //there are 2 intersections
+    double dx = xc - x;
+    double dist = Math.sqrt(circle.getRadius() * circle.getRadius() - dx * dx);
+    return new XYPoint[]{new XYPoint(x, yc - dist),
+                         new XYPoint(x, yc + dist)};
+
+  }
+
+  private static XYPoint[] calcGeneralIntersection(Line line, Circle circle)
+  {
+    // Solution of system of 2 equations
+    // (x – a)^2 + (y – b)^2 = R^2
+    // Ax + By + C = 0
+    //
+
+    /*
+    y = (-A/B)x - C/B // y = kx + b
+
+    (x - a)^2 + ((-A/B)x - C/B - b)^2 = R^2
+    x^2 - 2ax + a^2 + (-A/B)^2x^2 - 2(-A/B)(-C/B - b)x + (-C/B - b)^2 = R^2
+    (1 + A^2/B^2)x^2 + (-2a + (-2(A/B)(-C/B) - b)x + (a^2 + (-C/B - b)^2 - R^2) = 0
+
+    #A = 1 + A^2/B^2
+    #B = -2a - 2(-A/B)(-C/B) - b
+    #C = a^2 + (-C/B - b)^2 - R^2
+
+    So we have to solve the following equation:
+    Ax^2 + Bx + C = 0;
+     */
+
+    double xc = circle.getCenter().getX(); // a
+    double yc = circle.getCenter().getY(); // b
+
+    double a = line.getA(); // A
+    double b = line.getB(); // B
+    double c = line.getC(); // C
+
+    double A = 1 + Math.pow(-a / b, 2);
+    double B =  (2 * (c / b + yc) * (a / b))  - (2 * xc);
+    double C = Math.pow(xc, 2) + Math.pow((c / b) + yc, 2) - Math.pow(circle.getRadius(), 2);
+
+    double D = Math.pow(B, 2) - 4 * A * C;
+
+    if (D < 0)
+    {
+      // No intersection
+      return null;
+    }
+
+    double x1 = ((-B) - Math.sqrt(D)) / (2 * A);
+    double x2 = ((-B) + Math.sqrt(D)) / (2 * A);
+
+    double y1 = (-(b / a)) * x1 - (c / b);
+    double y2 = (-(b / a)) * x2 - (c / b);
+
+    return new XYPoint[]{new XYPoint(x1, y1), new XYPoint(x2, y2)};
   }
 }

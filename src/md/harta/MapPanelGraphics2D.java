@@ -1,7 +1,8 @@
 package md.harta;
 
 import md.harta.drawer.TileDrawer;
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsLatLon;
+import md.harta.geometry.BoundsXY;
 import md.harta.geometry.XYPoint;
 import md.harta.loader.AbstractLoader;
 import md.harta.loader.OsmLoader;
@@ -54,14 +55,14 @@ public class MapPanelGraphics2D extends JPanel {
 //    map.loader = new PostgresLoader("debug");
 //    map.loader.load("debug", projector);
     map.loader = new OsmLoader();
-    map.loader.load(DATA_SOURCE, projector);
+    map.loader.load(DATA_SOURCE);
 
-    map.highways = map.loader.getHighways(projector).values();
-    map.buildings = map.loader.getBuildings(projector).values();
-    map.leisure = map.loader.getLeisure(projector).values();
-    map.nature = map.loader.getNature(projector).values();
-    map.waterways = map.loader.getWaterways(projector).values();
-    map.landuse = map.loader.getLanduse(projector).values();
+    map.highways = map.loader.getHighways().values();
+    map.buildings = map.loader.getBuildings().values();
+    map.leisure = map.loader.getLeisure().values();
+    map.nature = map.loader.getNature().values();
+    map.waterways = map.loader.getWaterways().values();
+    map.landuse = map.loader.getLanduse().values();
 
     JScrollPane scrollPane = new JScrollPane(map);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -121,7 +122,7 @@ public class MapPanelGraphics2D extends JPanel {
     if (data != null && !data.isEmpty())
     {
       LOG.info("Loading map: " + data);
-      map.loader.load(data, projector);
+      map.loader.load(data);
       this.repaint();
     }
   }
@@ -139,24 +140,24 @@ public class MapPanelGraphics2D extends JPanel {
 
   @Override
   public Dimension getPreferredSize() {
-    Bounds bounds = new Bounds(projector, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
-    double width = bounds.getxMax() - bounds.getxMin();
-    double height = bounds.getyMax() - bounds.getyMin();
+    BoundsXY bounds = new BoundsLatLon(loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon()).toXY(projector);
+    double width = bounds.getXmax() - bounds.getXmin();
+    double height = bounds.getYmax() - bounds.getYmin();
 
     return new Dimension((int)width, (int)height);
   }
 
-  private void drawGrid(Bounds d, Graphics2D g)
+  private void drawGrid(BoundsXY d, Graphics2D g)
   {
     g.setColor(Color.RED);
-    for ( int x = 100; x < d.getxMax(); x +=100)
+    for ( int x = 100; x < d.getXmax(); x +=100)
     {
-      g.drawLine(x, 0, x, (int) d.getyMax());
+      g.drawLine(x, 0, x, (int) d.getYmax());
     }
 
-    for ( int y = 100; y < d.getyMax(); y +=100)
+    for ( int y = 100; y < d.getYmax(); y +=100)
     {
-      g.drawLine(0, y, (int) d.getxMax(), y);
+      g.drawLine(0, y, (int) d.getXmax(), y);
     }
   }
 
@@ -173,7 +174,7 @@ public class MapPanelGraphics2D extends JPanel {
     ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 
-    Bounds bounds = new Bounds(projector, loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon());
+    BoundsXY bounds = new BoundsLatLon(loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon()).toXY(projector);
 
     LeisurePainter leisurePainter = new LeisurePainter(projector, bounds);
     NaturePainter naturePainter = new NaturePainter(projector, bounds);

@@ -1,7 +1,7 @@
 package md.harta.painter;
 
 import md.harta.drawer.TileDrawer;
-import md.harta.geometry.Bounds;
+import md.harta.geometry.BoundsXY;
 import md.harta.geometry.CanvasPolygon;
 import md.harta.osm.Landuse;
 import md.harta.projector.AbstractProjector;
@@ -17,7 +17,7 @@ public class LandusePainter extends AbstractPainter{
 
   private static Logger log = Logger.getLogger("landuse_painter");
 
-  public LandusePainter(AbstractProjector projector, Bounds bounds) {
+  public LandusePainter(AbstractProjector projector, BoundsXY bounds) {
     super(projector, bounds);
   }
 
@@ -42,8 +42,8 @@ public class LandusePainter extends AbstractPainter{
     }
 
 //    CanvasPolygon polygon = createPolygon(building);
-//    shiftPoints(bounds.getxMin(), polygon.getxPoints());
-//    shiftPoints(bounds.getyMin(), polygon.getyPoints());
+//    shiftPoints(bounds.getXmin(), polygon.getxPoints());
+//    shiftPoints(bounds.getYmin(), polygon.getyPoints());
 //
 //    drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
   }
