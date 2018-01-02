@@ -1,17 +1,14 @@
 package md.harta.db.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import md.harta.geometry.BoundsLatLon;
+import md.harta.osm.OsmNode;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import md.harta.geometry.BoundsLatLon;
-import md.harta.osm.OsmNode;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Created by sergpank on 21.04.15.
@@ -177,17 +174,5 @@ public class NodeDao extends Dao<OsmNode>
       throw new RuntimeException(e);
     }
     return nodes;
-  }
-
-  public static void main(String[] args)
-  {
-    List<Long> longs = new ArrayList<Long>()
-    {{
-        add(1l);
-        add(2L);
-        add(3L);
-      }};
-    String collect = longs.stream().map(Object::toString).collect(Collectors.joining(","));
-    System.out.println(collect);
   }
 }

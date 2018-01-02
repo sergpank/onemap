@@ -2,13 +2,14 @@ package md.harta.tile;
 
 import md.harta.drawer.AbstractDrawer;
 import md.harta.drawer.TileDrawer;
-import md.harta.geometry.BoundsLatLon;
 import md.harta.geometry.BoundsXY;
 import md.harta.osm.Building;
 import md.harta.osm.Highway;
 import md.harta.painter.BuildingPainter;
 import md.harta.painter.HighwayPainter;
 import md.harta.projector.AbstractProjector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -22,15 +23,17 @@ import java.util.Collection;
  */
 public class TileFileWriter
 {
+  private static final Logger LOG = LoggerFactory.getLogger(TileFileWriter.class);
   private int tileSize;
   private String outputDir;
-  private String dbName;
+  private String source;
 
-  public TileFileWriter(int tileSize, String outputDir, String dbName)
+  public TileFileWriter(int tileSize, String outputDir, String source)
   {
     this.tileSize = tileSize;
     this.outputDir = outputDir;
-    this.dbName = dbName;
+    this.source = new File(source).getName();
+    LOG.info("Output directory: " + new File(outputDir, source).getAbsolutePath());
   }
 
   public void drawTile(int level, int x, int y, BoundsXY tileBounds, AbstractProjector projector,
@@ -57,7 +60,7 @@ public class TileFileWriter
   {
     try
     {
-      String tileName = String.format("%s/%s/%s/tile_%d_%d_%d.png", outputDir, dbName, level, level, y, x);
+      String tileName = String.format("%s/%s/%s/tile_%d_%d_%d.png", outputDir, source, level, level, y, x);
 
       File tileFile = new File(tileName);
       tileFile.mkdirs();
