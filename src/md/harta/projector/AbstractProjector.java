@@ -2,6 +2,7 @@ package md.harta.projector;
 
 import md.harta.geometry.LatLonPoint;
 import md.harta.geometry.XYPoint;
+import md.harta.osm.OsmNode;
 
 /**
  * Created by sergpank on 20.02.2015.
@@ -36,5 +37,9 @@ public abstract class AbstractProjector {
 
   public double getHeight() {
     return height;
+  }
+
+  public XYPoint getXY(OsmNode node) {
+    return getXY(node.getLat(), node.getLon());
   }
 }

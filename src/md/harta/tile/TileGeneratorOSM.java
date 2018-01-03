@@ -40,7 +40,7 @@ public class TileGeneratorOSM extends TileGenerator
 
     LocalDateTime generationStart = LocalDateTime.now();
 
-    generateLevel(loader);
+    generateLevels(loader);
 
     LOG.info("{} seconds", Duration.between(generationStart, LocalDateTime.now()).getSeconds());
   }

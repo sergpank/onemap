@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm>
+ <bounds minlat="10" minlon="10" maxlat="10.001" maxlon="10.002"/>
+
+ <node id="1" lat="10" lon="10"/>
+ <node id="2" lat="10.0005" lon="10.001"/>
+
+ <way id="1">
+  <nd ref="1"/>
+  <nd ref="2"/>
+  <tag k="highway" v="residential"/>
+  <tag k="name" v="ABCD"/>
+ </way>
+
+</osm>

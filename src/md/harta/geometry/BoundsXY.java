@@ -18,6 +18,14 @@ public class BoundsXY
     this.yMax = yMax;
   }
 
+  public BoundsXY(XYPoint min, XYPoint max)
+  {
+    this.xMin = min.getX();
+    this.yMin = min.getY();
+    this.xMax = max.getX();
+    this.yMax = max.getY();
+  }
+
   /**
    * @param height - should be negative
    */

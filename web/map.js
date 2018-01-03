@@ -1,8 +1,8 @@
-var map = L.map('map').setView([47.0, 28.865], 16);
+var map = L.map('map').setView([10., 10.], 16);
 // http://a.tiles.mapbox.com/v3/examples.map-i875mjb7/0/0/0.png
 // L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 
-L.tileLayer('../tiles/botanica.osm/{z}/tile_{z}_{y}_{x}.png', {
+L.tileLayer('../tiles/test/{z}/tile_{z}_{y}_{x}.png', {
   minZoom: 10,
   maxZoom: 20
 }).addTo(map);

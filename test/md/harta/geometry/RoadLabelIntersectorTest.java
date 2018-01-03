@@ -3,11 +3,14 @@ package md.harta.geometry;
 import junit.framework.TestCase;
 import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
+import md.harta.projector.AbstractProjector;
+import md.harta.projector.MercatorProjector;
 import md.harta.projector.SimpleProjector;
-import md.harta.tile.TilePalette;
 import org.junit.Test;
 
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,21 +20,10 @@ public class RoadLabelIntersectorTest extends TestCase
 {
   int charHeight = 10;
 
-//  @Test
-//  public void testGreekStreetOdessa()
-//  {
-//    BoundsLatLon bounds = new BoundsLatLon(3.9284041629477546E7, 2.374463388867807E7, 3.928453098358557E7, 2.374468367487468E7);
-//    new Label("Грецька вулиця", )
-//    RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, );
-//
-//
-//    List<Intersection> intersections = intersector.getIntersections();
-//  }
-
   @Test
   public void testDirectLineToSegments()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), 5, charHeight);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), "", 1);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -50,7 +42,7 @@ public class RoadLabelIntersectorTest extends TestCase
   @Test
   public void testReverseLineToSegments()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), 5, charHeight);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), "", 1);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -69,7 +61,7 @@ public class RoadLabelIntersectorTest extends TestCase
   @Test
   public void testHorizontalLineToSegments()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), 5, charHeight);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000),  "", 1);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -88,7 +80,7 @@ public class RoadLabelIntersectorTest extends TestCase
   @Test
   public void testVerticalLineToSegments()
   {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), 5, charHeight);
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), "", 1);
     SimpleProjector projector = new SimpleProjector(1);
 
     List<OsmNode> nodes = new ArrayList<>();
@@ -219,24 +211,38 @@ public class RoadLabelIntersectorTest extends TestCase
   }
 
   @Test
-  public void testIntersectionPointsDiagonalDown()
-  {
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), 5, charHeight);
-    SimpleProjector projector = new SimpleProjector(1);
+  public void testIntersetionRoadShorterThanLabel() {
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(0, 0, 20, 20), Font.MONOSPACED, 15);
+    List<OsmNode> nodes = Arrays.asList(
+        new OsmNode(1l, 10, 10),
+        new OsmNode(2l, 10.0001, 10.0001));
+    String roadName = "abcdefghijklmnopuvw";
+    Highway highway = new Highway(1l, roadName, "test", nodes);
+    Label label = new Label(roadName, new XYPoint(10, 10), Font.MONOSPACED, 15);
+    AbstractProjector projector = new MercatorProjector(17);
+    List<Intersection> intersections = intersector.getIntersections(highway, label, projector);
+    assertNull(intersections);
+  }
 
-    List<OsmNode> nodes = new ArrayList<>();
-    nodes.add(new OsmNode(1, 30, 10));
-    nodes.add(new OsmNode(2, 20, 20));
-    nodes.add(new OsmNode(3, 10, 30));
+  @Test
+  public void testIntersetionDiagonal_1() {
+    AbstractProjector projector = new MercatorProjector(17);
 
-    Highway highway = new Highway(1l, "1", "no_type", nodes);
-    Label label = new Label("aaa", new XYPoint(200, 70), TilePalette.FONT_NAME, 12);
+    List<OsmNode> nodes = Arrays.asList(
+        new OsmNode(1l, 10, 10),
+        new OsmNode(2l, 10.0005, 10.001));
 
+    String roadName = "ABCD";
+    Highway highway = new Highway(1l, roadName, "test", nodes);
+    Label label = new Label(roadName, new XYPoint(10, 10), Font.MONOSPACED, 15);
+
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(0, 0, 20, 20), Font.MONOSPACED, 15);
     List<Intersection> intersections = intersector.getIntersections(highway, label, projector);
 
-    for (Intersection i : intersections)
-    {
-      System.out.println(i);
-    }
+    assertEquals(4, intersections.size());
+    assertEquals(new Intersection(new XYPoint(1.770930983167526E7, 1.5840374675626924E7), -0.46979950686796507), intersections.get(0));
+    assertEquals(new Intersection(new XYPoint(1.7709319639925044E7, 1.5840369695844172E7), -0.46979950686796507), intersections.get(1));
+    assertEquals(new Intersection(new XYPoint(1.770932855651575E7, 1.5840365168768942E7), -0.46979950686796507), intersections.get(2));
+    assertEquals(new Intersection(new XYPoint(1.770933836476553E7, 1.584036018898619E7), -0.46979950686796507), intersections.get(3));
   }
 }

@@ -28,7 +28,7 @@ public abstract class TileGenerator
 
   public abstract void generate();
 
-  protected void generateLevel(AbstractLoader loader)
+  protected void generateLevels(AbstractLoader loader)
   {
     for (int level = props.startLevel(); level <= props.endLevel(); level++)
     {
@@ -45,7 +45,7 @@ public abstract class TileGenerator
   {
     long tileCnt = 0;
     long start = System.currentTimeMillis();
-    TileFileWriter tileWriter = new TileFileWriter(TILE_SIZE, props.outputDir(), props.source());
+    TileFileWriter tileWriter = new TileFileWriter(TILE_SIZE, props.outputDir());
 
     for (int y = tileCutter.getMinTileYindex(); y <= tileCutter.getMaxTileYindex(); y++)
     {

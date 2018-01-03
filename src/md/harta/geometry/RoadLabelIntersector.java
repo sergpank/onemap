@@ -1,53 +1,58 @@
 package md.harta.geometry;
 
-import java.util.ArrayList;
-import java.util.List;
 import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
 import md.harta.projector.AbstractProjector;
-import md.harta.tile.TilePalette;
 import md.harta.util.TextUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sergpank on 11.08.15.
  */
 public class RoadLabelIntersector
 {
+  private static final Logger LOG = LoggerFactory.getLogger(RoadLabelIntersector.class);
+
   private BoundsXY bounds;
-  private int labelWidth;
-  private int charHeight;
+  private String fontName;
+  private int fontSize;
 
   /**
    * Constructor
    * @param bounds Bounds of are that is being rendered (in pixels)
-   * @param labelWidth Width of label in pixels
-   * @param charHeight Height of font character in pixels
    */
-  public RoadLabelIntersector(BoundsXY bounds, int labelWidth, int charHeight)
+  public RoadLabelIntersector(BoundsXY bounds, String fontName, int fontSize)
   {
     this.bounds = bounds;
-    this.labelWidth = labelWidth;
-    this.charHeight = charHeight;
+    this.fontName = fontName;
+    this.fontSize = fontSize;
   }
 
   public List<Intersection> getIntersections(Highway highway, Label label, AbstractProjector projector)
   {
     double highwayLength = GeometryUtil.getHighwayLength(highway, projector);
 
-    if (highwayLength < labelWidth)
+//    LOG.info("Highway length: " + highwayLength);
+
+    if (highwayLength < label.getWidth())
     {
-      System.err.printf("Road length (%f) < label length (%d)", highwayLength, labelWidth);
+//      System.err.printf("Road length (%f) < label length (%f)", highwayLength, label.getWidth());
       return null;
     }
+
     List<Line> segments = highwayToLines(highway, projector);
 
-    int repeats = (int) (Math.ceil(highwayLength / (labelWidth * 3)));
-    double distance = (highwayLength - (labelWidth * repeats)) / (repeats + 1);
+    int repeats = (int) (Math.ceil(highwayLength / (label.getWidth() * 3)));
+    double offset = (highwayLength - (label.getWidth() * repeats)) / (repeats + 1);
 
     List<Intersection> intersections = new ArrayList<>();
     for (int i = 0; i < repeats; i++)
     {
-      double shift = distance + (labelWidth * i) + (distance * i);
+      double shift = offset + (label.getWidth() * i) + (offset * i);
       intersections.addAll(calculateIntersections(label, segments, shift));
     }
     return intersections;
@@ -65,7 +70,7 @@ public class RoadLabelIntersector
       int charWidth = calcCharWidth(ch);
       Line line = segments.get(segmentIndex);
 
-      XYPoint intersectionPoint = calcIntersectionPoint(line, shift);
+      XYPoint intersectionPoint = calcIntersectionPoint(line, shift, label.getHeight());
 
       if ((line.calcLength() - shift) <= (charWidth))
       {
@@ -82,7 +87,7 @@ public class RoadLabelIntersector
             else
             {
               Line nextLine = segments.get(segmentIndex);
-              intersectionPoint = calcIntersectionPoint(nextLine, shift);
+              intersectionPoint = calcIntersectionPoint(nextLine, shift, label.getHeight());
               break;
             }
           }
@@ -99,7 +104,7 @@ public class RoadLabelIntersector
           if (segmentIndex < segments.size())
           {
             Line nextLine = segments.get(segmentIndex);
-            intersectionPoint = calcIntersectionPoint(nextLine, shift);
+            intersectionPoint = calcIntersectionPoint(nextLine, shift, label.getHeight());
           }
           else
           {
@@ -113,11 +118,6 @@ public class RoadLabelIntersector
 
       Intersection intersection = new Intersection(intersectionPoint, line.getSlope());
       intersections.add(intersection);
-
-      if (label.getText().equals("Грецька вулиця"))
-      {
-        System.out.printf("\"%s\" : %d, %s\n", ch, charWidth, intersection);
-      }
     }
 
     return intersections;
@@ -125,17 +125,17 @@ public class RoadLabelIntersector
 
   private int calcCharWidth(char ch) {
     String s = Character.toString(ch);
-    return (int) TextUtil.getStringWidth(s, TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
+    return (int) TextUtil.getStringWidth(s, fontName, fontSize);
   }
 
-  private XYPoint calcIntersectionPoint(Line line, double shift)
+  private XYPoint calcIntersectionPoint(Line line, double shift, float labelHeight)
   {
     double dx = Math.cos(line.getSlope()) * shift;
     double dy = Math.sin(line.getSlope()) * shift;
+    double centrationCoeffiecient = Math.abs(labelHeight * Math.sin(line.getSlope()));
 
-    XYPoint intersection = new XYPoint(line.getLeftPoint().getX() + dx, line.getLeftPoint().getY() + dy);
-    Line perpendicular = GeometryUtil.getPerpendicular(line, intersection);
-    return GeometryUtil.getLineCircleIntersection(perpendicular, new Circle(intersection, charHeight / 3.))[1];
+    XYPoint intersection = new XYPoint(line.getLeftPoint().getX() + dx, line.getLeftPoint().getY() + dy + centrationCoeffiecient);
+    return intersection;
   }
 
   protected List<Line> highwayToLines(Highway highway, AbstractProjector projector)

@@ -26,14 +26,12 @@ public class TileFileWriter
   private static final Logger LOG = LoggerFactory.getLogger(TileFileWriter.class);
   private int tileSize;
   private String outputDir;
-  private String source;
 
-  public TileFileWriter(int tileSize, String outputDir, String source)
+  public TileFileWriter(int tileSize, String outputDir)
   {
     this.tileSize = tileSize;
     this.outputDir = outputDir;
-    this.source = new File(source).getName();
-    LOG.info("Output directory: " + new File(outputDir, source).getAbsolutePath());
+    LOG.info("Output directory: " + new File(outputDir).getAbsolutePath());
   }
 
   public void drawTile(int level, int x, int y, BoundsXY tileBounds, AbstractProjector projector,
@@ -60,7 +58,7 @@ public class TileFileWriter
   {
     try
     {
-      String tileName = String.format("%s/%s/%s/tile_%d_%d_%d.png", outputDir, source, level, level, y, x);
+      String tileName = String.format("%s/%s/tile_%d_%d_%d.png", outputDir, level, level, y, x);
 
       File tileFile = new File(tileName);
       tileFile.mkdirs();

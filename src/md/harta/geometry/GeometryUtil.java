@@ -80,7 +80,9 @@ public class GeometryUtil
     double a = line.getB() * -1;
     double b = line.getA();
     double c = line.getB() * point.getX() - line.getA() * point.getY();
-    return new Line(a, b, c);
+    Line perpendicular = new Line(a, b, c);
+    perpendicular.setLeftPoint(point);
+    return perpendicular;
   }
 
   //TODO convert distance to meters
@@ -239,7 +241,7 @@ public class GeometryUtil
     {
       return calcVerticalIntersection(line, circle);
     }
-    else // this is special case - horizontal line
+    else
     {
       return calcGeneralIntersection(line, circle);
     }

@@ -7,7 +7,6 @@ import md.harta.osm.Highway;
 import md.harta.osm.OsmNode;
 import md.harta.projector.AbstractProjector;
 import md.harta.tile.TilePalette;
-import md.harta.util.TextUtil;
 
 import java.awt.*;
 import java.awt.font.GlyphVector;
@@ -37,34 +36,16 @@ public class TextPainter extends AbstractPainter
   {
     Font font = new Font(TilePalette.HIGHWAY_FONT_NAME, Font.PLAIN, TilePalette.HIGHWAY_FONT_SIZE);
 
-    int charHeight = (int) TextUtil.getStringHeight(TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
-
-    // XYPoint center = getIntersectionPoint(label.getHighway(), label.getCenter());
     XYPoint roadStartPoint = getRoadStartPoint(label);
     if (roadStartPoint == null)
     {
       return;
     }
-    int xShift = (int) roadStartPoint.getX();
-    int yShift = (int) roadStartPoint.getY() + charHeight / 2;
     double roadLength = GeometryUtil.getHighwayLength(label.getHighway(), projector);
 
-//    System.out.printf("%s - %d : %d\n", text, xShift, yShift);
-//    System.out.printf("Start at: %f : %f\n", roadStartPoint.getX(), roadStartPoint.getY());
-//    System.out.printf("Width = %d; Height = %d\n", labelWidth, charHeight);
-
-    BoundsLatLon highwayBounds = label.getHighway().getBounds();
-    XYPoint minXY = shiftPoint(projector.getXY(highwayBounds.getMinLat(), highwayBounds.getMinLon()));
-    XYPoint maxXY = shiftPoint(projector.getXY(highwayBounds.getMaxLat(), highwayBounds.getMaxLon()));
-//    System.out.printf("Road bounding box = {(%s); (%s)}\n", minXY, maxXY);
-//
-//    System.out.println("Road length = " + roadLength + "\n");
-
-    int labelWidth = calcLabelWidth(label);
-
-    if (roadLength > labelWidth)
+    if (roadLength > label.getWidth())
     {
-      RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, labelWidth, charHeight);
+      RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
       List<Intersection> intersections = intersector.getIntersections(label.getHighway(), label, projector);
       for (int i = 0; i < intersections.size(); i++)
       {
@@ -82,19 +63,6 @@ public class TextPainter extends AbstractPainter
         drawer.translate(-(int)intersection.getPoint().getX(), -(int)intersection.getPoint().getY());
       }
     }
-  }
-
-  private int calcLabelWidth(Label label)
-  {
-    String text = label.getText();
-    int labelWidth = text.length(); // interval between letters = 1 pixel
-
-    for (char character : text.toCharArray())
-    {
-      int charWidth = (int) TextUtil.getStringWidth(Character.toString(character), TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
-      labelWidth += charWidth;
-    }
-    return labelWidth;
   }
 
   /**

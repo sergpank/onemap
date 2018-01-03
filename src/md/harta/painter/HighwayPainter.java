@@ -2,12 +2,10 @@ package md.harta.painter;
 
 import md.harta.drawer.AbstractDrawer;
 import md.harta.geometry.*;
-import md.harta.geometry.Label;
 import md.harta.osm.Highway;
 import md.harta.projector.AbstractProjector;
 import md.harta.tile.TilePalette;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -71,9 +69,12 @@ public class HighwayPainter extends AbstractPainter
 //    drawer.drawPolyLine(boundingRectangle);
 
     XYPoint highwayCenter = new XYPoint((minXY.getX() + maxXY.getX()) / 2, (minXY.getY() + maxXY.getY()) / 2);
-    Label label = new Label(highway.getName(), highwayCenter, TilePalette.FONT_NAME, TilePalette.FONT_SIZE);
-    label.setHighway(highway);
-    labels.add(label);
+    if (highway.getName() != null && !highway.getName().isEmpty())
+    {
+      Label label = new Label(highway.getName(), highwayCenter, TilePalette.FONT_NAME, TilePalette.FONT_SIZE);
+      label.setHighway(highway);
+      labels.add(label);
+    }
   }
 
   private void drawLinesAsPolygons(CanvasPolygon polygon, AbstractDrawer drawer, double roadWidth)
@@ -127,7 +128,7 @@ public class HighwayPainter extends AbstractPainter
     startPoint = shiftPoint(startPoint);
     endPoint = shiftPoint(endPoint);
 
-    drawer.setFillColor(Color.ORANGE);
+    drawer.setFillColor(TilePalette.HIGHWAY_COLOR);
     drawer.fillOval(startPoint.getX() - startDiameter / 2.0, startPoint.getY() - startDiameter / 2.0, startDiameter, startDiameter);
     drawer.fillOval(endPoint.getX() - endDiameter / 2.0, endPoint.getY() - endDiameter / 2.0, endDiameter, endDiameter);
   }

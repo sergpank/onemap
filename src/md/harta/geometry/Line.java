@@ -151,6 +151,11 @@ public class Line {
         '}';
   }
 
+  // This method is necessary for GeometryUtil -> vertical and horizontal intersection cases
+  public void setLeftPoint(XYPoint point) {
+    this.leftPoint = point;
+  }
+
   public XYPoint getLeftPoint()
   {
     return leftPoint;

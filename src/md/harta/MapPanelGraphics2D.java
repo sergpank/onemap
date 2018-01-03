@@ -31,7 +31,7 @@ public class MapPanelGraphics2D extends JPanel {
   private static final Logger LOG = LoggerFactory.getLogger(MapPanelGraphics2D.class);
 
   public static int LEVEL = 18;
-  public static String DATA_SOURCE = "osm/греческая_улица.osm";
+  public static String DATA_SOURCE = "osm/диагональная-дорога-3.osm";
 
   private AbstractProjector projector;
   private AbstractLoader loader;

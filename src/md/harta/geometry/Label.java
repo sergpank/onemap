@@ -15,6 +15,8 @@ public class Label
   private BoundsXY bounds;
   private XYPoint center;
   private Highway highway;
+  private float height;
+  private float width;
 
   public Label(String text, XYPoint center, String fontName, int fontSize)
   {
@@ -22,10 +24,10 @@ public class Label
     this.font = new Font(fontName, fontSize);
     this.center = center;
     FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(font);
-    float lineHeight = fontMetrics.getLineHeight();
-    float lineWidth = fontMetrics.computeStringWidth(text);
-    this.bounds = new BoundsXY(center.getX() - lineWidth / 2, center.getY() - lineHeight / 2,
-                               center.getX() + lineWidth / 2, center.getY() + lineHeight / 2);
+    this.height = fontMetrics.getLineHeight();
+    this.width = fontMetrics.computeStringWidth(text) + text.length(); // +text.length() because distance between characters should be 1 pixel.
+    this.bounds = new BoundsXY(center.getX() - width / 2, center.getY() - height / 2,
+        center.getX() + width / 2, center.getY() + height / 2);
   }
 
   /**
@@ -35,6 +37,16 @@ public class Label
   {
     bounds.liftUp(height);
     center.liftUp(height);
+  }
+
+  public float getHeight()
+  {
+    return height;
+  }
+
+  public float getWidth()
+  {
+    return width;
   }
 
   public String getText()

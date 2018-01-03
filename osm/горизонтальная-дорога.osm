@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm>
+ <bounds minlat="46.996" minlon="28.867" maxlat="46.996" maxlon="28.869"/>
+
+ <node id="1" lat="46.996" lon="28.867"/>
+ <node id="2" lat="46.996" lon="28.876"/>
+
+ <way id="1">
+  <nd ref="1"/>
+  <nd ref="2"/>
+  <tag k="highway" v="residential"/>
+  <tag k="name" v="Горизонтальная Дорога"/>
+ </way>
+
+</osm>
