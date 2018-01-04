@@ -34,89 +34,39 @@ public class RoadLabelIntersector
 
   public List<Intersection> getIntersections(Highway highway, Label label, AbstractProjector projector)
   {
-    double highwayLength = GeometryUtil.getHighwayLength(highway, projector);
-
-//    LOG.info("Highway length: " + highwayLength);
-
-    if (highwayLength < label.getWidth())
-    {
-//      System.err.printf("Road length (%f) < label length (%f)", highwayLength, label.getWidth());
-      return null;
-    }
-
-    List<Line> segments = highwayToLines(highway, projector);
-
-    int repeats = (int) (Math.ceil(highwayLength / (label.getWidth() * 3)));
-    double offset = (highwayLength - (label.getWidth() * repeats)) / (repeats + 1);
-
     List<Intersection> intersections = new ArrayList<>();
-    for (int i = 0; i < repeats; i++)
-    {
-      double shift = offset + (label.getWidth() * i) + (offset * i);
-      intersections.addAll(calculateIntersections(label, segments, shift));
+
+    List<Line> segments = highwayToSegments(highway, projector);
+
+    for (Line segment : segments) {
+      double segLength = GeometryUtil.getDistanceBetweenPoints(segment.getLeftPoint(), segment.getRightPoint());
+      if (segLength >= label.getWidth()) {
+        int repeats = (int) (Math.ceil(segLength / (label.getWidth() * 3)));
+        double offset = (segLength - (label.getWidth() * repeats)) / (repeats + 1);
+
+        for (int i = 0; i < repeats; i++) {
+          double shift = offset + (label.getWidth() * i) + (offset * i);
+          intersections.addAll(calculateIntersections(label, segment, shift));
+        }
+      }
     }
     return intersections;
   }
 
-  private List<Intersection> calculateIntersections(Label label, List<Line> segments, double shift)
+  private List<Intersection> calculateIntersections(Label label, Line segment, double shift)
   {
     List<Intersection> intersections = new ArrayList<>();
-
-    int segmentIndex = 0;
 
     for (int i = 0; i < label.getText().length(); i++)
     {
       char ch = label.getText().charAt(i);
       int charWidth = calcCharWidth(ch);
-      Line line = segments.get(segmentIndex);
 
-      XYPoint intersectionPoint = calcIntersectionPoint(line, shift, label.getHeight());
-
-      if ((line.calcLength() - shift) <= (charWidth))
-      {
-        if (intersections.size() == 0)
-        {
-          for (; segmentIndex < segments.size(); segmentIndex++)
-          {
-            line = segments.get(segmentIndex);
-            double segmentLength = line.calcLength();
-            if (segmentLength < shift)
-            {
-              shift -= segmentLength;
-            }
-            else
-            {
-              Line nextLine = segments.get(segmentIndex);
-              intersectionPoint = calcIntersectionPoint(nextLine, shift, label.getHeight());
-              break;
-            }
-          }
-        }
-        else
-        {
-          XYPoint previousIntersection = intersections.get(intersections.size() - 1).getPoint();
-          // Расстояние от последнего пересечения до конца предыдущего сегмента
-          double rest = GeometryUtil.getDistanceBetweenPoints(previousIntersection, line.getRightPoint());
-          int previousCharWidth = 0;//calcCharWidth(label.getText().charAt(i - 1));
-          shift = charWidth - rest - previousCharWidth;
-
-          ++segmentIndex;
-          if (segmentIndex < segments.size())
-          {
-            Line nextLine = segments.get(segmentIndex);
-            intersectionPoint = calcIntersectionPoint(nextLine, shift, label.getHeight());
-          }
-          else
-          {
-            intersectionPoint = new XYPoint(0, 0);
-            --segmentIndex;
-          }
-        }
-      }
+      XYPoint intersectionPoint = calcIntersectionPoint(segment, shift, label.getHeight());
 
       shift += charWidth + 1;
 
-      Intersection intersection = new Intersection(intersectionPoint, line.getSlope());
+      Intersection intersection = new Intersection(intersectionPoint, segment.getSlope());
       intersections.add(intersection);
     }
 
@@ -132,13 +82,16 @@ public class RoadLabelIntersector
   {
     double dx = Math.cos(line.getSlope()) * shift;
     double dy = Math.sin(line.getSlope()) * shift;
+    // need to drop label down by half its height
+    // ^necessary to adjust labels position with the road center line
+    // ^otherwise label lays on the road center line
     double centrationCoeffiecient = Math.abs(labelHeight * Math.sin(line.getSlope()));
 
     XYPoint intersection = new XYPoint(line.getLeftPoint().getX() + dx, line.getLeftPoint().getY() + dy + centrationCoeffiecient);
     return intersection;
   }
 
-  protected List<Line> highwayToLines(Highway highway, AbstractProjector projector)
+  protected List<Line> highwayToSegments(Highway highway, AbstractProjector projector)
   {
     int numNodes = highway.getNodes().size();
     OsmNode firstNode = highway.getNodes().get(0);

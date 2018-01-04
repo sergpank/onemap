@@ -4,7 +4,8 @@ import md.harta.projector.AbstractProjector;
 import md.harta.projector.MercatorProjector;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.internal.runners.statements.Fail;
+
+import static org.junit.Assert.assertEquals;
 
 public class GeometryUtilTest
 {
@@ -12,13 +13,13 @@ public class GeometryUtilTest
   @Test
   public void testGetLine1() throws Exception {
     Line line = new Line(new XYPoint(1, 1), new XYPoint(2, 2));
-    Assert.assertEquals(new Line(1, -1, 0), line);
+    assertEquals(new Line(1, -1, 0), line);
   }
 
   @Test
   public void testGetLine2() throws Exception {
     Line line = new Line(new XYPoint(0, 2), new XYPoint(2, 0));
-    Assert.assertEquals(new Line(-2, -2, 4), line);
+    assertEquals(new Line(-2, -2, 4), line);
   }
 
   @Test
@@ -49,36 +50,12 @@ public class GeometryUtilTest
     Assert.assertTrue(perpendicular.isIdentical(new Line(-1, 0, 2)));
   }
 
-//  @Test
-//  public void getPerpendicularPoints() throws Exception {
-//    Line line = new Line(new XYPoint(1, 1), new XYPoint(2, 2));
-//    XYPoint[] perpendicularPoints = GeometryUtil.getPerpendicularPoints(line, new XYPoint(3, 3), Math.sqrt(2));
-//    Assert.assertEquals(new XYPoint(2, 4), perpendicularPoints[0]);
-//    Assert.assertEquals(new XYPoint(4, 2), perpendicularPoints[1]);
-//  }
-//
-//  @Test
-//  public void getPerpendicularPointsHorizontal() throws Exception {
-//    Line line = new Line(new XYPoint(1, 1), new XYPoint(2, 1));
-//    XYPoint[] perpendicularPoints = GeometryUtil.getPerpendicularPoints(line, new XYPoint(3, 1), 1);
-//    Assert.assertEquals(new XYPoint(3, 0), perpendicularPoints[0]);
-//    Assert.assertEquals(new XYPoint(3, 2), perpendicularPoints[1]);
-//  }
-//
-//  @Test
-//  public void getPerpendicularPointsVertical() throws Exception {
-//    Line line = new Line(new XYPoint(1, 1), new XYPoint(1, 2));
-//    XYPoint[] perpendicularPoints = GeometryUtil.getPerpendicularPoints(line, new XYPoint(1, 3), 1);
-//    Assert.assertEquals(new XYPoint(0, 3), perpendicularPoints[0]);
-//    Assert.assertEquals(new XYPoint(2, 3), perpendicularPoints[1]);
-//  }
-
   @Test
   public void getDistanceOrtoEquatorTest1degree(){
     LatLonPoint pointA = new LatLonPoint(0, 0);
     LatLonPoint pointB = new LatLonPoint(0, 1);
     double distance = GeometryUtil.getDistanceOrtodroma(pointA, pointB);
-    Assert.assertEquals(111111, distance, 1000);
+    assertEquals(111111, distance, 1000);
   }
 
   @Test
@@ -86,7 +63,7 @@ public class GeometryUtilTest
     LatLonPoint pointA = new LatLonPoint(0, 0);
     LatLonPoint pointB = new LatLonPoint(0, 0.1);
     double distance = GeometryUtil.getDistanceOrtodroma(pointA, pointB);
-    Assert.assertEquals(11111, distance, 100);
+    assertEquals(11111, distance, 100);
   }
 
   @Test
@@ -94,7 +71,7 @@ public class GeometryUtilTest
     LatLonPoint pointA = new LatLonPoint(0, 0);
     LatLonPoint pointB = new LatLonPoint(0, 0.01);
     double distance = GeometryUtil.getDistanceOrtodroma(pointA, pointB);
-    Assert.assertEquals(1111, distance, 10);
+    assertEquals(1111, distance, 10);
   }
 
   @Test
@@ -102,7 +79,7 @@ public class GeometryUtilTest
     LatLonPoint pointA = new LatLonPoint(0, 0);
     LatLonPoint pointB = new LatLonPoint(0, 0.001);
     double distance = GeometryUtil.getDistanceOrtodroma(pointA, pointB);
-    Assert.assertEquals(111, distance, 1);
+    assertEquals(111, distance, 1);
   }
 
   @Test
@@ -110,7 +87,7 @@ public class GeometryUtilTest
     LatLonPoint pointA = new LatLonPoint(0, 0);
     LatLonPoint pointB = new LatLonPoint(0, 0.0001);
     double distance = GeometryUtil.getDistanceOrtodroma(pointA, pointB);
-    Assert.assertEquals(11, distance, 0.2);
+    assertEquals(11, distance, 0.2);
   }
 
   @Test
@@ -118,7 +95,7 @@ public class GeometryUtilTest
     LatLonPoint pointA = new LatLonPoint(0, 0);
     LatLonPoint pointB = new LatLonPoint(0, 0.00001);
     double distance = GeometryUtil.getDistanceOrtodroma(pointA, pointB);
-    Assert.assertEquals(1, distance, 0.2);
+    assertEquals(1, distance, 0.2);
   }
 
   @Test
@@ -126,7 +103,7 @@ public class GeometryUtilTest
     LatLonPoint pointA = new LatLonPoint(0, 0);
     LatLonPoint pointB = new LatLonPoint(0, 0.000001);
     double distance = GeometryUtil.getDistanceOrtodroma(pointA, pointB);
-    Assert.assertEquals(0.1, distance, 0.02);
+    assertEquals(0.1, distance, 0.02);
   }
 
   @Test(expected = AssertionError.class)
@@ -137,7 +114,7 @@ public class GeometryUtilTest
     LatLonPoint pointA = new LatLonPoint(0, 0);
     LatLonPoint pointB = new LatLonPoint(0, 0.00000001);
     double distance = GeometryUtil.getDistanceOrtodroma(pointA, pointB);
-    Assert.assertEquals(0.01, distance, 0.002);
+    assertEquals(0.01, distance, 0.002);
   }
 
   @Test
@@ -158,7 +135,7 @@ public class GeometryUtilTest
     LatLonPoint pointA1 = projector.getLatLon(perpendicularPoints[0]);
     LatLonPoint pointA2 = projector.getLatLon(perpendicularPoints[1]);
     double distanceOrtodroma = GeometryUtil.getDistanceOrtodroma(pointA1, pointA2);
-    Assert.assertEquals(1000, distanceOrtodroma, 0.1);
+    assertEquals(1000, distanceOrtodroma, 0.1);
   }
 
   @Test
@@ -172,7 +149,7 @@ public class GeometryUtilTest
     LatLonPoint pointA2 = projector.getLatLon(perpendicularPoints[1]);
     double distanceOrtodroma = GeometryUtil.getDistanceOrtodroma(pointA1, pointA2);
     System.out.println(distanceOrtodroma);
-    Assert.assertEquals(1, distanceOrtodroma, 0.01);
+    assertEquals(1, distanceOrtodroma, 0.01);
   }
 
   @Test
@@ -186,7 +163,7 @@ public class GeometryUtilTest
     LatLonPoint pointA2 = projector.getLatLon(perpendicularPoints[1]);
     double distanceOrtodroma = GeometryUtil.getDistanceOrtodroma(pointA1, pointA2);
     System.out.println(distanceOrtodroma);
-    Assert.assertEquals(0.5, distanceOrtodroma, 0.01);
+    assertEquals(0.5, distanceOrtodroma, 0.01);
   }
 
   @Test
@@ -200,7 +177,7 @@ public class GeometryUtilTest
     LatLonPoint pointA2 = projector.getLatLon(perpendicularPoints[1]);
     double distanceOrtodroma = GeometryUtil.getDistanceOrtodroma(pointA1, pointA2);
     System.out.println(distanceOrtodroma);
-    Assert.assertEquals(0.2, distanceOrtodroma, 0.02);
+    assertEquals(0.2, distanceOrtodroma, 0.02);
   }
 
   @Test
@@ -213,8 +190,8 @@ public class GeometryUtilTest
 
     XYPoint intersection = GeometryUtil.getLineIntersection(lineA, lineB, startPoint, endPoint, true);
 
-    Assert.assertEquals(15.0, intersection.getX(), 0.001);
-    Assert.assertEquals(15.0, intersection.getY(), 0.001);
+    assertEquals(15.0, intersection.getX(), 0.001);
+    assertEquals(15.0, intersection.getY(), 0.001);
   }
 
   @Test
@@ -227,8 +204,8 @@ public class GeometryUtilTest
 
     XYPoint intersection = GeometryUtil.getLineIntersection(lineA, lineB, startPoint, endPoint, true);
 
-    Assert.assertEquals(15.0, intersection.getX(), 0.001);
-    Assert.assertEquals(15.0, intersection.getY(), 0.001);
+    assertEquals(15.0, intersection.getX(), 0.001);
+    assertEquals(15.0, intersection.getY(), 0.001);
   }
 
   @Test
@@ -267,8 +244,8 @@ public class GeometryUtilTest
 
     XYPoint intersection = GeometryUtil.getLineIntersection(lineA, lineB, startPoint, endPoint, false);
 
-    Assert.assertEquals(25, intersection.getX(), 0.00001);
-    Assert.assertEquals(25, intersection.getY(), 0.00001);
+    assertEquals(25, intersection.getX(), 0.00001);
+    assertEquals(25, intersection.getY(), 0.00001);
   }
 
   @Test
@@ -282,7 +259,7 @@ public class GeometryUtilTest
 
     double length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
-    Assert.assertEquals(10, length, 0.000001);
+    assertEquals(10, length, 0.000001);
   }
 
   @Test
@@ -296,7 +273,7 @@ public class GeometryUtilTest
 
     double length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
-    Assert.assertEquals(10, length, 0.000001);
+    assertEquals(10, length, 0.000001);
   }
 
   @Test
@@ -310,7 +287,7 @@ public class GeometryUtilTest
 
     double length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
 
-    Assert.assertEquals(10 * Math.sqrt(2), length, 0.000001);
+    assertEquals(10 * Math.sqrt(2), length, 0.000001);
   }
 
   @Test
@@ -322,7 +299,7 @@ public class GeometryUtilTest
     Circle circle = new Circle(new XYPoint(15, 15), 5);
 
     XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
-    Assert.assertEquals(new XYPoint(15, 20), intersection[0]);
+    assertEquals(new XYPoint(15, 20), intersection[0]);
   }
 
   @Test
@@ -334,10 +311,10 @@ public class GeometryUtilTest
     Circle circle = new Circle(new XYPoint(25, 18), 5);
 
     XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
-    Assert.assertEquals(20, intersection[0].getY(), 0.01);
-    Assert.assertEquals(20, intersection[1].getY(), 0.01);
-    Assert.assertEquals(20.42, intersection[0].getX(), 0.01);
-    Assert.assertEquals(29.58, intersection[1].getX(), 0.01);
+    assertEquals(20, intersection[0].getY(), 0.01);
+    assertEquals(20, intersection[1].getY(), 0.01);
+    assertEquals(20.42, intersection[0].getX(), 0.01);
+    assertEquals(29.58, intersection[1].getX(), 0.01);
   }
 
   @Test
@@ -349,8 +326,8 @@ public class GeometryUtilTest
     Circle circle = new Circle(new XYPoint(10, 10), 5);
 
     XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
-    Assert.assertEquals(new XYPoint(10, 5), intersection[0]);
-    Assert.assertEquals(new XYPoint(10, 15), intersection[1]);
+    assertEquals(new XYPoint(10, 5), intersection[0]);
+    assertEquals(new XYPoint(10, 15), intersection[1]);
   }
 
   @Test
@@ -362,8 +339,8 @@ public class GeometryUtilTest
     Circle circle = new Circle(new XYPoint(13, 15), 5);
 
     XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
-    Assert.assertEquals(new XYPoint(10, 11), intersection[0]);
-    Assert.assertEquals(new XYPoint(10, 19), intersection[1]);
+    assertEquals(new XYPoint(10, 11), intersection[0]);
+    assertEquals(new XYPoint(10, 19), intersection[1]);
   }
 
   @Test
@@ -375,6 +352,56 @@ public class GeometryUtilTest
     Circle circle = new Circle(new XYPoint(10, 10), 5);
 
     XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
-    Assert.assertEquals(new XYPoint(10 + 5 / Math.sqrt(2), 10 + 5 / Math.sqrt(2)), intersection[1]);
+    assertEquals(new XYPoint(10 + 5 / Math.sqrt(2), 10 + 5 / Math.sqrt(2)), intersection[1]);
+  }
+
+  @Test
+  public void testIntersectionDiagonalUp2() {
+    Line line = new Line(new XYPoint(170, 100), new XYPoint(190, 80));
+    Circle circle = new Circle(new XYPoint(180, 90), 5 * Math.sqrt(2));
+    XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
+
+    assertEquals(175, intersection[0].getX(), 0.001);
+    assertEquals(95, intersection[0].getY(), 0.001);
+
+    assertEquals(185, intersection[1].getX(), 0.001);
+    assertEquals(85, intersection[1].getY(), 0.001);
+  }
+
+  @Test
+  public void testIntersectionDiagonalDown() {
+    Line line = new Line(new XYPoint(170, 80), new XYPoint(190, 100));
+    Circle circle = new Circle(new XYPoint(180, 90), 5 * Math.sqrt(2));
+    XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
+
+    assertEquals(175, intersection[0].getX(), 0.001);
+    assertEquals(85, intersection[0].getY(), 0.001);
+
+    assertEquals(185, intersection[1].getX(), 0.001);
+    assertEquals(95, intersection[1].getY(), 0.001);
+  }
+
+  public void testIntersectionHorizontal() {
+    Line line = new Line(new XYPoint(170, 90), new XYPoint(190, 90));
+    Circle circle = new Circle(new XYPoint(180, 90), 5.0);
+    XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
+
+    assertEquals(175, intersection[0].getX(), 0.001);
+    assertEquals(90, intersection[0].getY(), 0.001);
+
+    assertEquals(185, intersection[1].getX(), 0.001);
+    assertEquals(90, intersection[1].getY(), 0.001);
+  }
+
+  public void testIntersectionVertical() {
+    Line line = new Line(new XYPoint(180, 70), new XYPoint(180, 100));
+    Circle circle = new Circle(new XYPoint(180, 90), 5.0);
+    XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
+
+    assertEquals(180, intersection[0].getX(), 0.001);
+    assertEquals(85, intersection[0].getY(), 0.001);
+
+    assertEquals(180, intersection[1].getX(), 0.001);
+    assertEquals(95, intersection[1].getY(), 0.001);
   }
 }

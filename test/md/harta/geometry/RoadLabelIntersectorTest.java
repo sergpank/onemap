@@ -21,7 +21,7 @@ public class RoadLabelIntersectorTest extends TestCase
   int charHeight = 10;
 
   @Test
-  public void testDirectLineToSegments()
+  public void testDirectLineToSegmentsUp()
   {
     RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), "", 1);
     SimpleProjector projector = new SimpleProjector(1);
@@ -32,7 +32,7 @@ public class RoadLabelIntersectorTest extends TestCase
     nodes.add(new OsmNode(3, 30, 30));
 
     Highway highway = new Highway(1l, "1", "no_type", nodes);
-    List<Line> lines = intersector.highwayToLines(highway, projector);
+    List<Line> lines = intersector.highwayToSegments(highway, projector);
 
     assertEquals(2, lines.size());
     assertTrue(new Line(new XYPoint(180, 70), new XYPoint(190, 60)).isIdentical(lines.get(0)));
@@ -40,7 +40,26 @@ public class RoadLabelIntersectorTest extends TestCase
   }
 
   @Test
-  public void testReverseLineToSegments()
+  public void testDirectLineToSegmentsDown()
+  {
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), "", 1);
+    SimpleProjector projector = new SimpleProjector(1);
+
+    List<OsmNode> nodes = new ArrayList<>();
+    nodes.add(new OsmNode(1, 30, 10));
+    nodes.add(new OsmNode(2, 20, 20));
+    nodes.add(new OsmNode(3, 10, 30));
+
+    Highway highway = new Highway(1l, "1", "no_type", nodes);
+    List<Line> lines = intersector.highwayToSegments(highway, projector);
+
+    assertEquals(2, lines.size());
+    assertTrue(new Line(new XYPoint(190, 60), new XYPoint(200, 70)).isIdentical(lines.get(0)));
+    assertTrue(new Line(new XYPoint(200, 70), new XYPoint(210, 80)).isIdentical(lines.get(1)));
+  }
+
+  @Test
+  public void testReverseLineToSegmentsUp()
   {
     RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), "", 1);
     SimpleProjector projector = new SimpleProjector(1);
@@ -51,11 +70,30 @@ public class RoadLabelIntersectorTest extends TestCase
     nodes.add(new OsmNode(3, 10, 10));
 
     Highway highway = new Highway(1l, "1", "no_type", nodes);
-    List<Line> lines = intersector.highwayToLines(highway, projector);
+    List<Line> lines = intersector.highwayToSegments(highway, projector);
 
     assertEquals(2, lines.size());
     assertTrue(new Line(new XYPoint(180, 70), new XYPoint(190, 60)).isIdentical(lines.get(0)));
     assertTrue(new Line(new XYPoint(190, 60), new XYPoint(200, 50)).isIdentical(lines.get(1)));
+  }
+
+  @Test
+  public void testReverseLineToSegmentsDown()
+  {
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), "", 1);
+    SimpleProjector projector = new SimpleProjector(1);
+
+    List<OsmNode> nodes = new ArrayList<>();
+    nodes.add(new OsmNode(1, 10, 30));
+    nodes.add(new OsmNode(2, 20, 20));
+    nodes.add(new OsmNode(3, 30, 10));
+
+    Highway highway = new Highway(1l, "1", "no_type", nodes);
+    List<Line> lines = intersector.highwayToSegments(highway, projector);
+
+    assertEquals(2, lines.size());
+    assertTrue(new Line(new XYPoint(190, 60), new XYPoint(200, 70)).isIdentical(lines.get(0)));
+    assertTrue(new Line(new XYPoint(200, 70), new XYPoint(210, 80)).isIdentical(lines.get(1)));
   }
 
   @Test
@@ -70,7 +108,26 @@ public class RoadLabelIntersectorTest extends TestCase
     nodes.add(new OsmNode(3, 10, 30));
 
     Highway highway = new Highway(1l, "1", "no_type", nodes);
-    List<Line> lines = intersector.highwayToLines(highway, projector);
+    List<Line> lines = intersector.highwayToSegments(highway, projector);
+
+    assertEquals(2, lines.size());
+    assertTrue(new Line(new XYPoint(180, 70), new XYPoint(190, 70)).isIdentical(lines.get(0)));
+    assertTrue(new Line(new XYPoint(190, 70), new XYPoint(200, 70)).isIdentical(lines.get(1)));
+  }
+
+  @Test
+  public void testReverseHorizontalLineToSegments()
+  {
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000),  "", 1);
+    SimpleProjector projector = new SimpleProjector(1);
+
+    List<OsmNode> nodes = new ArrayList<>();
+    nodes.add(new OsmNode(1, 10, 30));
+    nodes.add(new OsmNode(2, 10, 20));
+    nodes.add(new OsmNode(3, 10, 10));
+
+    Highway highway = new Highway(1l, "1", "no_type", nodes);
+    List<Line> lines = intersector.highwayToSegments(highway, projector);
 
     assertEquals(2, lines.size());
     assertTrue(new Line(new XYPoint(180, 70), new XYPoint(190, 70)).isIdentical(lines.get(0)));
@@ -89,13 +146,32 @@ public class RoadLabelIntersectorTest extends TestCase
     nodes.add(new OsmNode(3, 30, 10));
 
     Highway highway = new Highway(1l, "1", "no_type", nodes);
-    List<Line> lines = intersector.highwayToLines(highway, projector);
+    List<Line> lines = intersector.highwayToSegments(highway, projector);
 
     assertEquals(2, lines.size());
     assertTrue(new Line(new XYPoint(180, 70), new XYPoint(180, 60)).isIdentical(lines.get(0)));
     assertTrue(new Line(new XYPoint(180, 60), new XYPoint(180, 50)).isIdentical(lines.get(1)));
   }
-  
+
+  @Test
+  public void testReverseVerticalLineToSegments()
+  {
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(10, 10, 1000, 1000), "", 1);
+    SimpleProjector projector = new SimpleProjector(1);
+
+    List<OsmNode> nodes = new ArrayList<>();
+    nodes.add(new OsmNode(1, 30, 10));
+    nodes.add(new OsmNode(2, 20, 10));
+    nodes.add(new OsmNode(3, 10, 10));
+
+    Highway highway = new Highway(1l, "1", "no_type", nodes);
+    List<Line> lines = intersector.highwayToSegments(highway, projector);
+
+    assertEquals(2, lines.size());
+    assertTrue(new Line(new XYPoint(180, 70), new XYPoint(180, 60)).isIdentical(lines.get(0)));
+    assertTrue(new Line(new XYPoint(180, 60), new XYPoint(180, 50)).isIdentical(lines.get(1)));
+  }
+
   @Test
   public void testdxdy45()
   {
@@ -161,57 +237,7 @@ public class RoadLabelIntersectorTest extends TestCase
   }
 
   @Test
-  public void testIntersectionDiagonalUp2() {
-    Line line = new Line(new XYPoint(170, 100), new XYPoint(190, 80));
-    Circle circle = new Circle(new XYPoint(180, 90), 5 * Math.sqrt(2));
-    XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
-
-    assertEquals(175, intersection[0].getX(), 0.001);
-    assertEquals(95, intersection[0].getY(), 0.001);
-
-    assertEquals(185, intersection[1].getX(), 0.001);
-    assertEquals(85, intersection[1].getY(), 0.001);
-  }
-
-  @Test
-  public void testIntersectionDiagonalDown() {
-    Line line = new Line(new XYPoint(170, 80), new XYPoint(190, 100));
-    Circle circle = new Circle(new XYPoint(180, 90), 5 * Math.sqrt(2));
-    XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
-
-    assertEquals(175, intersection[0].getX(), 0.001);
-    assertEquals(85, intersection[0].getY(), 0.001);
-
-    assertEquals(185, intersection[1].getX(), 0.001);
-    assertEquals(95, intersection[1].getY(), 0.001);
-  }
-
-  public void testIntersectionHorizontal() {
-    Line line = new Line(new XYPoint(170, 90), new XYPoint(190, 90));
-    Circle circle = new Circle(new XYPoint(180, 90), 5.0);
-    XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
-
-    assertEquals(175, intersection[0].getX(), 0.001);
-    assertEquals(90, intersection[0].getY(), 0.001);
-
-    assertEquals(185, intersection[1].getX(), 0.001);
-    assertEquals(90, intersection[1].getY(), 0.001);
-  }
-
-  public void testIntersectionVertical() {
-    Line line = new Line(new XYPoint(180, 70), new XYPoint(180, 100));
-    Circle circle = new Circle(new XYPoint(180, 90), 5.0);
-    XYPoint[] intersection = GeometryUtil.getLineCircleIntersection(line, circle);
-
-    assertEquals(180, intersection[0].getX(), 0.001);
-    assertEquals(85, intersection[0].getY(), 0.001);
-
-    assertEquals(180, intersection[1].getX(), 0.001);
-    assertEquals(95, intersection[1].getY(), 0.001);
-  }
-
-  @Test
-  public void testIntersetionRoadShorterThanLabel() {
+  public void testIntersectionRoadShorterThanLabel() {
     RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(0, 0, 20, 20), Font.MONOSPACED, 15);
     List<OsmNode> nodes = Arrays.asList(
         new OsmNode(1l, 10, 10),
@@ -221,11 +247,11 @@ public class RoadLabelIntersectorTest extends TestCase
     Label label = new Label(roadName, new XYPoint(10, 10), Font.MONOSPACED, 15);
     AbstractProjector projector = new MercatorProjector(17);
     List<Intersection> intersections = intersector.getIntersections(highway, label, projector);
-    assertNull(intersections);
+    assertEquals(0, intersections.size());
   }
 
   @Test
-  public void testIntersetionDiagonal_1() {
+  public void testIntersectionDiagonal_1() {
     AbstractProjector projector = new MercatorProjector(17);
 
     List<OsmNode> nodes = Arrays.asList(
