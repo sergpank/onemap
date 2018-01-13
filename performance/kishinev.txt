@@ -1,0 +1,8 @@
+2018-01-07 11:29:44 [main] INFO  TileGenerator.generateLevelTiles:66 - level 10 -> 106029 ms; 4 tiles; 26507 ms per tile
+2018-01-07 11:31:54 [main] INFO  TileGenerator.generateLevelTiles:66 - level 11 -> 129433 ms; 6 tiles; 21572 ms per tile
+2018-01-07 11:34:24 [main] INFO  TileGenerator.generateLevelTiles:66 - level 12 -> 150591 ms; 16 tiles; 9411 ms per tile
+2018-01-07 11:39:27 [main] INFO  TileGenerator.generateLevelTiles:66 - level 13 -> 302413 ms; 49 tiles; 6171 ms per tile
+2018-01-07 11:51:11 [main] INFO  TileGenerator.generateLevelTiles:66 - level 14 -> 703607 ms; 182 tiles; 3865 ms per tile
+2018-01-07 12:17:43 [main] INFO  TileGenerator.generateLevelTiles:66 - level 15 -> 1592567 ms; 702 tiles; 2268 ms per tile
+2018-01-08 00:58:29 [main] INFO  TileGenerator.generateLevelTiles:66 - level 16 -> 2999768 ms; 2703 tiles; 1109 ms per tile
+2018-01-07 18:58:53 [main] INFO  TileGenerator.generateLevelTiles:66 - level 17 -> 7324808 ms; 10710 tiles; 683 ms per tile

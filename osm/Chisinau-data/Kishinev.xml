@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="CGImap 0.6.0 (6279 thorn-02.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <relation id="7120022" visible="true" version="2" changeset="47696672" timestamp="2017-04-12T14:41:17Z" user="tianov" uid="3463089">
+  <member type="way" ref="129516032" role="outer"/>
+  <member type="way" ref="129834214" role="outer"/>
+  <member type="way" ref="32754118" role="outer"/>
+  <member type="way" ref="129834237" role="outer"/>
+  <member type="way" ref="129834235" role="outer"/>
+  <member type="way" ref="129834215" role="outer"/>
+  <member type="way" ref="129973050" role="outer"/>
+  <member type="way" ref="236563218" role="outer"/>
+  <member type="way" ref="40123197" role="outer"/>
+  <member type="way" ref="129973053" role="outer"/>
+  <member type="way" ref="129973057" role="outer"/>
+  <member type="way" ref="59052844" role="outer"/>
+  <member type="way" ref="129973060" role="outer"/>
+  <member type="way" ref="134933487" role="outer"/>
+  <member type="way" ref="132699178" role="outer"/>
+  <member type="way" ref="131593625" role="outer"/>
+  <member type="way" ref="131593624" role="outer"/>
+  <member type="way" ref="131593621" role="outer"/>
+  <member type="way" ref="131593626" role="outer"/>
+  <member type="way" ref="130682714" role="outer"/>
+  <member type="way" ref="130682712" role="outer"/>
+  <member type="way" ref="130682724" role="outer"/>
+  <member type="way" ref="130682723" role="outer"/>
+  <member type="way" ref="130682730" role="outer"/>
+  <member type="way" ref="130682716" role="outer"/>
+  <member type="way" ref="40862820" role="outer"/>
+  <member type="way" ref="32502235" role="outer"/>
+  <member type="way" ref="25866641" role="outer"/>
+  <member type="way" ref="134931828" role="outer"/>
+  <member type="way" ref="129835255" role="outer"/>
+  <member type="way" ref="134931829" role="outer"/>
+  <member type="way" ref="129516018" role="outer"/>
+  <member type="way" ref="129516012" role="outer"/>
+  <member type="way" ref="129516097" role="outer"/>
+  <member type="way" ref="129516080" role="outer"/>
+  <member type="way" ref="129516092" role="outer"/>
+  <member type="way" ref="129516076" role="outer"/>
+  <member type="way" ref="93182845" role="outer"/>
+  <member type="way" ref="129516084" role="outer"/>
+  <member type="way" ref="81274395" role="outer"/>
+  <member type="way" ref="129516081" role="outer"/>
+  <member type="way" ref="129516120" role="outer"/>
+  <member type="way" ref="129516085" role="outer"/>
+  <member type="way" ref="129516008" role="outer"/>
+  <member type="way" ref="129516091" role="outer"/>
+  <member type="way" ref="129516050" role="outer"/>
+  <member type="way" ref="129516049" role="outer"/>
+  <member type="way" ref="129516093" role="outer"/>
+  <member type="way" ref="90401624" role="outer"/>
+  <member type="way" ref="134932481" role="outer"/>
+  <member type="way" ref="134932479" role="outer"/>
+  <member type="way" ref="129516073" role="outer"/>
+  <member type="way" ref="129516054" role="outer"/>
+  <member type="way" ref="59221245" role="outer"/>
+  <member type="way" ref="129516067" role="outer"/>
+  <member type="way" ref="129516052" role="outer"/>
+  <member type="way" ref="59050220" role="outer"/>
+  <tag k="alt_name:de" v="Kischinjow"/>
+  <tag k="alt_name:en" v="Kishinev"/>
+  <tag k="is_in" v="Moldova"/>
+  <tag k="is_in:continent" v="Europe"/>
+  <tag k="is_in:country" v="Moldova"/>
+  <tag k="is_in:country_code" v="MD"/>
+  <tag k="name" v="Chișinău"/>
+  <tag k="name:af" v="Chişinău"/>
+  <tag k="name:als" v="Kischinau"/>
+  <tag k="name:am" v="ኪሺንው"/>
+  <tag k="name:ar" v="كيشيناو"/>
+  <tag k="name:ast" v="Quixináu"/>
+  <tag k="name:az" v="Kişinyov"/>
+  <tag k="name:bat-smg" v="Kišėniuovs"/>
+  <tag k="name:be" v="Кішынёў"/>
+  <tag k="name:be-tarask" v="Кішынёў"/>
+  <tag k="name:bg" v="Кишинев"/>
+  <tag k="name:bo" v="ཅི་སི་ནའུ།"/>
+  <tag k="name:br" v="Chişinău"/>
+  <tag k="name:bs" v="Kišinjev"/>
+  <tag k="name:cbk-zam" v="Chisinau"/>
+  <tag k="name:ckb" v="کیشیناو"/>
+  <tag k="name:co" v="Chişinău"/>
+  <tag k="name:crh" v="Kișineu"/>
+  <tag k="name:cs" v="Kišiněv"/>
+  <tag k="name:cv" v="Кишинёв"/>
+  <tag k="name:cy" v="Chişinău"/>
+  <tag k="name:de" v="Kischinau"/>
+  <tag k="name:diq" v="Kișinew"/>
+  <tag k="name:el" v="Κισινάου"/>
+  <tag k="name:eo" v="Kiŝinevo"/>
+  <tag k="name:es" v="Chisinau"/>
+  <tag k="name:eu" v="Chisinau"/>
+  <tag k="name:fa" v="کیشیناو"/>
+  <tag k="name:fo" v="Chişinău"/>
+  <tag k="name:fr" v="Chisinau"/>
+  <tag k="name:ga" v="Císineá"/>
+  <tag k="name:gag" v="Kișinöv"/>
+  <tag k="name:gd" v="Chişinău"/>
+  <tag k="name:gl" v="Chisinau - Chișinău"/>
+  <tag k="name:he" v="קישינב"/>
+  <tag k="name:hi" v="चिशिनाउ"/>
+  <tag k="name:hif" v="Chișinău"/>
+  <tag k="name:hr" v="Kišinjev"/>
+  <tag k="name:hsb" v="Kišinjow"/>
+  <tag k="name:ht" v="Chisinaou"/>
+  <tag k="name:hu" v="Kisinyov"/>
+  <tag k="name:hy" v="Քիշնև"/>
+  <tag k="name:id" v="Kishinev"/>
+  <tag k="name:io" v="Chisinau"/>
+  <tag k="name:is" v="Kisínev"/>
+  <tag k="name:ja" v="キシナウ"/>
+  <tag k="name:jv" v="Chişinău"/>
+  <tag k="name:ka" v="კიშინიოვი"/>
+  <tag k="name:kk" v="Кишинев"/>
+  <tag k="name:kn" v="ಕಿಶಿನೆವ್"/>
+  <tag k="name:ko" v="키시너우"/>
+  <tag k="name:kv" v="Кишинёв"/>
+  <tag k="name:la" v="Chisla Nova"/>
+  <tag k="name:lb" v="Chişinău"/>
+  <tag k="name:lij" v="Chișinău"/>
+  <tag k="name:lmo" v="Chișinău"/>
+  <tag k="name:lt" v="Kišiniovas"/>
+  <tag k="name:lv" v="Kišiņeva"/>
+  <tag k="name:md" v="Кишинэу"/>
+  <tag k="name:mi" v="Chişinău"/>
+  <tag k="name:mk" v="Кишињев"/>
+  <tag k="name:mr" v="चिशिनाउ"/>
+  <tag k="name:nl" v="Chisinau"/>
+  <tag k="name:nn" v="Chişinău"/>
+  <tag k="name:no" v="Chișinău"/>
+  <tag k="name:nov" v="Kishinau"/>
+  <tag k="name:oc" v="Chişinău"/>
+  <tag k="name:os" v="Кишинёв"/>
+  <tag k="name:pl" v="Kiszyniów"/>
+  <tag k="name:pms" v="Chișinău"/>
+  <tag k="name:pnb" v="کشینیف"/>
+  <tag k="name:pt" v="Chişinău"/>
+  <tag k="name:qu" v="Chişinău"/>
+  <tag k="name:ro" v="Chișinău"/>
+  <tag k="name:ru" v="Кишинёв"/>
+  <tag k="name:sa" v="चिशिनौ"/>
+  <tag k="name:sah" v="Кишинев"/>
+  <tag k="name:scn" v="Chișinău"/>
+  <tag k="name:sco" v="Chișinău"/>
+  <tag k="name:sh" v="Kišinjev"/>
+  <tag k="name:simple" v="Chișinău"/>
+  <tag k="name:sk" v="Kišiňov"/>
+  <tag k="name:sl" v="Kišinjev"/>
+  <tag k="name:sq" v="Kishinau"/>
+  <tag k="name:sr" v="Кишињев"/>
+  <tag k="name:sv" v="Chisinau"/>
+  <tag k="name:sw" v="Kishineu"/>
+  <tag k="name:ta" v="சிஷினோ"/>
+  <tag k="name:tg" v="Кишинёв"/>
+  <tag k="name:th" v="คีชีเนา"/>
+  <tag k="name:tl" v="Chişinău"/>
+  <tag k="name:tr" v="Kişinev"/>
+  <tag k="name:udm" v="Кишинёв"/>
+  <tag k="name:ug" v="كىشىنېۋ"/>
+  <tag k="name:uk" v="Кишинів"/>
+  <tag k="name:ur" v="کیشیناو"/>
+  <tag k="name:vec" v="Chișinău"/>
+  <tag k="name:vep" v="Kišinöv"/>
+  <tag k="name:vi" v="Chişinău"/>
+  <tag k="name:yi" v="קעשענעוו"/>
+  <tag k="name:yo" v="Chişinău"/>
+  <tag k="name:zh" v="基希訥烏"/>
+  <tag k="name:zh-min-nan" v="Chișinău"/>
+  <tag k="place" v="city"/>
+  <tag k="population" v="590631"/>
+  <tag k="type" v="multipolygon"/>
+ </relation>
+</osm>
