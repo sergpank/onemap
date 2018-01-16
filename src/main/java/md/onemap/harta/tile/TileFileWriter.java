@@ -88,8 +88,8 @@ public class TileFileWriter
 //    graphics.fillRect(128 - xyWidth / 2 - 4, (128 + h / 2 + 4) + 4, xyWidth + 8, h + 8);
 
     graphics.setColor(Color.RED);
-    graphics.drawString(levelLabel, 128 - levelWidth / 2, 128 + h / 2);
-    graphics.drawString(xyLabel, 128 - xyWidth / 2, 128 + h / 2 * 3 + 8);
+    graphics.drawString(levelLabel, tileSize / 2 - levelWidth / 2, tileSize / 2 + h / 2);
+    graphics.drawString(xyLabel, tileSize / 2 - xyWidth / 2, tileSize / 2 + h / 2 * 3 + 8);
   }
 
   private void drawTileBorder(Graphics2D graphics)

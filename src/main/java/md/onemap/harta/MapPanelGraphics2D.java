@@ -31,7 +31,7 @@ public class MapPanelGraphics2D extends JPanel {
   private static final Logger LOG = LoggerFactory.getLogger(MapPanelGraphics2D.class);
 
   public static int LEVEL = 18;
-  public static String DATA_SOURCE = "osm/диагональная-дорога-3.osm";
+  public static String DATA_SOURCE = "osm/botanica.osm";
 
   private AbstractProjector projector;
   private AbstractLoader loader;
@@ -59,10 +59,10 @@ public class MapPanelGraphics2D extends JPanel {
 
     map.highways = map.loader.getHighways().values();
     map.buildings = map.loader.getBuildings().values();
-    map.leisure = map.loader.getLeisure().values();
-    map.nature = map.loader.getNature().values();
-    map.waterways = map.loader.getWaterways().values();
-    map.landuse = map.loader.getLanduse().values();
+//    map.leisure = map.loader.getLeisure().values();
+//    map.nature = map.loader.getNature().values();
+//    map.waterways = map.loader.getWaterways().values();
+//    map.landuse = map.loader.getLanduse().values();
 
     JScrollPane scrollPane = new JScrollPane(map);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -99,16 +99,12 @@ public class MapPanelGraphics2D extends JPanel {
     panel.add(new JLabel("Button:"), pos++);
     panel.add(repaintButton, pos++);
 
-    repaintButton.addActionListener(
-        e -> repaintMap(levelCombo));
+    repaintButton.addActionListener(e -> repaintMap(levelCombo));
 
     dataField.addKeyListener(new KeyAdapter(){
       @Override
       public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER)
-        {
-          repaintMap(levelCombo);
-        }
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) repaintMap(levelCombo);
       }
     });
 
@@ -147,20 +143,6 @@ public class MapPanelGraphics2D extends JPanel {
     return new Dimension((int)width, (int)height);
   }
 
-  private void drawGrid(BoundsXY d, Graphics2D g)
-  {
-    g.setColor(Color.RED);
-    for ( int x = 100; x < d.getXmax(); x +=100)
-    {
-      g.drawLine(x, 0, x, (int) d.getYmax());
-    }
-
-    for ( int y = 100; y < d.getYmax(); y +=100)
-    {
-      g.drawLine(0, y, (int) d.getXmax(), y);
-    }
-  }
-
   public MapPanelGraphics2D(OsmLoader loader, AbstractProjector projector) {
     this.loader = loader;
     this.projector = projector;
@@ -173,24 +155,21 @@ public class MapPanelGraphics2D extends JPanel {
 
     ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-
     BoundsXY bounds = new BoundsLatLon(loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon()).toXY(projector);
 
-    LeisurePainter leisurePainter = new LeisurePainter(projector, bounds);
-    NaturePainter naturePainter = new NaturePainter(projector, bounds);
-    WaterwayPainter waterwayPainter = new WaterwayPainter(projector, bounds);
-    LandusePainter landusePainter = new LandusePainter(projector, bounds);
+//    LeisurePainter leisurePainter = new LeisurePainter(projector, bounds);
+//    NaturePainter naturePainter = new NaturePainter(projector, bounds);
+//    WaterwayPainter waterwayPainter = new WaterwayPainter(projector, bounds);
+//    LandusePainter landusePainter = new LandusePainter(projector, bounds);
     HighwayPainter highwayPainter = new HighwayPainter(projector, bounds);
     BuildingPainter buildingPainter = new BuildingPainter(projector, bounds);
 
-    leisurePainter.drawParks(new TileDrawer((Graphics2D) g), leisure, LEVEL);
-    naturePainter.drawWater(new TileDrawer((Graphics2D)g), nature, LEVEL);
-    landusePainter.drawLanduse(new TileDrawer((Graphics2D)g), landuse, LEVEL);
-    waterwayPainter.drawWaterways(new TileDrawer((Graphics2D)g), waterways, LEVEL);
+//    leisurePainter.drawParks(new TileDrawer((Graphics2D) g), leisure, LEVEL);
+//    naturePainter.drawWater(new TileDrawer((Graphics2D)g), nature, LEVEL);
+//    landusePainter.drawLanduse(new TileDrawer((Graphics2D)g), landuse, LEVEL);
+//    waterwayPainter.drawWaterways(new TileDrawer((Graphics2D)g), waterways, LEVEL);
     highwayPainter.drawHighways(new TileDrawer((Graphics2D) g), highways, LEVEL);
     buildingPainter.drawBuildings(new TileDrawer((Graphics2D) g), buildings, LEVEL);
-
-//    drawGrid(bounds, (Graphics2D) g);
   }
 
   private void drawParallels(Graphics g) {

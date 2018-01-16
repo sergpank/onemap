@@ -4,7 +4,9 @@ var map = L.map('map').setView([47., 28.865], 16);
 
 L.tileLayer('../tiles/botanica/{z}/tile_{z}_{y}_{x}.png', {
   minZoom: 10,
-  maxZoom: 20
+  maxZoom: 20,
+  tileSize: 512,
+  detectRetina: true
 }).addTo(map);
 
 //L.tileLayer('http://localhost:8080/aaa/random?x={x}&y={y}&z={z}', {

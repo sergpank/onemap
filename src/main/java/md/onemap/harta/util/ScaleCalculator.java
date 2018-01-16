@@ -9,7 +9,7 @@ public class ScaleCalculator
 {
 
   public static final int MIN_SCALE_LEVEL = 1; // Максимальное отдаление (всего 1 тайл 256 х 256)
-  public static final int MAX_SCALE_LEVEL = 20; // Максимальное приближение
+  public static final int MAX_SCALE_LEVEL = 21; // Максимальное приближение (для ретина экранов берутся тайлы с высшего уровня)
 
   public static double getRadiusForLevel(int level)
   {

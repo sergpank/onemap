@@ -23,7 +23,10 @@ public class BoundsLatLon {
     XYPoint min = projector.getXY(minLat, minLon);
     XYPoint max = projector.getXY(maxLat, maxLon);
 
-    return new BoundsXY(min.getX(), min.getY(), max.getX(), max.getY());
+    // min-y and max-y --- are inverted
+    // ... this happens because latitude center is in the middle of coordinates
+    // ... but Y goes from top to bottom of corrdinate system
+    return new BoundsXY(min.getX(), max.getY(), max.getX(), min.getY());
   }
 
   public double getMinLat()

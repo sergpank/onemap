@@ -6,6 +6,7 @@ import md.onemap.harta.osm.Building;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.projector.MercatorProjector;
+import md.onemap.harta.util.TimePrettyPrint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +50,11 @@ public abstract class TileGenerator
     long tileCnt = 0;
     long start = System.currentTimeMillis();
     TileFileWriter tileWriter = new TileFileWriter(TILE_SIZE, props.outputDir());
+    double totalTiles = (tileCutter.getMaxTileXindex() - tileCutter.getMinTileXindex() + 1)
+                    * (tileCutter.getMaxTileYindex() - tileCutter.getMinTileYindex() + 1);
+
+    short logStep = 10;
+    long logTileStep = (long)totalTiles / logStep; // 10%
 
     for (int y = tileCutter.getMinTileYindex(); y <= tileCutter.getMaxTileYindex(); y++)
     {
@@ -62,10 +68,13 @@ public abstract class TileGenerator
         tileWriter.drawTile(level, x, y, tileBounds.toXY(projector), projector, highways, buildings);
 
         tileCnt++;
+        if (logTileStep > 0 && tileCnt % logTileStep == 0) {
+          LOG.info(String.format("level %2d -> %3.2f %%; %d of %.0f tiles", level, tileCnt / totalTiles * 100, tileCnt, totalTiles));
+        }
       }
     }
 
     long end = System.currentTimeMillis();
-    LOG.info("level {} -> {} ms; {} tiles; {} ms per tile", level, (end - start), tileCnt, (end - start) / tileCnt);
+    LOG.info("level {} -> {}; {} tiles; {} ms per tile", level, TimePrettyPrint.prettyPrint(end - start), tileCnt, (end - start) / tileCnt);
   }
 }
