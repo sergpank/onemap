@@ -1,7 +1,6 @@
 package md.onemap.harta.tile;
 
 import md.onemap.harta.drawer.AbstractDrawer;
-import md.onemap.harta.drawer.TileDrawer;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.osm.Building;
 import md.onemap.harta.osm.Highway;
@@ -11,29 +10,24 @@ import md.onemap.harta.projector.AbstractProjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 
 /**
  * Created by sergpank on 04/12/2017.
  */
-public class TileFileWriter
+public class TileDrawer
 {
-  private static final Logger LOG = LoggerFactory.getLogger(TileFileWriter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(TileDrawer.class);
   private int tileSize;
-  private String outputDir;
 
-  public TileFileWriter(int tileSize, String outputDir)
+  public TileDrawer(int tileSize)
   {
     this.tileSize = tileSize;
-    this.outputDir = outputDir;
   }
 
-  public void drawTile(int level, int x, int y, BoundsXY tileBounds, AbstractProjector projector,
+  public BufferedImage drawTile(int level, int x, int y, BoundsXY tileBounds, AbstractProjector projector,
                        Collection<Highway> highways, Collection<Building> buildings) {
     BufferedImage bi = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = bi.createGraphics();
@@ -41,7 +35,7 @@ public class TileFileWriter
     graphics.setPaint(TilePalette.BACKGROUND_COLOR);
     graphics.fillRect(0, 0, tileSize, tileSize);
 
-    AbstractDrawer drawer = new TileDrawer(graphics);
+    AbstractDrawer drawer = new md.onemap.harta.drawer.TileDrawer(graphics);
     drawer.setAAEnabled(true);
 
     new HighwayPainter(projector, tileBounds).drawHighways(drawer, highways, level);
@@ -50,24 +44,7 @@ public class TileFileWriter
     drawTileNumber(x, y, level, graphics);
     drawTileBorder(graphics);
 
-    writeTile(bi, level, x, y);
-  }
-
-  private void writeTile(BufferedImage bi, int level, int x, int y)
-  {
-    try
-    {
-      String tileName = String.format("%s/%s/tile_%d_%d_%d.png", outputDir, level, level, y, x);
-
-      File tileFile = new File(tileName);
-      tileFile.mkdirs();
-
-      ImageIO.write(bi, "PNG", tileFile);
-    }
-    catch (IOException e)
-    {
-      e.printStackTrace();
-    }
+    return bi;
   }
 
   private void drawTileNumber(int x, int y, int level, Graphics2D graphics)

@@ -4,12 +4,36 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+
   <servlet>
     <servlet-name>simple</servlet-name>
     <servlet-class>md.onemap.harta.web.SimpleServlet</servlet-class>
   </servlet>
+
+  <servlet>
+    <servlet-name>random</servlet-name>
+    <servlet-class>md.onemap.harta.web.RandomTileGeneratorServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>tileGenerator</servlet-name>
+    <servlet-class>md.onemap.harta.web.TileGeneratorServlet</servlet-class>
+  </servlet>
+
+
   <servlet-mapping>
     <servlet-name>simple</servlet-name>
     <url-pattern>/simple</url-pattern>
   </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>random</servlet-name>
+    <url-pattern>/random</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>tileGenerator</servlet-name>
+    <url-pattern>/tile</url-pattern>
+  </servlet-mapping>
+
 </web-app>

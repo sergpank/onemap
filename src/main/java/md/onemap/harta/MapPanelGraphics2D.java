@@ -33,6 +33,8 @@ public class MapPanelGraphics2D extends JPanel {
   public static int LEVEL = 18;
   public static String DATA_SOURCE = "osm/botanica.osm";
 
+  private static final int TILE_SIZE = 512;
+
   private AbstractProjector projector;
   private AbstractLoader loader;
   private Collection<Highway> highways;
@@ -83,7 +85,7 @@ public class MapPanelGraphics2D extends JPanel {
     JPanel panel = new JPanel();
     panel.setLayout(new FlowLayout());
 
-    TileCutter tileCutter = new TileCutter(projector, TileGenerator.TILE_SIZE, LEVEL, loader.getBounds());
+    TileCutter tileCutter = new TileCutter(projector, TILE_SIZE, LEVEL, loader.getBounds());
     tileCutter.cut();
     JComboBox<Integer> levelCombo = createCombo(ScaleCalculator.MIN_SCALE_LEVEL, ScaleCalculator.MAX_SCALE_LEVEL, LEVEL);
 

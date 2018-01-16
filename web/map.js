@@ -2,17 +2,19 @@ var map = L.map('map').setView([47., 28.865], 16);
 // http://a.tiles.mapbox.com/v3/examples.map-i875mjb7/0/0/0.png
 // L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 
-L.tileLayer('../tiles/botanica/{z}/tile_{z}_{y}_{x}.png', {
-  minZoom: 10,
-  maxZoom: 20,
-  tileSize: 512,
-  detectRetina: true
-}).addTo(map);
+// L.tileLayer('../tiles/botanica/{z}/tile_{z}_{y}_{x}.png', {
+//   minZoom: 10,
+//   maxZoom: 20,
+//   tileSize: 512,
+//   detectRetina: true
+// }).addTo(map);
 
-//L.tileLayer('http://localhost:8080/aaa/random?x={x}&y={y}&z={z}', {
-//  minZoom: 10,
-//  maxZoom: 20
-//}).addTo(map);
+L.tileLayer('http://localhost:8080/harta/tile?x={x}&y={y}&z={z}', {
+  minZoom: 11,
+  maxZoom: 21,
+  tileSize: 512,
+  detectRetina: true,
+}).addTo(map);
 
 var popup = L.popup();
 

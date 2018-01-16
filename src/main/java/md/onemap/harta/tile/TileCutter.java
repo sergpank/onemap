@@ -1,7 +1,6 @@
 package md.onemap.harta.tile;
 
 import md.onemap.harta.geometry.BoundsLatLon;
-import md.onemap.harta.geometry.LatLonPoint;
 import md.onemap.harta.geometry.XYPoint;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.util.ScaleCalculator;
@@ -13,6 +12,9 @@ public class TileCutter
 {
   private AbstractProjector projector;
   private int tileSize;
+
+  private TileBoundsCalculator boundsCalculator;
+
   private double minLat;
   private double minLon;
   private double maxLat;
@@ -30,6 +32,8 @@ public class TileCutter
       throw new IllegalArgumentException(String.format("Tile level should be in [%d, %d]: %d",
           ScaleCalculator.MIN_SCALE_LEVEL, ScaleCalculator.MAX_SCALE_LEVEL, level));
     }
+    this.boundsCalculator = new TileBoundsCalculator(tileSize, projector);
+
     this.projector = projector;
     this.tileSize = tileSize;
     this.minLat = bounds.getMinLat();
@@ -62,12 +66,7 @@ public class TileCutter
    */
   public BoundsLatLon getTileBounds(int x, int y, int tileExtension)
   {
-    XYPoint minXY = new XYPoint(x * tileSize - tileExtension, y * tileSize - tileExtension);
-    XYPoint maxXY = new XYPoint((x + 1) * tileSize + tileExtension, (y + 1) * tileSize + tileExtension);
-    LatLonPoint minLatLon = projector.getLatLon(minXY);
-    LatLonPoint maxLatLon = projector.getLatLon(maxXY);
-
-    return new BoundsLatLon(minLatLon.getLat(), minLatLon.getLon(), maxLatLon.getLat(), maxLatLon.getLon());
+    return boundsCalculator.getTileBounds(x, y, tileExtension);
   }
 
   public int getMinTileXindex()

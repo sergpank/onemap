@@ -19,6 +19,7 @@ public class GeneratorProperties
   private Integer endLevel;
   private String outputDir;
   private String source;
+  private Integer tileSize;
 
   public GeneratorProperties(String propsPath)
   {
@@ -29,6 +30,7 @@ public class GeneratorProperties
       props.load(new FileReader(propsPath));
       startLevel = Integer.parseInt(props.getProperty("level.start"));
       endLevel = Integer.parseInt(props.getProperty("level.end"));
+      tileSize = Integer.parseInt(props.getProperty("tile.size"));
       outputDir = props.getProperty("output.dir");
       source = props.getProperty("source");
       LOG.info("Loaded properties: " + toString());
@@ -58,6 +60,11 @@ public class GeneratorProperties
   public int endLevel()
   {
     return endLevel;
+  }
+
+  public int tileSize()
+  {
+    return tileSize;
   }
 
   @Override

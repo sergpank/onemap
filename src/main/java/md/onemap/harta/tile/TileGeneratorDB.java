@@ -26,18 +26,17 @@ public class TileGeneratorDB extends TileGenerator
   }
 
   public TileGeneratorDB(GeneratorProperties props) {
-    super(props);
+    super(props, new PostgresLoader(props.source()));
   }
 
   @Override
   public void generate()
   {
-    AbstractLoader loader = new PostgresLoader(props.source());
     LOG.info("Dataset bounds: " + loader.getBounds());
 
     LocalDateTime generationStart = LocalDateTime.now();
 
-    generateLevels(loader);
+    generateLevels();
 
     LOG.info("{} seconds", Duration.between(generationStart, LocalDateTime.now()).getSeconds());
   }

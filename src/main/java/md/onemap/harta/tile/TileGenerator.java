@@ -1,6 +1,7 @@
 package md.onemap.harta.tile;
 
 import md.onemap.harta.geometry.BoundsLatLon;
+import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.loader.AbstractLoader;
 import md.onemap.harta.osm.Building;
 import md.onemap.harta.osm.Highway;
@@ -10,7 +11,10 @@ import md.onemap.harta.util.TimePrettyPrint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -18,19 +22,20 @@ import java.util.Collection;
  */
 public abstract class TileGenerator
 {
-  public static final int TILE_SIZE = 512;
-
   private static Logger LOG = LoggerFactory.getLogger(TileGenerator.class);
 
   protected GeneratorProperties props;
+  protected AbstractLoader loader;
 
-  public TileGenerator(GeneratorProperties properties) {
+  public TileGenerator(GeneratorProperties properties, AbstractLoader loader)
+  {
     this.props = properties;
+    this.loader = loader;
   }
 
   public abstract void generate();
 
-  protected void generateLevels(AbstractLoader loader)
+  protected void generateLevels()
   {
     LOG.info("Output directory: {}", new File(props.outputDir()).getAbsolutePath());
 
@@ -38,37 +43,33 @@ public abstract class TileGenerator
     {
       AbstractProjector projector = new MercatorProjector(level);
 
-      TileCutter tileCutter = new TileCutter(projector, TILE_SIZE, level, loader.getBounds());
+      TileCutter tileCutter = new TileCutter(projector, props.tileSize(), level, loader.getBounds());
       tileCutter.cut();
 
-      generateLevelTiles(loader, level, projector, tileCutter);
+      generateLevelTiles(level, projector, tileCutter);
     }
   }
 
-  protected void generateLevelTiles(AbstractLoader loader, int level, AbstractProjector projector, TileCutter tileCutter)
+  protected void generateLevelTiles(int level, AbstractProjector projector, TileCutter tileCutter)
   {
     long tileCnt = 0;
     long start = System.currentTimeMillis();
-    TileFileWriter tileWriter = new TileFileWriter(TILE_SIZE, props.outputDir());
     double totalTiles = (tileCutter.getMaxTileXindex() - tileCutter.getMinTileXindex() + 1)
-                    * (tileCutter.getMaxTileYindex() - tileCutter.getMinTileYindex() + 1);
+        * (tileCutter.getMaxTileYindex() - tileCutter.getMinTileYindex() + 1);
 
     short logStep = 10;
-    long logTileStep = (long)totalTiles / logStep; // 10%
+    long logTileStep = (long) totalTiles / logStep; // 10%
 
     for (int y = tileCutter.getMinTileYindex(); y <= tileCutter.getMaxTileYindex(); y++)
     {
       for (int x = tileCutter.getMinTileXindex(); x <= tileCutter.getMaxTileXindex(); x++)
       {
-        BoundsLatLon tileBounds = tileCutter.getTileBounds(x, y, 0);
-
-        Collection<Highway> highways = loader.getHighways(level, tileBounds);
-        Collection<Building> buildings = loader.getBuildings(level, tileBounds);
-
-        tileWriter.drawTile(level, x, y, tileBounds.toXY(projector), projector, highways, buildings);
+        BufferedImage tile = generateTile(x, y, level, projector, tileCutter.getTileBounds(x, y, 0));
+        writeTile(tile, level, x, y);
 
         tileCnt++;
-        if (logTileStep > 0 && tileCnt % logTileStep == 0) {
+        if (logTileStep > 0 && tileCnt % logTileStep == 0)
+        {
           LOG.info(String.format("level %2d -> %3.2f %%; %d of %.0f tiles", level, tileCnt / totalTiles * 100, tileCnt, totalTiles));
         }
       }
@@ -76,5 +77,39 @@ public abstract class TileGenerator
 
     long end = System.currentTimeMillis();
     LOG.info("level {} -> {}; {} tiles; {} ms per tile", level, TimePrettyPrint.prettyPrint(end - start), tileCnt, (end - start) / tileCnt);
+  }
+
+  public BufferedImage generateTile(int x, int y, int level, AbstractProjector projector, BoundsLatLon tileBounds)
+  {
+    long start = System.currentTimeMillis();
+
+    Collection<Highway> highways = loader.getHighways(level, tileBounds);
+    Collection<Building> buildings = loader.getBuildings(level, tileBounds);
+
+    TileDrawer tileDrawer = new TileDrawer(props.tileSize());
+    BoundsXY boundsXY = tileBounds.toXY(projector);
+    BufferedImage tile = tileDrawer.drawTile(level, x, y, boundsXY, projector, highways, buildings);
+
+    long end = System.currentTimeMillis();
+    LOG.info("Tile {} generation: {}", level + "-" + x + ":" + y, TimePrettyPrint.prettyPrint(end - start));
+
+    return tile;
+  }
+
+  private void writeTile(BufferedImage bi, int level, int x, int y)
+  {
+    try
+    {
+      String tileName = String.format("%s/%s/tile_%d_%d_%d.png", props.outputDir(), level, level, y, x);
+
+      File tileFile = new File(tileName);
+      tileFile.mkdirs();
+
+      ImageIO.write(bi, "PNG", tileFile);
+    }
+    catch (IOException e)
+    {
+      e.printStackTrace();
+    }
   }
 }

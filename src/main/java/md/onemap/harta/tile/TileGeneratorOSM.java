@@ -27,20 +27,19 @@ public class TileGeneratorOSM extends TileGenerator
 
   public TileGeneratorOSM(GeneratorProperties properties)
   {
-    super(properties);
+    super(properties, new OsmLoader());
   }
 
   @Override
   public void generate()
   {
-    AbstractLoader loader = new OsmLoader();
     loader.load(props.source());
 
     LOG.info("Area bounds: " + loader.getBounds());
 
     LocalDateTime generationStart = LocalDateTime.now();
 
-    generateLevels(loader);
+    generateLevels();
 
     LOG.info("{} seconds", Duration.between(generationStart, LocalDateTime.now()).getSeconds());
   }
