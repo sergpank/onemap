@@ -1,7 +1,11 @@
 package md.onemap.harta.painter;
 
+import com.sun.javafx.tk.FontMetrics;
+import com.sun.javafx.tk.Toolkit;
+import javafx.scene.text.Font;
 import md.onemap.harta.drawer.AbstractDrawer;
 import md.onemap.harta.geometry.*;
+import md.onemap.harta.geometry.Label;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.TilePalette;
@@ -17,9 +21,14 @@ public class HighwayPainter extends AbstractPainter
 {
   public static final int ROAD_WIDTH_METERS = 6;
 
+  private final Font font;
+  private final FontMetrics fontMetrics;
+
   public HighwayPainter(AbstractProjector projector, BoundsXY bounds)
   {
     super(projector, bounds);
+    this.font = new Font(TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
+    this.fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(font);
   }
 
   public void drawHighways(AbstractDrawer drawer, Collection<Highway> highways, int level)
@@ -71,7 +80,9 @@ public class HighwayPainter extends AbstractPainter
     XYPoint highwayCenter = new XYPoint((minXY.getX() + maxXY.getX()) / 2, (minXY.getY() + maxXY.getY()) / 2);
     if (highway.getName() != null && !highway.getName().isEmpty())
     {
-      Label label = new Label(highway.getName(), highwayCenter, TilePalette.FONT_NAME, TilePalette.FONT_SIZE);
+      float height = fontMetrics.getLineHeight();
+      float width = fontMetrics.computeStringWidth(highway.getName()) + highway.getName().length();
+      Label label = new Label(highway.getName(), highwayCenter, height, width);
       label.setHighway(highway);
       labels.add(label);
     }

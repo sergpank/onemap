@@ -13,7 +13,13 @@ public class TextUtil
   public static float getStringWidth(String text, String fontName, int fontSize)
   {
     Font font = new Font(fontName, fontSize);
-    return Toolkit.getToolkit().getFontLoader().getFontMetrics(font).computeStringWidth(text);
+    return Toolkit.getToolkit().getFontLoader().getFontMetrics(font).computeStringWidth(text) + text.length();
+  }
+
+  public static float getCharWidth(char c, String fontName, int fontSize)
+  {
+    Font font = new Font(fontName, fontSize);
+    return Toolkit.getToolkit().getFontLoader().getFontMetrics(font).computeStringWidth(String.valueOf(c));
   }
 
   public static float getStringHeight(String fontName, int fontSize)

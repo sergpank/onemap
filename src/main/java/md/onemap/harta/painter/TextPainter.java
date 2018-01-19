@@ -17,9 +17,12 @@ import java.util.List;
  */
 public class TextPainter extends AbstractPainter
 {
+  private final Font font;
+
   public TextPainter(AbstractProjector projector, BoundsXY bounds)
   {
     super(projector, bounds);
+    font = new Font(TilePalette.HIGHWAY_FONT_NAME, Font.PLAIN, TilePalette.HIGHWAY_FONT_SIZE);
   }
 
   public void paintHighwayLabel(AbstractDrawer drawer, Label label)
@@ -34,8 +37,6 @@ public class TextPainter extends AbstractPainter
 
   private void drawTiltString(AbstractDrawer drawer, Label label)
   {
-    Font font = new Font(TilePalette.HIGHWAY_FONT_NAME, Font.PLAIN, TilePalette.HIGHWAY_FONT_SIZE);
-
     XYPoint roadStartPoint = getRoadStartPoint(label);
     if (roadStartPoint == null)
     {

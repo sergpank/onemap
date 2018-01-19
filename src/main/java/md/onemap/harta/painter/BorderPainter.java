@@ -42,7 +42,7 @@ public class BorderPainter extends AbstractPainter
       shiftPoints(this.bounds.getXmin(), polygon.getxPoints());
       shiftPoints(this.bounds.getYmin(), polygon.getyPoints());
       drawer.drawPolyLine(polygon, 1);
-      labels.add(createRegionLabel(polygon, border.getName(), width));
+      labels.add(createRegionLabel(polygon, border.getName()));
     }
 
     paintLabels(drawer, labels, x, y, tileCutter);
@@ -75,18 +75,19 @@ public class BorderPainter extends AbstractPainter
     }
   }
 
-  private Label createRegionLabel(CanvasPolygon polygon, String label, double regionWidth)
+  private Label createRegionLabel(CanvasPolygon polygon, String label)
   {
-    Font font = null;
     XYPoint center = null;
+    float stringWidth = 0;
+    float stringHeight = 0;
     if (label != null)
     {
-      float stringWidth = TextUtil.getStringWidth(label, FONT_NAME, FONT_SIZE);
-      float stringHeight = TextUtil.getStringHeight(FONT_NAME, FONT_SIZE);
+      stringWidth = TextUtil.getStringWidth(label, FONT_NAME, FONT_SIZE);
+      stringHeight = TextUtil.getStringHeight(FONT_NAME, FONT_SIZE);
       center = getLabelCenter(polygon, label, stringWidth, stringHeight);
     }
     //System.out.printf("%s - %d\n", label, (int) font.getSize());
-    return new Label(label, center, font.getName(), (int) font.getSize());
+    return new Label(label, center, stringHeight, stringWidth);
   }
 
   private Font calcFontSize(String label, double regionWidth, int fontSize, boolean labelWasWider)

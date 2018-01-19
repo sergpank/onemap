@@ -1,8 +1,5 @@
 package md.onemap.harta.geometry;
 
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
-import javafx.scene.text.Font;
 import md.onemap.harta.osm.Highway;
 
 /**
@@ -11,21 +8,19 @@ import md.onemap.harta.osm.Highway;
 public class Label
 {
   private String text;
-  private Font font;
   private BoundsXY bounds;
   private XYPoint center;
   private Highway highway;
   private float height;
   private float width;
 
-  public Label(String text, XYPoint center, String fontName, int fontSize)
+  public Label(String text, XYPoint center, float height, float width)
   {
     this.text = text;
-    this.font = new Font(fontName, fontSize);
     this.center = center;
-    FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(font);
-    this.height = fontMetrics.getLineHeight();
-    this.width = fontMetrics.computeStringWidth(text) + text.length(); // +text.length() because distance between characters should be 1 pixel.
+
+    this.height = height;
+    this.width = width; // +text.length() because distance between characters should be 1 pixel.
     this.bounds = new BoundsXY(center.getX() - width / 2, center.getY() - height / 2,
         center.getX() + width / 2, center.getY() + height / 2);
   }
@@ -54,11 +49,6 @@ public class Label
     return text;
   }
 
-  public Font getFont()
-  {
-    return font;
-  }
-
   public BoundsXY getBounds()
   {
     return bounds;
@@ -78,8 +68,6 @@ public class Label
     Label label = (Label) o;
 
     if (text != null ? !text.equals(label.text) : label.text != null) return false;
-    if (font != null ? !font.equals(label.font) : label.font != null) return false;
-    if (bounds != null ? !bounds.equals(label.bounds) : label.bounds != null) return false;
     return !(center != null ? !center.equals(label.center) : label.center != null);
   }
 
@@ -87,8 +75,6 @@ public class Label
   public int hashCode()
   {
     int result = text != null ? text.hashCode() : 0;
-    result = 31 * result + (font != null ? font.hashCode() : 0);
-    result = 31 * result + (bounds != null ? bounds.hashCode() : 0);
     result = 31 * result + (center != null ? center.hashCode() : 0);
     return result;
   }

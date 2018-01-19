@@ -1,5 +1,7 @@
 package md.onemap.harta.geometry;
 
+import com.sun.javafx.tk.FontMetrics;
+import com.sun.javafx.tk.Toolkit;
 import junit.framework.TestCase;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.osm.OsmNode;
@@ -244,7 +246,7 @@ public class RoadLabelIntersectorTest extends TestCase
         new OsmNode(2l, 10.0001, 10.0001));
     String roadName = "abcdefghijklmnopuvw";
     Highway highway = new Highway(1l, roadName, "test", nodes);
-    Label label = new Label(roadName, new XYPoint(10, 10), Font.MONOSPACED, 15);
+    Label label = new Label(roadName, new XYPoint(10, 10), 10, 100);
     AbstractProjector projector = new MercatorProjector(17);
     List<Intersection> intersections = intersector.getIntersections(highway, label, projector);
     assertEquals(0, intersections.size());
@@ -260,10 +262,18 @@ public class RoadLabelIntersectorTest extends TestCase
 
     String roadName = "ABCD";
     Highway highway = new Highway(1l, roadName, "test", nodes);
-    Label label = new Label(roadName, new XYPoint(10, 10), Font.MONOSPACED, 15);
 
-    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(0, 0, 20, 20), Font.MONOSPACED, 15);
+    javafx.scene.text.Font font = new javafx.scene.text.Font(Font.MONOSPACED, 15);
+    FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(font);
+    float lineHeight = fontMetrics.getLineHeight();
+    float lineWidth = fontMetrics.computeStringWidth(roadName) + roadName.length();
+
+    Label label = new Label(roadName, new XYPoint(10, 10), lineHeight, lineWidth);
+
+    RoadLabelIntersector intersector = new RoadLabelIntersector(new BoundsXY(0, 0, 200, 200), Font.MONOSPACED, 15);
     List<Intersection> intersections = intersector.getIntersections(highway, label, projector);
+
+    intersections.forEach(System.out::println);
 
     assertEquals(4, intersections.size());
     assertEquals(new Intersection(new XYPoint(1.770930983167526E7, 1.5840374675626924E7), -0.46979950686796507), intersections.get(0));

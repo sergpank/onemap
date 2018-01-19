@@ -23,7 +23,7 @@ public class RoadLabelIntersector
 
   /**
    * Constructor
-   * @param bounds Bounds of are that is being rendered (in pixels)
+   * @param bounds Bounds of area that is being rendered (in pixels)
    */
   public RoadLabelIntersector(BoundsXY bounds, String fontName, int fontSize)
   {
@@ -74,8 +74,7 @@ public class RoadLabelIntersector
   }
 
   private int calcCharWidth(char ch) {
-    String s = Character.toString(ch);
-    return (int) TextUtil.getStringWidth(s, fontName, fontSize);
+    return (int) TextUtil.getCharWidth(ch, fontName, fontSize);
   }
 
   private XYPoint calcIntersectionPoint(Line line, double shift, float labelHeight)

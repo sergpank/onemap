@@ -72,7 +72,7 @@ public class TileDrawer extends AbstractDrawer
   @Override
   public void paintLabel(Label label, int x, int y, TileCutter tileCutter)
   {
-    Font font = new Font(label.getFont().getName(), Font.BOLD, (int) label.getFont().getSize());
+    Font font = new Font(TilePalette.HIGHWAY_FONT_NAME, Font.BOLD, TilePalette.HIGHWAY_FONT_SIZE);
     GlyphVector gv = font.createGlyphVector(graphics.getFontRenderContext(), label.getText());
 
     graphics.setStroke(new BasicStroke(1f));

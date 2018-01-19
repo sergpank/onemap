@@ -16,10 +16,10 @@ public class OsmToPostgisExporter
   public static void main(String[] args)
   {
     OsmLoader osmLoader = new OsmLoader();
-    String dbName = "chisinau";
-    DatabaseCreator.createDb(dbName);
+    String dbName = "botanica";
+//    DatabaseCreator.createDb(dbName);
     Connection connection = DbHelper.getNewConnection(dbName);
-    for (String osm : Arrays.asList("osm/chisinau.osm"))
+    for (String osm : Arrays.asList("osm/botanica.osm"))
     {
       osmLoader.load(osm);
       Map<Long, Building> buildings = osmLoader.getBuildings();
