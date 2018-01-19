@@ -29,10 +29,11 @@ public class TileBoundsCalculator
    *                      If tile should not be extended - just pass 0
    * @return Bounding box of a specific tile in XY format
    */
+  // TODO cover it with unit tests
   public BoundsLatLon getTileBounds(int x, int y, int tileExtension)
   {
-    XYPoint minXY = new XYPoint(x * tileSize - tileExtension, y * tileSize - tileExtension);
-    XYPoint maxXY = new XYPoint((x + 1) * tileSize + tileExtension, (y + 1) * tileSize + tileExtension);
+    XYPoint minXY = new XYPoint(x * tileSize - tileExtension, (y -1) * tileSize - tileExtension);
+    XYPoint maxXY = new XYPoint((x + 1) * tileSize + tileExtension, y * tileSize + tileExtension);
     LatLonPoint minLatLon = projector.getLatLon(minXY);
     LatLonPoint maxLatLon = projector.getLatLon(maxXY);
 

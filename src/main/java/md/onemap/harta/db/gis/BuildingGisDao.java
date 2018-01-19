@@ -14,12 +14,12 @@ import java.util.*;
  */
 public class BuildingGisDao extends GisDao<Building>
 {
-  public static final String INSERT_SQL = "INSERT INTO buildings_gis " +
+  public static final String INSERT_SQL = "INSERT INTO gis.buildings_gis " +
       "(building_id, housenumber, height, street, design, levels, building_geometry) " +
       "VALUES (?, ?, ?, ?, ?, ?, %s)";
 
   public static final String SELECT_TILE = "SELECT building_id, housenumber, height, street, design, levels, building_geometry " +
-      "FROM buildings_gis " +
+      "FROM gis.buildings_gis " +
       "WHERE ST_Intersects(" +
       "ST_GeomFromText('Polygon((" +
       "%f %f," +
@@ -28,6 +28,8 @@ public class BuildingGisDao extends GisDao<Building>
       "%f %f," +
       "%f %f" +
       "))'), building_geometry)";
+
+  public static final String SELECT_ALL = "SELECT building_id, housenumber, height, street, design, levels, building_geometry FROM gis.buildings_gis";
 
   public BuildingGisDao(Connection connection)
   {
@@ -84,13 +86,15 @@ public class BuildingGisDao extends GisDao<Building>
     Set<Building> buildings = new HashSet<>();
     try (Statement stmt = connection.createStatement())
     {
+      double dLat = box.getMaxLat() - box.getMinLat();
+      double dLon = box.getMaxLon() - box.getMinLon();
       String sql = String.format(SELECT_TILE,
-          box.getMinLon(), box.getMinLat(),
-          box.getMinLon(), box.getMaxLat(),
-          box.getMaxLon(), box.getMaxLat(),
-          box.getMaxLon(), box.getMinLat(),
-          box.getMinLon(), box.getMinLat()
-          );
+          box.getMinLon() - dLon, box.getMinLat() - dLat,
+          box.getMinLon() - dLon, box.getMaxLat() + dLat,
+          box.getMaxLon() + dLon, box.getMaxLat() + dLat,
+          box.getMaxLon() + dLon, box.getMinLat() - dLat,
+          box.getMinLon() - dLon, box.getMinLat() - dLat
+      );
       ResultSet rs = stmt.executeQuery(sql);
       while (rs.next())
       {
@@ -122,7 +126,36 @@ public class BuildingGisDao extends GisDao<Building>
   @Override
   public Collection<Building> loadAll()
   {
-    return null;
+    Set<Building> buildings = new HashSet<>();
+    try (Statement stmt = connection.createStatement())
+    {
+      ResultSet rs = stmt.executeQuery(SELECT_ALL);
+      while (rs.next())
+      {
+        long id = rs.getLong("building_id");
+        String houseNumber = rs.getString("housenumber");
+        String street = rs.getString("street");
+        String height = rs.getString("height");
+        int levels = rs.getInt("levels");
+        String design = rs.getString("design");
+
+        ArrayList<OsmNode> nodes = new ArrayList<>();
+        PGgeometry geometry = (PGgeometry)rs.getObject("building_geometry");
+        for (int i = 0; i < geometry.getGeometry().numPoints() - 1; i++)
+        {
+          Point point = geometry.getGeometry().getPoint(i);
+          nodes.add(new OsmNode(i, point.getY(), point.getX()));
+        }
+
+        buildings.add(new Building(id, nodes, houseNumber, street, height, levels, design));
+      }
+    }
+    catch (SQLException e)
+    {
+      e.printStackTrace();
+    }
+    return buildings;
+
   }
 
   @Override

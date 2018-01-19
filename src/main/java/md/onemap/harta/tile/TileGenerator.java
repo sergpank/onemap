@@ -7,6 +7,7 @@ import md.onemap.harta.osm.Building;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.projector.MercatorProjector;
+import md.onemap.harta.util.Stopwatch;
 import md.onemap.harta.util.TimePrettyPrint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,17 +82,12 @@ public abstract class TileGenerator
 
   public BufferedImage generateTile(int x, int y, int level, AbstractProjector projector, BoundsLatLon tileBounds)
   {
-    long start = System.currentTimeMillis();
-
     Collection<Highway> highways = loader.getHighways(level, tileBounds);
     Collection<Building> buildings = loader.getBuildings(level, tileBounds);
 
     TileDrawer tileDrawer = new TileDrawer(props.tileSize());
     BoundsXY boundsXY = tileBounds.toXY(projector);
     BufferedImage tile = tileDrawer.drawTile(level, x, y, boundsXY, projector, highways, buildings);
-
-    long end = System.currentTimeMillis();
-    LOG.info("Tile {} generation: {}", level + "-" + x + ":" + y, TimePrettyPrint.prettyPrint(end - start));
 
     return tile;
   }

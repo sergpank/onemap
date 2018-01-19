@@ -1,5 +1,8 @@
 package md.onemap.harta.db;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -9,6 +12,8 @@ import java.sql.SQLException;
  */
 public class DbHelper
 {
+  private static final Logger LOG = LoggerFactory.getLogger(DbHelper.class);
+
   private static Connection connection;
   public static String dbName = "harta";
   private static String url = "jdbc:postgresql://localhost:5432/";
@@ -22,6 +27,7 @@ public class DbHelper
       if (connection == null)
       {
         connection = DriverManager.getConnection(url + dbName, login, password);
+        LOG.info("Connection initialized ...");
       }
     }
     catch (SQLException e)

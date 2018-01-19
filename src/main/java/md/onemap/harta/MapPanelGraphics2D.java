@@ -6,12 +6,13 @@ import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.XYPoint;
 import md.onemap.harta.loader.AbstractLoader;
 import md.onemap.harta.loader.OsmLoader;
+import md.onemap.harta.loader.PostgisLoader;
 import md.onemap.harta.osm.*;
-import md.onemap.harta.painter.*;
+import md.onemap.harta.painter.BuildingPainter;
+import md.onemap.harta.painter.HighwayPainter;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.projector.MercatorProjector;
 import md.onemap.harta.tile.TileCutter;
-import md.onemap.harta.tile.TileGenerator;
 import md.onemap.harta.util.ScaleCalculator;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
@@ -54,10 +55,10 @@ public class MapPanelGraphics2D extends JPanel {
     MercatorProjector projector = new MercatorProjector(radiusForLevel, MercatorProjector.MAX_LAT);
     map = new MapPanelGraphics2D(new OsmLoader(), projector);
 
-//    map.loader = new PostgresLoader("debug");
-//    map.loader.load("debug", projector);
-    map.loader = new OsmLoader();
-    map.loader.load(DATA_SOURCE);
+    map.loader = new PostgisLoader("botanica");
+
+//    map.loader = new OsmLoader();
+//    map.loader.load(DATA_SOURCE);
 
     map.highways = map.loader.getHighways().values();
     map.buildings = map.loader.getBuildings().values();

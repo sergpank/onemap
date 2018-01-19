@@ -14,12 +14,12 @@ import java.util.*;
  */
 public class HighwayGisDao extends GisDao<Highway>
 {
-  public static final String INSERT_SQL = "INSERT INTO highways_gis " +
+  public static final String INSERT_SQL = "INSERT INTO gis.highways_gis " +
       "(highway_id, highway_name, highway_type, highway_geometry)" +
       " VALUES (?, ?, ?, %s);";
 
   public static final String SELECT_TILE = "SELECT highway_id, highway_name, highway_type, highway_geometry " +
-      "FROM highways_gis " +
+      "FROM gis.highways_gis " +
       "WHERE " +
       "ST_Intersects(" +
       "ST_GeomFromText('Polygon((" +
@@ -29,6 +29,8 @@ public class HighwayGisDao extends GisDao<Highway>
       "%f %f," +
       "%f %f" +
       "))'), highway_geometry)";
+
+  public static final String SELECT_ALL = "SELECT highway_id, highway_name, highway_type, highway_geometry FROM gis.highways_gis";
 
   public HighwayGisDao(Connection connection)
   {
@@ -113,7 +115,32 @@ public class HighwayGisDao extends GisDao<Highway>
   @Override
   public Collection<Highway> loadAll()
   {
-    return null;
+    Set<Highway> highways = new HashSet<>();
+    try (Statement stmt = connection.createStatement())
+    {
+      ResultSet rs = stmt.executeQuery(SELECT_ALL);
+      while (rs.next())
+      {
+        long id = rs.getLong("highway_id");
+        String name = rs.getString("highway_name");
+        String type = rs.getString("highway_type");
+
+        ArrayList<OsmNode> nodes = new ArrayList<>();
+        PGgeometry geometry = (PGgeometry)rs.getObject("highway_geometry");
+        for (int i = 0; i < geometry.getGeometry().numPoints(); i++)
+        {
+          Point point = geometry.getGeometry().getPoint(i);
+          nodes.add(new OsmNode(i, point.getY(), point.getX()));
+        }
+
+        highways.add(new Highway(id, name, type, nodes));
+      }
+    }
+    catch (SQLException e)
+    {
+      e.printStackTrace();
+    }
+    return highways;
   }
 
   @Override

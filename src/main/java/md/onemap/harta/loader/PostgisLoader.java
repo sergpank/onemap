@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Created by serg on 11/8/15.
@@ -24,7 +26,6 @@ public class PostgisLoader extends AbstractLoader
   public PostgisLoader(String dbName)
   {
     this.connection = DbHelper.getConnection(dbName);
-    ;
   }
 
   @Override
@@ -42,13 +43,21 @@ public class PostgisLoader extends AbstractLoader
   @Override
   public Map<Long, Highway> getHighways()
   {
-    return null;
+    Collection<Highway> highways = new HighwayGisDao(connection).loadAll();
+
+    Map<Long, Highway> result = highways.stream().collect(Collectors.toMap(Highway::getId, Function.identity()));
+
+    return result;
   }
 
   @Override
   public Map<Long, Building> getBuildings()
   {
-    return null;
+    Collection<Building> buildings = new BuildingGisDao(connection).loadAll();
+
+    Map<Long, Building> result = buildings.stream().collect(Collectors.toMap(b -> b.getId(), b -> b));
+
+    return result;
   }
 
   @Override
@@ -132,7 +141,7 @@ public class PostgisLoader extends AbstractLoader
 
     try (Statement statement = connection.createStatement();)
     {
-      try (ResultSet rs = statement.executeQuery("select min(ST_XMin(building_geometry)), min(ST_YMin(building_geometry)), max(ST_XMax(building_geometry)), max(ST_YMax(building_geometry))from buildings_gis"))
+      try (ResultSet rs = statement.executeQuery("select min(ST_XMin(building_geometry)), min(ST_YMin(building_geometry)), max(ST_XMax(building_geometry)), max(ST_YMax(building_geometry))from gis.buildings_gis"))
       {
         rs.next();
         minLonBuilding = rs.getDouble(1);
@@ -140,7 +149,7 @@ public class PostgisLoader extends AbstractLoader
         maxLonBuilding = rs.getDouble(3);
         maxLatBuilding = rs.getDouble(4);
       }
-      try (ResultSet rs = statement.executeQuery("select min(ST_XMin(highway_geometry)), min(ST_YMin(highway_geometry)), max(ST_XMax(highway_geometry)), max(ST_YMax(highway_geometry))from highways_gis"))
+      try (ResultSet rs = statement.executeQuery("select min(ST_XMin(highway_geometry)), min(ST_YMin(highway_geometry)), max(ST_XMax(highway_geometry)), max(ST_YMax(highway_geometry))from gis.highways_gis"))
       {
         rs.next();
         minLonHighway = rs.getDouble(1);
