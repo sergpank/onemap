@@ -33,7 +33,7 @@ public class RoadLabelIntersectorTest extends TestCase
     nodes.add(new OsmNode(2, 20, 20));
     nodes.add(new OsmNode(3, 30, 30));
 
-    Highway highway = new Highway(1l, "1", "no_type", nodes);
+    Highway highway = new Highway(1l, "1", "1-ru", "old", "no_type", nodes);
     List<Line> lines = intersector.highwayToSegments(highway, projector);
 
     assertEquals(2, lines.size());
@@ -52,7 +52,7 @@ public class RoadLabelIntersectorTest extends TestCase
     nodes.add(new OsmNode(2, 20, 20));
     nodes.add(new OsmNode(3, 10, 30));
 
-    Highway highway = new Highway(1l, "1", "no_type", nodes);
+    Highway highway = new Highway(1l, "1", "1-ru", "old", "no_type", nodes);
     List<Line> lines = intersector.highwayToSegments(highway, projector);
 
     assertEquals(2, lines.size());
@@ -71,7 +71,7 @@ public class RoadLabelIntersectorTest extends TestCase
     nodes.add(new OsmNode(2, 20, 20));
     nodes.add(new OsmNode(3, 10, 10));
 
-    Highway highway = new Highway(1l, "1", "no_type", nodes);
+    Highway highway = new Highway(1l, "1", "1-ru", "old", "no_type", nodes);
     List<Line> lines = intersector.highwayToSegments(highway, projector);
 
     assertEquals(2, lines.size());
@@ -90,7 +90,7 @@ public class RoadLabelIntersectorTest extends TestCase
     nodes.add(new OsmNode(2, 20, 20));
     nodes.add(new OsmNode(3, 30, 10));
 
-    Highway highway = new Highway(1l, "1", "no_type", nodes);
+    Highway highway = new Highway(1l, "1", "1-ru", "old", "no_type", nodes);
     List<Line> lines = intersector.highwayToSegments(highway, projector);
 
     assertEquals(2, lines.size());
@@ -109,7 +109,7 @@ public class RoadLabelIntersectorTest extends TestCase
     nodes.add(new OsmNode(2, 10, 20));
     nodes.add(new OsmNode(3, 10, 30));
 
-    Highway highway = new Highway(1l, "1", "no_type", nodes);
+    Highway highway = new Highway(1l, "1", "1-ru", "old", "no_type", nodes);
     List<Line> lines = intersector.highwayToSegments(highway, projector);
 
     assertEquals(2, lines.size());
@@ -128,7 +128,7 @@ public class RoadLabelIntersectorTest extends TestCase
     nodes.add(new OsmNode(2, 10, 20));
     nodes.add(new OsmNode(3, 10, 10));
 
-    Highway highway = new Highway(1l, "1", "no_type", nodes);
+    Highway highway = new Highway(1l, "1", "1-ru", "old", "no_type", nodes);
     List<Line> lines = intersector.highwayToSegments(highway, projector);
 
     assertEquals(2, lines.size());
@@ -147,7 +147,7 @@ public class RoadLabelIntersectorTest extends TestCase
     nodes.add(new OsmNode(2, 20, 10));
     nodes.add(new OsmNode(3, 30, 10));
 
-    Highway highway = new Highway(1l, "1", "no_type", nodes);
+    Highway highway = new Highway(1l, "1", "1-ru", "old", "no_type", nodes);
     List<Line> lines = intersector.highwayToSegments(highway, projector);
 
     assertEquals(2, lines.size());
@@ -166,7 +166,7 @@ public class RoadLabelIntersectorTest extends TestCase
     nodes.add(new OsmNode(2, 20, 10));
     nodes.add(new OsmNode(3, 10, 10));
 
-    Highway highway = new Highway(1l, "1", "no_type", nodes);
+    Highway highway = new Highway(1l, "1", "1-ru", "old", "no_type", nodes);
     List<Line> lines = intersector.highwayToSegments(highway, projector);
 
     assertEquals(2, lines.size());
@@ -245,7 +245,7 @@ public class RoadLabelIntersectorTest extends TestCase
         new OsmNode(1l, 10, 10),
         new OsmNode(2l, 10.0001, 10.0001));
     String roadName = "abcdefghijklmnopuvw";
-    Highway highway = new Highway(1l, roadName, "test", nodes);
+    Highway highway = new Highway(1l, roadName, "ru", "old", "test", nodes);
     Label label = new Label(roadName, new XYPoint(10, 10), 10, 100);
     AbstractProjector projector = new MercatorProjector(17);
     List<Intersection> intersections = intersector.getIntersections(highway, label, projector);
@@ -261,7 +261,7 @@ public class RoadLabelIntersectorTest extends TestCase
         new OsmNode(2l, 10.0005, 10.001));
 
     String roadName = "ABCD";
-    Highway highway = new Highway(1l, roadName, "test", nodes);
+    Highway highway = new Highway(1l, roadName, "ru", "old", "test", nodes);
 
     javafx.scene.text.Font font = new javafx.scene.text.Font(Font.MONOSPACED, 15);
     FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(font);

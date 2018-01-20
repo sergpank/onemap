@@ -11,9 +11,10 @@ import java.util.List;
 public class Highway extends OsmWay {
 
   public static final String HIGHWAY = "highway";
-  public static final int WIDTH_METERS = 4;
 
   private String name;
+  private String nameRu;
+  private String nameOld;
   private String type;
 
   @Override
@@ -35,20 +36,39 @@ public class Highway extends OsmWay {
           break;
         case "name":
           name = item.getAttribute("v");
+          break;
+        case "name:ru":
+          nameRu = item.getAttribute("v");
+          break;
+        case "old_name":
+          nameOld = item.getAttribute("v");
+          break;
       }
     }
   }
 
-  public Highway(Long id, String name, String type, List<OsmNode> nodes)
+  public Highway(Long id, String name, String nameRu, String nameOld, String type, List<OsmNode> nodes)
   {
     super(id, nodes);
     this.name = name;
+    this.nameRu = nameRu;
+    this.nameOld = nameOld;
     this.type = type;
   }
 
   public String getName()
   {
     return name;
+  }
+
+  public String getNameRu()
+  {
+    return nameRu;
+  }
+
+  public String getNameOld()
+  {
+    return nameOld;
   }
 
   public String getType()

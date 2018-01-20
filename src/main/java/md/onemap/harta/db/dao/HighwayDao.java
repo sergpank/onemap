@@ -3,7 +3,6 @@ package md.onemap.harta.db.dao;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.osm.OsmNode;
-import md.onemap.harta.projector.AbstractProjector;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.*;
@@ -16,14 +15,11 @@ import java.util.List;
  */
 public class HighwayDao extends Dao<Highway>
 {
-//  delete from nodes where node_id in (select unnest(highway_nodes) from highways where highway_id = 25652283)
-//  delete from highways where highway_id = 25652283
-
   public static final String TABLE = "highways";
 
   public static final String INSERT_SQL = "INSERT INTO highways " +
-      "(highway_id, highway_name, highway_type, highway_nodes, min_lat, max_lat, min_lon, max_lon)" +
-      " VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+      "(highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_nodes, min_lat, max_lat, min_lon, max_lon)" +
+      " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
   public static final String SELECT_ALL = "SELECT * FROM highways";
 
@@ -98,6 +94,8 @@ public class HighwayDao extends Dao<Highway>
 
     pStmt.setLong(pos++, highway.getId());
     pStmt.setString(pos++, highway.getName());
+    pStmt.setString(pos++, highway.getNameRu());
+    pStmt.setString(pos++, highway.getNameOld());
     pStmt.setString(pos++, highway.getType());
     pStmt.setArray(pos++, connection.createArrayOf("bigint", nodeIds));
     pStmt.setDouble(pos++, minLat);
@@ -147,6 +145,8 @@ public class HighwayDao extends Dao<Highway>
   {
     long id = resultSet.getLong("highway_id");
     String name = resultSet.getString("highway_name");
+    String nameRu = resultSet.getString("highway_name_ru");
+    String oldName = resultSet.getString("highway_name_old");
     String type = resultSet.getString("highway_type");
     Array wayNodes = resultSet.getArray("highway_nodes");
     ResultSet nodeSet = wayNodes.getResultSet();
@@ -156,7 +156,7 @@ public class HighwayDao extends Dao<Highway>
       long nodeId = nodeSet.getLong(2);
       nodes.add(nodeDao.load(nodeId));
     }
-    return new Highway(id, name, type, nodes);
+    return new Highway(id, name, nameRu, oldName, type, nodes);
   }
 
   @Override

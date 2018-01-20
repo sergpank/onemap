@@ -15,10 +15,10 @@ import java.util.*;
 public class HighwayGisDao extends GisDao<Highway>
 {
   public static final String INSERT_SQL = "INSERT INTO gis.highways_gis " +
-      "(highway_id, highway_name, highway_type, highway_geometry)" +
-      " VALUES (?, ?, ?, %s);";
+      "(highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_geometry)" +
+      " VALUES (?, ?, ?, ?, ?, %s);";
 
-  public static final String SELECT_TILE = "SELECT highway_id, highway_name, highway_type, highway_geometry " +
+  public static final String SELECT_TILE = "SELECT highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_geometry " +
       "FROM gis.highways_gis " +
       "WHERE " +
       "ST_Intersects(" +
@@ -30,7 +30,7 @@ public class HighwayGisDao extends GisDao<Highway>
       "%f %f" +
       "))'), highway_geometry)";
 
-  public static final String SELECT_ALL = "SELECT highway_id, highway_name, highway_type, highway_geometry FROM gis.highways_gis";
+  public static final String SELECT_ALL = "SELECT highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_geometry FROM gis.highways_gis";
 
   public HighwayGisDao(Connection connection)
   {
@@ -51,6 +51,8 @@ public class HighwayGisDao extends GisDao<Highway>
 
       pStmt.setLong(pos++, highway.getId());
       pStmt.setString(pos++, highway.getName());
+      pStmt.setString(pos++, highway.getNameRu());
+      pStmt.setString(pos++, highway.getNameOld());
       pStmt.setString(pos++, highway.getType());
       pStmt.execute();
     }
@@ -90,19 +92,7 @@ public class HighwayGisDao extends GisDao<Highway>
       ResultSet rs = stmt.executeQuery(sql);
       while (rs.next())
       {
-        long id = rs.getLong("highway_id");
-        String name = rs.getString("highway_name");
-        String type = rs.getString("highway_type");
-
-        ArrayList<OsmNode> nodes = new ArrayList<>();
-        PGgeometry geometry = (PGgeometry)rs.getObject("highway_geometry");
-        for (int i = 0; i < geometry.getGeometry().numPoints(); i++)
-        {
-          Point point = geometry.getGeometry().getPoint(i);
-          nodes.add(new OsmNode(i, point.getY(), point.getX()));
-        }
-
-        highways.add(new Highway(id, name, type, nodes));
+        readHighway(highways, rs);
       }
     }
     catch (SQLException e)
@@ -121,19 +111,7 @@ public class HighwayGisDao extends GisDao<Highway>
       ResultSet rs = stmt.executeQuery(SELECT_ALL);
       while (rs.next())
       {
-        long id = rs.getLong("highway_id");
-        String name = rs.getString("highway_name");
-        String type = rs.getString("highway_type");
-
-        ArrayList<OsmNode> nodes = new ArrayList<>();
-        PGgeometry geometry = (PGgeometry)rs.getObject("highway_geometry");
-        for (int i = 0; i < geometry.getGeometry().numPoints(); i++)
-        {
-          Point point = geometry.getGeometry().getPoint(i);
-          nodes.add(new OsmNode(i, point.getY(), point.getX()));
-        }
-
-        highways.add(new Highway(id, name, type, nodes));
+        readHighway(highways, rs);
       }
     }
     catch (SQLException e)
@@ -141,6 +119,25 @@ public class HighwayGisDao extends GisDao<Highway>
       e.printStackTrace();
     }
     return highways;
+  }
+
+  private void readHighway(Set<Highway> highways, ResultSet rs) throws SQLException
+  {
+    long id = rs.getLong("highway_id");
+    String name = rs.getString("highway_name");
+    String nameRu = rs.getString("highway_name_ru");
+    String oldName = rs.getString("highway_name_old");
+    String type = rs.getString("highway_type");
+
+    ArrayList<OsmNode> nodes = new ArrayList<>();
+    PGgeometry geometry = (PGgeometry)rs.getObject("highway_geometry");
+    for (int i = 0; i < geometry.getGeometry().numPoints(); i++)
+    {
+      Point point = geometry.getGeometry().getPoint(i);
+      nodes.add(new OsmNode(i, point.getY(), point.getX()));
+    }
+
+    highways.add(new Highway(id, name, nameRu, oldName, type, nodes));
   }
 
   @Override

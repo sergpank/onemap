@@ -53,9 +53,9 @@ public class HighwayPainter extends AbstractPainter
         drawLinesAsPolygons(polygon, drawer, roadWidth);
       }
     }
-    TextPainter textPainter = new TextPainter(projector, bounds);
     if (level > 15)
     {
+      TextPainter textPainter = new TextPainter(projector, bounds);
       for (Label label : labels)
       {
         textPainter.paintHighwayLabel(drawer, label);
