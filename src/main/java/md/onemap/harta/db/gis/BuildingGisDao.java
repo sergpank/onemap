@@ -5,6 +5,8 @@ import md.onemap.harta.osm.Building;
 import md.onemap.harta.osm.OsmNode;
 import org.postgis.PGgeometry;
 import org.postgis.Point;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.*;
@@ -14,6 +16,8 @@ import java.util.*;
  */
 public class BuildingGisDao extends GisDao<Building>
 {
+  private static final Logger LOG = LoggerFactory.getLogger(BuildingGisDao.class);
+
   public static final String INSERT_SQL = "INSERT INTO gis.buildings_gis " +
       "(building_id, housenumber, height, street, design, levels, building_geometry) " +
       "VALUES (?, ?, ?, ?, ?, ?, %s)";
@@ -41,7 +45,7 @@ public class BuildingGisDao extends GisDao<Building>
   {
     if (building.getNodes().size() < 3)
     {
-      System.out.printf("Unable to save building %s %s, not enough nodes: %d\n",
+      LOG.error("Unable to save building %s %s, not enough nodes: %d\n",
           building.getStreet(), building.getHouseNumber(), building.getNodes().size());
       return;
     }
@@ -59,13 +63,22 @@ public class BuildingGisDao extends GisDao<Building>
     }
     catch (SQLException e)
     {
-      System.out.println(building);
+      LOG.error("{} : {}", building, e.getMessage());
+    }
+    try
+    {
+      if (connection.isClosed()) {
+        LOG.error("Connection is closed");
+      }
+    }
+    catch (SQLException e)
+    {
       e.printStackTrace();
     }
   }
 
   @Override
-  public void saveAll(List<Building> buildings)
+  public void saveAll(Collection<Building> buildings)
   {
     for (Building building : buildings)
     {

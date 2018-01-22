@@ -74,7 +74,7 @@ public class BuildingDao extends Dao<Building>
   }
 
   @Override
-  public void saveAll(List<Building> buildings)
+  public void saveAll(Collection<Building> buildings)
   {
     try(PreparedStatement pStmt = connection.prepareStatement(INSERT_SQL))
     {

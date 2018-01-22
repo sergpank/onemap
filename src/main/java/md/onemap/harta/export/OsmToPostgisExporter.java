@@ -1,46 +1,55 @@
 package md.onemap.harta.export;
 
-import md.onemap.harta.db.DatabaseCreator;
 import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.db.gis.BuildingGisDao;
 import md.onemap.harta.db.gis.HighwayGisDao;
 import md.onemap.harta.loader.OsmLoader;
 import md.onemap.harta.osm.Building;
 import md.onemap.harta.osm.Highway;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
+import java.util.Collection;
 import java.util.Map;
 
-public class OsmToPostgisExporter
+import static md.onemap.harta.properties.OsmExporterProperties.getDbName;
+import static md.onemap.harta.properties.OsmExporterProperties.getOsmPath;
+
+public class OsmToPostgisExporter extends OsmExporter
 {
   private static final Logger LOG = LoggerFactory.getLogger(OsmToPostgisExporter.class);
 
   public static void main(String[] args)
   {
-    String dbName = "botanica";
-    String osm = "osm/botanica.osm";
+    DOMConfigurator.configure("log4j.xml");
+    new OsmToPostgisExporter().export();
+  }
 
-    DatabaseCreator.createDb(dbName);
-    Connection connection = DbHelper.getNewConnection(dbName);
-
+  @Override
+  protected void exportEntities()
+  {
     OsmLoader osmLoader = new OsmLoader();
-    osmLoader.load(osm);
+    osmLoader.load(getOsmPath());
 
     Map<Long, Building> buildings = osmLoader.getBuildings();
     Map<Long, Highway> highways = osmLoader.getHighways();
 
-    BuildingGisDao buildingDao = new BuildingGisDao(connection);
-    HighwayGisDao highwayDao = new HighwayGisDao(connection);
-
     LOG.info("Saving buildings ...");
-    buildings.values().forEach(building -> buildingDao.save(building));
+    BuildingGisDao buildingDao = new BuildingGisDao(DbHelper.getConnection(getDbName()));
+    buildingDao.saveAll(buildings.values());
 
     LOG.info("Saving highways ...");
-    highways.values().forEach(highway -> highwayDao.save(highway));
+    HighwayGisDao highwayDao = new HighwayGisDao(DbHelper.getConnection(getDbName()));
+    highwayDao.saveAll(highways.values());
+  }
 
+  @Override
+  protected void normalizeHighwayNames()
+  {
     LOG.info("Normalizing highway names ...");
-
+    String dbName = getDbName();
+    Collection<Highway> highways = new HighwayGisDao(DbHelper.getConnection(dbName)).loadAll();
+    new HighwayNameNormalizer().normalize(highways, dbName);
   }
 }

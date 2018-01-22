@@ -2,7 +2,7 @@ package md.onemap.harta.web;
 
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.projector.MercatorProjector;
-import md.onemap.harta.tile.GeneratorProperties;
+import md.onemap.harta.properties.TileGeneratorProperties;
 import md.onemap.harta.tile.TileBoundsCalculator;
 import md.onemap.harta.tile.TileGenerator;
 import md.onemap.harta.tile.TileGeneratorGIS;
@@ -31,7 +31,7 @@ public class TileGeneratorServlet extends HttpServlet
 {
   private static final Logger LOG = LoggerFactory.getLogger(TileGeneratorServlet.class);
 
-  private GeneratorProperties props = new GeneratorProperties("properties/db-generator.properties");
+  private TileGeneratorProperties props = new TileGeneratorProperties("properties/tile-generator-db.properties");
   private TileGenerator tileGenerator = new TileGeneratorGIS(props);
 
   @Override

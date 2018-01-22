@@ -1,6 +1,6 @@
 package md.onemap.harta.web;
 
-import md.onemap.harta.tile.GeneratorProperties;
+import md.onemap.harta.properties.TileGeneratorProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class RandomTileGeneratorServlet extends HttpServlet
 {
   private static Logger LOG = LoggerFactory.getLogger(RandomTileGeneratorServlet.class);
-  public static int TILE_SIZE = new GeneratorProperties("properties/db-generator.properties").tileSize();
+  public static int TILE_SIZE = new TileGeneratorProperties("properties/tile-generator-db.properties").tileSize();
 
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
   {

@@ -76,7 +76,7 @@ public class BorderDao extends Dao<Border>
   }
 
   @Override
-  public void saveAll(List<Border> entities)
+  public void saveAll(Collection<Border> entities)
   {
     throw new NotImplementedException();
   }

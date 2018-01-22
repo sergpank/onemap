@@ -1,6 +1,5 @@
 package md.onemap.harta.export;
 
-import md.onemap.harta.db.DatabaseCreator;
 import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.db.dao.BuildingDao;
 import md.onemap.harta.db.dao.HighwayDao;
@@ -16,46 +15,58 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 
-public class OsmToPostgresExporter
+import static md.onemap.harta.properties.OsmExporterProperties.getDbName;
+import static md.onemap.harta.properties.OsmExporterProperties.getOsmPath;
+
+public class OsmToPostgresExporter extends OsmExporter
 {
-  private static final Logger log = LoggerFactory.getLogger(OsmToPostgresExporter.class);
+  private static final Logger LOG = LoggerFactory.getLogger(OsmToPostgresExporter.class);
 
   public static void main(String[] args)
   {
     DOMConfigurator.configure("log4j.xml");
+    new OsmToPostgresExporter().export();
+  }
 
-    String dbName = "kishinev"; // always lowercase only
-    String osm = "osm/Кишинев.osm";
-
-    DatabaseCreator.createDb(dbName);
-    Connection connection = DbHelper.getNewConnection(dbName);
-
+  @Override
+  protected void exportEntities()
+  {
     OsmLoader osmLoader = new OsmLoader();
-    osmLoader.load(osm);
+    osmLoader.load(getOsmPath());
 
     Map<Long, OsmNode> nodes = osmLoader.getNodes();
     Map<Long, Building> buildings = osmLoader.getBuildings();
     Map<Long, Highway> highways = osmLoader.getHighways();
     Map<Long, Waterway> waterways = osmLoader.getWaterways();
 
+    Connection connection = DbHelper.getConnection(getDbName());
     NodeDao nodeDao = new NodeDao(connection);
     BuildingDao buildingDao = new BuildingDao(connection);
     HighwayDao highwayDao = new HighwayDao(connection);
     WaterwayDao waterwayDao = new WaterwayDao(connection);
 
-    log.info("Saving nodes: {}", nodes.size());
+    LOG.info("Saving nodes: {}", nodes.size());
     nodes.values().forEach(nodeDao::save);
 
-    log.info("Saving buildings: {}", buildings.size());
+    LOG.info("Saving buildings: {}", buildings.size());
     buildings.values().forEach(buildingDao::save);
 
-    log.info("Saving highways: {}", highways.size());
+    LOG.info("Saving highways: {}", highways.size());
     highways.values().forEach(highwayDao::save);
 
-    log.info("Saving waterways: {}", waterways.size());
+    LOG.info("Saving waterways: {}", waterways.size());
     waterways.values().forEach(waterwayDao::save);
+  }
+
+  @Override
+  protected void normalizeHighwayNames()
+  {
+    LOG.info("Normalizing highway names ...");
+    String dbName = getDbName();
+    Collection<Highway> highways = new HighwayDao(DbHelper.getConnection(dbName)).loadAll();
+    new HighwayNameNormalizer().normalize(highways, dbName);
   }
 }

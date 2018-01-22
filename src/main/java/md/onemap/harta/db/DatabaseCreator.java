@@ -29,6 +29,8 @@ public class DatabaseCreator
       createTable(con, getCreateWaterwayTable(), "waterway");
       createTable(con, getCreateLanduseTable(), "landuse");
 
+      createTable(con, getCreateNormalizedHighwaysTable(), "normalized_highways");
+
       con.createStatement().execute("CREATE EXTENSION IF NOT EXISTS Postgis;");
       con.createStatement().execute("CREATE SCHEMA IF NOT EXISTS gis;");
 
@@ -50,7 +52,7 @@ public class DatabaseCreator
     try (Statement statement = con.createStatement())
     {
       statement.execute(query);
-      System.out.printf("Table \"%s\" is created.\n", tableName);
+      log.info("Table \"{}\" is created.", tableName);
     }
     catch (SQLException e)
     {
@@ -68,10 +70,10 @@ public class DatabaseCreator
     {
       try (Statement st = con.createStatement())
       {
-        System.out.printf("\"%s\" table already exists.\n", tableName);
+        log.info("\"{}\" table already exists.", tableName);
         st.execute(String.format(DROP_TABLE, tableName));
         st.execute(query);
-        System.out.printf("Table \"%s\" is REcreated.\n", tableName);
+        log.info("Table \"{}\" is REcreated.\n", tableName);
       }
       catch (SQLException e)
       {
@@ -86,7 +88,7 @@ public class DatabaseCreator
     try (Statement stmt = con.createStatement())
     {
       ResultSet rs = stmt.executeQuery("SELECT 1 FROM pg_catalog.pg_tables WHERE schemaname = 'public' " +
-              "AND tablename  = '" + tableName + "'");
+          "AND tablename  = '" + tableName + "'");
       result = rs.next();
     }
     catch (SQLException e)
@@ -115,7 +117,7 @@ public class DatabaseCreator
         }
         else
         {
-          System.out.println("Database already exists");
+          log.info("Database already exists");
         }
       }
     }
@@ -123,7 +125,7 @@ public class DatabaseCreator
     {
       e.printStackTrace();
     }
-    return DbHelper.getNewConnection(dbName);
+    return DbHelper.getConnection(dbName);
   }
 
   private static String getCreateBordersTable()
@@ -185,19 +187,19 @@ public class DatabaseCreator
   private static String getCreateHighwaysTable()
   {
     return "CREATE TABLE IF NOT EXISTS highways ( " +
-           "highway_id bigint, " +
-           "highway_name text, " +
-           "highway_name_ru text, " +
-           "highway_name_old text, " +
-           "highway_type text, " +
-           "highway_nodes bigint[], " +
-           "min_lat double precision, " +
-           "max_lat double precision, " +
-           "min_lon double precision, " +
-           "max_lon double precision," +
-           "CONSTRAINT highways_pkey PRIMARY KEY (highway_id) )";
+        "highway_id bigint, " +
+        "highway_name text, " +
+        "highway_name_ru text, " +
+        "highway_name_old text, " +
+        "highway_type text, " +
+        "highway_nodes bigint[], " +
+        "min_lat double precision, " +
+        "max_lat double precision, " +
+        "min_lon double precision, " +
+        "max_lon double precision," +
+        "CONSTRAINT highways_pkey PRIMARY KEY (highway_id) )";
   }
-  
+
   private static String getCreateHighwaysGisTable()
   {
     return "CREATE TABLE IF NOT EXISTS gis.highways_gis " +
@@ -209,6 +211,17 @@ public class DatabaseCreator
         "  highway_type text, " +
         "  highway_geometry geometry, " +
         "  CONSTRAINT highways_gis_pkey PRIMARY KEY (highway_id) " +
+        ")";
+  }
+
+  private static String getCreateNormalizedHighwaysTable()
+  {
+    return "CREATE TABLE IF NOT EXISTS normalized_highways " +
+        "( " +
+        " id bigint PRIMARY KEY, " +
+        " name text, " +
+        " name_ru text, " +
+        " name_old text " +
         ")";
   }
 

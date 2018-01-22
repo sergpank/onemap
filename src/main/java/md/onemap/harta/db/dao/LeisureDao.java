@@ -23,7 +23,7 @@ public class LeisureDao extends Dao<Leisure>
   }
 
   @Override
-  public void saveAll(List<Leisure> entities)
+  public void saveAll(Collection<Leisure> entities)
   {
 
   }

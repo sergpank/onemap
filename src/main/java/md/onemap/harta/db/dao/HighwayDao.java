@@ -50,7 +50,7 @@ public class HighwayDao extends Dao<Highway>
   }
 
   @Override
-  public void saveAll(List<Highway> highways)
+  public void saveAll(Collection<Highway> highways)
   {
     try (PreparedStatement pStmt = connection.prepareStatement(INSERT_SQL))
     {

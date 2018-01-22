@@ -1,4 +1,4 @@
-package md.onemap.harta.tile;
+package md.onemap.harta.properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +11,9 @@ import java.util.Properties;
 /**
  * Created by sergpank on 04/12/2017.
  */
-public class GeneratorProperties
+public class TileGeneratorProperties
 {
-  private static final Logger LOG = LoggerFactory.getLogger(GeneratorProperties.class);
+  private static final Logger LOG = LoggerFactory.getLogger(TileGeneratorProperties.class);
 
   private Integer startLevel;
   private Integer endLevel;
@@ -21,7 +21,7 @@ public class GeneratorProperties
   private String source;
   private Integer tileSize;
 
-  public GeneratorProperties(String propsPath)
+  public TileGeneratorProperties(String propsPath)
   {
     Properties props = new Properties();
     try
@@ -70,7 +70,7 @@ public class GeneratorProperties
   @Override
   public String toString()
   {
-    return "GeneratorProperties{" +
+    return "TileGeneratorProperties{" +
         "startLevel=" + startLevel +
         ", endLevel=" + endLevel +
         ", outputDir='" + outputDir + '\'' +

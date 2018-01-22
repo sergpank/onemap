@@ -58,7 +58,7 @@ public abstract class Dao<T>
 
   public abstract void save(T entity);
 
-  public abstract void saveAll(List<T> entities);
+  public abstract void saveAll(Collection<T> entities);
 
   public abstract T load(long id);
 

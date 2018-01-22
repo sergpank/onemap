@@ -7,7 +7,7 @@ import md.onemap.harta.osm.Building;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.projector.MercatorProjector;
-import md.onemap.harta.util.Stopwatch;
+import md.onemap.harta.properties.TileGeneratorProperties;
 import md.onemap.harta.util.TimePrettyPrint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +25,10 @@ public abstract class TileGenerator
 {
   private static Logger LOG = LoggerFactory.getLogger(TileGenerator.class);
 
-  protected GeneratorProperties props;
+  protected TileGeneratorProperties props;
   protected AbstractLoader loader;
 
-  public TileGenerator(GeneratorProperties properties, AbstractLoader loader)
+  public TileGenerator(TileGeneratorProperties properties, AbstractLoader loader)
   {
     this.props = properties;
     this.loader = loader;

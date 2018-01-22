@@ -21,7 +21,7 @@ public class WaterwayGisDao extends GisDao<Waterway> {
   }
 
   @Override
-  public void saveAll(List<Waterway> entities) {
+  public void saveAll(Collection<Waterway> entities) {
 
   }
 

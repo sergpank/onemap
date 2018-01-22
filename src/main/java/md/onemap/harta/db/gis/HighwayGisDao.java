@@ -63,7 +63,7 @@ public class HighwayGisDao extends GisDao<Highway>
   }
 
   @Override
-  public void saveAll(List<Highway> highways)
+  public void saveAll(Collection<Highway> highways)
   {
     highways.forEach(highway -> save(highway));
   }

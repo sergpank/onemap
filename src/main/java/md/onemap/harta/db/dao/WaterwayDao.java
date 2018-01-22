@@ -39,7 +39,7 @@ public class WaterwayDao extends Dao<Waterway> {
   }
 
   @Override
-  public void saveAll(List<Waterway> entities) {
+  public void saveAll(Collection<Waterway> entities) {
     throw new NotImplementedException();
   }
 

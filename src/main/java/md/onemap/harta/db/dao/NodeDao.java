@@ -27,7 +27,7 @@ public class NodeDao extends Dao<OsmNode>
     super(con);
   }
 
-  public void saveAll(List<OsmNode> nodes)
+  public void saveAll(Collection<OsmNode> nodes)
   {
     try (PreparedStatement insertStmt = connection.prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS))
     {

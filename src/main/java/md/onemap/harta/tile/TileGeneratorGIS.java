@@ -1,6 +1,7 @@
 package md.onemap.harta.tile;
 
 import md.onemap.harta.loader.PostgisLoader;
+import md.onemap.harta.properties.TileGeneratorProperties;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +20,12 @@ public class TileGeneratorGIS extends TileGenerator
   {
     DOMConfigurator.configure("log4j.xml");
 
-    GeneratorProperties properties = new GeneratorProperties("properties/db-generator.properties");
+    TileGeneratorProperties properties = new TileGeneratorProperties("properties/tile-generator-db.properties");
     TileGeneratorGIS generator = new TileGeneratorGIS(properties);
     generator.generate();
   }
 
-  public TileGeneratorGIS(GeneratorProperties props) {
+  public TileGeneratorGIS(TileGeneratorProperties props) {
     super(props, new PostgisLoader(props.source()));
   }
 
