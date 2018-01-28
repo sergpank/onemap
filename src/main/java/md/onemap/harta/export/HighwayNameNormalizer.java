@@ -1,6 +1,5 @@
 package md.onemap.harta.export;
 
-import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.db.dao.NormalizedHighwayDao;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.osm.NormalizedHighway;
@@ -10,7 +9,7 @@ import java.util.Collection;
 
 public class HighwayNameNormalizer
 {
-  public void normalize(Collection<Highway> highways, String dbName) {
+  public void normalize(Collection<Highway> highways) {
     Collection<NormalizedHighway> normalizedHighways = new ArrayList<>();
 
     for (Highway h : highways)
@@ -22,7 +21,7 @@ public class HighwayNameNormalizer
       }
     }
 
-    new NormalizedHighwayDao(DbHelper.getConnection(dbName)).saveAll(normalizedHighways);
+    new NormalizedHighwayDao().saveAll(normalizedHighways);
   }
 
   private NormalizedHighway normalizeHighway(Highway h)

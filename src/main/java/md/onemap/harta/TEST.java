@@ -11,7 +11,7 @@ public class TEST
 //    int y = 23048;
 //    int z = 17;
 //
-//    TileGeneratorProperties props = new TileGeneratorProperties("properties/tile-generator-db.properties");
+//    Props props = new Props("properties/application.properties");
 //    TileGenerator gis = new TileGeneratorGIS(props);
 //    TileGenerator db = new TileGeneratorGIS(props);
 //

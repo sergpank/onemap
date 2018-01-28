@@ -4,7 +4,6 @@ import generated.BoundsType;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.OsmNode;
 
-import java.sql.Connection;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,13 +15,6 @@ public abstract class Dao<T>
   public static final String SELECT_TILE = "SELECT * FROM %s WHERE " +
       "NOT( ((max_lon < ?) OR (min_lon > ?)) " +
       " AND ((max_lat < ?) OR (min_lat > ?)) )";
-
-  protected Connection connection;
-
-  public Dao(Connection connection)
-  {
-    this.connection = connection;
-  }
 
   public BoundsType getBounds(List<OsmNode> nodes)
   {

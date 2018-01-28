@@ -1,12 +1,12 @@
 package md.onemap.harta.db;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Created by sergpank on 30.06.15.
@@ -103,29 +103,27 @@ public class DatabaseCreator
     dbName = dbName.toLowerCase();
     try (Connection connection = DbHelper.getConnection(""))
     {
-      try (Statement statement = connection.createStatement())
+      Statement statement = connection.createStatement();
+      ResultSet rs = statement.executeQuery("SELECT 1 FROM pg_database WHERE datname = '" + dbName + "'");
+      if (!rs.next())
       {
-        ResultSet rs = statement.executeQuery("SELECT 1 FROM pg_database WHERE datname = '" + dbName + "'");
-        if (!rs.next())
+        log.info("Dtabase {} does not exist.\n", dbName);
+        try (Statement stmt = connection.createStatement())
         {
-          log.info("Dtabase {} does not exist.\n", dbName);
-          try (Statement stmt = connection.createStatement())
-          {
-            stmt.execute("CREATE DATABASE " + dbName);
-            log.info("Dtabase {} is created.\n", dbName);
-          }
+          stmt.execute("CREATE DATABASE " + dbName);
+          log.info("Dtabase {} is created.\n", dbName);
         }
-        else
-        {
-          log.info("Database already exists");
-        }
+      }
+      else
+      {
+        log.info("Database already exists");
       }
     }
     catch (SQLException e)
     {
       e.printStackTrace();
     }
-    return DbHelper.getConnection(dbName);
+    return DbHelper.getConnection();
   }
 
   private static String getCreateBordersTable()
@@ -302,10 +300,5 @@ public class DatabaseCreator
         "lat double precision, " +
         "lon double precision, " +
         "CONSTRAINT nodes_pkey PRIMARY KEY (node_id) )";
-  }
-
-  public static void main(String[] args)
-  {
-    createDb("gradina_botanica");
   }
 }

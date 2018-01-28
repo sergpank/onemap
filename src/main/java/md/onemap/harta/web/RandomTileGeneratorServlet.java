@@ -1,6 +1,6 @@
 package md.onemap.harta.web;
 
-import md.onemap.harta.properties.TileGeneratorProperties;
+import md.onemap.harta.properties.Props;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,13 +23,16 @@ import java.util.stream.Collectors;
 public class RandomTileGeneratorServlet extends HttpServlet
 {
   private static Logger LOG = LoggerFactory.getLogger(RandomTileGeneratorServlet.class);
-  public static int TILE_SIZE = new TileGeneratorProperties("properties/tile-generator-db.properties").tileSize();
+  public static int TILE_SIZE = Props.tileSize();
 
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
   {
     response.setContentType("image/png");
 
-    String collect = ((Set<Map.Entry>) request.getParameterMap().entrySet()).stream().map(m -> m.getKey() + "::" + Arrays.toString((String[])m.getValue())).collect(Collectors.joining("; "));
+    String collect = ((Set<Map.Entry>) request.getParameterMap().entrySet())
+        .stream()
+        .map(m -> m.getKey() + "::" + Arrays.toString((String[]) m.getValue()))
+        .collect(Collectors.joining("; "));
     LOG.info("Request parameters: {}", collect);
 
     String x = request.getParameter("x");
@@ -38,9 +41,9 @@ public class RandomTileGeneratorServlet extends HttpServlet
 
     Random random = new Random();
 
-    int red   = x == null ? random.nextInt(256) : Integer.parseInt(x);
+    int red = x == null ? random.nextInt(256) : Integer.parseInt(x);
     int green = y == null ? random.nextInt(256) : Integer.parseInt(y);
-    int blue  = z == null ? random.nextInt(256) : Integer.parseInt(z);
+    int blue = z == null ? random.nextInt(256) : Integer.parseInt(z);
 
     BufferedImage bi = new BufferedImage(TILE_SIZE, TILE_SIZE, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = bi.createGraphics();

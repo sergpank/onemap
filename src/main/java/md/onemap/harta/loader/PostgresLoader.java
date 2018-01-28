@@ -9,7 +9,6 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,12 +20,6 @@ public class PostgresLoader extends AbstractLoader
 {
   private Map<Long, OsmNode> nodes;
   private Map<Long, Border> borders;
-  private Connection connection;
-
-  public PostgresLoader(String dbName)
-  {
-    this.connection = DbHelper.getConnection(dbName);
-  }
 
   @Override
   public void load(String dbName)
@@ -35,16 +28,14 @@ public class PostgresLoader extends AbstractLoader
     minLat = Double.MAX_VALUE;
     maxLon = Double.MIN_VALUE;
     maxLat = Double.MIN_VALUE;
-    connection = DbHelper.getConnection(dbName);
-    loadNodes(connection);
-    loadBorders(connection);
+    loadNodes();
+    loadBorders();
   }
 
-  private void loadNodes(Connection connection)
+  private void loadNodes()
   {
     nodes = new HashMap<>();
-    NodeDao nodeDao = new NodeDao(connection);
-    Collection<OsmNode> osmNodes = nodeDao.loadAll();
+    Collection<OsmNode> osmNodes = new NodeDao().loadAll();
     for (OsmNode osmNode : osmNodes)
     {
       nodes.put(osmNode.getId(), osmNode);
@@ -52,10 +43,10 @@ public class PostgresLoader extends AbstractLoader
     }
   }
 
-  private void loadBorders(Connection connection)
+  private void loadBorders()
   {
     borders = new HashMap<>();
-    BorderDao borderDao = new BorderDao(connection);
+    BorderDao borderDao = new BorderDao();
     Collection<Border> osmBorders = borderDao.loadAll();
     for (Border border : osmBorders)
     {
@@ -72,7 +63,7 @@ public class PostgresLoader extends AbstractLoader
   @Override
   public Map<Long, Highway> getHighways()
   {
-    Collection<Highway> highways = new HighwayDao(connection).loadAll();
+    Collection<Highway> highways = new HighwayDao().loadAll();
     Map<Long, Highway> map = new HashMap<>(highways.size());
     for (Highway highway : highways)
     {
@@ -114,19 +105,19 @@ public class PostgresLoader extends AbstractLoader
   @Override
   public Collection<Border> getBorders(int level, BoundsLatLon tileBounds)
   {
-    return new BorderDao(connection).load(level, tileBounds);
+    return new BorderDao().load(level, tileBounds);
   }
 
   @Override
   public Collection<Highway> getHighways(int level, BoundsLatLon tileBounds)
   {
-    return new HighwayDao(connection).load(level, tileBounds);
+    return new HighwayDao().load(level, tileBounds);
   }
 
   @Override
   public Collection<Building> getBuildings(int level, BoundsLatLon tileBounds)
   {
-    return new BuildingDao(connection).load(level, tileBounds);
+    return new BuildingDao().load(level, tileBounds);
   }
 
   @Override
@@ -144,7 +135,7 @@ public class PostgresLoader extends AbstractLoader
   @Override
   public Collection<Waterway> getWaterways(int level, BoundsLatLon tileBounds)
   {
-    return new WaterwayDao(connection).load(level, tileBounds);
+    return new WaterwayDao().load(level, tileBounds);
   }
 
   @Override
@@ -157,9 +148,9 @@ public class PostgresLoader extends AbstractLoader
   public BoundsLatLon getBounds()
   {
     BoundsLatLon bounds = null;
-    try (Statement st = connection.createStatement())
+    try (Connection connection = DbHelper.getConnection())
     {
-      try (ResultSet rs = st.executeQuery("select min(lon), min(lat), max(lon), max(lat) from nodes"))
+      try (ResultSet rs = connection.createStatement().executeQuery("select min(lon), min(lat), max(lon), max(lat) from nodes"))
       {
         rs.next();
         double minLon = rs.getDouble(1);

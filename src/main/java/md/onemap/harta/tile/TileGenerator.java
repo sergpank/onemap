@@ -7,7 +7,7 @@ import md.onemap.harta.osm.Building;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.projector.MercatorProjector;
-import md.onemap.harta.properties.TileGeneratorProperties;
+import md.onemap.harta.properties.Props;
 import md.onemap.harta.util.TimePrettyPrint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,13 +24,19 @@ import java.util.Collection;
 public abstract class TileGenerator
 {
   private static Logger LOG = LoggerFactory.getLogger(TileGenerator.class);
-
-  protected TileGeneratorProperties props;
   protected AbstractLoader loader;
 
-  public TileGenerator(TileGeneratorProperties properties, AbstractLoader loader)
+  private final String outputDir;
+  private final int startLevel;
+  private final int endLevel;
+  private final int tileSize;
+
+  public TileGenerator(AbstractLoader loader)
   {
-    this.props = properties;
+    this.outputDir = Props.outputDir();
+    this.startLevel = Props.startLevel();
+    this.endLevel = Props.endLevel();
+    this.tileSize = Props.tileSize();
     this.loader = loader;
   }
 
@@ -38,13 +44,13 @@ public abstract class TileGenerator
 
   protected void generateLevels()
   {
-    LOG.info("Output directory: {}", new File(props.outputDir()).getAbsolutePath());
+    LOG.info("Output directory: {}", new File(outputDir).getAbsolutePath());
 
-    for (int level = props.startLevel(); level <= props.endLevel(); level++)
+    for (int level = startLevel; level <= endLevel; level++)
     {
       AbstractProjector projector = new MercatorProjector(level);
 
-      TileCutter tileCutter = new TileCutter(projector, props.tileSize(), level, loader.getBounds());
+      TileCutter tileCutter = new TileCutter(projector, tileSize, level, loader.getBounds());
       tileCutter.cut();
 
       generateLevelTiles(level, projector, tileCutter);
@@ -85,7 +91,7 @@ public abstract class TileGenerator
     Collection<Highway> highways = loader.getHighways(level, tileBounds);
     Collection<Building> buildings = loader.getBuildings(level, tileBounds);
 
-    TileDrawer tileDrawer = new TileDrawer(props.tileSize());
+    TileDrawer tileDrawer = new TileDrawer(tileSize);
     BoundsXY boundsXY = tileBounds.toXY(projector);
     BufferedImage tile = tileDrawer.drawTile(level, x, y, boundsXY, projector, highways, buildings);
 
@@ -96,7 +102,7 @@ public abstract class TileGenerator
   {
     try
     {
-      String tileName = String.format("%s/%s/tile_%d_%d_%d.png", props.outputDir(), level, level, y, x);
+      String tileName = String.format("%s/%s/tile_%d_%d_%d.png", outputDir, level, level, y, x);
 
       File tileFile = new File(tileName);
       tileFile.mkdirs();

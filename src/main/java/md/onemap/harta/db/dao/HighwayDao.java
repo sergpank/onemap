@@ -1,5 +1,6 @@
 package md.onemap.harta.db.dao;
 
+import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.osm.OsmNode;
@@ -27,20 +28,13 @@ public class HighwayDao extends Dao<Highway>
 //      "WHERE (min_lon BETWEEN ? AND ? OR max_lon BETWEEN ? AND ?) " +
 //      "AND (min_lat BETWEEN ? AND ? OR max_lat BETWEEN ? and ?)";
 
-  private NodeDao nodeDao;
-
-  public HighwayDao(Connection connection)
-  {
-    super(connection);
-    this.nodeDao = new NodeDao(connection);
-  }
-
   @Override
   public void save(Highway highway)
   {
-    try (PreparedStatement pStmt = connection.prepareStatement(INSERT_SQL))
+    try (Connection connection = DbHelper.getConnection())
     {
-      prepareStatement(pStmt, highway);
+      PreparedStatement pStmt = connection.prepareStatement(INSERT_SQL);
+      prepareStatement(pStmt, connection, highway);
       pStmt.execute();
     }
     catch (SQLException e)
@@ -52,12 +46,13 @@ public class HighwayDao extends Dao<Highway>
   @Override
   public void saveAll(Collection<Highway> highways)
   {
-    try (PreparedStatement pStmt = connection.prepareStatement(INSERT_SQL))
+    try (Connection connection = DbHelper.getConnection())
     {
+      PreparedStatement pStmt = connection.prepareStatement(INSERT_SQL);
       int batchSize = 0;
       for (Highway highway : highways)
       {
-        prepareStatement(pStmt, highway);
+        prepareStatement(pStmt, connection, highway);
         pStmt.addBatch();
         if (batchSize++ > 999)
         {
@@ -76,7 +71,7 @@ public class HighwayDao extends Dao<Highway>
     }
   }
 
-  private void prepareStatement(PreparedStatement pStmt, Highway highway) throws SQLException
+  private void prepareStatement(PreparedStatement pStmt, Connection connection, Highway highway) throws SQLException
   {
     int pos = 1;
     double minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
@@ -114,8 +109,10 @@ public class HighwayDao extends Dao<Highway>
   public Collection<Highway> load(int zoomLevel, BoundsLatLon box)
   {
     List<Highway> highways = new ArrayList<>();
-    try (PreparedStatement stmt = connection.prepareStatement(String.format(SELECT_TILE, TABLE)))
+    try (Connection connection = DbHelper.getConnection())
     {
+      PreparedStatement stmt = connection.prepareStatement(String.format(SELECT_TILE, TABLE));
+
       int i = 1;
       stmt.setDouble(i++, box.getMinLon());
       stmt.setDouble(i++, box.getMaxLon());
@@ -141,7 +138,7 @@ public class HighwayDao extends Dao<Highway>
   }
 
   private Highway readHighway(ResultSet resultSet)
-      throws SQLException
+  throws SQLException
   {
     long id = resultSet.getLong("highway_id");
     String name = resultSet.getString("highway_name");
@@ -149,13 +146,7 @@ public class HighwayDao extends Dao<Highway>
     String oldName = resultSet.getString("highway_name_old");
     String type = resultSet.getString("highway_type");
     Array wayNodes = resultSet.getArray("highway_nodes");
-    ResultSet nodeSet = wayNodes.getResultSet();
-    List<OsmNode> nodes = new ArrayList<>();
-    while (nodeSet.next())
-    {
-      long nodeId = nodeSet.getLong(2);
-      nodes.add(nodeDao.load(nodeId));
-    }
+    List<OsmNode> nodes = new NodeDao().loadNodes(wayNodes);
     return new Highway(id, name, nameRu, oldName, type, nodes);
   }
 
@@ -163,14 +154,13 @@ public class HighwayDao extends Dao<Highway>
   public Collection<Highway> loadAll()
   {
     List<Highway> highways = new ArrayList<>();
-    try (Statement st = connection.createStatement())
+    try (Connection connection = DbHelper.getConnection())
     {
-      try (ResultSet rs = st.executeQuery(SELECT_ALL))
+      ResultSet rs = connection.createStatement().executeQuery(SELECT_ALL);
+
+      while (rs.next())
       {
-        while (rs.next())
-        {
-          highways.add(readHighway(rs));
-        }
+        highways.add(readHighway(rs));
       }
     }
     catch (SQLException e)

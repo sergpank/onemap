@@ -21,11 +21,11 @@ import java.util.stream.Collectors;
  */
 public class PostgisLoader extends AbstractLoader
 {
-  private Connection connection;
+  private final String dbName;
 
   public PostgisLoader(String dbName)
   {
-    this.connection = DbHelper.getConnection(dbName);
+    this.dbName = dbName;
   }
 
   @Override
@@ -43,7 +43,7 @@ public class PostgisLoader extends AbstractLoader
   @Override
   public Map<Long, Highway> getHighways()
   {
-    Collection<Highway> highways = new HighwayGisDao(connection).loadAll();
+    Collection<Highway> highways = new HighwayGisDao().loadAll();
 
     Map<Long, Highway> result = highways.stream().collect(Collectors.toMap(Highway::getId, Function.identity()));
 
@@ -53,7 +53,7 @@ public class PostgisLoader extends AbstractLoader
   @Override
   public Map<Long, Building> getBuildings()
   {
-    Collection<Building> buildings = new BuildingGisDao(connection).loadAll();
+    Collection<Building> buildings = new BuildingGisDao().loadAll();
 
     Map<Long, Building> result = buildings.stream().collect(Collectors.toMap(b -> b.getId(), b -> b));
 
@@ -93,13 +93,13 @@ public class PostgisLoader extends AbstractLoader
   @Override
   public Collection<Highway> getHighways(int level, BoundsLatLon tileBounds)
   {
-    return new HighwayGisDao(connection).load(level, tileBounds);
+    return new HighwayGisDao().load(level, tileBounds);
   }
 
   @Override
   public Collection<Building> getBuildings(int level, BoundsLatLon tileBounds)
   {
-    return new BuildingGisDao(connection).load(level, tileBounds);
+    return new BuildingGisDao().load(level, tileBounds);
   }
 
   @Override
@@ -139,7 +139,8 @@ public class PostgisLoader extends AbstractLoader
     double maxLonHighway = 0;
     double maxLatHighway = 0;
 
-    try (Statement statement = connection.createStatement();)
+    try (Connection connection = DbHelper.getConnection(dbName);
+         Statement statement = connection.createStatement())
     {
       try (ResultSet rs = statement.executeQuery("select min(ST_XMin(building_geometry)), min(ST_YMin(building_geometry)), max(ST_XMax(building_geometry)), max(ST_YMax(building_geometry))from gis.buildings_gis"))
       {

@@ -1,7 +1,7 @@
 package md.onemap.harta.tile;
 
 import md.onemap.harta.loader.OsmLoader;
-import md.onemap.harta.properties.TileGeneratorProperties;
+import md.onemap.harta.properties.Props;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,20 +20,19 @@ public class TileGeneratorOSM extends TileGenerator
   {
     DOMConfigurator.configure("log4j.xml");
 
-    TileGeneratorProperties properties = new TileGeneratorProperties("properties/tile-generator-osm.properties");
-    TileGeneratorOSM generator = new TileGeneratorOSM(properties);
+    TileGeneratorOSM generator = new TileGeneratorOSM();
     generator.generate();
   }
 
-  public TileGeneratorOSM(TileGeneratorProperties properties)
+  public TileGeneratorOSM()
   {
-    super(properties, new OsmLoader());
+    super(new OsmLoader());
   }
 
   @Override
   public void generate()
   {
-    loader.load(props.source());
+    loader.load(Props.osmFile());
 
     LOG.info("Area bounds: " + loader.getBounds());
 

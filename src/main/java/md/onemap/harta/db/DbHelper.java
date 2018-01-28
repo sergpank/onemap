@@ -1,13 +1,15 @@
 package md.onemap.harta.db;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import md.onemap.harta.properties.Props;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
 
 /**
  * Created by sergpank on 21.04.15.
@@ -16,22 +18,39 @@ public class DbHelper
 {
   private static final Logger LOG = LoggerFactory.getLogger(DbHelper.class);
 
-  private static Map<String, Connection> connectionMap = new HashMap<>();
-  private static String url = "jdbc:postgresql://localhost:5432/";
-  private static String login = "postgres";
-  private static String password = "postgres";
+  private static String datasourceClassName = "org.postgresql.ds.PGSimpleDataSource";
 
-  private static Connection init(String dbName)
+  private static HikariDataSource dataSource;
+
+  private static void init()
   {
-    Connection connection = connectionMap.get(dbName);
+    Properties props = new Properties();
+
+    props.setProperty("dataSourceClassName", datasourceClassName);
+    props.setProperty("dataSource.user", Props.dbLogin());
+    props.setProperty("dataSource.password", Props.dbPassword());
+    props.setProperty("dataSource.databaseName", Props.dbName());
+    props.setProperty("jdbcUrl", Props.dbUrl());
+//    props.put("dataSource.logWriter", new PrintWriter(System.out));
+
+    HikariConfig config = new HikariConfig(props);
+    dataSource = new HikariDataSource(config);
+  }
+
+  /**
+   * @return Connection to DB configured in application.properties
+   */
+  public static Connection getConnection()
+  {
+    Connection connection = null;
+    if (dataSource == null)
+    {
+      init();
+    }
+
     try
     {
-      if (connection == null || connection.isClosed())
-      {
-        connection = DriverManager.getConnection(url + dbName, login, password);
-        connectionMap.put(dbName, connection);
-        LOG.info("Connection initialized ...");
-      }
+      connection = dataSource.getConnection();
     }
     catch (SQLException e)
     {
@@ -43,6 +62,17 @@ public class DbHelper
 
   public static Connection getConnection(String dbName)
   {
-    return init(dbName);
+    Connection connection = null;
+    try
+    {
+      String url = Props.dbUrl() + dbName;
+      connection = DriverManager.getConnection(url, Props.dbLogin(), Props.dbPassword());
+    }
+    catch (SQLException e)
+    {
+      e.printStackTrace();
+    }
+
+    return connection;
   }
 }

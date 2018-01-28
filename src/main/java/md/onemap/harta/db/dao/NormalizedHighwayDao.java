@@ -1,5 +1,6 @@
 package md.onemap.harta.db.dao;
 
+import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.NormalizedHighway;
 
@@ -12,16 +13,12 @@ public class NormalizedHighwayDao extends Dao<NormalizedHighway>
 {
   private static final String INSERT_SQL = "INSERT into normalized_highways (id, name, name_ru, name_old) VALUES (?, ?, ?, ?)";
 
-  public NormalizedHighwayDao(Connection connection)
-  {
-    super(connection);
-  }
-
   @Override
   public void save(NormalizedHighway entity)
   {
-    try (PreparedStatement pstmt = connection.prepareStatement(INSERT_SQL))
+    try (Connection connection = DbHelper.getConnection())
     {
+      PreparedStatement pstmt = connection.prepareStatement(INSERT_SQL);
       prepare(entity, pstmt);
       pstmt.execute();
     }
@@ -34,8 +31,9 @@ public class NormalizedHighwayDao extends Dao<NormalizedHighway>
   @Override
   public void saveAll(Collection<NormalizedHighway> entities)
   {
-    try (PreparedStatement pstmt = connection.prepareStatement(INSERT_SQL))
+    try (Connection connection = DbHelper.getConnection())
     {
+      PreparedStatement pstmt = connection.prepareStatement(INSERT_SQL);
       int cnt = 0;
       for (NormalizedHighway nh : entities)
       {

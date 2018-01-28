@@ -2,6 +2,7 @@ package md.onemap.harta.db.gis;
 
 import md.onemap.harta.db.dao.Dao;
 import md.onemap.harta.osm.OsmNode;
+import org.postgresql.util.PGobject;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -12,17 +13,17 @@ import java.util.List;
  */
 public abstract class GisDao<T> extends Dao<T>
 {
-  public GisDao(Connection connection)
+  protected void toGisConnection(Connection connection)
   {
-    super(connection);
     try
     {
-    /*
-    * Add the geometry types to the connection. Note that you
-    * must cast the connection to the pgsql-specific connection
-    * implementation before calling the addDataType() method.
-    */
-      ((org.postgresql.PGConnection)connection).addDataType("geometry", Class.forName("org.postgis.PGgeometry"));
+      /*
+       * Add the geometry types to the connection. Note that you
+       * must cast the connection to the pgsql-specific connection
+       * implementation before calling the addDataType() method.
+       */
+      Class<? extends PGobject> geometryClass = (Class<? extends PGobject>) Class.forName("org.postgis.PGgeometry");
+      ((org.postgresql.PGConnection)connection).addDataType("geometry", geometryClass);
     }
     catch (SQLException | ClassNotFoundException e)
     {

@@ -2,7 +2,7 @@ package md.onemap.harta.web;
 
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.projector.MercatorProjector;
-import md.onemap.harta.properties.TileGeneratorProperties;
+import md.onemap.harta.properties.Props;
 import md.onemap.harta.tile.TileBoundsCalculator;
 import md.onemap.harta.tile.TileGenerator;
 import md.onemap.harta.tile.TileGeneratorGIS;
@@ -31,8 +31,7 @@ public class TileGeneratorServlet extends HttpServlet
 {
   private static final Logger LOG = LoggerFactory.getLogger(TileGeneratorServlet.class);
 
-  private TileGeneratorProperties props = new TileGeneratorProperties("properties/tile-generator-db.properties");
-  private TileGenerator tileGenerator = new TileGeneratorGIS(props);
+  private TileGenerator tileGenerator = new TileGeneratorGIS();
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -57,7 +56,7 @@ public class TileGeneratorServlet extends HttpServlet
       int z = Integer.parseInt(zParam);
 
       MercatorProjector projector = new MercatorProjector(z);
-      TileBoundsCalculator boundsCalculator = new TileBoundsCalculator(props.tileSize(), projector);
+      TileBoundsCalculator boundsCalculator = new TileBoundsCalculator(Props.tileSize(), projector);
       BoundsLatLon tileBounds = boundsCalculator.getTileBounds(x, y, 0);
 
       Stopwatch.start();
@@ -72,7 +71,7 @@ public class TileGeneratorServlet extends HttpServlet
     {
       String collect = ((Set<Map.Entry>) request.getParameterMap().entrySet())
           .stream()
-          .map(m -> m.getKey() + "::" + Arrays.toString((String[])m.getValue()))
+          .map(m -> m.getKey() + "::" + Arrays.toString((String[]) m.getValue()))
           .collect(Collectors.joining("; "));
       StringWriter sw = new StringWriter();
       t.printStackTrace(new PrintWriter(sw));

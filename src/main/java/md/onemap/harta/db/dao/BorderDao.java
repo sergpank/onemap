@@ -1,5 +1,6 @@
 package md.onemap.harta.db.dao;
 
+import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.Border;
 import md.onemap.harta.osm.OsmNode;
@@ -26,19 +27,13 @@ public class BorderDao extends Dao<Border>
       "     AND ((max_lat < ?) OR (min_lat > ?)) )";
   public static final String RAION = "raion";
 
-  private NodeDao nodeDao;
-
-  public BorderDao(Connection connection)
-  {
-    super(connection);
-    this.nodeDao = new NodeDao(connection);
-  }
-
   @Override
   public void save(Border border)
   {
-    try (PreparedStatement insertStmt = connection.prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);)
+    try (Connection connection = DbHelper.getConnection())
     {
+      PreparedStatement insertStmt = connection.prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
+
       Object[] nodeIds = new Long[border.getNodes().size()];
       for (int i = 0; i < border.getNodes().size(); i++)
       {
@@ -92,8 +87,10 @@ public class BorderDao extends Dao<Border>
   {
     long start = System.currentTimeMillis();
     List<Border> borders = new ArrayList<>();
-    try (PreparedStatement stmt = connection.prepareStatement(SELECT_TILE))
+    try (Connection connection = DbHelper.getConnection())
     {
+      PreparedStatement stmt = connection.prepareStatement(SELECT_TILE);
+
       int i = 1;
       stmt.setInt(i++, zoomLevel);
       stmt.setInt(i++, zoomLevel);
@@ -124,9 +121,11 @@ public class BorderDao extends Dao<Border>
   public Collection<Border> loadAll()
   {
     List<Border> borders = new ArrayList<>();
-    try (PreparedStatement pStmt = connection.prepareStatement(SELECT_ALL);
-         ResultSet rs = pStmt.executeQuery())
+    try (Connection connection = DbHelper.getConnection())
     {
+      PreparedStatement pStmt = connection.prepareStatement(SELECT_ALL);
+      ResultSet rs = pStmt.executeQuery();
+
       while (rs.next())
       {
         Border border = readBorder(rs);
@@ -152,14 +151,7 @@ public class BorderDao extends Dao<Border>
     double maxLon = rs.getDouble("max_lon");
     String name = rs.getString("name");
     Array borderNodes = rs.getArray("border_nodes");
-    try (ResultSet nodeSet = borderNodes.getResultSet())
-    {
-      while (nodeSet.next())
-      {
-        long nodeId = nodeSet.getLong(2);
-        nodes.add(nodeDao.load(nodeId));
-      }
-    }
+    nodes.addAll(new NodeDao().loadNodes(borderNodes));
     return new Border(id, minLat, minLon, maxLat, maxLon, nodes, name, RAION);
   }
 
@@ -168,17 +160,17 @@ public class BorderDao extends Dao<Border>
   {
     BoundsLatLon bounds;
 
-    try (PreparedStatement pStmt = connection.prepareStatement(SELECT_BOUNDS))
+    try (Connection connection = DbHelper.getConnection())
     {
-      try (ResultSet resultSet = pStmt.executeQuery())
-      {
-        resultSet.next();
-        double minLat = resultSet.getDouble("min_lat");
-        double minLon = resultSet.getDouble("min_lon");
-        double maxLat = resultSet.getDouble("max_lat");
-        double maxLon = resultSet.getDouble("max_lon");
-        bounds = new BoundsLatLon(minLat, minLon, maxLat, maxLon);
-      }
+      PreparedStatement pStmt = connection.prepareStatement(SELECT_BOUNDS);
+      ResultSet resultSet = pStmt.executeQuery();
+
+      resultSet.next();
+      double minLat = resultSet.getDouble("min_lat");
+      double minLon = resultSet.getDouble("min_lon");
+      double maxLat = resultSet.getDouble("max_lat");
+      double maxLon = resultSet.getDouble("max_lon");
+      bounds = new BoundsLatLon(minLat, minLon, maxLat, maxLon);
     }
     catch (SQLException e)
     {

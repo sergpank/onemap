@@ -12,10 +12,6 @@ import java.util.List;
  */
 public class LeisureDao extends Dao<Leisure>
 {
-  public LeisureDao(Connection connection) {
-    super(connection);
-  }
-
   @Override
   public void save(Leisure entity)
   {

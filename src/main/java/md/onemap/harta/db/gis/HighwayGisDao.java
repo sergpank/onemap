@@ -1,10 +1,13 @@
 package md.onemap.harta.db.gis;
 
+import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.osm.OsmNode;
 import org.postgis.PGgeometry;
 import org.postgis.Point;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.*;
@@ -14,6 +17,8 @@ import java.util.*;
  */
 public class HighwayGisDao extends GisDao<Highway>
 {
+  private static final Logger LOG = LoggerFactory.getLogger(HighwayGisDao.class);
+
   public static final String INSERT_SQL = "INSERT INTO gis.highways_gis " +
       "(highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_geometry)" +
       " VALUES (?, ?, ?, ?, ?, %s);";
@@ -32,21 +37,18 @@ public class HighwayGisDao extends GisDao<Highway>
 
   public static final String SELECT_ALL = "SELECT highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_geometry FROM gis.highways_gis";
 
-  public HighwayGisDao(Connection connection)
-  {
-    super(connection);
-  }
-
   @Override
   public void save(Highway highway)
   {
     if (highway.getNodes().size() < 2)
     {
-      System.out.printf("Unable to save highway with 1 point: %s\n", highway.getName());
+      LOG.error("Unable to save highway with 1 point: %s\n", highway.getName());
       return;
     }
-    try(PreparedStatement pStmt = connection.prepareStatement(String.format(INSERT_SQL, createLineString(highway.getNodes()))))
+    try (Connection connection = DbHelper.getConnection())
     {
+      String lineString = createLineString(highway.getNodes());
+      PreparedStatement pStmt = connection.prepareStatement(String.format(INSERT_SQL, lineString));
       int pos = 1;
 
       pStmt.setLong(pos++, highway.getId());
@@ -65,7 +67,7 @@ public class HighwayGisDao extends GisDao<Highway>
   @Override
   public void saveAll(Collection<Highway> highways)
   {
-    highways.forEach(highway -> save(highway));
+    highways.forEach(this::save);
   }
 
   @Override
@@ -78,8 +80,10 @@ public class HighwayGisDao extends GisDao<Highway>
   public Collection<Highway> load(int zoomLevel, BoundsLatLon box)
   {
     Set<Highway> highways = new HashSet<>();
-    try (Statement stmt = connection.createStatement())
+    try (Connection connection = DbHelper.getConnection())
     {
+      Statement stmt = connection.createStatement();
+
       double dLat = box.getMaxLat() - box.getMinLat();
       double dLon = box.getMaxLon() - box.getMinLon();
       String sql = String.format(SELECT_TILE,
@@ -106,8 +110,9 @@ public class HighwayGisDao extends GisDao<Highway>
   public Collection<Highway> loadAll()
   {
     Set<Highway> highways = new HashSet<>();
-    try (Statement stmt = connection.createStatement())
+    try (Connection connection = DbHelper.getConnection())
     {
+      Statement stmt = connection.createStatement();
       ResultSet rs = stmt.executeQuery(SELECT_ALL);
       while (rs.next())
       {
@@ -130,7 +135,7 @@ public class HighwayGisDao extends GisDao<Highway>
     String type = rs.getString("highway_type");
 
     ArrayList<OsmNode> nodes = new ArrayList<>();
-    PGgeometry geometry = (PGgeometry)rs.getObject("highway_geometry");
+    PGgeometry geometry = (PGgeometry) rs.getObject("highway_geometry");
     for (int i = 0; i < geometry.getGeometry().numPoints(); i++)
     {
       Point point = geometry.getGeometry().getPoint(i);

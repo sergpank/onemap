@@ -1,5 +1,6 @@
 package md.onemap.harta.db.dao;
 
+import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.OsmNode;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -22,15 +23,11 @@ public class NodeDao extends Dao<OsmNode>
   public static final String SELECT_NODE = "SELECT lat, lon FROM nodes WHERE node_id = ?";
   public static final String SELECT_NODES = "SELECT node_id, lat, lon FROM nodes WHERE node_id in (%s)";
 
-  public NodeDao(Connection con)
-  {
-    super(con);
-  }
-
   public void saveAll(Collection<OsmNode> nodes)
   {
-    try (PreparedStatement insertStmt = connection.prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS))
+    try (Connection connection = DbHelper.getConnection())
     {
+      PreparedStatement insertStmt = connection.prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
       int count = 0;
       for (OsmNode node : nodes)
       {
@@ -59,8 +56,10 @@ public class NodeDao extends Dao<OsmNode>
   @Override
   public void save(OsmNode node)
   {
-    try (PreparedStatement insertStmt = connection.prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS))
+    try (Connection connection = DbHelper.getConnection())
     {
+      PreparedStatement insertStmt = connection.prepareStatement(INSERT_SQL, PreparedStatement.RETURN_GENERATED_KEYS);
+
       int pos = 1;
       insertStmt.setLong(pos++, node.getId());
       insertStmt.setDouble(pos++, node.getLat());
@@ -77,8 +76,9 @@ public class NodeDao extends Dao<OsmNode>
   public OsmNode load(long id)
   {
     OsmNode node = null;
-    try (PreparedStatement pStmt = connection.prepareStatement(SELECT_NODE))
+    try (Connection connection = DbHelper.getConnection())
     {
+      PreparedStatement pStmt = connection.prepareStatement(SELECT_NODE);
       pStmt.setLong(1, id);
       try (ResultSet rs = pStmt.executeQuery())
       {
@@ -108,9 +108,10 @@ public class NodeDao extends Dao<OsmNode>
   public Collection<OsmNode> loadAll()
   {
     List<OsmNode> nodes = new ArrayList<>();
-    try (PreparedStatement pStmt = connection.prepareStatement(SELECT_ALL);
-         ResultSet rs = pStmt.executeQuery())
+    try (Connection connection = DbHelper.getConnection())
     {
+      PreparedStatement pStmt = connection.prepareStatement(SELECT_ALL);
+      ResultSet rs = pStmt.executeQuery();
       while (rs.next())
       {
         long id = rs.getLong("node_id");
@@ -132,17 +133,16 @@ public class NodeDao extends Dao<OsmNode>
   {
     BoundsLatLon bounds = null;
 
-    try (PreparedStatement pStmt = connection.prepareStatement(SELECT_BOUNDS))
+    try (Connection connection = DbHelper.getConnection())
     {
-      try (ResultSet resultSet = pStmt.executeQuery())
-      {
-        resultSet.next();
-        double minLat = resultSet.getDouble("min_lat");
-        double minLon = resultSet.getDouble("min_lon");
-        double maxLat = resultSet.getDouble("max_lat");
-        double maxLon = resultSet.getDouble("max_lon");
-        bounds = new BoundsLatLon(minLat, minLon, maxLat, maxLon);
-      }
+      PreparedStatement pStmt = connection.prepareStatement(SELECT_BOUNDS);
+      ResultSet resultSet = pStmt.executeQuery();
+      resultSet.next();
+      double minLat = resultSet.getDouble("min_lat");
+      double minLon = resultSet.getDouble("min_lon");
+      double maxLat = resultSet.getDouble("max_lat");
+      double maxLon = resultSet.getDouble("max_lon");
+      bounds = new BoundsLatLon(minLat, minLon, maxLat, maxLon);
     }
     catch (SQLException e)
     {
@@ -157,9 +157,10 @@ public class NodeDao extends Dao<OsmNode>
     List<OsmNode> nodes = new ArrayList<>();
     String collectIds = nodeIds.stream().map(Object::toString).collect(Collectors.joining(","));
     String sql = String.format(SELECT_NODES, collectIds);
-    try (Statement stmt = connection.createStatement();
-         ResultSet rs = stmt.executeQuery(sql))
+    try (Connection connection = DbHelper.getConnection())
     {
+      Statement stmt = connection.createStatement();
+      ResultSet rs = stmt.executeQuery(sql);
       while (rs.next())
       {
         long id = rs.getLong("node_id");
@@ -174,5 +175,18 @@ public class NodeDao extends Dao<OsmNode>
       throw new RuntimeException(e);
     }
     return nodes;
+  }
+
+  public List<OsmNode> loadNodes(Array nodeIdsArray) throws SQLException
+  {
+    List<Long> nodeIds = new ArrayList<>();
+    ResultSet nodeSet = nodeIdsArray.getResultSet();
+    while (nodeSet.next())
+    {
+      long nodeId = nodeSet.getLong(2);
+      nodeIds.add(nodeId);
+    }
+
+    return loadNodes(nodeIds);
   }
 }
