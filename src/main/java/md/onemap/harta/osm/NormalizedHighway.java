@@ -38,4 +38,15 @@ public class NormalizedHighway
   {
     return nameOld;
   }
+
+  @Override
+  public String toString()
+  {
+    return "NormalizedHighway{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", nameRu='" + nameRu + '\'' +
+        ", nameOld='" + nameOld + '\'' +
+        '}';
+  }
 }

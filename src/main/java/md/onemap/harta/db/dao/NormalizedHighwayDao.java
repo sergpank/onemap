@@ -6,12 +6,48 @@ import md.onemap.harta.osm.NormalizedHighway;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class NormalizedHighwayDao extends Dao<NormalizedHighway>
 {
-  private static final String INSERT_SQL = "INSERT into normalized_highways (id, name, name_ru, name_old) VALUES (?, ?, ?, ?)";
+  private static final String FIND_SQL = "SELECT * FROM normalized_highways WHERE name ~ ? OR name_ru ~ ? OR name_old ~ ?";
+
+  private static final String INSERT_SQL = "INSERT INTO normalized_highways (id, name, name_ru, name_old) VALUES (?, ?, ?, ?)";
+
+  public Collection<NormalizedHighway> findHighwaysByKey(String key)
+  {
+    Set<NormalizedHighway> result = new HashSet<>();
+
+    try (Connection con = DbHelper.getConnection())
+    {
+      PreparedStatement ps = con.prepareStatement(FIND_SQL);
+      ps.setString(1, key);
+      ps.setString(2, key);
+      ps.setString(3, key);
+
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next())
+      {
+        long id = rs.getLong("id");
+        String name = rs.getString("name");
+        String nameRu = rs.getString("name_ru");
+        String nameOld = rs.getString("name_old");
+
+        result.add(new NormalizedHighway(id, name, nameRu, nameOld));
+      }
+    }
+    catch (SQLException e)
+    {
+      e.printStackTrace();
+    }
+
+    return result;
+  }
 
   @Override
   public void save(NormalizedHighway entity)

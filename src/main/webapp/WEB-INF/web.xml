@@ -20,6 +20,11 @@
     <servlet-class>md.onemap.harta.web.TileGeneratorServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>search</servlet-name>
+    <servlet-class>md.onemap.harta.web.SearchServlet</servlet-class>
+  </servlet>
+
 
   <servlet-mapping>
     <servlet-name>simple</servlet-name>
@@ -34,6 +39,11 @@
   <servlet-mapping>
     <servlet-name>tileGenerator</servlet-name>
     <url-pattern>/tile</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>search</servlet-name>
+    <url-pattern>/search</url-pattern>
   </servlet-mapping>
 
 </web-app>

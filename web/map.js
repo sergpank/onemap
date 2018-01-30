@@ -1,6 +1,15 @@
-var map = L.map('map').setView([47., 28.865], 16);
-// http://a.tiles.mapbox.com/v3/examples.map-i875mjb7/0/0/0.png
-// L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+var map = L.map('map', {
+  zoomSnap: 0.25,
+  center: [47., 28.865], 
+  zoom: 16
+});
+
+// var map = L.map('map', {
+//     center: [51.505, -0.09],
+//     zoom: 13
+// });
+
+L.control.scale().addTo(map);
 
 // L.tileLayer('../tiles/kishinev/{z}/tile_{z}_{y}_{x}.png', {
 //   minZoom: 10,
@@ -24,4 +33,4 @@ L.tileLayer('http://localhost:8080/harta/tile?x={x}&y={y}&z={z}', {
 //       .openOn(map);
 // }
 
-map.on('click', onMapClick);
+//map.on('click', onMapClick);
