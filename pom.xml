@@ -7,10 +7,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>md.onemap</groupId>
-  <artifactId>harta</artifactId>
+  <artifactId>onemap</artifactId>
   <packaging>war</packaging>
   <version>0.1</version>
-  <name>harta</name>
+  <name>onemap</name>
   <url>http://www.onemap.md</url>
 
   <properties>

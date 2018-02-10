@@ -44,8 +44,8 @@ public class BuildingGisDao extends GisDao<Building>
   {
     if (building.getNodes().size() < 3)
     {
-      LOG.error("Unable to save building %s %s, not enough nodes: %d\n",
-          building.getStreet(), building.getHouseNumber(), building.getNodes().size());
+      LOG.error("Unable to save building {} {} {}, not enough nodes: {}",
+          building.getId(), building.getStreet(), building.getHouseNumber(), building.getNodes().size());
       return;
     }
     try (Connection connection = DbHelper.getConnection())
