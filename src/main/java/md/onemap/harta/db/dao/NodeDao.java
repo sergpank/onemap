@@ -1,9 +1,9 @@
 package md.onemap.harta.db.dao;
 
+import md.onemap.exception.NotImplementedException;
 import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.OsmNode;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.*;
 import java.util.ArrayList;

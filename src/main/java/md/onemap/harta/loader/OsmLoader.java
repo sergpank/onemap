@@ -1,5 +1,6 @@
 package md.onemap.harta.loader;
 
+import md.onemap.exception.NotImplementedException;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.*;
 import md.onemap.harta.util.XmlUtil;
@@ -7,7 +8,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 

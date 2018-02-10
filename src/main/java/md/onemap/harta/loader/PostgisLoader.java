@@ -1,11 +1,11 @@
 package md.onemap.harta.loader;
 
+import md.onemap.exception.NotImplementedException;
 import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.db.gis.BuildingGisDao;
 import md.onemap.harta.db.gis.HighwayGisDao;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.*;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
