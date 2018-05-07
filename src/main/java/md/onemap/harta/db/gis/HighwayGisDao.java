@@ -10,7 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by serg on 11/7/15.
@@ -42,7 +45,8 @@ public class HighwayGisDao extends GisDao<Highway>
   {
     if (highway.getNodes().size() < 2)
     {
-      LOG.error("Unable to save highway with 1 point: %s\n", highway.getName());
+      LOG.error("Unable to save highway with {} point(s); name: {}; id: {}",
+          highway.getNodes().size(), highway.getName(), highway.getId());
       return;
     }
     try (Connection connection = DbHelper.getConnection())

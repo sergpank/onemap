@@ -24,6 +24,11 @@ public class NormalizedHighwayDao extends Dao<NormalizedHighway>
 
     try (Connection con = DbHelper.getConnection())
     {
+      // replaces all spaces to lookup of any symbols
+      // it is useful for cases when street name is typed partially
+      // i.e.: stef cel mare, gr vieru, bul gagarin, str a puskin
+      key = key.replaceAll(" ", ".+");
+
       PreparedStatement ps = con.prepareStatement(FIND_SQL);
       ps.setString(1, key);
       ps.setString(2, key);

@@ -1,6 +1,5 @@
 package md.onemap.harta.util;
 
-import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 import generated.Osm;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -10,6 +9,7 @@ import org.xml.sax.SAXException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -28,12 +28,8 @@ public class XmlUtil {
   public static Document parseDocument(String xmlFile){
     Document doc = null;
     try {
-      doc = DocumentBuilderFactoryImpl.newInstance().newDocumentBuilder().parse(xmlFile);
-    } catch (SAXException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    } catch (ParserConfigurationException e) {
+      doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xmlFile);
+    } catch (SAXException | IOException | ParserConfigurationException e) {
       e.printStackTrace();
     }
     return doc;

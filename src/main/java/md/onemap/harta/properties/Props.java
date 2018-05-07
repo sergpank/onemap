@@ -29,6 +29,8 @@ public class Props
   private String dbPassword;
   private String dbName;
 
+  private String cacheDir;
+
   private static Props inst()
   {
     if (instance == null)
@@ -58,6 +60,8 @@ public class Props
       dbLogin = props.getProperty("db.login");
       dbPassword = props.getProperty("db.password");
       dbName = props.getProperty("db.name");
+
+      cacheDir = props.getProperty("cache.dir");
 
       LOG.info("Loaded properties: " + toString());
     }
@@ -113,6 +117,11 @@ public class Props
     return inst().dbName;
   }
 
+  public static String cacheDir()
+  {
+    return inst().cacheDir;
+  }
+
   @Override
   public String toString()
   {
@@ -126,6 +135,7 @@ public class Props
         ", dbLogin='" + dbLogin + '\'' +
         ", dbPassword='" + dbPassword + '\'' +
         ", dbName='" + dbName + '\'' +
+        ", cacheDir='" + cacheDir + '\'' +
         '}';
   }
 }

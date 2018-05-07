@@ -18,7 +18,7 @@ L.control.scale().addTo(map);
 //   detectRetina: true
 // }).addTo(map);
 
-L.tileLayer('http://localhost:8080/harta/tile?x={x}&y={y}&z={z}', {
+L.tileLayer('http://localhost:8080/onemap/tile?x={x}&y={y}&z={z}', {
   minZoom: 10,
   maxZoom: 20,
   tileSize: 512,

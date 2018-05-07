@@ -18,7 +18,7 @@ public class DbHelper
 {
   private static final Logger LOG = LoggerFactory.getLogger(DbHelper.class);
 
-  private static String datasourceClassName = "org.postgresql.ds.PGSimpleDataSource";
+  private static final String DATASOURCE_CLASS_NAME = "org.postgresql.ds.PGSimpleDataSource";
 
   private static HikariDataSource dataSource;
 
@@ -26,11 +26,11 @@ public class DbHelper
   {
     Properties props = new Properties();
 
-    props.setProperty("dataSourceClassName", datasourceClassName);
+    props.setProperty("dataSourceClassName", DATASOURCE_CLASS_NAME);
+    props.setProperty("dataSource.databaseName", Props.dbName());
     props.setProperty("dataSource.user", Props.dbLogin());
     props.setProperty("dataSource.password", Props.dbPassword());
-    props.setProperty("dataSource.databaseName", Props.dbName());
-    props.setProperty("jdbcUrl", Props.dbUrl());
+//    props.setProperty("jdbcUrl", Props.dbUrl());
 //    props.put("dataSource.logWriter", new PrintWriter(System.out));
 
     HikariConfig config = new HikariConfig(props);
