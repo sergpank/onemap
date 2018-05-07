@@ -72,7 +72,7 @@ public abstract class TileGenerator
       for (int x = tileCutter.getMinTileXindex(); x <= tileCutter.getMaxTileXindex(); x++)
       {
         BufferedImage tile = generateTile(x, y, level, projector, tileCutter.getTileBounds(x, y, 0));
-        writeTile(tile, level, x, y);
+        writeTile(tile, level, x, y, outputDir);
 
         tileCnt++;
         if (logTileStep > 0 && tileCnt % logTileStep == 0)
@@ -98,7 +98,34 @@ public abstract class TileGenerator
     return tile;
   }
 
-  private void writeTile(BufferedImage bi, int level, int x, int y)
+  public BufferedImage generateTileCached(int x, int y, int level, AbstractProjector projector, BoundsLatLon tileBounds)
+  {
+    String tileName = String.format("%s/%s/tile_%d_%d_%d.png", Props.cacheDir(), level, level, y, x);
+    File tileFile = new File(tileName);
+    LOG.info("Look for cache @: {}", tileFile.getAbsolutePath());
+    BufferedImage tileImage = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
+    if (tileFile.exists())
+    {
+      LOG.info("Getting tile from cache: {}", tileName);
+      try
+      {
+        tileImage = ImageIO.read(tileFile);
+      }
+      catch (IOException e)
+      {
+        LOG.error("Unable to read file: {}", tileFile.getAbsolutePath());
+      }
+    }
+    else
+    {
+      LOG.info("Cache miss, generating tile: {}", tileName);
+      tileImage = generateTile(x, y, level, projector, tileBounds);
+      writeTile(tileImage, level, x, y, Props.cacheDir());
+    }
+    return tileImage;
+  }
+
+  private void writeTile(BufferedImage bi, int level, int x, int y, String outputDir)
   {
     try
     {

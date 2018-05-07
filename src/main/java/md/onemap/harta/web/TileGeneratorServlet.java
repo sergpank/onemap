@@ -60,7 +60,7 @@ public class TileGeneratorServlet extends HttpServlet
       BoundsLatLon tileBounds = boundsCalculator.getTileBounds(x, y, 0);
 
       Stopwatch.start();
-      BufferedImage tile = tileGenerator.generateTile(x, y, z, projector, tileBounds);
+      BufferedImage tile = tileGenerator.generateTileCached(x, y, z, projector, tileBounds);
       Stopwatch.stop();
 
       LOG.info("Tile {} generation: {}", z + "-" + x + ":" + y, Stopwatch.pretty());
