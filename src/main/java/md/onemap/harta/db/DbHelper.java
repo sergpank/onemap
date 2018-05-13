@@ -6,6 +6,7 @@ import md.onemap.harta.properties.Props;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -60,6 +61,13 @@ public class DbHelper
     return connection;
   }
 
+  /**
+   * Plain JDBC Connection
+   *
+   * @param dbName Name of the database to create to
+   * @return Connection to Database. NOTE: this connection is not pooled, so don't forget
+   * to close it when the work is done.
+   */
   public static Connection getConnection(String dbName)
   {
     Connection connection = null;
@@ -74,5 +82,14 @@ public class DbHelper
     }
 
     return connection;
+  }
+
+  public static DataSource getDataSource()
+  {
+    if (dataSource == null)
+    {
+      init();
+    }
+    return dataSource;
   }
 }

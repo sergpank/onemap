@@ -1,7 +1,6 @@
 package md.onemap.harta.tile;
 
 import md.onemap.harta.loader.PostgisLoader;
-import md.onemap.harta.properties.Props;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +25,7 @@ public class TileGeneratorGIS extends TileGenerator
 
   public TileGeneratorGIS()
   {
-    super(new PostgisLoader(Props.dbName()));
+    super(new PostgisLoader());
   }
 
   @Override

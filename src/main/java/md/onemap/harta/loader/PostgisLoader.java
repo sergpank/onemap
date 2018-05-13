@@ -21,13 +21,6 @@ import java.util.stream.Collectors;
  */
 public class PostgisLoader extends AbstractLoader
 {
-  private final String dbName;
-
-  public PostgisLoader(String dbName)
-  {
-    this.dbName = dbName;
-  }
-
   @Override
   public Map<Long, OsmNode> getNodes()
   {
@@ -139,7 +132,7 @@ public class PostgisLoader extends AbstractLoader
     double maxLonHighway = 0;
     double maxLatHighway = 0;
 
-    try (Connection connection = DbHelper.getConnection(dbName);
+    try (Connection connection = DbHelper.getConnection();
          Statement statement = connection.createStatement())
     {
       try (ResultSet rs = statement.executeQuery("select min(ST_XMin(building_geometry)), min(ST_YMin(building_geometry)), max(ST_XMax(building_geometry)), max(ST_YMax(building_geometry))from gis.buildings_gis"))

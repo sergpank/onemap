@@ -57,7 +57,7 @@ public abstract class TileGenerator
     }
   }
 
-  protected void generateLevelTiles(int level, AbstractProjector projector, TileCutter tileCutter)
+  private void generateLevelTiles(int level, AbstractProjector projector, TileCutter tileCutter)
   {
     long tileCnt = 0;
     long start = System.currentTimeMillis();

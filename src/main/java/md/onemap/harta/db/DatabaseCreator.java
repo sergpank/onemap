@@ -40,6 +40,7 @@ public class DatabaseCreator
       createTable(con, getCreateLeisureGisTable(), "leisure_gis");
       createTable(con, getCreateWaterwayGisTable(), "waterway_gis");
       createTable(con, getCreateLanduseGisTable(), "landuse_gis");
+      createTable(con, getCreateTileCountTable(), "tile_calls_count");
     }
     catch (SQLException e)
     {
@@ -300,5 +301,15 @@ public class DatabaseCreator
         "lat double precision, " +
         "lon double precision, " +
         "CONSTRAINT nodes_pkey PRIMARY KEY (node_id) )";
+  }
+
+  private static String getCreateTileCountTable()
+  {
+    return "CREATE TABLE tile_calls_count ( " +
+        "level smallint, " +
+        "x int, " +
+        "y int, " +
+        "count bigint" +
+        ");";
   }
 }
