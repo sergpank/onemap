@@ -1,0 +1,63 @@
+`OsmToPostgisExporter.exportEntities:34 - Saving buildings ...
+BuildingGisDao.save:47 - Unable to save building 52692847 Strada Alexei Mateevici 46, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 152443275 Strada Ștefan cel Mare 50, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 157425330 str. Fructelor 17, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 130751145 null null, not enough nodes: 1
+BuildingGisDao.save:47 - Unable to save building 130751138 null null, not enough nodes: 1
+BuildingGisDao.save:47 - Unable to save building 164045549 Strada Alba Iulia 39, not enough nodes: 1
+BuildingGisDao.save:47 - Unable to save building 164045563 Strada Alba Iulia 8, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 90845733 Strada Tineretului 43A, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 152319384 Strada Tineretului 12, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 164451277 Strada Mihai Viteazul 6, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 120681194 Strada Alba Iulia 10, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 89553113 Strada Trandafirilor 17, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 103384809 Strada Livezilor 53, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 130849912 null null, not enough nodes: 1
+BuildingGisDao.save:47 - Unable to save building 152349884 Strada Iurie Gagarin 12, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 152349894 Strada 1 Mai 40, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 152349896 Strada 1 Mai 19, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 52679601 Strada Frunze 1C, not enough nodes: 2
+BuildingGisDao.save:47 - Unable to save building 158846977 str. Dumbravei 25, not enough nodes: 2
+
+OsmToPostgisExporter.exportEntities:37 - Saving highways ...
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Strada 31 August; id: 105744243
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Strada Grigore Ureche; id: 110331276
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 125600372
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 125600359
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 59606520
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 222921162
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 222921179
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 301020179
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 54109566
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 25340946
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Strada Piersicilor; id: 130754815
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 58535084
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 58536302
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 58536299
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 58536283
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Strada Ion Neculce; id: 110310616
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 58536329
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 58536331
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 52705020
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 52705021
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 52705022
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 58080413
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 60539143
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 60539023
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 60539012
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 130862669
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 59037362
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Strada Drumul Petricanilor; id: 162684927
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Strada Alba Iulia; id: 38562132
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Strada B. P. Hasdeu; id: 38562234
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Strada Tineretului; id: 38562230
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Strada Mihai Viteazul; id: 38563474
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Strada Alexei Mateevici; id: 452654186
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 110356740
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 130869373
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 130869375
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Strada Miorița; id: 49802562
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Strada Nucarilor; id: 49802570
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: Calea Chișinăului; id: 131593617
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 59309701
+HighwayGisDao.save:45 - Unable to save highway with 1 point(s); name: null; id: 37289013
