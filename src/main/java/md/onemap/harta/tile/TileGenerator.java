@@ -1,5 +1,6 @@
 package md.onemap.harta.tile;
 
+import md.onemap.harta.db.dao.TileCallsCounter;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.loader.AbstractLoader;
@@ -26,6 +27,8 @@ public abstract class TileGenerator
   private static Logger LOG = LoggerFactory.getLogger(TileGenerator.class);
   protected AbstractLoader loader;
 
+  private TileCallsCounter tileCallsCounter;
+
   private final String outputDir;
   private final int startLevel;
   private final int endLevel;
@@ -38,6 +41,8 @@ public abstract class TileGenerator
     this.endLevel = Props.endLevel();
     this.tileSize = Props.tileSize();
     this.loader = loader;
+
+    this.tileCallsCounter = new TileCallsCounter();
   }
 
   public abstract void generate();
@@ -100,6 +105,8 @@ public abstract class TileGenerator
 
   public BufferedImage generateTileCached(int x, int y, int level, AbstractProjector projector, BoundsLatLon tileBounds)
   {
+    tileCallsCounter.increment(level, x, y);
+
     String tileName = String.format("%s/%s/tile_%d_%d_%d.png", Props.cacheDir(), level, level, y, x);
     File tileFile = new File(tileName);
     LOG.info("Look for cache @: {}", tileFile.getAbsolutePath());
