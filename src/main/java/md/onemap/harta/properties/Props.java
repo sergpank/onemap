@@ -31,6 +31,9 @@ public class Props
 
   private String cacheDir;
 
+  private final boolean debugTileNumber;
+  private final boolean debugTileBorder;
+
   private static Props inst()
   {
     if (instance == null)
@@ -62,6 +65,9 @@ public class Props
       dbName = props.getProperty("db.name");
 
       cacheDir = props.getProperty("cache.dir");
+
+      debugTileNumber = Boolean.parseBoolean(props.getProperty("debug.tile.number"));
+      debugTileBorder = Boolean.parseBoolean(props.getProperty("debug.tile.border"));
 
       LOG.info("Loaded properties: " + toString());
     }
@@ -122,20 +128,31 @@ public class Props
     return inst().cacheDir;
   }
 
-  @Override
-  public String toString()
+  public static boolean debugTileNumber()
+  {
+    return inst().debugTileNumber;
+  }
+
+  public static boolean debugTileBorder()
+  {
+    return inst().debugTileBorder;
+  }
+
+  @Override public String toString()
   {
     return "Props{" +
-        "startLevel=" + startLevel +
-        ", endLevel=" + endLevel +
-        ", outputDir='" + outputDir + '\'' +
-        ", tileSize=" + tileSize +
-        ", osmFile='" + osmFile + '\'' +
-        ", dbUrl='" + dbUrl + '\'' +
-        ", dbLogin='" + dbLogin + '\'' +
-        ", dbPassword='" + dbPassword + '\'' +
-        ", dbName='" + dbName + '\'' +
-        ", cacheDir='" + cacheDir + '\'' +
-        '}';
+            "startLevel=" + startLevel +
+            ", endLevel=" + endLevel +
+            ", outputDir='" + outputDir + '\'' +
+            ", tileSize=" + tileSize +
+            ", osmFile='" + osmFile + '\'' +
+            ", dbUrl='" + dbUrl + '\'' +
+            ", dbLogin='" + dbLogin + '\'' +
+            ", dbPassword='" + dbPassword + '\'' +
+            ", dbName='" + dbName + '\'' +
+            ", cacheDir='" + cacheDir + '\'' +
+            ", debugTileNumber=" + debugTileNumber +
+            ", debugTileBorder=" + debugTileBorder +
+            '}';
   }
 }

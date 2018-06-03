@@ -7,6 +7,8 @@ import md.onemap.harta.osm.Highway;
 import md.onemap.harta.painter.BuildingPainter;
 import md.onemap.harta.painter.HighwayPainter;
 import md.onemap.harta.projector.AbstractProjector;
+import md.onemap.harta.properties.Props;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,8 +43,14 @@ public class TileDrawer
     new HighwayPainter(projector, tileBounds).drawHighways(drawer, highways, level);
     new BuildingPainter(projector, tileBounds).drawBuildings(drawer, buildings, level);
 
-    drawTileNumber(x, y, level, graphics);
-    drawTileBorder(graphics);
+    if (Props.debugTileNumber())
+    {
+      drawTileNumber(x, y, level, graphics);
+    }
+    if (Props.debugTileBorder())
+    {
+      drawTileBorder(graphics);
+    }
 
     return bi;
   }
