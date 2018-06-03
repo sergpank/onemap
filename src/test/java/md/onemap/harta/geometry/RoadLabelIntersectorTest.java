@@ -276,9 +276,18 @@ public class RoadLabelIntersectorTest extends TestCase
     intersections.forEach(System.out::println);
 
     assertEquals(4, intersections.size());
-    assertEquals(new Intersection(new XYPoint(1.770930983167526E7, 1.5840374675626924E7), -0.46979950686796507), intersections.get(0));
-    assertEquals(new Intersection(new XYPoint(1.7709319639925044E7, 1.5840369695844172E7), -0.46979950686796507), intersections.get(1));
-    assertEquals(new Intersection(new XYPoint(1.770932855651575E7, 1.5840365168768942E7), -0.46979950686796507), intersections.get(2));
-    assertEquals(new Intersection(new XYPoint(1.770933836476553E7, 1.584036018898619E7), -0.46979950686796507), intersections.get(3));
+    assertTrue(isPrettySame(new Intersection(new XYPoint(1.770930983167526E7, 1.5840374675626924E7), -0.46979950686796507), intersections.get(0)));
+    assertTrue(isPrettySame(new Intersection(new XYPoint(1.7709319639925044E7, 1.5840369695844172E7), -0.46979950686796507), intersections.get(1)));
+    assertTrue(isPrettySame(new Intersection(new XYPoint(1.770932855651575E7, 1.5840365168768942E7), -0.46979950686796507), intersections.get(2)));
+    assertTrue(isPrettySame(new Intersection(new XYPoint(1.770933836476553E7, 1.584036018898619E7), -0.46979950686796507), intersections.get(3)));
+  }
+
+  private boolean isPrettySame(Intersection expected, Intersection actual)
+  {
+    assertEquals(expected.getPoint().getX(), actual.getPoint().getX(), 1E-5);
+    assertEquals(expected.getPoint().getY(), actual.getPoint().getY(), 1E-5);
+    assertEquals(expected.getAngle(), actual.getAngle(), 1E-5);
+
+    return true;
   }
 }
