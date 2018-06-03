@@ -4,27 +4,16 @@ var map = L.map('map', {
   zoom: 16
 });
 
-// var map = L.map('map', {
-//     center: [51.505, -0.09],
-//     zoom: 13
-// });
-
 L.control.scale().addTo(map);
 
-// L.tileLayer('../tiles/kishinev/{z}/tile_{z}_{y}_{x}.png', {
-//   minZoom: 10,
-//   maxZoom: 20,
-//   tileSize: 256,
-//   detectRetina: true
-// }).addTo(map);
-
-L.tileLayer('http://localhost:8080/onemap/tile?x={x}&y={y}&z={z}', {
+L.tileLayer('http://onemap.md/tile?x={x}&y={y}&z={z}', {
   minZoom: 10,
   maxZoom: 20,
   tileSize: 512,
   detectRetina: true,
 }).addTo(map);
 
+// An example how to find out click coordinates
 // var popup = L.popup();
 // function onMapClick(e) {
 //   popup
@@ -32,5 +21,4 @@ L.tileLayer('http://localhost:8080/onemap/tile?x={x}&y={y}&z={z}', {
 //       .setContent("Lat = " + e.latlng.lat + "; Lon = " + e.latlng.lng)
 //       .openOn(map);
 // }
-
 //map.on('click', onMapClick);
