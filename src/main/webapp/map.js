@@ -9,7 +9,7 @@ L.control.scale().addTo(map);
 L.tileLayer('http://onemap.md/tile?x={x}&y={y}&z={z}', {
   minZoom: 10,
   maxZoom: 20,
-  tileSize: 512,
+  tileSize: 256,
   detectRetina: true,
 }).addTo(map);
 
