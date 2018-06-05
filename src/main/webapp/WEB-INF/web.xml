@@ -25,6 +25,10 @@
     <servlet-class>md.onemap.harta.web.SearchServlet</servlet-class>
   </servlet>
 
+`  <servlet>
+    <servlet-name>dbTest</servlet-name>
+    <servlet-class>md.onemap.harta.web.DbTestServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>simple</servlet-name>
@@ -46,4 +50,9 @@
     <url-pattern>/search</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>dbTest</servlet-name>
+    <url-pattern>/dbTest</url-pattern>
+  </servlet-mapping>
+  
 </web-app>

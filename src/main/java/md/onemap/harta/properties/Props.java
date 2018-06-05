@@ -43,14 +43,19 @@ public class Props
     return instance;
   }
 
+  /**
+   * @param propsPath Properties file is expected to be located at [src/main/resources/properties/<file_name></file_name>].
+   *                  But we receive its path as [properties/<file_name>].
+   */
   private Props(String propsPath)
   {
     Properties props = new Properties();
     try
     {
-      LOG.info("Loading properties from file: " + new File(propsPath).getAbsolutePath());
+      String resourcePath = getClass().getClassLoader().getResource(propsPath).getFile();
+      LOG.info("Loading properties from file: " + new File(resourcePath).getAbsolutePath());
 
-      props.load(new FileReader(propsPath));
+      props.load(new FileReader(resourcePath));
 
       startLevel = Integer.parseInt(props.getProperty("level.start"));
       endLevel = Integer.parseInt(props.getProperty("level.end"));

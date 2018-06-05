@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Collection;
 import java.util.stream.Stream;
 
@@ -27,36 +28,46 @@ public class SearchServlet extends HttpServlet
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
   {
-    resp.setContentType("application/json");
-    resp.setCharacterEncoding("UTF-8");
-
-    String key = req.getParameter("key");
-
-    LOG.info("Looking for highway: \"{}\"", key);
-
-    if (key != null && !(key.trim().isEmpty()))
+    try
     {
-      String[] split = key.split(" ");
-      if (split.length > 1
-          && split[split.length - 1].trim().matches(STARTS_WITH_DIGIT))
+      resp.setContentType("application/json");
+      resp.setCharacterEncoding("UTF-8");
+
+      String key = req.getParameter("key");
+
+      LOG.info("Looking for highway: \"{}\"", key);
+
+      if (key != null && !(key.trim().isEmpty()))
       {
-        // Most likely this is a Full Address (Street + House#)
-        // In such case we should first find street and then try to find building
+        String[] split = key.split(" ");
+        if (split.length > 1
+            && split[split.length - 1].trim().matches(STARTS_WITH_DIGIT))
+        {
+          // Most likely this is a Full Address (Street + House#)
+          // In such case we should first find street and then try to find building
 
+        }
+        Collection<NormalizedHighway> highways = new StreetSearch().findStreets(key);
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();//new Gson();
+        String json = gson.toJson(highways);
+
+        LOG.info("Search result: \"{}\"", json);
+
+        PrintWriter writer = resp.getWriter();
+        writer.write(json);
+        writer.flush();
+        writer.close();
       }
-      Collection<NormalizedHighway> highways = new StreetSearch().findStreets(key);
-
-      Gson gson = new GsonBuilder().setPrettyPrinting().create();//new Gson();
-      String json = gson.toJson(highways);
-
-      LOG.info("Search result: \"{}\"", json);
-
-      PrintWriter writer = resp.getWriter();
-      writer.write(json);
-      writer.flush();
-      writer.close();
     }
-
+    catch (Exception e)
+    {
+      LOG.error(e.getMessage());
+      StringWriter sw = new StringWriter();
+      e.printStackTrace(new PrintWriter(sw));
+      LOG.error(sw.toString());
+      throw(e);
+    }
   }
 
   public static void main(String[] asdf)

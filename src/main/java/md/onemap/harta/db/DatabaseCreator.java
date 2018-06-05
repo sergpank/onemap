@@ -108,11 +108,11 @@ public class DatabaseCreator
       ResultSet rs = statement.executeQuery("SELECT 1 FROM pg_database WHERE datname = '" + dbName + "'");
       if (!rs.next())
       {
-        log.info("Dtabase {} does not exist.\n", dbName);
+        log.info("Database {} does not exist.\n", dbName);
         try (Statement stmt = connection.createStatement())
         {
           stmt.execute("CREATE DATABASE " + dbName);
-          log.info("Dtabase {} is created.\n", dbName);
+          log.info("Database {} is created.\n", dbName);
         }
       }
       else
