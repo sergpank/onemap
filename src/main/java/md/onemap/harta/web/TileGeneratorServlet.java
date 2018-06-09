@@ -1,9 +1,7 @@
 package md.onemap.harta.web;
 
-import md.onemap.harta.geometry.BoundsLatLon;
-import md.onemap.harta.projector.MercatorProjector;
-import md.onemap.harta.properties.Props;
-import md.onemap.harta.tile.TileBoundsCalculator;
+import md.onemap.harta.db.statistics.TileStatistics;
+import md.onemap.harta.db.statistics.VisitorStatistics;
 import md.onemap.harta.tile.TileGenerator;
 import md.onemap.harta.tile.TileGeneratorGIS;
 import md.onemap.harta.util.Stopwatch;
@@ -32,6 +30,8 @@ public class TileGeneratorServlet extends HttpServlet
   private static final Logger LOG = LoggerFactory.getLogger(TileGeneratorServlet.class);
 
   private TileGenerator tileGenerator = new TileGeneratorGIS();
+  private TileStatistics tileStatistics = new TileStatistics();
+  private VisitorStatistics visitorStatistics = new VisitorStatistics();
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -55,12 +55,10 @@ public class TileGeneratorServlet extends HttpServlet
       int y = Integer.parseInt(yParam);
       int z = Integer.parseInt(zParam);
 
-      MercatorProjector projector = new MercatorProjector(z);
-      TileBoundsCalculator boundsCalculator = new TileBoundsCalculator(Props.tileSize(), projector);
-      BoundsLatLon tileBounds = boundsCalculator.getTileBounds(x, y, 0);
+      doSomeStatistics(x, y, z, request.getRemoteAddr());
 
       Stopwatch.start();
-      BufferedImage tile = tileGenerator.generateTileCached(x, y, z, projector, tileBounds);
+      BufferedImage tile = tileGenerator.generateTileCached(x, y, z);
       Stopwatch.stop();
 
       LOG.info("Tile {} generation: {}", z + "-" + x + ":" + y, Stopwatch.pretty());
@@ -69,15 +67,26 @@ public class TileGeneratorServlet extends HttpServlet
     }
     catch (Throwable t)
     {
+      LOG.error("\"{}\" - \"{}\"", t.getClass().getName(), t.getMessage());
+
       String collect = ((Set<Map.Entry>) request.getParameterMap().entrySet())
           .stream()
           .map(m -> m.getKey() + "::" + Arrays.toString((String[]) m.getValue()))
           .collect(Collectors.joining("; "));
+      LOG.error("Request parameters: {}", collect);
+
       StringWriter sw = new StringWriter();
       t.printStackTrace(new PrintWriter(sw));
-      LOG.error("\"{}\" - \"{}\"", t.getClass().getName(), t.getMessage());
-      LOG.error("Request parameters: {}", collect);
       LOG.error(sw.toString());
     }
+  }
+
+  private void doSomeStatistics(int x, int y, int z, String ip)
+  {
+    // Statistics should not block main flow.
+    new Thread( () -> {
+      tileStatistics.incrementTileCalls(z, x, y);
+      visitorStatistics.incrementTileCalls(ip);
+    }).start();
   }
 }

@@ -39,4 +39,9 @@ public class TileBoundsCalculator
 
     return new BoundsLatLon(minLatLon.getLat(), minLatLon.getLon(), maxLatLon.getLat(), maxLatLon.getLon());
   }
+
+  public AbstractProjector getProjector()
+  {
+    return projector;
+  }
 }

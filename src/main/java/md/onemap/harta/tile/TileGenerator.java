@@ -1,6 +1,5 @@
 package md.onemap.harta.tile;
 
-import md.onemap.harta.db.dao.TileCallsCounter;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.loader.AbstractLoader;
@@ -18,6 +17,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sergpank on 23.05.15.
@@ -25,9 +26,9 @@ import java.util.Collection;
 public abstract class TileGenerator
 {
   private static Logger LOG = LoggerFactory.getLogger(TileGenerator.class);
-  protected AbstractLoader loader;
+  private Map<Integer, TileBoundsCalculator> tileBoundsCache = new HashMap<>();
 
-  private TileCallsCounter tileCallsCounter;
+  protected AbstractLoader loader;
 
   private final String outputDir;
   private final int startLevel;
@@ -41,8 +42,6 @@ public abstract class TileGenerator
     this.endLevel = Props.endLevel();
     this.tileSize = Props.tileSize();
     this.loader = loader;
-
-    this.tileCallsCounter = new TileCallsCounter();
   }
 
   public abstract void generate();
@@ -103,9 +102,10 @@ public abstract class TileGenerator
     return tile;
   }
 
-  public BufferedImage generateTileCached(int x, int y, int level, AbstractProjector projector, BoundsLatLon tileBounds)
+  public BufferedImage generateTileCached(int x, int y, int level)
   {
-    tileCallsCounter.increment(level, x, y);
+    TileBoundsCalculator boundsCalculator = getTileBoundsCalculator(level);
+    BoundsLatLon tileBounds = boundsCalculator.getTileBounds(x, y, 0);
 
     String tileName = String.format("%s/%s/tile_%d_%d_%d.png", Props.cacheDir(), level, level, y, x);
     File tileFile = new File(tileName);
@@ -126,7 +126,7 @@ public abstract class TileGenerator
     else
     {
       LOG.info("Cache miss, generating tile: {}", tileName);
-      tileImage = generateTile(x, y, level, projector, tileBounds);
+      tileImage = generateTile(x, y, level, boundsCalculator.getProjector(), tileBounds);
       writeTile(tileImage, level, x, y, Props.cacheDir());
     }
     return tileImage;
@@ -147,5 +147,18 @@ public abstract class TileGenerator
     {
       e.printStackTrace();
     }
+  }
+
+  private synchronized TileBoundsCalculator getTileBoundsCalculator(int level)
+  {
+    TileBoundsCalculator calculator = tileBoundsCache.get(level);
+    if (calculator == null)
+    {
+      LOG.info("New Bounds Calculator for level {}", level);
+      AbstractProjector projector = new MercatorProjector(level);
+      calculator = new TileBoundsCalculator(Props.tileSize(), projector);
+      tileBoundsCache.put(level, calculator);
+    }
+    return calculator;
   }
 }

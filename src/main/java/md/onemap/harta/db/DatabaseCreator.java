@@ -40,7 +40,10 @@ public class DatabaseCreator
       createTable(con, getCreateLeisureGisTable(), "leisure_gis");
       createTable(con, getCreateWaterwayGisTable(), "waterway_gis");
       createTable(con, getCreateLanduseGisTable(), "landuse_gis");
-      createTable(con, getCreateTileCountTable(), "tile_calls_count");
+
+      con.createStatement().execute("CREATE SCHEMA IF NOT EXISTS statistics;");
+      createTable(con, getCreateTileCountTable(), "statistics.tile_calls_count");
+      createTable(con, getCreateVisitorsTable(), "statistics.visitors");
     }
     catch (SQLException e)
     {
@@ -305,11 +308,20 @@ public class DatabaseCreator
 
   private static String getCreateTileCountTable()
   {
-    return "CREATE TABLE tile_calls_count ( " +
+    return "CREATE TABLE statistics.tile_calls_count ( " +
         "level smallint, " +
         "x int, " +
         "y int, " +
         "count bigint" +
+        ");";
+  }
+
+  private static String getCreateVisitorsTable()
+  {
+    return "CREATE TABLE statistics.visitors ( " +
+        "ip text, " +
+        "last_visit_date timestamp, " +
+        "tile_cnt bigint" +
         ");";
   }
 }
