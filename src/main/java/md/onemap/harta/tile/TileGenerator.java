@@ -104,19 +104,22 @@ public abstract class TileGenerator
 
   public BufferedImage generateTileCached(int x, int y, int level)
   {
-    TileBoundsCalculator boundsCalculator = getTileBoundsCalculator(level);
-    BoundsLatLon tileBounds = boundsCalculator.getTileBounds(x, y, 0);
+    BufferedImage tile = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
+    File tileFile = null;
 
-    String tileName = String.format("%s/%s/tile_%d_%d_%d.png", Props.cacheDir(), level, level, y, x);
-    File tileFile = new File(tileName);
-    LOG.info("Look for cache @: {}", tileFile.getAbsolutePath());
-    BufferedImage tileImage = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
-    if (tileFile.exists())
+    if (Props.cacheEnabled())
     {
-      LOG.info("Getting tile from cache: {}", tileName);
+      String tileName = String.format("%s/%s/tile_%d_%d_%d.png", Props.cacheDir(), level, level, y, x);
+      tileFile = new File(tileName);
+      LOG.info("Look for cache @: {}", tileFile.getAbsolutePath());
+    }
+
+    if (tileFile != null && tileFile.exists())
+    {
+      LOG.info("Getting tile from cache: {}", tileFile.getAbsolutePath());
       try
       {
-        tileImage = ImageIO.read(tileFile);
+        tile = ImageIO.read(tileFile);
       }
       catch (IOException e)
       {
@@ -125,11 +128,14 @@ public abstract class TileGenerator
     }
     else
     {
-      LOG.info("Cache miss, generating tile: {}", tileName);
-      tileImage = generateTile(x, y, level, boundsCalculator.getProjector(), tileBounds);
-      writeTile(tileImage, level, x, y, Props.cacheDir());
+      TileBoundsCalculator boundsCalculator = getTileBoundsCalculator(level);
+      BoundsLatLon tileBounds = boundsCalculator.getTileBounds(x, y, 0);
+
+      tile = generateTile(x, y, level, boundsCalculator.getProjector(), tileBounds);
+      writeTile(tile, level, x, y, Props.cacheDir());
     }
-    return tileImage;
+
+    return tile;
   }
 
   private void writeTile(BufferedImage bi, int level, int x, int y, String outputDir)
@@ -137,6 +143,7 @@ public abstract class TileGenerator
     try
     {
       String tileName = String.format("%s/%s/tile_%d_%d_%d.png", outputDir, level, level, y, x);
+      LOG.info("Generating tile: {}", tileName);
 
       File tileFile = new File(tileName);
       tileFile.mkdirs();

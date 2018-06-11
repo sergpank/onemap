@@ -29,6 +29,7 @@ public class Props
   private String dbPassword;
   private String dbName;
 
+  private boolean cacheEnabled;
   private String cacheDir;
 
   private final boolean debugTileNumber;
@@ -69,6 +70,7 @@ public class Props
       dbPassword = props.getProperty("db.password");
       dbName = props.getProperty("db.name");
 
+      cacheEnabled = Boolean.valueOf(props.getProperty("cache.enabled"));
       cacheDir = props.getProperty("cache.dir");
 
       debugTileNumber = Boolean.parseBoolean(props.getProperty("debug.tile.number"));
@@ -128,6 +130,11 @@ public class Props
     return inst().dbName;
   }
 
+  public static boolean cacheEnabled()
+  {
+    return inst().cacheEnabled;
+  }
+
   public static String cacheDir()
   {
     return inst().cacheDir;
@@ -155,6 +162,7 @@ public class Props
             ", dbLogin='" + dbLogin + '\'' +
             ", dbPassword='" + dbPassword + '\'' +
             ", dbName='" + dbName + '\'' +
+            ", cacheEnabled='" + cacheEnabled + '\'' +
             ", cacheDir='" + cacheDir + '\'' +
             ", debugTileNumber=" + debugTileNumber +
             ", debugTileBorder=" + debugTileBorder +
