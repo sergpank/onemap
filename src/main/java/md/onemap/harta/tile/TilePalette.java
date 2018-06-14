@@ -13,8 +13,8 @@ public class TilePalette
   public static final String FONT_NAME = Font.MONOSPACED;
   public static final int FONT_SIZE = 15;
 
-  public static final Color HIGHWAY_COLOR = new Color(242, 240, 74);
-  public static final Color HIGHWAY_BORDER_COLOR = new Color(255, 155, 0);
+  public static final Color HIGHWAY_COLOR = new Color(239, 242, 197);
+  public static final Color HIGHWAY_BORDER_COLOR = new Color(144, 149, 157);
   public static final String HIGHWAY_FONT_NAME = Font.SANS_SERIF;
   public static final int HIGHWAY_FONT_SIZE = 20;
 
