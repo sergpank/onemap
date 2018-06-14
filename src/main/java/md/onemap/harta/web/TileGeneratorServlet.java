@@ -67,19 +67,16 @@ public class TileGeneratorServlet extends HttpServlet
     }
     catch (Throwable t)
     {
-      LOG.error("\"{}\" - \"{}\"", t.getClass().getName(), t.getMessage());
-      if (!t.getMessage().contains("Broken pipe"))
-      {
-        String collect = ((Set<Map.Entry>) request.getParameterMap().entrySet())
-            .stream()
-            .map(m -> m.getKey() + "::" + Arrays.toString((String[]) m.getValue()))
-            .collect(Collectors.joining("; "));
-        LOG.error("Request parameters: {}", collect);
+      LOG.error("Exception: \"{}\" - Message: \"{}\" - Cause: \"{}\"", t.getClass().getName(), t.getMessage(), t.getCause());
+      String collect = ((Set<Map.Entry>) request.getParameterMap().entrySet())
+          .stream()
+          .map(m -> m.getKey() + "::" + Arrays.toString((String[]) m.getValue()))
+          .collect(Collectors.joining("; "));
+      LOG.error("Request parameters: {}", collect);
 
-        StringWriter sw = new StringWriter();
-        t.printStackTrace(new PrintWriter(sw));
-        LOG.error(sw.toString());
-      }
+      StringWriter sw = new StringWriter();
+      t.printStackTrace(new PrintWriter(sw));
+      LOG.error(sw.toString());
     }
   }
 
