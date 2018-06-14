@@ -23,9 +23,9 @@ public class LandusePainter extends AbstractPainter{
 
   public void drawLanduse(TileDrawer drawer, Collection<Landuse> landuse, int level)
   {
-
     for (Landuse land : landuse) {
-      switch (land.getType()) {
+      switch (land.getType())
+      {
         case "grass":
           drawer.setFillColor(TilePalette.PARK_COLOR);
           break;
@@ -33,7 +33,7 @@ public class LandusePainter extends AbstractPainter{
           drawer.setFillColor(TilePalette.GREEN_HOUSE);
           break;
         default:
-          log.error(String.format("Landuse type : \"%s\" is not supported for drawing", land.getType()));
+          log.error(String.format("Landuse type : \"%s\" is not supported for drawing. id = %d", land.getType(), land.getId()));
           continue;
       }
       CanvasPolygon polygon = createPolygon(land);

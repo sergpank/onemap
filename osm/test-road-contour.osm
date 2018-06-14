@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version='0.6' generator='JOSM'>
+  <bounds minlat='46.9907' minlon='28.87489' maxlat='46.99161' maxlon='28.87675' origin='CGImap 0.6.0 (17971 thorn-02.openstreetmap.org)' />
+  <node id='-38980' action='modify' lat='46.99286380142' lon='28.87502912502' />
+  <node id='-38982' action='modify' lat='46.99266368862' lon='28.87466507342' />
+  <node id='-38984' action='modify' lat='46.99241499061' lon='28.87409696822' />
+  <node id='-38986' action='modify' lat='46.99210322013' lon='28.87534303399' />
+  <node id='286731726' action='modify' timestamp='2008-08-10T15:37:59Z' uid='37558' user='Ruslanti' version='1' changeset='168787' lat='46.99220865451' lon='28.87377277419' />
+  <node id='286731727' action='modify' timestamp='2008-08-10T15:37:59Z' uid='37558' user='Ruslanti' version='1' changeset='168787' lat='46.99223334695' lon='28.87465280694' />
+  <node id='286731728' action='modify' timestamp='2008-08-10T15:37:59Z' uid='37558' user='Ruslanti' version='1' changeset='168787' lat='46.99196999338' lon='28.87497825278' />
+  <node id='286731729' action='modify' timestamp='2008-08-10T15:37:59Z' uid='37558' user='Ruslanti' version='1' changeset='168787' lat='46.99176935321' lon='28.87516714447' />
+  <node id='286731747' action='modify' timestamp='2008-08-10T15:38:02Z' uid='37558' user='Ruslanti' version='1' changeset='168787' lat='46.99178187372' lon='28.87615920492' />
+  <node id='286731748' action='modify' timestamp='2008-08-10T15:38:02Z' uid='37558' user='Ruslanti' version='1' changeset='168787' lat='46.99224978184' lon='28.87551633993' />
+  <node id='286731760' action='modify' timestamp='2008-08-10T15:38:04Z' uid='37558' user='Ruslanti' version='1' changeset='168787' lat='46.99152460183' lon='28.87541102583' />
+  <node id='286731766' action='modify' timestamp='2008-08-10T15:38:05Z' uid='37558' user='Ruslanti' version='1' changeset='168787' lat='46.99172007168' lon='28.8746673689' />
+  <node id='286731769' action='modify' timestamp='2008-08-10T15:38:06Z' uid='37558' user='Ruslanti' version='1' changeset='168787' lat='46.99195845373' lon='28.87547044951' />
+  <way id='-39011' action='modify'>
+    <nd ref='286731727' />
+    <nd ref='-38982' />
+    <nd ref='-38980' />
+    <tag k='highway' v='residential' />
+    <tag k='name' v='TEST' />
+  </way>
+  <way id='26184639' timestamp='2016-08-11T17:58:23Z' uid='2052948' user='Maturi0n' version='5' changeset='41394368'>
+    <nd ref='286731766' />
+    <nd ref='286731729' />
+    <nd ref='286731769' />
+    <nd ref='286731747' />
+    <tag k='highway' v='residential' />
+    <tag k='name' v='Strada Tomiș' />
+    <tag k='name:ru' v='улица Томиш' />
+    <tag k='old_name' v='улица Пархоменко' />
+  </way>
+  <way id='26184640' action='modify' timestamp='2016-08-11T18:36:27Z' uid='2052948' user='Maturi0n' version='3' changeset='41395114'>
+    <nd ref='286731748' />
+    <nd ref='-38986' />
+    <nd ref='286731728' />
+    <tag k='highway' v='residential' />
+    <tag k='name' v='Strada Boteaza' />
+    <tag k='name:ru' v='улица Ботяза' />
+  </way>
+  <way id='26184642' action='modify' timestamp='2016-08-11T16:57:32Z' uid='2052948' user='Maturi0n' version='3' changeset='41393140'>
+    <nd ref='286731760' />
+    <nd ref='286731729' />
+    <nd ref='286731728' />
+    <nd ref='286731727' />
+    <nd ref='-38984' />
+    <nd ref='286731726' />
+    <tag k='highway' v='residential' />
+    <tag k='name' v='Strada Hanul Morii' />
+    <tag k='name:ru' v='улица Ханул Морий' />
+  </way>
+</osm>

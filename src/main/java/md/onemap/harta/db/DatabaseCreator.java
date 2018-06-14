@@ -121,6 +121,11 @@ public class DatabaseCreator
       else
       {
         log.info("Database already exists");
+        log.info("Drop database ...");
+        statement.execute("DROP DATABASE " + dbName);
+        log.info("Rectreate database ...");
+        statement.execute("CREATE DATABASE " + dbName);
+        log.info("Database {} is created.\n", dbName);
       }
     }
     catch (SQLException e)

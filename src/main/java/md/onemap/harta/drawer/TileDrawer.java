@@ -1,13 +1,14 @@
 package md.onemap.harta.drawer;
 
-import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.geometry.Label;
 import md.onemap.harta.geometry.XYPoint;
 import md.onemap.harta.tile.TileCutter;
 import md.onemap.harta.tile.TilePalette;
+
+import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
 
 /**
  * Created by sergpank on 25.05.15.
@@ -44,13 +45,6 @@ public class TileDrawer extends AbstractDrawer
   {
     graphics.setStroke(new BasicStroke(width));
     graphics.drawPolyline(polygon.getIntXPoints(), polygon.getIntYPoints(), polygon.getPointsNumber());
-//    int[] xPoints = polygon.getIntXPoints();
-//    int[] yPoints = polygon.getIntYPoints();
-//    for (int i = 1; i < polygon.getPointsNumber(); i++)
-//    {
-//      graphics.drawLine(xPoints[i - 1], yPoints[i-1], xPoints[i], yPoints[i]);
-//    }
-//    graphics.drawLine(xPoints[polygon.getPointsNumber() - 1], yPoints[polygon.getPointsNumber() - 1], xPoints[0], yPoints[0]);
   }
 
   @Override

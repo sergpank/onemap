@@ -5,7 +5,6 @@ import com.sun.javafx.tk.Toolkit;
 import javafx.scene.text.Font;
 import md.onemap.harta.drawer.AbstractDrawer;
 import md.onemap.harta.geometry.*;
-import md.onemap.harta.geometry.Label;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.TilePalette;
@@ -20,15 +19,12 @@ import java.util.List;
 public class HighwayPainter extends AbstractPainter
 {
   public static final int ROAD_WIDTH_METERS = 6;
-
-  private final Font font;
-  private final FontMetrics fontMetrics;
+  private static final Font FONT = new Font(TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
+  private static final FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(FONT);
 
   public HighwayPainter(AbstractProjector projector, BoundsXY bounds)
   {
     super(projector, bounds);
-    this.font = new Font(TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
-    this.fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(font);
   }
 
   public void drawHighways(AbstractDrawer drawer, Collection<Highway> highways, int level)
@@ -37,11 +33,26 @@ public class HighwayPainter extends AbstractPainter
     drawer.setFillColor(TilePalette.HIGHWAY_COLOR);
 
     List<Label> labels = new ArrayList<>();
+    List<CanvasPolygon> polygons = new ArrayList<>();
+
+    // First draw road contour (by drawing wider roads)
     double roadWidth = getRoadWidthPixels(projector);
     for (Highway highway : highways)
     {
       addLabel(labels, highway);
       CanvasPolygon polygon = createPolygon(highway);
+      polygons.add(polygon);
+      if (level > 15)
+      {
+        drawer.setStrokeColor(TilePalette.HIGHWAY_BORDER_COLOR);
+        drawer.setFillColor(TilePalette.HIGHWAY_BORDER_COLOR);
+        drawLinesAsPolygons(polygon, drawer, roadWidth + 2);
+      }
+    }
+
+    // Then draw road (Thicker road over the "contour" road)
+    for (CanvasPolygon polygon : polygons)
+    {
       if (level < 13)
       {
         drawer.setLineWidth(1);
@@ -50,9 +61,12 @@ public class HighwayPainter extends AbstractPainter
       }
       else
       {
+        drawer.setStrokeColor(TilePalette.HIGHWAY_COLOR);
+        drawer.setFillColor(TilePalette.HIGHWAY_COLOR);
         drawLinesAsPolygons(polygon, drawer, roadWidth);
       }
     }
+
     if (level > 15)
     {
       TextPainter textPainter = new TextPainter(projector, bounds);
@@ -122,13 +136,7 @@ public class HighwayPainter extends AbstractPainter
     shiftPoints(bounds.getXmin(), xPoints);
     shiftPoints(bounds.getYmin(), yPoints);
 
-    drawer.setFillColor(TilePalette.HIGHWAY_COLOR);
-    drawer.setStrokeColor(TilePalette.HIGHWAY_COLOR);
     drawer.fillPolygon(xPoints, yPoints);
-
-//    drawer.setStrokeColor(TilePalette.FONT_COLOR);
-//    drawer.drawLine(new XYPoint(xPoints[0], yPoints[0]), new XYPoint(xPoints[3], yPoints[3]));
-//    drawer.drawLine(new XYPoint(xPoints[1], yPoints[1]), new XYPoint(xPoints[2], yPoints[2]));
   }
 
   private void drawJunctionCircles(AbstractDrawer drawer, double roadWidth, XYPoint startPoint, XYPoint endPoint, LatLonPoint latLonStart, LatLonPoint latLonEnd)
@@ -139,7 +147,6 @@ public class HighwayPainter extends AbstractPainter
     startPoint = shiftPoint(startPoint);
     endPoint = shiftPoint(endPoint);
 
-    drawer.setFillColor(TilePalette.HIGHWAY_COLOR);
     drawer.fillOval(startPoint.getX() - startDiameter / 2.0, startPoint.getY() - startDiameter / 2.0, startDiameter, startDiameter);
     drawer.fillOval(endPoint.getX() - endDiameter / 2.0, endPoint.getY() - endDiameter / 2.0, endDiameter, endDiameter);
   }

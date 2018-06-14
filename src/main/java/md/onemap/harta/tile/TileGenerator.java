@@ -75,7 +75,7 @@ public abstract class TileGenerator
     {
       for (int x = tileCutter.getMinTileXindex(); x <= tileCutter.getMaxTileXindex(); x++)
       {
-        BufferedImage tile = generateTile(x, y, level, projector, tileCutter.getTileBounds(x, y, 0));
+        BufferedImage tile = generateTile(x, y, level, projector, tileCutter.getTileBounds(x, y));
         writeTile(tile, level, x, y, outputDir);
 
         tileCnt++;
@@ -129,7 +129,7 @@ public abstract class TileGenerator
     else
     {
       TileBoundsCalculator boundsCalculator = getTileBoundsCalculator(level);
-      BoundsLatLon tileBounds = boundsCalculator.getTileBounds(x, y, 0);
+      BoundsLatLon tileBounds = boundsCalculator.getTileBounds(x, y);
 
       tile = generateTile(x, y, level, boundsCalculator.getProjector(), tileBounds);
       writeTile(tile, level, x, y, Props.cacheDir());

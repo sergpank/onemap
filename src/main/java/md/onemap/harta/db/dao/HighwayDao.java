@@ -113,12 +113,18 @@ public class HighwayDao extends Dao<Highway>
     {
       PreparedStatement stmt = connection.prepareStatement(String.format(SELECT_TILE, TABLE));
 
-      int i = 1;
-      stmt.setDouble(i++, box.getMinLon());
-      stmt.setDouble(i++, box.getMaxLon());
+      // Bounding Box extension is necessary to fix road "cuts" on the tile border.
+      // It happens because Road is DB is Just a thick line, but I draw it as a wide ribbon.
+      // And in such case if real road is not on the tile - its extended version won't be drawn.
+      double latExt = Math.abs(box.getMaxLat() - box.getMinLat()) / 8;
+      double lonExt = Math.abs(box.getMaxLon() - box.getMinLon()) / 8;
 
-      stmt.setDouble(i++, box.getMinLat());
-      stmt.setDouble(i++, box.getMaxLat());
+      int i = 1;
+      stmt.setDouble(i++, box.getMinLon() - lonExt);
+      stmt.setDouble(i++, box.getMaxLon() + lonExt);
+
+      stmt.setDouble(i++, box.getMinLat() - latExt);
+      stmt.setDouble(i, box.getMaxLat() + latExt);
 
       try (ResultSet resultSet = stmt.executeQuery())
       {

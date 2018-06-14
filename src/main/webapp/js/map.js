@@ -1,7 +1,7 @@
 var map = L.map('map', {
-  zoomSnap: 0.25,
-  center: [47., 28.865], 
-  zoom: 16
+  zoomSnap: 0.125,
+  center: [47.022, 28.835],
+  zoom: 18
 });
 
 L.control.scale().addTo(map);
@@ -9,7 +9,7 @@ L.control.scale().addTo(map);
 L.tileLayer('http://onemap.md/tile?x={x}&y={y}&z={z}', {
   minZoom: 10,
   maxZoom: 20,
-  tileSize: 256,
+  tileSize: 512,
   detectRetina: true
 }).addTo(map);
 

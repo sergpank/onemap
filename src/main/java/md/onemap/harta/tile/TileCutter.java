@@ -58,15 +58,11 @@ public class TileCutter
    * Tile index starts from 1
    * @param x tile index
    * @param y tile index
-   * @param tileExtension - tile corner may intersect road but not intersect road center,
-   *                            in that case "cuts" will appear on the road, to avoid it, we have to extend tile bounds
-   *                            for at least two widths of the road.
-   *                      If tile should not be extended - just pass 0
    * @return Bounding box of a specific tile in XY format
    */
-  public BoundsLatLon getTileBounds(int x, int y, int tileExtension)
+  public BoundsLatLon getTileBounds(int x, int y)
   {
-    return boundsCalculator.getTileBounds(x, y, tileExtension);
+    return boundsCalculator.getTileBounds(x, y);
   }
 
   public int getMinTileXindex()
