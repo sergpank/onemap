@@ -59,7 +59,7 @@ public class HighwayGisDao extends GisDao<Highway>
       pStmt.setString(pos++, highway.getName());
       pStmt.setString(pos++, highway.getNameRu());
       pStmt.setString(pos++, highway.getNameOld());
-      pStmt.setString(pos++, highway.getType());
+      pStmt.setString(pos++, highway.getType().name());
       pStmt.execute();
     }
     catch (SQLException e)

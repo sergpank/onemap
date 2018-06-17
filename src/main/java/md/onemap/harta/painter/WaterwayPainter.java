@@ -5,7 +5,7 @@ import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.osm.Waterway;
 import md.onemap.harta.projector.AbstractProjector;
-import md.onemap.harta.tile.TilePalette;
+import md.onemap.harta.tile.Palette;
 
 import java.util.Collection;
 
@@ -19,7 +19,7 @@ public class WaterwayPainter extends AbstractPainter {
   }
 
   public void drawWaterways(TileDrawer drawer, Collection<Waterway> waterways, int level) {
-    drawer.setStrokeColor(TilePalette.WATER_COLOR);
+    drawer.setStrokeColor(Palette.WATER_COLOR);
 
     for (Waterway waterway : waterways) {
       CanvasPolygon polygon = createPolygon(waterway);

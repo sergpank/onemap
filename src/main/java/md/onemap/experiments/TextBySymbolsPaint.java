@@ -1,17 +1,10 @@
 package md.onemap.experiments;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.Shape;
+import md.onemap.harta.tile.Palette;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.font.GlyphVector;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import md.onemap.harta.tile.TilePalette;
 
 /** A demonstration of Java2D transformations */
 public class TextBySymbolsPaint extends JPanel {
@@ -37,7 +30,7 @@ public class TextBySymbolsPaint extends JPanel {
     g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 
-    g.setPaint(TilePalette.BACKGROUND_COLOR);
+    g.setPaint(Palette.BACKGROUND_COLOR);
     g.fillRect(0, 0, WIDTH, HEIGHT);
 
     g.setStroke(new BasicStroke(1.0f));
@@ -75,7 +68,7 @@ public class TextBySymbolsPaint extends JPanel {
   {
     g.translate(10, 25);
 
-    String[] fonts = new String[] {TilePalette.FONT_NAME, Font.DIALOG_INPUT, Font.MONOSPACED, Font.SANS_SERIF, Font.SERIF};
+    String[] fonts = new String[] {Palette.FONT_NAME, Font.DIALOG_INPUT, Font.MONOSPACED, Font.SANS_SERIF, Font.SERIF};
 
     for (int fontType = 0; fontType < 5; fontType++)
     {

@@ -132,7 +132,10 @@ public abstract class TileGenerator
       BoundsLatLon tileBounds = boundsCalculator.getTileBounds(x, y);
 
       tile = generateTile(x, y, level, boundsCalculator.getProjector(), tileBounds);
-      writeTile(tile, level, x, y, Props.cacheDir());
+      if (Props.cacheEnabled())
+      {
+        writeTile(tile, level, x, y, Props.cacheDir());
+      }
     }
 
     return tile;

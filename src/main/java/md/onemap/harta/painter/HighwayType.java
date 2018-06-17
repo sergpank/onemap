@@ -1,0 +1,93 @@
+package md.onemap.harta.painter;
+
+import md.onemap.harta.geometry.GeometryUtil;
+import md.onemap.harta.geometry.XYPoint;
+import md.onemap.harta.projector.AbstractProjector;
+import md.onemap.harta.tile.Palette;
+
+import java.awt.*;
+
+public enum HighwayType
+{
+  // Main Tags of road network (from most to less important)
+  motorway(12, 100, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),   // - a restricted access major divided motorway, normally with 2 or more running lanes
+  trunk(12, 90, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),      // - the most important roads that aren't motorways (not necessary to be divided by lanes)
+  primary(8, 80, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),     // - next most important road (links between large towns)
+  secondary(8, 70, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),   // - next most important road in a country system (link between towns)
+  tertiary(8, 60, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),    // - less important roads (link between small town and village)
+  unclassified(2, 50, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),// - local motorways
+  residential(2, 50, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR), // - roads inside living areas
+  service(2, 50, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),     // - roads in industrial areas or parking or some restricted zone
+
+  // Links of main road types
+  motorway_link(6, 100, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),
+  trunk_link(6, 90, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),
+  primary_link(4, 80, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),
+  secondary_link(4, 70, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),
+  tertiary_link(4, 60, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),
+
+  // Special road types
+  living_street(2, 40, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),// - residential rads where pedestrians have legal priority over the cars
+  pedestrian(2, 40, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),   // - residential roads that are allowed mainly/exclusively for pedestrians
+  track(2, 40, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),        // - unpaved surface for agricultural of forestry use
+  raceway(2, 40, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),      // - a racing road
+  road(2, 40, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),         // - lines that _may be_ are roads. This is a temporary tag
+
+  // Roads not for 4-wheeled transport
+  footway(2, 30, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),  // - road for pedestrians, if bicycle=ye - allowed for riding
+  cycleway(2, 30, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR), // - road for bicycles, if foot=yes - allowed for walking
+  bridleway(2, 30, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),// - road for horse riding
+  steps(2, 30, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),    // - stairs on footways
+  path(2, 30, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),     // - a non specific path mainly for walkers
+
+  // Roads under construction
+  proposed(2, 20, Palette.PROPOSED_HIGHWAY_COLOR, Palette.PROPOSED_HIGHWAY_BORDER_COLOR),    // - approved for building (do not draw)
+  construction(2, 10, Palette.PROPOSED_HIGHWAY_COLOR, Palette.PROPOSED_HIGHWAY_BORDER_COLOR);// - under construction or reparation (draw, but don't use for routing)
+
+  private final int width;
+  private final int priority;
+  private final Color surfaceColor;
+  private final Color borderColor;
+
+  HighwayType(int width, int priority, Color surfaceColor, Color borderColor)
+  {
+    this.width = width;
+    this.priority = priority;
+    this.surfaceColor = surfaceColor;
+    this.borderColor = borderColor;
+  }
+
+  /**
+   * @param projector - Map projector
+   * @param borderWidthMeters - Border width in meters * 2 (because for both sides)
+   * @return road width in pixels
+   */
+  public double getWidth(AbstractProjector projector, double borderWidthMeters)
+  {
+    return getRoadWidthPixels(projector, width + borderWidthMeters);
+  }
+
+  public int getPriority()
+  {
+    return priority;
+  }
+
+  public Color getSurfaceColor()
+  {
+    return surfaceColor;
+  }
+
+  public Color getBorderColor()
+  {
+    return borderColor;
+  }
+
+  private double getRoadWidthPixels(AbstractProjector projector, double roadWidthMeters)
+  {
+    double roadWidth = GeometryUtil.DEGREES_IN_METER * roadWidthMeters;
+    XYPoint center = projector.getXY(47, 29);
+    XYPoint xyLon = projector.getXY(47, 29 + roadWidth);
+
+    return Math.ceil(xyLon.getX() - center.getX());
+  }
+}

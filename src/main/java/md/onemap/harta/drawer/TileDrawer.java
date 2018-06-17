@@ -3,8 +3,8 @@ package md.onemap.harta.drawer;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.geometry.Label;
 import md.onemap.harta.geometry.XYPoint;
+import md.onemap.harta.tile.Palette;
 import md.onemap.harta.tile.TileCutter;
-import md.onemap.harta.tile.TilePalette;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -58,7 +58,7 @@ public class TileDrawer extends AbstractDrawer
   {
     if (text != null)
     {
-      graphics.setFont(new Font(TilePalette.BUILDING_FONT_NAME, Font.BOLD, TilePalette.BUILDING_FONT_SIZE));
+      graphics.setFont(new Font(Palette.BUILDING_FONT_NAME, Font.BOLD, Palette.BUILDING_FONT_SIZE));
       graphics.drawString(text, (float) xCenter, (float) yCenter);
     }
   }
@@ -66,7 +66,7 @@ public class TileDrawer extends AbstractDrawer
   @Override
   public void paintLabel(Label label, int x, int y, TileCutter tileCutter)
   {
-    Font font = new Font(TilePalette.HIGHWAY_FONT_NAME, Font.BOLD, TilePalette.HIGHWAY_FONT_SIZE);
+    Font font = new Font(Palette.HIGHWAY_FONT_NAME, Font.BOLD, Palette.HIGHWAY_FONT_SIZE);
     GlyphVector gv = font.createGlyphVector(graphics.getFontRenderContext(), label.getText());
 
     graphics.setStroke(new BasicStroke(1f));
@@ -76,7 +76,7 @@ public class TileDrawer extends AbstractDrawer
     for (int i = 0; i < gv.getNumGlyphs(); i++)
     {
       Shape glyph = gv.getGlyphOutline(i);
-      graphics.setPaint(TilePalette.FONT_COLOR);
+      graphics.setPaint(Palette.FONT_COLOR);
       graphics.fill(glyph); // Fill the shape
       //graphics.setPaint(Color.WHITE);
       //graphics.draw(glyph); // And draw the outline

@@ -6,7 +6,7 @@ import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.geometry.XYPoint;
 import md.onemap.harta.osm.Building;
 import md.onemap.harta.projector.AbstractProjector;
-import md.onemap.harta.tile.TilePalette;
+import md.onemap.harta.tile.Palette;
 import md.onemap.harta.util.TextUtil;
 
 import java.util.Collection;
@@ -31,10 +31,10 @@ public class BuildingPainter extends AbstractPainter
       shiftPoints(bounds.getXmin(), polygon.getxPoints());
       shiftPoints(bounds.getYmin(), polygon.getyPoints());
 
-      drawer.setFillColor(TilePalette.BUILDING_COLOR);
+      drawer.setFillColor(Palette.BUILDING_COLOR);
       drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
 
-      drawer.setStrokeColor(TilePalette.BUILDING_BORDER_COLOR);
+      drawer.setStrokeColor(Palette.BUILDING_BORDER_COLOR);
       drawer.drawPolyLine(polygon, 1);
 
       if (level >= 17)
@@ -52,11 +52,11 @@ public class BuildingPainter extends AbstractPainter
       BoundsXY bounds = building.getBounds().toXY(projector);
       double w = bounds.getXmax() - bounds.getXmin();
       double h = bounds.getYmax() - bounds.getYmin();
-      float stringWidth = TextUtil.getStringWidth(houseNumber, TilePalette.BUILDING_FONT_NAME, TilePalette.BUILDING_FONT_SIZE);
-      float stringHeight = TextUtil.getStringHeight(TilePalette.BUILDING_FONT_NAME, TilePalette.BUILDING_FONT_SIZE);
+      float stringWidth = TextUtil.getStringWidth(houseNumber, Palette.BUILDING_FONT_NAME, Palette.BUILDING_FONT_SIZE);
+      float stringHeight = TextUtil.getStringHeight(Palette.BUILDING_FONT_NAME, Palette.BUILDING_FONT_SIZE);
       if (((w * h) / (stringWidth * stringHeight)) >= 3)
       {
-        drawer.setFillColor(TilePalette.BUILDING_FONT_COLOR);
+        drawer.setFillColor(Palette.BUILDING_FONT_COLOR);
         XYPoint xy = getLabelCenter(polygon, houseNumber, stringWidth, stringHeight);
 
         drawer.fillText(houseNumber, xy.getX(), xy.getY());

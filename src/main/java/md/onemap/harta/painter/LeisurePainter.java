@@ -5,7 +5,7 @@ import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.osm.Leisure;
 import md.onemap.harta.projector.AbstractProjector;
-import md.onemap.harta.tile.TilePalette;
+import md.onemap.harta.tile.Palette;
 
 import java.util.Collection;
 
@@ -22,7 +22,7 @@ public class LeisurePainter extends AbstractPainter
 
   public void drawParks(AbstractDrawer drawer, Collection<Leisure> leisures, int level)
   {
-    drawer.setFillColor(TilePalette.PARK_COLOR);
+    drawer.setFillColor(Palette.PARK_COLOR);
     for (Leisure leisure : leisures) {
       if (leisure.isPark())
       {

@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * Created by sergpank on 24.05.15.
  */
-public class TilePalette
+public class Palette
 {
   public static final Color BACKGROUND_COLOR = new Color(235, 231, 211);
   public static final Color BORDER_COLOR = new Color(244, 244, 244);
@@ -18,6 +18,11 @@ public class TilePalette
   public static final String HIGHWAY_FONT_NAME = Font.SANS_SERIF;
   public static final int HIGHWAY_FONT_SIZE = 20;
 
+  public static final Color PEDESTRIAN_HIGHWAY_COLOR = new Color(151, 242, 150);
+  public static final Color PEDESTRIAN_HIGHWAY_BORDER_COLOR = new Color(7, 145, 70);
+
+  public static final Color PROPOSED_HIGHWAY_COLOR = new Color(204, 208, 211);
+  public static final Color PROPOSED_HIGHWAY_BORDER_COLOR = new Color(31, 17, 25);
 
   public static final Color BUILDING_COLOR = new Color(252, 250, 232);
   public static final Color BUILDING_BORDER_COLOR = new Color(200, 196, 184);

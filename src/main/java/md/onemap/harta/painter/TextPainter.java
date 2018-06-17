@@ -6,7 +6,7 @@ import md.onemap.harta.geometry.Label;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.osm.OsmNode;
 import md.onemap.harta.projector.AbstractProjector;
-import md.onemap.harta.tile.TilePalette;
+import md.onemap.harta.tile.Palette;
 
 import java.awt.*;
 import java.awt.font.GlyphVector;
@@ -22,7 +22,7 @@ public class TextPainter extends AbstractPainter
   public TextPainter(AbstractProjector projector, BoundsXY bounds)
   {
     super(projector, bounds);
-    font = new Font(TilePalette.HIGHWAY_FONT_NAME, Font.PLAIN, TilePalette.HIGHWAY_FONT_SIZE);
+    font = new Font(Palette.HIGHWAY_FONT_NAME, Font.PLAIN, Palette.HIGHWAY_FONT_SIZE);
   }
 
   public void paintHighwayLabel(AbstractDrawer drawer, Label label)
@@ -30,7 +30,7 @@ public class TextPainter extends AbstractPainter
     Highway highway = label.getHighway();
     if (highway != null && highway.getName() != null)
     {
-      drawer.setFillColor(TilePalette.FONT_COLOR);
+      drawer.setFillColor(Palette.FONT_COLOR);
       drawTiltString(drawer, label);
     }
   }
@@ -46,7 +46,7 @@ public class TextPainter extends AbstractPainter
 
     if (roadLength > label.getWidth())
     {
-      RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, TilePalette.HIGHWAY_FONT_NAME, TilePalette.HIGHWAY_FONT_SIZE);
+      RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
       List<Intersection> intersections = intersector.getIntersections(label.getHighway(), label, projector);
       for (int i = 0; i < intersections.size(); i++)
       {

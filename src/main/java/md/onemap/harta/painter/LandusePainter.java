@@ -5,7 +5,7 @@ import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.osm.Landuse;
 import md.onemap.harta.projector.AbstractProjector;
-import md.onemap.harta.tile.TilePalette;
+import md.onemap.harta.tile.Palette;
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
@@ -27,10 +27,10 @@ public class LandusePainter extends AbstractPainter{
       switch (land.getType())
       {
         case "grass":
-          drawer.setFillColor(TilePalette.PARK_COLOR);
+          drawer.setFillColor(Palette.PARK_COLOR);
           break;
         case "greenhouse_horticulture":
-          drawer.setFillColor(TilePalette.GREEN_HOUSE);
+          drawer.setFillColor(Palette.GREEN_HOUSE);
           break;
         default:
           log.error(String.format("Landuse type : \"%s\" is not supported for drawing. id = %d", land.getType(), land.getId()));

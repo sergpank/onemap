@@ -8,7 +8,6 @@ import md.onemap.harta.painter.BuildingPainter;
 import md.onemap.harta.painter.HighwayPainter;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.properties.Props;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +33,7 @@ public class TileDrawer
     BufferedImage bi = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = bi.createGraphics();
 
-    graphics.setPaint(TilePalette.BACKGROUND_COLOR);
+    graphics.setPaint(Palette.BACKGROUND_COLOR);
     graphics.fillRect(0, 0, tileSize, tileSize);
 
     AbstractDrawer drawer = new md.onemap.harta.drawer.TileDrawer(graphics);

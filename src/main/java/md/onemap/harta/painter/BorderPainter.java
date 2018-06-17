@@ -2,18 +2,22 @@ package md.onemap.harta.painter;
 
 import com.sun.javafx.tk.FontMetrics;
 import com.sun.javafx.tk.Toolkit;
+import javafx.scene.text.Font;
+import md.onemap.harta.drawer.AbstractDrawer;
+import md.onemap.harta.geometry.BoundsXY;
+import md.onemap.harta.geometry.CanvasPolygon;
+import md.onemap.harta.geometry.Label;
+import md.onemap.harta.geometry.XYPoint;
+import md.onemap.harta.osm.Border;
+import md.onemap.harta.projector.AbstractProjector;
+import md.onemap.harta.tile.Palette;
+import md.onemap.harta.tile.TileCutter;
+import md.onemap.harta.util.BoxIntersector;
+import md.onemap.harta.util.TextUtil;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javafx.scene.text.Font;
-import md.onemap.harta.drawer.AbstractDrawer;
-import md.onemap.harta.geometry.*;
-import md.onemap.harta.osm.Border;
-import md.onemap.harta.projector.AbstractProjector;
-import md.onemap.harta.tile.TileCutter;
-import md.onemap.harta.tile.TilePalette;
-import md.onemap.harta.util.BoxIntersector;
-import md.onemap.harta.util.TextUtil;
 
 /**
  * Created by sergpank on 05.05.15.
@@ -32,7 +36,7 @@ public class BorderPainter extends AbstractPainter
   {
     List<Label> labels = new ArrayList<>();
 
-    drawer.setStrokeColor(TilePalette.BORDER_COLOR);
+    drawer.setStrokeColor(Palette.BORDER_COLOR);
     for (Border border : borders)
     {
       CanvasPolygon polygon = createPolygon(border);
@@ -50,7 +54,7 @@ public class BorderPainter extends AbstractPainter
 
   private void paintLabels(AbstractDrawer drawer, List<Label> labels, int x, int y, TileCutter tileCutter)
   {
-    drawer.setFillColor(TilePalette.FONT_COLOR);
+    drawer.setFillColor(Palette.FONT_COLOR);
     for (int i = 0; i < labels.size() - 1; i++)
     {
       Label label = labels.get(i);

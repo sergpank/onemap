@@ -5,7 +5,7 @@ import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.osm.Natural;
 import md.onemap.harta.projector.AbstractProjector;
-import md.onemap.harta.tile.TilePalette;
+import md.onemap.harta.tile.Palette;
 
 import java.util.Collection;
 
@@ -21,7 +21,7 @@ public class NaturePainter extends AbstractPainter
 
   public void drawWater(AbstractDrawer drawer, Collection<Natural> nature, int level)
   {
-    drawer.setFillColor(TilePalette.WATER_COLOR);
+    drawer.setFillColor(Palette.WATER_COLOR);
     for (Natural natural : nature)
     {
       if (natural.isWater())
