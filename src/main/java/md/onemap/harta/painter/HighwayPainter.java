@@ -45,7 +45,7 @@ public class HighwayPainter extends AbstractPainter
         drawer.setStrokeColor(highway.getType().getBorderColor());
         drawer.setFillColor(highway.getType().getBorderColor());
 
-        drawLinesAsPolygons(polygon, drawer, highway.getType().getWidth(projector, BORDER_WIDTH_METERS));
+        drawLinesAsPolygons(polygon, drawer, highway.getType().getWidth(projector, true));
       }
     }
 
@@ -64,7 +64,7 @@ public class HighwayPainter extends AbstractPainter
         drawer.setStrokeColor(highway.getType().getSurfaceColor());
         drawer.setFillColor(highway.getType().getSurfaceColor());
 
-        drawLinesAsPolygons(polygon, drawer, highway.getType().getWidth(projector, 0));
+        drawLinesAsPolygons(polygon, drawer, highway.getType().getWidth(projector, false));
       }
     }
 
