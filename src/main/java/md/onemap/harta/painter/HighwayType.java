@@ -57,7 +57,7 @@ public enum HighwayType
     this.borderColor = borderColor;
   }
 
-  public double getWidth(AbstractProjector projector, boolean withBorder)
+  public int getWidth(AbstractProjector projector, boolean withBorder)
   {
     return getRoadWidthPixels(projector, width, withBorder);
   }
@@ -77,7 +77,7 @@ public enum HighwayType
     return borderColor;
   }
 
-  private double getRoadWidthPixels(AbstractProjector projector, double roadWidthMeters, boolean withBorder)
+  private int getRoadWidthPixels(AbstractProjector projector, double roadWidthMeters, boolean withBorder)
   {
     double roadWidth = GeometryUtil.DEGREES_IN_METER * roadWidthMeters;
     XYPoint center = projector.getXY(47, 29);
@@ -87,11 +87,11 @@ public enum HighwayType
     if (withBorder)
     {
       double extension = widthInPixels / 4;
-      return  widthInPixels + (extension < 2 ? 2 : Math.ceil(extension));
+      return  (int)Math.ceil(widthInPixels + (extension < 2 ? 2 : Math.ceil(extension)));
     }
     else
     {
-      return widthInPixels;
+      return (int)Math.ceil(widthInPixels);
     }
   }
 }

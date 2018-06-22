@@ -43,7 +43,7 @@ public class TileDrawer extends AbstractDrawer
   @Override
   public void drawPolyLine(CanvasPolygon polygon, int width)
   {
-    graphics.setStroke(new BasicStroke(width));
+    graphics.setStroke(new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
     graphics.drawPolyline(polygon.getIntXPoints(), polygon.getIntYPoints(), polygon.getPointsNumber());
   }
 

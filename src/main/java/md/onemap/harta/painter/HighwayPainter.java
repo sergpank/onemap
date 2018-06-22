@@ -44,8 +44,8 @@ public class HighwayPainter extends AbstractPainter
       {
         drawer.setStrokeColor(highway.getType().getBorderColor());
         drawer.setFillColor(highway.getType().getBorderColor());
-
-        drawLinesAsPolygons(polygon, drawer, highway.getType().getWidth(projector, true));
+        shiftPolygon(polygon);
+        drawer.drawPolyLine(polygon, highway.getType().getWidth(projector, true));
       }
     }
 
@@ -55,7 +55,6 @@ public class HighwayPainter extends AbstractPainter
       CanvasPolygon polygon = createPolygon(highway);
       if (level < 13)
       {
-        drawer.setLineWidth(1);
         shiftPolygon(polygon);
         drawer.drawPolyLine(polygon, 1);
       }
@@ -63,8 +62,8 @@ public class HighwayPainter extends AbstractPainter
       {
         drawer.setStrokeColor(highway.getType().getSurfaceColor());
         drawer.setFillColor(highway.getType().getSurfaceColor());
-
-        drawLinesAsPolygons(polygon, drawer, highway.getType().getWidth(projector, false));
+        shiftPolygon(polygon);
+        drawer.drawPolyLine(polygon, highway.getType().getWidth(projector, false));
       }
     }
 
@@ -95,7 +94,7 @@ public class HighwayPainter extends AbstractPainter
     XYPoint highwayCenter = new XYPoint((minXY.getX() + maxXY.getX()) / 2, (minXY.getY() + maxXY.getY()) / 2);
     if (highway.getName() != null && !highway.getName().isEmpty())
     {
-      float height = fontMetrics.getLineHeight();
+      float height = fontMetrics.getLineHeight() / 2;
       float width = fontMetrics.computeStringWidth(highway.getName()) + highway.getName().length();
       Label label = new Label(highway.getName(), highwayCenter, height, width);
       label.setHighway(highway);
