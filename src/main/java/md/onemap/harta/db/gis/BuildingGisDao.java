@@ -22,12 +22,12 @@ public class BuildingGisDao extends GisDao<Building>
 {
   private static final Logger LOG = LoggerFactory.getLogger(BuildingGisDao.class);
 
-  public static final String INSERT_SQL = "INSERT INTO gis.buildings_gis " +
-      "(building_id, housenumber, height, street, design, levels, building_geometry) " +
+  public static final String INSERT_SQL = "INSERT INTO gis.buildings " +
+      "(id, housenumber, height, street, design, levels, geometry) " +
       "VALUES (?, ?, ?, ?, ?, ?, %s)";
 
-  public static final String SELECT_TILE = "SELECT building_id, housenumber, height, street, design, levels, building_geometry " +
-      "FROM gis.buildings_gis " +
+  public static final String SELECT_TILE = "SELECT id, housenumber, height, street, design, levels, geometry " +
+      "FROM gis.buildings " +
       "WHERE ST_Intersects(" +
       "ST_GeomFromText('Polygon((" +
       "%f %f," +
@@ -35,9 +35,9 @@ public class BuildingGisDao extends GisDao<Building>
       "%f %f," +
       "%f %f," +
       "%f %f" +
-      "))'), building_geometry)";
+      "))'), geometry)";
 
-  public static final String SELECT_ALL = "SELECT building_id, housenumber, height, street, design, levels, building_geometry FROM gis.buildings_gis";
+  public static final String SELECT_ALL = "SELECT id, housenumber, height, street, design, levels, geometry FROM gis.buildings";
 
   @Override
   public void save(Building building)
@@ -100,7 +100,7 @@ public class BuildingGisDao extends GisDao<Building>
       ResultSet rs = stmt.executeQuery(sql);
       while (rs.next())
       {
-        long id = rs.getLong("building_id");
+        long id = rs.getLong("id");
         String houseNumber = rs.getString("housenumber");
         String street = rs.getString("street");
         String height = rs.getString("height");
@@ -108,7 +108,7 @@ public class BuildingGisDao extends GisDao<Building>
         String design = rs.getString("design");
 
         ArrayList<OsmNode> nodes = new ArrayList<>();
-        PGgeometry geometry = (PGgeometry) rs.getObject("building_geometry");
+        PGgeometry geometry = (PGgeometry) rs.getObject("geometry");
         for (int i = 0; i < geometry.getGeometry().numPoints() - 1; i++)
         {
           Point point = geometry.getGeometry().getPoint(i);
@@ -135,7 +135,7 @@ public class BuildingGisDao extends GisDao<Building>
       ResultSet rs = stmt.executeQuery(SELECT_ALL);
       while (rs.next())
       {
-        long id = rs.getLong("building_id");
+        long id = rs.getLong("id");
         String houseNumber = rs.getString("housenumber");
         String street = rs.getString("street");
         String height = rs.getString("height");
@@ -143,7 +143,7 @@ public class BuildingGisDao extends GisDao<Building>
         String design = rs.getString("design");
 
         ArrayList<OsmNode> nodes = new ArrayList<>();
-        PGgeometry geometry = (PGgeometry) rs.getObject("building_geometry");
+        PGgeometry geometry = (PGgeometry) rs.getObject("geometry");
         for (int i = 0; i < geometry.getGeometry().numPoints() - 1; i++)
         {
           Point point = geometry.getGeometry().getPoint(i);

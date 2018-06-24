@@ -152,7 +152,7 @@ public class DatabaseCreator
 
   private static String getCreateBordersGisTable()
   {
-    return "CREATE TABLE IF NOT EXISTS gis.borders_gis (" +
+    return "CREATE TABLE IF NOT EXISTS gis.borders (" +
         "  border_id bigint NOT NULL," +
         "  name text," +
         "  border_geometry geometry," +
@@ -178,16 +178,16 @@ public class DatabaseCreator
 
   private static String getCreateBuildingsGisTable()
   {
-    return "CREATE TABLE IF NOT EXISTS gis.buildings_gis " +
+    return "CREATE TABLE IF NOT EXISTS gis.buildings " +
         "( " +
-        "  building_id bigint NOT NULL, " +
+        "  id bigint NOT NULL, " +
         "  housenumber text, " +
         "  street text, " +
         "  height text, " +
         "  design text, " +
         "  levels integer, " +
-        "  building_geometry geometry, " +
-        "  CONSTRAINT buildings_gis_pkey PRIMARY KEY (building_id)" +
+        "  geometry geometry, " +
+        "  CONSTRAINT buildings_gis_pkey PRIMARY KEY (id)" +
         ")";
   }
 
@@ -209,7 +209,7 @@ public class DatabaseCreator
 
   private static String getCreateHighwaysGisTable()
   {
-    return "CREATE TABLE IF NOT EXISTS gis.highways_gis " +
+    return "CREATE TABLE IF NOT EXISTS gis.highways " +
         "( " +
         "  highway_id bigint NOT NULL, " +
         "  highway_name text, " +
@@ -248,12 +248,24 @@ public class DatabaseCreator
 
   private static String getCreateLeisureGisTable()
   {
-    return "CREATE TABLE IF NOT EXISTS gis.leisure_gis (" +
-        "leisure_id bigint NOT NULL, " +
-        "leisure_type text, " +
-        "leisure_name text, " +
-        "leisure_geometry geometry, " +
-        "CONSTRAINT leisure_gis_pkey PRIMARY KEY (leisure_id) )";
+    return "CREATE TABLE IF NOT EXISTS gis.leisure (" +
+        "id bigint NOT NULL, " +
+        "type text, " +
+        "name text, " +
+        "name_ru text, " +
+        "geometry geometry, " +
+        "CONSTRAINT leisure_gis_pkey PRIMARY KEY (id) )";
+  }
+
+  private static String getCreateLanduseGisTable()
+  {
+    return "CREATE TABLE IF NOT EXISTS gis.landuse (" +
+        "id bigint NOT NULL, " +
+        "type text, " +
+        "name text, " +
+        "name_ru text, " +
+        "geometry geometry, " +
+        "CONSTRAINT landuse_gis_pkey PRIMARY KEY (id) )";
   }
 
   private static String getCreateWaterwayTable()
@@ -262,6 +274,7 @@ public class DatabaseCreator
         "waterway_id bigint NOT NULL, " +
         "waterway_type text, " +
         "waterway_name text, " +
+        "waterway_name_ru text, " +
         "waterway_nodes bigint[], " +
         "min_lat double precision, " +
         "max_lat double precision, " +
@@ -272,12 +285,13 @@ public class DatabaseCreator
 
   private static String getCreateWaterwayGisTable()
   {
-    return "CREATE TABLE IF NOT EXISTS gis.waterways_gis (" +
-        "waterway_id bigint NOT NULL, " +
-        "waterway_type text, " +
-        "waterway_name text, " +
-        "waterway_geometry geometry, " +
-        "CONSTRAINT waterway_gis_pkey PRIMARY KEY (waterway_id) )";
+    return "CREATE TABLE IF NOT EXISTS gis.waterways (" +
+        "id bigint NOT NULL, " +
+        "type text, " +
+        "name text, " +
+        "name_ru text, " +
+        "geometry geometry, " +
+        "CONSTRAINT waterway_gis_pkey PRIMARY KEY (id) )";
   }
 
   private static String getCreateLanduseTable()
@@ -291,15 +305,6 @@ public class DatabaseCreator
         "min_lon double precision, " +
         "max_lon double precision," +
         "CONSTRAINT landuse_pkey PRIMARY KEY (landuse_id) )";
-  }
-
-  private static String getCreateLanduseGisTable()
-  {
-    return "CREATE TABLE IF NOT EXISTS gis.landuse_gis (" +
-        "landuse_id bigint NOT NULL, " +
-        "landuse_type text, " +
-        "landuse_geometry geometry, " +
-        "CONSTRAINT landuse_gis_pkey PRIMARY KEY (landuse_id) )";
   }
 
   private static String getCreateNodesTable()

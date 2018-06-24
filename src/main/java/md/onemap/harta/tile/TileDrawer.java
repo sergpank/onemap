@@ -1,11 +1,18 @@
 package md.onemap.harta.tile;
 
 import md.onemap.harta.drawer.AbstractDrawer;
+import md.onemap.harta.drawer.AwtDrawer;
+import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.geometry.BoundsXY;
+import md.onemap.harta.loader.AbstractLoader;
 import md.onemap.harta.osm.Building;
 import md.onemap.harta.osm.Highway;
+import md.onemap.harta.osm.Landuse;
+import md.onemap.harta.osm.Leisure;
 import md.onemap.harta.painter.BuildingPainter;
 import md.onemap.harta.painter.HighwayPainter;
+import md.onemap.harta.painter.LandusePainter;
+import md.onemap.harta.painter.LeisurePainter;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.properties.Props;
 import org.slf4j.Logger;
@@ -28,24 +35,35 @@ public class TileDrawer
     this.tileSize = tileSize;
   }
 
-  public BufferedImage drawTile(int level, int x, int y, BoundsXY tileBounds, AbstractProjector projector,
-                       Collection<Highway> highways, Collection<Building> buildings) {
+  public BufferedImage drawTile(int level, int x, int y, AbstractProjector projector,
+                                AbstractLoader loader, BoundsLatLon tileBounds)
+  {
     BufferedImage bi = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = bi.createGraphics();
 
     graphics.setPaint(Palette.BACKGROUND_COLOR);
     graphics.fillRect(0, 0, tileSize, tileSize);
 
-    AbstractDrawer drawer = new md.onemap.harta.drawer.TileDrawer(graphics);
+    AbstractDrawer drawer = new AwtDrawer(graphics);
     drawer.setAAEnabled(true);
 
-    new HighwayPainter(projector, tileBounds).drawHighways(drawer, highways, level);
-    new BuildingPainter(projector, tileBounds).drawBuildings(drawer, buildings, level);
+    BoundsXY boundsXY = tileBounds.toXY(projector);
+
+    Collection<Highway> highways = loader.getHighways(level, tileBounds);
+    Collection<Building> buildings = loader.getBuildings(level, tileBounds);
+    Collection<Leisure> leisure = loader.getLeisure(level, tileBounds);
+    Collection<Landuse> landuse = loader.getLanduse(level, tileBounds);
+
+    new LandusePainter(projector,  boundsXY).draw(drawer, landuse, level);
+    new LeisurePainter(projector,  boundsXY).draw(drawer, leisure, level);
+    new HighwayPainter(projector,  boundsXY).draw(drawer, highways, level);
+    new BuildingPainter(projector, boundsXY).draw(drawer, buildings, level);
 
     if (Props.debugTileNumber())
     {
       drawTileNumber(x, y, level, graphics);
     }
+
     if (Props.debugTileBorder())
     {
       drawTileBorder(graphics);

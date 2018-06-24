@@ -22,7 +22,7 @@ public class BuildingPainter extends AbstractPainter
     super(projector, bounds);
   }
 
-  public void drawBuildings(AbstractDrawer drawer, Collection<Building> buildings, int level)
+  public void draw(AbstractDrawer drawer, Collection<Building> buildings, int level)
   {
     drawer.setFont("Arial", 12);
     for (Building building : buildings)

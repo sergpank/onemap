@@ -1,6 +1,6 @@
 package md.onemap.harta;
 
-import md.onemap.harta.drawer.TileDrawer;
+import md.onemap.harta.drawer.AwtDrawer;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.XYPoint;
@@ -9,6 +9,8 @@ import md.onemap.harta.loader.OsmLoader;
 import md.onemap.harta.osm.*;
 import md.onemap.harta.painter.BuildingPainter;
 import md.onemap.harta.painter.HighwayPainter;
+import md.onemap.harta.painter.LandusePainter;
+import md.onemap.harta.painter.LeisurePainter;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.projector.MercatorProjector;
 import md.onemap.harta.tile.TileCutter;
@@ -31,7 +33,7 @@ public class MapViewerSwing extends JPanel {
   private static final Logger LOG = LoggerFactory.getLogger(MapViewerSwing.class);
 
   public static int LEVEL = 18;
-  public static String DATA_SOURCE = "osm/botanica.osm";
+  public static String DATA_SOURCE = "osm/victory_park.osm";
 
   private static final int TILE_SIZE = 512;
 
@@ -60,10 +62,10 @@ public class MapViewerSwing extends JPanel {
 
     map.highways = map.loader.getHighways().values();
     map.buildings = map.loader.getBuildings().values();
-//    map.leisure = map.loader.getLeisure().values();
+    map.leisure = map.loader.getLeisure().values();
 //    map.nature = map.loader.getNature().values();
 //    map.waterways = map.loader.getWaterways().values();
-//    map.landuse = map.loader.getLanduse().values();
+    map.landuse = map.loader.getLanduse().values();
 
     JScrollPane scrollPane = new JScrollPane(map);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -158,19 +160,19 @@ public class MapViewerSwing extends JPanel {
 
     BoundsXY bounds = new BoundsLatLon(loader.getMinLat(), loader.getMinLon(), loader.getMaxLat(), loader.getMaxLon()).toXY(projector);
 
-//    LeisurePainter leisurePainter = new LeisurePainter(projector, bounds);
+    LeisurePainter leisurePainter = new LeisurePainter(projector, bounds);
 //    NaturePainter naturePainter = new NaturePainter(projector, bounds);
 //    WaterwayPainter waterwayPainter = new WaterwayPainter(projector, bounds);
-//    LandusePainter landusePainter = new LandusePainter(projector, bounds);
+    LandusePainter landusePainter = new LandusePainter(projector, bounds);
     HighwayPainter highwayPainter = new HighwayPainter(projector, bounds);
     BuildingPainter buildingPainter = new BuildingPainter(projector, bounds);
 
-//    leisurePainter.drawParks(new TileDrawer((Graphics2D) g), leisure, LEVEL);
-//    naturePainter.drawWater(new TileDrawer((Graphics2D)g), nature, LEVEL);
-//    landusePainter.drawLanduse(new TileDrawer((Graphics2D)g), landuse, LEVEL);
-//    waterwayPainter.drawWaterways(new TileDrawer((Graphics2D)g), waterways, LEVEL);
-    highwayPainter.drawHighways(new TileDrawer((Graphics2D) g), highways, LEVEL);
-    buildingPainter.drawBuildings(new TileDrawer((Graphics2D) g), buildings, LEVEL);
+    landusePainter.draw(new AwtDrawer((Graphics2D)g), landuse, LEVEL);
+    leisurePainter.draw(new AwtDrawer((Graphics2D) g), leisure, LEVEL);
+//    naturePainter.drawWater(new AwtDrawer((Graphics2D)g), nature, LEVEL);
+//    waterwayPainter.drawWaterways(new AwtDrawer((Graphics2D)g), waterways, LEVEL);
+    highwayPainter.draw(new AwtDrawer((Graphics2D) g), highways, LEVEL);
+    buildingPainter.draw(new AwtDrawer((Graphics2D) g), buildings, LEVEL);
   }
 
   private void drawParallels(Graphics g) {

@@ -23,6 +23,7 @@ public class OsmLoader extends AbstractLoader{
   private HashMap<Long, Border>   borderMap = new HashMap<>();
   private HashMap<Long, Waterway> waterwayMap = new HashMap<>();
   private HashMap<Long, Landuse>  landuseMap = new HashMap<>();
+  private HashMap<Long, Amenity>  amenityMap = new HashMap<>();
   private OsmBounds bounds;
 
   public OsmLoader() {
@@ -181,32 +182,32 @@ public class OsmLoader extends AbstractLoader{
           long nodeId = Long.parseLong(((Element) wayNodeIds.item(j)).getAttribute("ref"));
           wayNodes.add(nodeMap.get(nodeId));
         }
-        if (isBuilding(element))
+        if (isItWhatWeNeed(element, Building.BUILDING))
         {
           Building building = new Building(id, wayNodes, element);
           buildingMap.put(id, building);
         }
-        else if (isHighway(element))
+        else if (isItWhatWeNeed(element, Highway.HIGHWAY))
         {
           Highway highway = new Highway(id, wayNodes, element);
           highwayMap.put(id, highway);
         }
-        else if (isLeisure(element))
+        else if (isItWhatWeNeed(element, Leisure.LEISURE))
         {
           Leisure leisure = new Leisure(id, wayNodes, element);
           leisureMap.put(id, leisure);
         }
-        else if (isNatural(element))
+        else if (isItWhatWeNeed(element, Natural.NATURAL))
         {
           Natural natural = new Natural(id, wayNodes, element);
           natureMap.put(id, natural);
         }
-        else if (isWaterway(element))
+        else if (isItWhatWeNeed(element, Waterway.WATERWAY))
         {
           Waterway waterway = new Waterway(id, wayNodes, element);
           waterwayMap.put(id, waterway);
         }
-        else if (isBorder(element))
+        else if (isItWhatWeNeed(element, Border.BORDER))
         {
           Border border = new Border(id, wayNodes, element);
           borderMap.put(id, border);
@@ -215,6 +216,14 @@ public class OsmLoader extends AbstractLoader{
         {
           Landuse landuse = new Landuse(id, wayNodes, element);
           landuseMap.put(id, landuse);
+        }
+
+        // Some buildings or landuse or whatever ... can be amenity too.
+        // It is ok to have duplicates
+        if (isItWhatWeNeed(element, Amenity.AMENITY))
+        {
+          Amenity amenity = new Amenity(id, wayNodes, element);
+          amenityMap.put(id, amenity);
         }
       }
     }
@@ -227,86 +236,6 @@ public class OsmLoader extends AbstractLoader{
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
       if (key.equals(whatWeNeed)){
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean isNatural(Element element)
-  {
-    NodeList tags = getTags(element);
-    for (int i = 0; i < tags.getLength(); i++){
-      Element item = (Element) tags.item(i);
-      String key = item.getAttribute("k");
-      if (key.equals(Natural.NATURAL)){
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean isWaterway(Element element)
-  {
-    NodeList tags = getTags(element);
-    for (int i = 0; i < tags.getLength(); i++){
-      Element item = (Element) tags.item(i);
-      String key = item.getAttribute("k");
-      if (key.equals(Waterway.WATERWAY)){
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean isLeisure(Element element)
-  {
-    NodeList tags = getTags(element);
-    for (int i = 0; i < tags.getLength(); i++){
-      Element item = (Element) tags.item(i);
-      String key = item.getAttribute("k");
-      if (key.equals(Leisure.LEISURE)){
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean isHighway(Element element) {
-    NodeList tags = getTags(element);
-    for (int i = 0; i < tags.getLength(); i++){
-      Element item = (Element) tags.item(i);
-      String key = item.getAttribute("k");
-      if (key.equals(Highway.HIGHWAY)){
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean isBuilding(Element element) {
-    NodeList tags = getTags(element);
-    for(int i = 0; i < tags.getLength(); i++){
-      Element item = (Element) tags.item(i);
-      String key = item.getAttribute("k");
-      if (key.equals(Building.BUILDING)){
-//        String value = item.getAttribute("v");
-//        return value.equals("yes") || value.equals("house");
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private boolean isBorder(Element element)
-  {
-    NodeList tags = getTags(element);
-    for (int i = 0; i < tags.getLength(); i++)
-    {
-      Element item = (Element) tags.item(i);
-      String key = item.getAttribute("k");
-      if (key.equals(Border.BORDER))
-      {
         return true;
       }
     }

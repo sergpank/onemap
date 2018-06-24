@@ -12,6 +12,7 @@ public class Border extends OsmWay
 {
   public static final String BORDER = "border";
   private String name;
+  private String nameRu;
   private String type;
 
   public Border (long id, Double minLat, Double minLon, Double maxLat, Double maxLon, List<OsmNode> nodes, String name, String type)
@@ -33,8 +34,13 @@ public class Border extends OsmWay
         case BORDER:
           type = item.getAttribute("v");
           break;
-        case "name":
+        case NAME:
           name = item.getAttribute("v");
+          break;
+        case NAME_RU:
+          name = item.getAttribute("v");
+          break;
+        default:
           break;
       }
     }
@@ -43,6 +49,11 @@ public class Border extends OsmWay
   public String getName()
   {
     return name;
+  }
+
+  public String getNameRu()
+  {
+    return nameRu;
   }
 
   public String getType()

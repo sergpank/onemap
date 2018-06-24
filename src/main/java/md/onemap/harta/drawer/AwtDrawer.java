@@ -13,11 +13,11 @@ import java.awt.font.GlyphVector;
 /**
  * Created by sergpank on 25.05.15.
  */
-public class TileDrawer extends AbstractDrawer
+public class AwtDrawer extends AbstractDrawer
 {
   private final Graphics2D graphics;
 
-  public TileDrawer(Graphics2D graphics)
+  public AwtDrawer(Graphics2D graphics)
   {
     this.graphics = graphics;
   }

@@ -15,9 +15,9 @@ public enum HighwayType
   primary(8, 80, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),     // - next most important road (links between large towns)
   secondary(8, 70, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),   // - next most important road in a country system (link between towns)
   tertiary(8, 60, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),    // - less important roads (link between small town and village)
-  unclassified(2, 50, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),// - local motorways
-  residential(2, 50, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR), // - roads inside living areas
-  service(2, 50, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),     // - roads in industrial areas or parking or some restricted zone
+  unclassified(4, 50, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),// - local motorways
+  residential(4, 50, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR), // - roads inside living areas
+  service(4, 50, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),     // - roads in industrial areas or parking or some restricted zone
 
   // Links of main road types
   motorway_link(6, 100, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),

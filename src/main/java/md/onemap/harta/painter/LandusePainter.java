@@ -1,6 +1,6 @@
 package md.onemap.harta.painter;
 
-import md.onemap.harta.drawer.TileDrawer;
+import md.onemap.harta.drawer.AbstractDrawer;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.osm.Landuse;
@@ -21,30 +21,16 @@ public class LandusePainter extends AbstractPainter{
     super(projector, bounds);
   }
 
-  public void drawLanduse(TileDrawer drawer, Collection<Landuse> landuse, int level)
+  public void draw(AbstractDrawer drawer, Collection<Landuse> landuse, int level)
   {
+    drawer.setFillColor(Palette.PARK_COLOR);
     for (Landuse land : landuse) {
-      switch (land.getType())
+      if (LanduseGreen.isGreen(land.getType()))
       {
-        case "grass":
-          drawer.setFillColor(Palette.PARK_COLOR);
-          break;
-        case "greenhouse_horticulture":
-          drawer.setFillColor(Palette.GREEN_HOUSE);
-          break;
-        default:
-          log.error(String.format("Landuse type : \"%s\" is not supported for drawing. id = %d", land.getType(), land.getId()));
-          continue;
+        CanvasPolygon polygon = createPolygon(land);
+        shiftPolygon(polygon);
+        drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
       }
-      CanvasPolygon polygon = createPolygon(land);
-      shiftPolygon(polygon);
-      drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
     }
-
-//    CanvasPolygon polygon = createPolygon(building);
-//    shiftPoints(bounds.getXmin(), polygon.getxPoints());
-//    shiftPoints(bounds.getYmin(), polygon.getyPoints());
-//
-//    drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
   }
 }

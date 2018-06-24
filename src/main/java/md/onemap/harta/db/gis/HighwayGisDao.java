@@ -4,8 +4,6 @@ import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.osm.OsmNode;
-import org.postgis.PGgeometry;
-import org.postgis.Point;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,12 +20,12 @@ public class HighwayGisDao extends GisDao<Highway>
 {
   private static final Logger LOG = LoggerFactory.getLogger(HighwayGisDao.class);
 
-  public static final String INSERT_SQL = "INSERT INTO gis.highways_gis " +
+  public static final String INSERT_SQL = "INSERT INTO gis.highways " +
       "(highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_geometry)" +
       " VALUES (?, ?, ?, ?, ?, %s);";
 
   public static final String SELECT_TILE = "SELECT highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_geometry " +
-      "FROM gis.highways_gis " +
+      "FROM gis.highways " +
       "WHERE " +
       "ST_Intersects(" +
       "ST_GeomFromText('Polygon((" +
@@ -38,7 +36,7 @@ public class HighwayGisDao extends GisDao<Highway>
       "%f %f" +
       "))'), highway_geometry)";
 
-  public static final String SELECT_ALL = "SELECT highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_geometry FROM gis.highways_gis";
+  public static final String SELECT_ALL = "SELECT highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_geometry FROM gis.highways";
 
   @Override
   public void save(Highway highway)
@@ -137,14 +135,7 @@ public class HighwayGisDao extends GisDao<Highway>
     String nameRu = rs.getString("highway_name_ru");
     String oldName = rs.getString("highway_name_old");
     String type = rs.getString("highway_type");
-
-    ArrayList<OsmNode> nodes = new ArrayList<>();
-    PGgeometry geometry = (PGgeometry) rs.getObject("highway_geometry");
-    for (int i = 0; i < geometry.getGeometry().numPoints(); i++)
-    {
-      Point point = geometry.getGeometry().getPoint(i);
-      nodes.add(new OsmNode(i, point.getY(), point.getX()));
-    }
+    ArrayList<OsmNode> nodes = getOsmNodes(rs, "highway_geometry");
 
     highways.add(new Highway(id, name, nameRu, oldName, type, nodes));
   }

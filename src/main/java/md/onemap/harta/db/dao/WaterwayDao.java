@@ -99,11 +99,12 @@ public class WaterwayDao extends Dao<Waterway>
   throws SQLException
   {
     long id = resultSet.getLong("highway_id");
-    String name = resultSet.getString("waterway_type");
-    String type = resultSet.getString("waterway_name");
+    String type = resultSet.getString("waterway_type");
+    String name = resultSet.getString("waterway_name");
+    String nameRu = resultSet.getString("waterway_name_ru");
     Array wayNodes = resultSet.getArray("waterway_nodes");
     List<OsmNode> nodes = new NodeDao().loadNodes(wayNodes);
-    return new Waterway(id, name, type, nodes);
+    return new Waterway(id, type, name, nameRu, nodes);
   }
 
   @Override

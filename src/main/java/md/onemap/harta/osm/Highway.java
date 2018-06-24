@@ -35,10 +35,10 @@ public class Highway extends OsmWay {
         case HIGHWAY:
           type = defineType(item.getAttribute("v"));
           break;
-        case "name":
+        case NAME:
           name = item.getAttribute("v");
           break;
-        case "name:ru":
+        case NAME_RU:
           nameRu = item.getAttribute("v");
           break;
         case "old_name":

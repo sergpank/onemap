@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import md.onemap.harta.properties.Props;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -19,15 +20,17 @@ public class DbHelper
 {
   private static final Logger LOG = LoggerFactory.getLogger(DbHelper.class);
 
-  private static final String DATASOURCE_CLASS_NAME = "org.postgresql.ds.PGSimpleDataSource";
+  private static final String DATA_SOURCE_CLASS_NAME = "org.postgresql.ds.PGSimpleDataSource";
 
   private static HikariDataSource dataSource;
+
+  private static JdbcTemplate jdbcTemplate;
 
   private static void init()
   {
     Properties props = new Properties();
 
-    props.setProperty("dataSourceClassName", DATASOURCE_CLASS_NAME);
+    props.setProperty("dataSourceClassName", DATA_SOURCE_CLASS_NAME);
     props.setProperty("dataSource.databaseName", Props.dbName());
     props.setProperty("dataSource.user", Props.dbLogin());
     props.setProperty("dataSource.password", Props.dbPassword());
@@ -36,6 +39,7 @@ public class DbHelper
 
     HikariConfig config = new HikariConfig(props);
     dataSource = new HikariDataSource(config);
+    jdbcTemplate = new JdbcTemplate(dataSource);
   }
 
   /**
@@ -91,5 +95,14 @@ public class DbHelper
       init();
     }
     return dataSource;
+  }
+
+  public static JdbcTemplate getJdbcTemplate()
+  {
+    if (jdbcTemplate == null)
+    {
+      init();
+    }
+    return jdbcTemplate;
   }
 }

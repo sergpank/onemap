@@ -3,39 +3,35 @@ package md.onemap.harta.osm;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Primitive Landuse - OsmWay that has only "landuse" tag.
- *
- * Created by serg on 08-Aug-16.
- */
-public class Landuse extends OsmWay{
-
-  public static final String LANDUSE = "landuse";
+public class Amenity extends OsmWay
+{
+  public static final String AMENITY = "amenity";
 
   private String type;
   private String name;
   private String nameRu;
 
-  public Landuse(long id, List<OsmNode> nodes, Element element) {
+  public Amenity(long id, List<OsmNode> nodes, Element element)
+  {
     super(id, nodes);
 
     NodeList tags = element.getElementsByTagName("tag");
-    for (int i = 0; i < tags.getLength(); i++){
+    for (int i = 0; i < tags.getLength(); i++) {
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
-      switch(key){
-        case LANDUSE:
-          type = item.getAttribute("v");
+      String value = item.getAttribute("v");
+      switch (key) {
+        case AMENITY:
+          type = value;
           break;
         case NAME:
-          name = item.getAttribute("v");
+          name = value;
           break;
         case NAME_RU:
-          nameRu = item.getAttribute("v");
+          nameRu = value;
           break;
         default:
           break;
@@ -43,15 +39,8 @@ public class Landuse extends OsmWay{
     }
   }
 
-  public Landuse(long id, ArrayList<OsmNode> nodes, String type, String name, String nameRu)
+  public String getType()
   {
-    super(id, nodes);
-    this.type = type;
-    this.name = name;
-    this.nameRu = nameRu;
-  }
-
-  public String getType() {
     return type;
   }
 
@@ -80,10 +69,10 @@ public class Landuse extends OsmWay{
     {
       return false;
     }
-    Landuse landuse = (Landuse) o;
-    return Objects.equals(type, landuse.type) &&
-        Objects.equals(name, landuse.name) &&
-        Objects.equals(nameRu, landuse.nameRu);
+    Amenity amenity = (Amenity) o;
+    return Objects.equals(type, amenity.type) &&
+        Objects.equals(name, amenity.name) &&
+        Objects.equals(nameRu, amenity.nameRu);
   }
 
   @Override

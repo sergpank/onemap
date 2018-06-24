@@ -8,6 +8,9 @@ import java.util.List;
  * Created by sergpank on 06.02.2015.
  */
 public class OsmWay {
+    public static final String NAME = "name";
+    public static final String NAME_RU = "name:ru";
+
     protected long id;
     protected List<OsmNode> nodes;
     protected BoundsLatLon bounds;

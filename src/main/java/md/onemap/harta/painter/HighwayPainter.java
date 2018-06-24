@@ -28,7 +28,7 @@ public class HighwayPainter extends AbstractPainter
     super(projector, bounds);
   }
 
-  public void drawHighways(AbstractDrawer drawer, Collection<Highway> highways, int level)
+  public void draw(AbstractDrawer drawer, Collection<Highway> highways, int level)
   {
     List<Label> labels = new ArrayList<>();
     List<Highway> highwayList = new ArrayList<>(highways);

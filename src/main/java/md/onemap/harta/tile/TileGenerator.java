@@ -1,10 +1,7 @@
 package md.onemap.harta.tile;
 
 import md.onemap.harta.geometry.BoundsLatLon;
-import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.loader.AbstractLoader;
-import md.onemap.harta.osm.Building;
-import md.onemap.harta.osm.Highway;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.projector.MercatorProjector;
 import md.onemap.harta.properties.Props;
@@ -16,7 +13,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -92,12 +88,8 @@ public abstract class TileGenerator
 
   public BufferedImage generateTile(int x, int y, int level, AbstractProjector projector, BoundsLatLon tileBounds)
   {
-    Collection<Highway> highways = loader.getHighways(level, tileBounds);
-    Collection<Building> buildings = loader.getBuildings(level, tileBounds);
-
-    TileDrawer tileDrawer = new TileDrawer(tileSize);
-    BoundsXY boundsXY = tileBounds.toXY(projector);
-    BufferedImage tile = tileDrawer.drawTile(level, x, y, boundsXY, projector, highways, buildings);
+        TileDrawer tileDrawer = new TileDrawer(tileSize);
+    BufferedImage tile = tileDrawer.drawTile(level, x, y, projector, loader, tileBounds);
 
     return tile;
   }

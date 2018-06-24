@@ -11,8 +11,14 @@ import java.util.List;
 public class Leisure extends OsmWay
 {
   public static final String LEISURE = "leisure";
+
   public static final String PARK = "park";
-  String type;
+  public static final String PLAYGROUND = "playground";
+  public static final String STADIUM = "stadium";
+
+  private String type;
+  private String name;
+  private String nameRu;
 
   public Leisure(long id, List<OsmNode> nodes, Element element)
   {
@@ -27,15 +33,39 @@ public class Leisure extends OsmWay
         case LEISURE:
           type = value;
           break;
+        case NAME:
+          name = value;
+          break;
+        case NAME_RU:
+          nameRu = value;
+          break;
         default:
           break;
       }
     }
   }
 
+  public Leisure(Long id, List<OsmNode> nodes, String type, String name, String nameRu)
+  {
+    super(id, nodes);
+    this.type = type;
+    this.name = name;
+    this.nameRu = nameRu;
+  }
+
   public String getType()
   {
     return type;
+  }
+
+  public String getName()
+  {
+    return name;
+  }
+
+  public String getNameRu()
+  {
+    return nameRu;
   }
 
   @Override
@@ -70,6 +100,16 @@ public class Leisure extends OsmWay
 
   public boolean isPark()
   {
-    return type.equalsIgnoreCase(PARK);
+    return type.equals(PARK);
+  }
+
+  public boolean isPlayground()
+  {
+    return type.equals(PLAYGROUND);
+  }
+
+  public boolean isStadium()
+  {
+    return type.equals(STADIUM);
   }
 }

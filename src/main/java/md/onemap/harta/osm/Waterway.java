@@ -13,11 +13,13 @@ public class Waterway extends OsmWay {
   public static final String WATERWAY = "waterway";
   private String type;
   private String name;
+  private String nameRu;
 
-  public Waterway(long id, String type, String name, List<OsmNode> nodes) {
+  public Waterway(long id, String type, String name, String nameRu, List<OsmNode> nodes) {
     super(id, nodes);
     this.type = type;
     this.name = name;
+    this.nameRu = nameRu;
   }
 
   public Waterway(Long id, List<OsmNode> nodes, Element element) {
@@ -31,8 +33,14 @@ public class Waterway extends OsmWay {
         case WATERWAY:
           type = item.getAttribute("v");
           break;
-        case "name":
+        case NAME:
           name = item.getAttribute("v");
+          break;
+        case NAME_RU:
+          nameRu = item.getAttribute("v");
+          break;
+        default:
+          break;
       }
     }
   }
@@ -43,6 +51,10 @@ public class Waterway extends OsmWay {
 
   public String getName() {
     return name;
+  }
+
+  public String getNameRu() {
+    return nameRu;
   }
 
   @Override

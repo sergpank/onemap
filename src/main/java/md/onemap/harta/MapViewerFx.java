@@ -9,11 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -113,8 +109,8 @@ public class MapViewerFx extends Application {
     gc.setStroke(Color.BLACK);
     gc.setLineWidth(2);
 
-    new HighwayPainter(projector, bounds).drawHighways(new FxDrawer(gc), loader.getHighways().values(), level);
-    new BuildingPainter(projector, bounds).drawBuildings(new FxDrawer(gc), loader.getBuildings().values(), level);
+    new HighwayPainter(projector, bounds).draw(new FxDrawer(gc), loader.getHighways().values(), level);
+    new BuildingPainter(projector, bounds).draw(new FxDrawer(gc), loader.getBuildings().values(), level);
 //    new BorderPainter(projector, bounds).drawBorders(drawer, loader.getBorders(), 0, 0, null);
 
     System.out.println("DRAW!\n");
