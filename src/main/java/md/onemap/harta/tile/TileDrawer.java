@@ -77,15 +77,10 @@ public class TileDrawer
 
     Font font = new Font("Calibri", Font.BOLD, 14);
     FontMetrics fontMetrics = graphics.getFontMetrics(font);
-//    graphics.setFont(font);
-//    graphics.setColor(Color.WHITE);
 
     int levelWidth = fontMetrics.stringWidth(levelLabel);
     int xyWidth = fontMetrics.stringWidth(xyLabel);
     int h = fontMetrics.getHeight();
-
-//    graphics.fillRect(128 - levelWidth / 2 - 4, 128 - h / 2 - 4, levelWidth + 8, h + 8);
-//    graphics.fillRect(128 - xyWidth / 2 - 4, (128 + h / 2 + 4) + 4, xyWidth + 8, h + 8);
 
     graphics.setColor(Color.RED);
     graphics.drawString(levelLabel, tileSize / 2 - levelWidth / 2, tileSize / 2 + h / 2);
@@ -94,10 +89,8 @@ public class TileDrawer
 
   private void drawTileBorder(Graphics2D graphics)
   {
+    graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
     graphics.drawLine(0,            0,            tileSize - 1, 0);
     graphics.drawLine(0,            0,            0, tileSize - 1);
-//    graphics.drawLine(tileSize - 1, 0,            tileSize - 1, tileSize - 1);
-//    graphics.drawLine(tileSize - 1, tileSize - 1, 0,            tileSize - 1);
-//    graphics.drawLine(0,            tileSize - 1, 0,            0);
   }
 }
