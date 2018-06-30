@@ -22,14 +22,16 @@ public class BuildingGisDao extends GisDao<Building>
 {
   private static final Logger LOG = LoggerFactory.getLogger(BuildingGisDao.class);
 
-  public static final String INSERT_SQL = "INSERT INTO gis.buildings " +
-      "(id, housenumber, height, street, design, levels, geometry) " +
-      "VALUES (?, ?, ?, ?, ?, ?, %s)";
+  public static final String TABLE_NAME = "gis.buildings";
+
+  public static final String INSERT_SQL = "INSERT INTO " + TABLE_NAME +
+      " (id, housenumber, height, street, design, levels, geometry) " +
+      " VALUES (?, ?, ?, ?, ?, ?, %s)";
 
   public static final String SELECT_TILE = "SELECT id, housenumber, height, street, design, levels, geometry " +
-      "FROM gis.buildings " +
-      "WHERE ST_Intersects(" +
-      "ST_GeomFromText('Polygon((" +
+      " FROM " + TABLE_NAME +
+      " WHERE ST_Intersects(" +
+      " ST_GeomFromText('Polygon((" +
       "%f %f," +
       "%f %f," +
       "%f %f," +
@@ -37,7 +39,7 @@ public class BuildingGisDao extends GisDao<Building>
       "%f %f" +
       "))'), geometry)";
 
-  public static final String SELECT_ALL = "SELECT id, housenumber, height, street, design, levels, geometry FROM gis.buildings";
+  public static final String SELECT_ALL = "SELECT id, housenumber, height, street, design, levels, geometry FROM " + TABLE_NAME;
 
   @Override
   public void save(Building building)
@@ -159,11 +161,5 @@ public class BuildingGisDao extends GisDao<Building>
     }
     return buildings;
 
-  }
-
-  @Override
-  public BoundsLatLon getBounds()
-  {
-    return null;
   }
 }

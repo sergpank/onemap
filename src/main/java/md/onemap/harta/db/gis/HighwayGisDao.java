@@ -20,13 +20,15 @@ public class HighwayGisDao extends GisDao<Highway>
 {
   private static final Logger LOG = LoggerFactory.getLogger(HighwayGisDao.class);
 
-  public static final String INSERT_SQL = "INSERT INTO gis.highways " +
-      "(highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_geometry)" +
+  public static final String TABLE_NAME = "gis.highways";
+
+  public static final String INSERT_SQL = "INSERT INTO " + TABLE_NAME  +
+      " (id, name, name_ru, name_old, type, geometry)" +
       " VALUES (?, ?, ?, ?, ?, %s);";
 
-  public static final String SELECT_TILE = "SELECT highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_geometry " +
-      "FROM gis.highways " +
-      "WHERE " +
+  public static final String SELECT_TILE = "SELECT id, name, name_ru, name_old, type, geometry " +
+      "FROM " + TABLE_NAME +
+      "   WHERE " +
       "ST_Intersects(" +
       "ST_GeomFromText('Polygon((" +
       "%f %f," +
@@ -34,9 +36,9 @@ public class HighwayGisDao extends GisDao<Highway>
       "%f %f," +
       "%f %f," +
       "%f %f" +
-      "))'), highway_geometry)";
+      "))'), geometry)";
 
-  public static final String SELECT_ALL = "SELECT highway_id, highway_name, highway_name_ru, highway_name_old, highway_type, highway_geometry FROM gis.highways";
+  public static final String SELECT_ALL = "SELECT id, name, name_ru, name_old, type, geometry FROM " + TABLE_NAME;
 
   @Override
   public void save(Highway highway)
@@ -57,7 +59,7 @@ public class HighwayGisDao extends GisDao<Highway>
       pStmt.setString(pos++, highway.getName());
       pStmt.setString(pos++, highway.getNameRu());
       pStmt.setString(pos++, highway.getNameOld());
-      pStmt.setString(pos++, highway.getType().name());
+      pStmt.setString(pos++, highway.getType());
       pStmt.execute();
     }
     catch (SQLException e)
@@ -130,19 +132,13 @@ public class HighwayGisDao extends GisDao<Highway>
 
   private void readHighway(Set<Highway> highways, ResultSet rs) throws SQLException
   {
-    long id = rs.getLong("highway_id");
-    String name = rs.getString("highway_name");
-    String nameRu = rs.getString("highway_name_ru");
-    String oldName = rs.getString("highway_name_old");
-    String type = rs.getString("highway_type");
-    ArrayList<OsmNode> nodes = getOsmNodes(rs, "highway_geometry");
+    long id = rs.getLong("id");
+    String name = rs.getString("name");
+    String nameRu = rs.getString("name_ru");
+    String oldName = rs.getString("name_old");
+    String type = rs.getString("type");
+    ArrayList<OsmNode> nodes = getOsmNodes(rs, "geometry");
 
     highways.add(new Highway(id, name, nameRu, oldName, type, nodes));
-  }
-
-  @Override
-  public BoundsLatLon getBounds()
-  {
-    return null;
   }
 }

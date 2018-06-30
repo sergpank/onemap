@@ -1,12 +1,10 @@
 package md.onemap.harta.db.gis;
 
-import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.Landuse;
 import md.onemap.harta.osm.OsmNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,15 +13,7 @@ public class LanduseGisDao extends GisDao<Landuse>
 {
   private static final Logger LOG = LoggerFactory.getLogger(LanduseGisDao.class);
 
-  private static final String INSERT = "INSERT INTO gis.landuse(id, type, name, name_ru, geometry) " +
-      "VALUES(?, ?, ?, ?, %s)";
-
-  private JdbcTemplate jdbcTemplate;
-
-  public LanduseGisDao()
-  {
-    this.jdbcTemplate = DbHelper.getJdbcTemplate();
-  }
+  public static final String TABLE_NAME = "gis.landuse";
 
   @Override
   public void save(Landuse entity)
@@ -34,7 +24,7 @@ public class LanduseGisDao extends GisDao<Landuse>
     }
     else
     {
-      jdbcTemplate.update(String.format(INSERT, createLineString(entity.getNodes())), entity.getId(), entity.getType(), entity.getName(), entity.getNameRu());
+      saveEntity(TABLE_NAME, entity);
     }
   }
 
@@ -55,7 +45,7 @@ public class LanduseGisDao extends GisDao<Landuse>
   {
     double dLat = box.getMaxLat() - box.getMinLat();
     double dLon = box.getMaxLon() - box.getMinLon();
-    String sql = String.format(SELECT_TILE, "gis.landuse",
+    String sql = String.format(SELECT_TILE, TABLE_NAME,
         box.getMinLon() - dLon, box.getMinLat() - dLat,
         box.getMinLon() - dLon, box.getMaxLat() + dLat,
         box.getMaxLon() + dLon, box.getMaxLat() + dLat,
@@ -69,18 +59,13 @@ public class LanduseGisDao extends GisDao<Landuse>
       String type = rs.getString("type");
       String name = rs.getString("name");
       String nameRu = rs.getString("name_ru");
-      return new Landuse(id, nodes, type, name, nameRu);
+      String nameOld = rs.getString("name_old");
+      return new Landuse(id, nodes, type, name, nameRu, nameOld);
     });
   }
 
   @Override
   public Collection<Landuse> loadAll()
-  {
-    return null;
-  }
-
-  @Override
-  public BoundsLatLon getBounds()
   {
     return null;
   }

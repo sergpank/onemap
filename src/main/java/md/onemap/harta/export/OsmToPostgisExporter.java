@@ -1,14 +1,9 @@
 package md.onemap.harta.export;
 
-import md.onemap.harta.db.gis.BuildingGisDao;
-import md.onemap.harta.db.gis.HighwayGisDao;
-import md.onemap.harta.db.gis.LanduseGisDao;
-import md.onemap.harta.db.gis.LeisureGisDao;
+import md.onemap.harta.db.DatabaseCreator;
+import md.onemap.harta.db.gis.*;
 import md.onemap.harta.loader.OsmLoader;
-import md.onemap.harta.osm.Building;
-import md.onemap.harta.osm.Highway;
-import md.onemap.harta.osm.Landuse;
-import md.onemap.harta.osm.Leisure;
+import md.onemap.harta.osm.*;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +22,12 @@ public class OsmToPostgisExporter extends OsmExporter
   }
 
   @Override
+  protected void createdDb(String dbName)
+  {
+    DatabaseCreator.createGisDb(dbName);
+  }
+
+  @Override
   protected void exportEntities()
   {
     OsmLoader osmLoader = new OsmLoader();
@@ -36,18 +37,26 @@ public class OsmToPostgisExporter extends OsmExporter
     Map<Long, Highway> highways = osmLoader.getHighways();
     Map<Long, Leisure> leisure = osmLoader.getLeisure();
     Map<Long, Landuse> landuse = osmLoader.getLanduse();
+    Map<Long, Natural> nature = osmLoader.getNature();
+    Map<Long, Waterway> waterways = osmLoader.getWaterways();
 
-    LOG.info("Saving buildings ...");
+    LOG.info("\n\nSaving buildings ...");
     new BuildingGisDao().saveAll(buildings.values());
 
-    LOG.info("Saving highways ...");
+    LOG.info("\n\nSaving highways ...");
     new HighwayGisDao().saveAll(highways.values());
 
-    LOG.info("Saving leisure ...");
+    LOG.info("\n\nSaving leisure ...");
     new LeisureGisDao().saveAll(leisure.values());
 
-    LOG.info("Saving landuse ...");
+    LOG.info("\n\nSaving landuse ...");
     new LanduseGisDao().saveAll(landuse.values());
+
+    LOG.info("\n\nSaving waterways ...");
+    new WaterwayGisDao().saveAll(waterways.values());
+
+    LOG.info("\n\nSaving nature ...");
+    new NatureGisDao().saveAll(nature.values());
   }
 
   @Override

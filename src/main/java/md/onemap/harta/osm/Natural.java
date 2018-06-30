@@ -13,8 +13,6 @@ public class Natural extends OsmWay
   public static final String NATURAL = "natural";
   public static final String WATER = "water";
 
-  String type;
-
   public Natural(long id, List<OsmNode> nodes, Element element)
   {
     super(id, nodes);
@@ -28,20 +26,27 @@ public class Natural extends OsmWay
         case NATURAL:
           type = value;
           break;
+        case NAME:
+          name = value;
+          break;
+        case NAME_RU:
+          nameRu = value;
+          break;
+        case NAME_OLD:
+          nameOld = value;
+          break;
+        case NAME_LOCAL:
+          nameLocal = value;
+          break;
         default:
           break;
       }
     }
   }
 
-  public boolean isWater()
+  public Natural(long id, List<OsmNode> nodes, String type, String name, String nameRu, String nameOld)
   {
-    return type.equalsIgnoreCase(WATER);
-  }
-
-  public String getType()
-  {
-    return type;
+    super(id, nodes, type, name, nameRu, nameOld);
   }
 
   @Override

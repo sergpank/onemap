@@ -19,7 +19,6 @@ public class NodeDao extends Dao<OsmNode>
   public static final String INSERT_SQL = "INSERT INTO nodes (node_id, lat, lon) VALUES (?, ?, ?)";
   public static final String SELECT_ALL = "SELECT node_id, lat, lon FROM nodes";
   public static final String SELECT_BOUNDS = "SELECT min(lat) AS min_lat, min(lon) AS min_lon, max(lat) AS max_lat, max(lon) AS max_lon FROM nodes;";
-  public static final String SELECT_ID_SQL = "SELECT node_id FROM nodes WHERE lat = ? AND lon = ?";
   public static final String SELECT_NODE = "SELECT lat, lon FROM nodes WHERE node_id = ?";
   public static final String SELECT_NODES = "SELECT node_id, lat, lon FROM nodes WHERE node_id in (%s)";
 
@@ -126,30 +125,6 @@ public class NodeDao extends Dao<OsmNode>
       throw new RuntimeException(e);
     }
     return nodes;
-  }
-
-  @Override
-  public BoundsLatLon getBounds()
-  {
-    BoundsLatLon bounds = null;
-
-    try (Connection connection = DbHelper.getConnection())
-    {
-      PreparedStatement pStmt = connection.prepareStatement(SELECT_BOUNDS);
-      ResultSet resultSet = pStmt.executeQuery();
-      resultSet.next();
-      double minLat = resultSet.getDouble("min_lat");
-      double minLon = resultSet.getDouble("min_lon");
-      double maxLat = resultSet.getDouble("max_lat");
-      double maxLon = resultSet.getDouble("max_lon");
-      bounds = new BoundsLatLon(minLat, minLon, maxLat, maxLon);
-    }
-    catch (SQLException e)
-    {
-      e.printStackTrace();
-      throw new RuntimeException(e);
-    }
-    return bounds;
   }
 
   public List<OsmNode> loadNodes(List<Long> nodeIds)

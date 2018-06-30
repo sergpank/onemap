@@ -57,6 +57,4 @@ public abstract class Dao<T>
   public abstract Collection<T> load(int zoomLevel, BoundsLatLon box);
 
   public abstract Collection<T> loadAll();
-
-  public abstract BoundsLatLon getBounds();
 }

@@ -20,7 +20,6 @@ public class BorderDao extends Dao<Border>
       "borders (name, min_level, max_level, border_nodes, min_lat, max_lat, min_lon, max_lon) " +
       "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
   public static final String SELECT_ALL = "SELECT border_id, name, min_level, max_level, border_nodes, min_lat, max_lat, min_lon, max_lon FROM borders";
-  public static final String SELECT_BOUNDS = "select min(min_lat) as min_lat, min(min_lon) as min_lon, max(max_lat) as max_lat, max(max_lon) as max_lon from borders";
   public static final String SELECT_TILE = "SELECT * FROM borders WHERE " +
       "min_level <= ? AND max_level >= ? " +
       "AND NOT( ((max_lon < ?) OR (min_lon > ?)) " +
@@ -153,30 +152,5 @@ public class BorderDao extends Dao<Border>
     Array borderNodes = rs.getArray("border_nodes");
     nodes.addAll(new NodeDao().loadNodes(borderNodes));
     return new Border(id, minLat, minLon, maxLat, maxLon, nodes, name, RAION);
-  }
-
-  @Override
-  public BoundsLatLon getBounds()
-  {
-    BoundsLatLon bounds;
-
-    try (Connection connection = DbHelper.getConnection())
-    {
-      PreparedStatement pStmt = connection.prepareStatement(SELECT_BOUNDS);
-      ResultSet resultSet = pStmt.executeQuery();
-
-      resultSet.next();
-      double minLat = resultSet.getDouble("min_lat");
-      double minLon = resultSet.getDouble("min_lon");
-      double maxLat = resultSet.getDouble("max_lat");
-      double maxLon = resultSet.getDouble("max_lon");
-      bounds = new BoundsLatLon(minLat, minLon, maxLat, maxLon);
-    }
-    catch (SQLException e)
-    {
-      e.printStackTrace();
-      throw new RuntimeException(e);
-    }
-    return bounds;
   }
 }

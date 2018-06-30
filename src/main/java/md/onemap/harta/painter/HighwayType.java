@@ -1,7 +1,6 @@
 package md.onemap.harta.painter;
 
 import md.onemap.harta.geometry.GeometryUtil;
-import md.onemap.harta.geometry.XYPoint;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
 
@@ -79,11 +78,8 @@ public enum HighwayType
 
   private int getRoadWidthPixels(AbstractProjector projector, double roadWidthMeters, boolean withBorder)
   {
-    double roadWidth = GeometryUtil.DEGREES_IN_METER * roadWidthMeters;
-    XYPoint center = projector.getXY(47, 29);
-    XYPoint xyLon = projector.getXY(47, 29 + roadWidth);
+    double widthInPixels = GeometryUtil.metersToPixels(projector, roadWidthMeters);
 
-    double widthInPixels = Math.ceil(xyLon.getX() - center.getX());
     if (withBorder)
     {
       double extension = widthInPixels / 4;

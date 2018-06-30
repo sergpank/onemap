@@ -343,4 +343,13 @@ public class GeometryUtil
 
     return new XYPoint[]{new XYPoint(x1, y1), new XYPoint(x2, y2)};
   }
+
+  public static double metersToPixels(AbstractProjector projector, double meters)
+  {
+    double roadWidth = GeometryUtil.DEGREES_IN_METER * meters;
+    XYPoint center = projector.getXY(47, 29);
+    XYPoint xyLon = projector.getXY(47, 29 + roadWidth);
+
+    return Math.ceil(xyLon.getX() - center.getX());
+  }
 }

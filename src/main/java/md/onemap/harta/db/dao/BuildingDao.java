@@ -166,10 +166,4 @@ public class BuildingDao extends Dao<Building>
   {
     return null;
   }
-
-  @Override
-  public BoundsLatLon getBounds()
-  {
-    return null;
-  }
 }

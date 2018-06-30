@@ -5,21 +5,12 @@ import org.w3c.dom.NodeList;
 
 import java.util.List;
 
-/**
- * Created by serg on 06-Aug-16.
- */
 public class Waterway extends OsmWay {
 
   public static final String WATERWAY = "waterway";
-  private String type;
-  private String name;
-  private String nameRu;
 
-  public Waterway(long id, String type, String name, String nameRu, List<OsmNode> nodes) {
-    super(id, nodes);
-    this.type = type;
-    this.name = name;
-    this.nameRu = nameRu;
+  public Waterway(long id, List<OsmNode> nodes, String type, String name, String nameRu, String nameOld) {
+    super(id, nodes, type, name, nameRu, nameOld);
   }
 
   public Waterway(Long id, List<OsmNode> nodes, Element element) {
@@ -39,22 +30,13 @@ public class Waterway extends OsmWay {
         case NAME_RU:
           nameRu = item.getAttribute("v");
           break;
+        case NAME_OLD:
+          nameOld = item.getAttribute("v");
+          break;
         default:
           break;
       }
     }
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getNameRu() {
-    return nameRu;
   }
 
   @Override

@@ -1,23 +1,38 @@
 package md.onemap.harta.db.gis;
 
 import md.onemap.harta.geometry.BoundsLatLon;
+import md.onemap.harta.osm.OsmNode;
 import md.onemap.harta.osm.Waterway;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Created by serg on 07-Aug-16.
  */
-public class WaterwayGisDao extends GisDao<Waterway> {
+public class WaterwayGisDao extends GisDao<Waterway>
+{
+  private static final Logger LOG = LoggerFactory.getLogger(WaterwayGisDao.class);
+
+  public static final String TABLE_NAME = "gis.waterways";
 
   @Override
   public void save(Waterway entity) {
-
+    if (entity.getNodes().size() < 2)
+    {
+      LOG.error("Unable to save waterway {} with {} nodes: {} -> {}", entity.getId(), entity.getNodes().size(), entity.getName(), entity.getType());
+    }
+    else
+    {
+      saveEntity(TABLE_NAME, entity);
+    }
   }
 
   @Override
   public void saveAll(Collection<Waterway> entities) {
-
+    entities.forEach(this::save);
   }
 
   @Override
@@ -27,16 +42,29 @@ public class WaterwayGisDao extends GisDao<Waterway> {
 
   @Override
   public Collection<Waterway> load(int zoomLevel, BoundsLatLon box) {
-    return null;
+    double dLat = box.getMaxLat() - box.getMinLat();
+    double dLon = box.getMaxLon() - box.getMinLon();
+    String sql = String.format(SELECT_TILE, TABLE_NAME,
+        box.getMinLon() - dLon, box.getMinLat() - dLat,
+        box.getMinLon() - dLon, box.getMaxLat() + dLat,
+        box.getMaxLon() + dLon, box.getMaxLat() + dLat,
+        box.getMaxLon() + dLon, box.getMinLat() - dLat,
+        box.getMinLon() - dLon, box.getMinLat() - dLat
+    );
+
+    return jdbcTemplate.query(sql, (rs, rowNum) -> {
+      long id = rs.getLong("id");
+      ArrayList<OsmNode> nodes = getOsmNodes(rs, "geometry");
+      String type = rs.getString("type");
+      String name = rs.getString("name");
+      String nameRu = rs.getString("name_ru");
+      String nameOld = rs.getString("name_old");
+      return new Waterway(id, nodes, type, name, nameRu, nameOld);
+    });
   }
 
   @Override
   public Collection<Waterway> loadAll() {
-    return null;
-  }
-
-  @Override
-  public BoundsLatLon getBounds() {
     return null;
   }
 }

@@ -33,19 +33,20 @@ public class HighwayPainter extends AbstractPainter
     List<Label> labels = new ArrayList<>();
     List<Highway> highwayList = new ArrayList<>(highways);
 
-    highwayList.sort(Comparator.comparingInt((Highway h) -> h.getType().getPriority()));
+    highwayList.sort(Comparator.comparingInt((Highway h) -> h.getHighwayType().getPriority()));
 
     // First draw road contour (by drawing wider roads)
     for (Highway highway : highwayList)
     {
       addLabel(labels, highway);
       CanvasPolygon polygon = createPolygon(highway);
-      if (level > 15)
+      HighwayType highwayType = highway.getHighwayType();
+      if (level > 16)
       {
-        drawer.setStrokeColor(highway.getType().getBorderColor());
-        drawer.setFillColor(highway.getType().getBorderColor());
+        drawer.setStrokeColor(highwayType.getBorderColor());
+        drawer.setFillColor(highwayType.getBorderColor());
         shiftPolygon(polygon);
-        drawer.drawPolyLine(polygon, highway.getType().getWidth(projector, true));
+        drawer.drawPolyLine(polygon, highwayType.getWidth(projector, true));
       }
     }
 
@@ -60,10 +61,11 @@ public class HighwayPainter extends AbstractPainter
       }
       else
       {
-        drawer.setStrokeColor(highway.getType().getSurfaceColor());
-        drawer.setFillColor(highway.getType().getSurfaceColor());
+        HighwayType highwayType = highway.getHighwayType();
+        drawer.setStrokeColor(highwayType.getSurfaceColor());
+        drawer.setFillColor(highwayType.getSurfaceColor());
         shiftPolygon(polygon);
-        drawer.drawPolyLine(polygon, highway.getType().getWidth(projector, false));
+        drawer.drawPolyLine(polygon, highwayType.getWidth(projector, false));
       }
     }
 

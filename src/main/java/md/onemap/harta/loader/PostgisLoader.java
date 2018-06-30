@@ -2,10 +2,7 @@ package md.onemap.harta.loader;
 
 import md.onemap.exception.NotImplementedException;
 import md.onemap.harta.db.DbHelper;
-import md.onemap.harta.db.gis.BuildingGisDao;
-import md.onemap.harta.db.gis.HighwayGisDao;
-import md.onemap.harta.db.gis.LanduseGisDao;
-import md.onemap.harta.db.gis.LeisureGisDao;
+import md.onemap.harta.db.gis.*;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.*;
 
@@ -106,13 +103,13 @@ public class PostgisLoader extends AbstractLoader
   @Override
   public Collection<Natural> getNature(int level, BoundsLatLon tileBounds)
   {
-    return null;
+    return new NatureGisDao().load(level, tileBounds);
   }
 
   @Override
   public Collection<Waterway> getWaterways(int level, BoundsLatLon tileBounds)
   {
-    return null;
+    return new WaterwayGisDao().load(level, tileBounds);
   }
 
   @Override

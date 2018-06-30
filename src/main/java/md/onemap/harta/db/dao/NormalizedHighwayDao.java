@@ -124,10 +124,4 @@ public class NormalizedHighwayDao extends Dao<NormalizedHighway>
   {
     throw new UnsupportedOperationException();
   }
-
-  @Override
-  public BoundsLatLon getBounds()
-  {
-    throw new UnsupportedOperationException();
-  }
 }

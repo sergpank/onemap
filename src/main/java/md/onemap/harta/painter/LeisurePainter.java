@@ -22,15 +22,19 @@ public class LeisurePainter extends AbstractPainter
 
   public void draw(AbstractDrawer drawer, Collection<Leisure> leisures, int level)
   {
-    drawer.setFillColor(Palette.PARK_COLOR);
     for (Leisure leisure : leisures) {
       if (!Water.isWater(leisure.getType()))
       {
-        CanvasPolygon polygon = createPolygon(leisure);
-        shiftPoints(bounds.getXmin(), polygon.getxPoints());
-        shiftPoints(bounds.getYmin(), polygon.getyPoints());
-        drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
+        drawer.setFillColor(Palette.PARK_COLOR);
       }
+      else
+      {
+        drawer.setFillColor(Palette.WATER_COLOR);
+      }
+      CanvasPolygon polygon = createPolygon(leisure);
+      shiftPoints(bounds.getXmin(), polygon.getxPoints());
+      shiftPoints(bounds.getYmin(), polygon.getyPoints());
+      drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
     }
   }
 }

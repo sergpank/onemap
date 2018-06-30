@@ -102,19 +102,15 @@ public class WaterwayDao extends Dao<Waterway>
     String type = resultSet.getString("waterway_type");
     String name = resultSet.getString("waterway_name");
     String nameRu = resultSet.getString("waterway_name_ru");
+    String nameOld = resultSet.getString("waterway_name_Old");
     Array wayNodes = resultSet.getArray("waterway_nodes");
     List<OsmNode> nodes = new NodeDao().loadNodes(wayNodes);
-    return new Waterway(id, type, name, nameRu, nodes);
+
+    return new Waterway(id, nodes, type, name, nameRu, nameOld);
   }
 
   @Override
   public Collection<Waterway> loadAll()
-  {
-    return null;
-  }
-
-  @Override
-  public BoundsLatLon getBounds()
   {
     return null;
   }

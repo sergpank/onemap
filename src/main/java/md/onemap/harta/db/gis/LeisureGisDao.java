@@ -1,12 +1,10 @@
 package md.onemap.harta.db.gis;
 
-import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.Leisure;
 import md.onemap.harta.osm.OsmNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -18,12 +16,7 @@ public class LeisureGisDao extends GisDao<Leisure>
 {
   private static final Logger LOG = LoggerFactory.getLogger(LeisureGisDao.class);
 
-  private JdbcTemplate jdbcTemplate;
-
-  public LeisureGisDao()
-  {
-    this.jdbcTemplate = DbHelper.getJdbcTemplate();
-  }
+  public static final String TABLE_NAME = "gis.leisure";
 
   @Override
   public void save(Leisure entity)
@@ -34,7 +27,7 @@ public class LeisureGisDao extends GisDao<Leisure>
     }
     else
     {
-      jdbcTemplate.update(String.format(INSERT, "gis.leisure", createLineString(entity.getNodes())), entity.getId(), entity.getType(), entity.getName(), entity.getNameRu());
+      jdbcTemplate.update(String.format(INSERT, "gis.leisure", createLineString(entity.getNodes())), entity.getId(), entity.getType(), entity.getName(), entity.getNameRu(), entity.getNameOld());
     }
   }
 
@@ -55,7 +48,7 @@ public class LeisureGisDao extends GisDao<Leisure>
   {
     double dLat = box.getMaxLat() - box.getMinLat();
     double dLon = box.getMaxLon() - box.getMinLon();
-    String sql = String.format(SELECT_TILE, "gis.leisure",
+    String sql = String.format(SELECT_TILE, TABLE_NAME,
         box.getMinLon() - dLon, box.getMinLat() - dLat,
         box.getMinLon() - dLon, box.getMaxLat() + dLat,
         box.getMaxLon() + dLon, box.getMaxLat() + dLat,
@@ -72,12 +65,6 @@ public class LeisureGisDao extends GisDao<Leisure>
     return null;
   }
 
-  @Override
-  public BoundsLatLon getBounds()
-  {
-    return null;
-  }
-
   private class LeisureMapper implements RowMapper<Leisure>
   {
     @Override
@@ -88,8 +75,9 @@ public class LeisureGisDao extends GisDao<Leisure>
       String type = rs.getString("type");
       String name = rs.getString("name");
       String nameRu = rs.getString("name_ru");
+      String nameOld = rs.getString("name_old");
 
-      return new Leisure(id, nodes, type, name, nameRu);
+      return new Leisure(id, nodes, type, name, nameRu, nameOld);
     }
   }
 }

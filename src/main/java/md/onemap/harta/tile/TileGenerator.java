@@ -88,7 +88,7 @@ public abstract class TileGenerator
 
   public BufferedImage generateTile(int x, int y, int level, AbstractProjector projector, BoundsLatLon tileBounds)
   {
-        TileDrawer tileDrawer = new TileDrawer(tileSize);
+    TileDrawer tileDrawer = new TileDrawer(tileSize);
     BufferedImage tile = tileDrawer.drawTile(level, x, y, projector, loader, tileBounds);
 
     return tile;

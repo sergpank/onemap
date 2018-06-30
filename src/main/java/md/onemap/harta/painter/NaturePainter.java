@@ -24,7 +24,7 @@ public class NaturePainter extends AbstractPainter
     drawer.setFillColor(Palette.WATER_COLOR);
     for (Natural natural : nature)
     {
-      if (natural.isWater())
+      if (natural.getType().equals("water"))
       {
         CanvasPolygon polygon = createPolygon(natural);
         shiftPoints(bounds.getXmin(), polygon.getxPoints());

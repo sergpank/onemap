@@ -5,14 +5,8 @@ import md.onemap.harta.drawer.AwtDrawer;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.loader.AbstractLoader;
-import md.onemap.harta.osm.Building;
-import md.onemap.harta.osm.Highway;
-import md.onemap.harta.osm.Landuse;
-import md.onemap.harta.osm.Leisure;
-import md.onemap.harta.painter.BuildingPainter;
-import md.onemap.harta.painter.HighwayPainter;
-import md.onemap.harta.painter.LandusePainter;
-import md.onemap.harta.painter.LeisurePainter;
+import md.onemap.harta.osm.*;
+import md.onemap.harta.painter.*;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.properties.Props;
 import org.slf4j.Logger;
@@ -49,6 +43,8 @@ public class TileDrawer
 
     BoundsXY boundsXY = tileBounds.toXY(projector);
 
+    Collection<Waterway> waterways = loader.getWaterways(level, tileBounds);
+    Collection<Natural> nature = loader.getNature(level, tileBounds);
     Collection<Highway> highways = loader.getHighways(level, tileBounds);
     Collection<Building> buildings = loader.getBuildings(level, tileBounds);
     Collection<Leisure> leisure = loader.getLeisure(level, tileBounds);
@@ -56,8 +52,10 @@ public class TileDrawer
 
     new LandusePainter(projector,  boundsXY).draw(drawer, landuse, level);
     new LeisurePainter(projector,  boundsXY).draw(drawer, leisure, level);
-    new HighwayPainter(projector,  boundsXY).draw(drawer, highways, level);
+    new WaterwayPainter(projector, boundsXY).draw(drawer, waterways, level);
+    new NaturePainter(projector, boundsXY).drawWater(drawer, nature, level);
     new BuildingPainter(projector, boundsXY).draw(drawer, buildings, level);
+    new HighwayPainter(projector,  boundsXY).draw(drawer, highways, level);
 
     if (Props.debugTileNumber())
     {

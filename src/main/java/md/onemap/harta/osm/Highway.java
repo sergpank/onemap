@@ -13,10 +13,7 @@ public class Highway extends OsmWay {
 
   public static final String HIGHWAY = "highway";
 
-  private String name;
-  private String nameRu;
-  private String nameOld;
-  private HighwayType type;
+  private HighwayType highwayType;
 
   @Override
   public String toString()
@@ -31,18 +28,20 @@ public class Highway extends OsmWay {
     for (int i = 0; i < tags.getLength(); i++){
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
+      String value = item.getAttribute("v");
       switch(key){
         case HIGHWAY:
-          type = defineType(item.getAttribute("v"));
+          highwayType = defineType(value);
+          type = value;
           break;
         case NAME:
-          name = item.getAttribute("v");
+          name = value;
           break;
         case NAME_RU:
-          nameRu = item.getAttribute("v");
+          nameRu = value;
           break;
-        case "old_name":
-          nameOld = item.getAttribute("v");
+        case NAME_OLD:
+          nameOld = value;
           break;
       }
     }
@@ -66,27 +65,13 @@ public class Highway extends OsmWay {
     this.name = name;
     this.nameRu = nameRu;
     this.nameOld = nameOld;
-    this.type = defineType(type);
+    this.type = type;
+    this.highwayType = defineType(type);
   }
 
-  public String getName()
+  public HighwayType getHighwayType()
   {
-    return name;
-  }
-
-  public String getNameRu()
-  {
-    return nameRu;
-  }
-
-  public String getNameOld()
-  {
-    return nameOld;
-  }
-
-  public HighwayType getType()
-  {
-    return type;
+    return highwayType;
   }
 
   public void setName(String name) {

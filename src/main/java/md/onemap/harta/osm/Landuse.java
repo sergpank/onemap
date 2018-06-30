@@ -16,10 +16,6 @@ public class Landuse extends OsmWay{
 
   public static final String LANDUSE = "landuse";
 
-  private String type;
-  private String name;
-  private String nameRu;
-
   public Landuse(long id, List<OsmNode> nodes, Element element) {
     super(id, nodes);
 
@@ -27,15 +23,19 @@ public class Landuse extends OsmWay{
     for (int i = 0; i < tags.getLength(); i++){
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
+      String value = item.getAttribute("v");
       switch(key){
         case LANDUSE:
-          type = item.getAttribute("v");
+          type = value;
           break;
         case NAME:
-          name = item.getAttribute("v");
+          name = value;
           break;
         case NAME_RU:
-          nameRu = item.getAttribute("v");
+          nameRu = value;
+          break;
+        case NAME_OLD:
+          nameOld = value;
           break;
         default:
           break;
@@ -43,12 +43,9 @@ public class Landuse extends OsmWay{
     }
   }
 
-  public Landuse(long id, ArrayList<OsmNode> nodes, String type, String name, String nameRu)
+  public Landuse(long id, ArrayList<OsmNode> nodes, String type, String name, String nameRu, String nameOld)
   {
-    super(id, nodes);
-    this.type = type;
-    this.name = name;
-    this.nameRu = nameRu;
+    super(id, nodes, type, name, nameRu, nameOld);
   }
 
   public String getType() {

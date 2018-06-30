@@ -1,5 +1,6 @@
 package md.onemap.harta.export;
 
+import md.onemap.harta.db.DatabaseCreator;
 import md.onemap.harta.db.dao.BuildingDao;
 import md.onemap.harta.db.dao.HighwayDao;
 import md.onemap.harta.db.dao.NodeDao;
@@ -24,6 +25,12 @@ public class OsmToPostgresExporter extends OsmExporter
   {
     DOMConfigurator.configure("log4j.xml");
     new OsmToPostgresExporter().export();
+  }
+
+  @Override
+  protected void createdDb(String dbName)
+  {
+    DatabaseCreator.createPlainDb(dbName);
   }
 
   @Override

@@ -91,7 +91,7 @@ public class HighwayDao extends Dao<Highway>
     pStmt.setString(pos++, highway.getName());
     pStmt.setString(pos++, highway.getNameRu());
     pStmt.setString(pos++, highway.getNameOld());
-    pStmt.setString(pos++, highway.getType().name());
+    pStmt.setString(pos++, highway.getType());
     pStmt.setArray(pos++, connection.createArrayOf("bigint", nodeIds));
     pStmt.setDouble(pos++, minLat);
     pStmt.setDouble(pos++, maxLat);
@@ -174,11 +174,5 @@ public class HighwayDao extends Dao<Highway>
       e.printStackTrace();
     }
     return highways;
-  }
-
-  @Override
-  public BoundsLatLon getBounds()
-  {
-    throw new NotImplementedException();
   }
 }

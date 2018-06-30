@@ -12,14 +12,6 @@ public class Leisure extends OsmWay
 {
   public static final String LEISURE = "leisure";
 
-  public static final String PARK = "park";
-  public static final String PLAYGROUND = "playground";
-  public static final String STADIUM = "stadium";
-
-  private String type;
-  private String name;
-  private String nameRu;
-
   public Leisure(long id, List<OsmNode> nodes, Element element)
   {
     super(id, nodes);
@@ -39,33 +31,18 @@ public class Leisure extends OsmWay
         case NAME_RU:
           nameRu = value;
           break;
+        case NAME_OLD:
+          nameOld = value;
+          break;
         default:
           break;
       }
     }
   }
 
-  public Leisure(Long id, List<OsmNode> nodes, String type, String name, String nameRu)
+  public Leisure(Long id, List<OsmNode> nodes, String type, String name, String nameRu, String nameOld)
   {
-    super(id, nodes);
-    this.type = type;
-    this.name = name;
-    this.nameRu = nameRu;
-  }
-
-  public String getType()
-  {
-    return type;
-  }
-
-  public String getName()
-  {
-    return name;
-  }
-
-  public String getNameRu()
-  {
-    return nameRu;
+    super(id, nodes, type, name, nameRu, nameOld);
   }
 
   @Override
@@ -96,20 +73,5 @@ public class Leisure extends OsmWay
     int result = super.hashCode();
     result = 31 * result + (type != null ? type.hashCode() : 0);
     return result;
-  }
-
-  public boolean isPark()
-  {
-    return type.equals(PARK);
-  }
-
-  public boolean isPlayground()
-  {
-    return type.equals(PLAYGROUND);
-  }
-
-  public boolean isStadium()
-  {
-    return type.equals(STADIUM);
   }
 }

@@ -1,10 +1,13 @@
 package md.onemap.harta.db.gis;
 
+import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.db.dao.Dao;
 import md.onemap.harta.osm.OsmNode;
+import md.onemap.harta.osm.OsmWay;
 import org.postgis.PGgeometry;
 import org.postgis.Point;
 import org.postgresql.util.PGobject;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,9 +20,8 @@ import java.util.List;
  */
 public abstract class GisDao<T> extends Dao<T>
 {
-  protected static final String INSERT = "INSERT INTO %s (id, type, name, name_ru, geometry) VALUES (?, ?, ?, ?, %s)";
-
-  protected static final String SELECT_TILE = "SELECT id, type, name, name_ru, geometry " +
+  protected static final String INSERT = "INSERT INTO %s (id, type, name, name_ru, name_old, geometry) VALUES (?, ?, ?, ?, ?, %s)";
+  protected static final String SELECT_TILE = "SELECT id, type, name, name_ru, name_old, geometry " +
       "FROM %s " +
       "WHERE ST_Intersects(" +
       "ST_GeomFromText('Polygon((" +
@@ -29,6 +31,12 @@ public abstract class GisDao<T> extends Dao<T>
       "%f %f," +
       "%f %f" +
       "))'), geometry)";
+  protected JdbcTemplate jdbcTemplate = DbHelper.getJdbcTemplate();
+
+  protected void saveEntity(String tableName, OsmWay entity)
+  {
+    jdbcTemplate.update(String.format(INSERT, tableName, createLineString(entity.getNodes())), entity.getId(), entity.getType(), entity.getName(), entity.getNameRu(), entity.getNameOld());
+  }
 
   protected void toGisConnection(Connection connection)
   {
