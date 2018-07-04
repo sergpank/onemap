@@ -2,17 +2,19 @@ package md.onemap.harta.db.gis;
 
 import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.db.dao.Dao;
+import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.OsmNode;
 import md.onemap.harta.osm.OsmWay;
 import org.postgis.PGgeometry;
 import org.postgis.Point;
 import org.postgresql.util.PGobject;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,7 +23,8 @@ import java.util.List;
 public abstract class GisDao<T> extends Dao<T>
 {
   protected static final String INSERT = "INSERT INTO %s (id, type, name, name_ru, name_old, geometry) VALUES (?, ?, ?, ?, ?, %s)";
-  protected static final String SELECT_TILE = "SELECT id, type, name, name_ru, name_old, geometry " +
+  private static final String SELECT_ALL = "SELECT * FROM %s";
+  private static final String SELECT_TILE = "SELECT * " +
       "FROM %s " +
       "WHERE ST_Intersects(" +
       "ST_GeomFromText('Polygon((" +
@@ -31,11 +34,31 @@ public abstract class GisDao<T> extends Dao<T>
       "%f %f," +
       "%f %f" +
       "))'), geometry)";
-  protected JdbcTemplate jdbcTemplate = DbHelper.getJdbcTemplate();
 
-  protected void saveEntity(String tableName, OsmWay entity)
+  void saveEntity(String tableName, OsmWay entity, boolean isPolygon)
   {
-    jdbcTemplate.update(String.format(INSERT, tableName, createLineString(entity.getNodes())), entity.getId(), entity.getType(), entity.getName(), entity.getNameRu(), entity.getNameOld());
+    String geometry = isPolygon ? createPolygon(entity.getNodes()) : createLineString(entity.getNodes());
+    DbHelper.getJdbcTemplate().update(String.format(INSERT, tableName, geometry), entity.getId(), entity.getType(), entity.getName(), entity.getNameRu(), entity.getNameOld());
+  }
+
+  <E> Collection<E> loadTileEntities(BoundsLatLon box, String tableName, RowMapper<E> mapper)
+  {
+    double dLat = box.getMaxLat() - box.getMinLat();
+    double dLon = box.getMaxLon() - box.getMinLon();
+    String sql = String.format(SELECT_TILE, tableName,
+        box.getMinLon() - dLon, box.getMinLat() - dLat,
+        box.getMinLon() - dLon, box.getMaxLat() + dLat,
+        box.getMaxLon() + dLon, box.getMaxLat() + dLat,
+        box.getMaxLon() + dLon, box.getMinLat() - dLat,
+        box.getMinLon() - dLon, box.getMinLat() - dLat
+    );
+
+    return DbHelper.getJdbcTemplate().query(sql, mapper);
+  }
+
+  <E> Collection<E> loadAllEntities(String tableName, RowMapper<E> mapper)
+  {
+        return DbHelper.getJdbcTemplate().query(String.format(SELECT_ALL, tableName), mapper);
   }
 
   protected void toGisConnection(Connection connection)
@@ -56,9 +79,9 @@ public abstract class GisDao<T> extends Dao<T>
     }
   }
 
-  protected ArrayList<OsmNode> getOsmNodes(ResultSet rs, String geometryColumn) throws SQLException
+  List<OsmNode> getOsmNodes(ResultSet rs, String geometryColumn) throws SQLException
   {
-    ArrayList<OsmNode> nodes = new ArrayList<>();
+    List<OsmNode> nodes = new ArrayList<>();
     PGgeometry geometry = (PGgeometry) rs.getObject(geometryColumn);
     for (int i = 0; i < geometry.getGeometry().numPoints(); i++)
     {

@@ -3,7 +3,6 @@ package md.onemap.harta.osm;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,7 +42,7 @@ public class Landuse extends OsmWay{
     }
   }
 
-  public Landuse(long id, ArrayList<OsmNode> nodes, String type, String name, String nameRu, String nameOld)
+  public Landuse(long id, List<OsmNode> nodes, String type, String name, String nameRu, String nameOld)
   {
     super(id, nodes, type, name, nameRu, nameOld);
   }

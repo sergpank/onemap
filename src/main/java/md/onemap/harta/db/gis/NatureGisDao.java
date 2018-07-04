@@ -6,26 +6,16 @@ import md.onemap.harta.osm.OsmNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 
 public class NatureGisDao extends GisDao<Natural>
 {
   private final Logger log = LoggerFactory.getLogger(NatureGisDao.class);
+
   public static final String TABLE_NAME = "gis.natural";
-
-  private static final String INSERT_SQL = "INSERT INTO %s (id, type, name, name_ru, name_old, geometry) VALUES (?, ?, ?, ?, ?, %s)";
-
-  private static final String SELECT_SQL = "SELECT id, type, name, name_ru, name_old, geometry " +
-      "FROM %s " +
-      "WHERE ST_Intersects(" +
-      "ST_GeomFromText('Polygon((" +
-      "%f %f," +
-      "%f %f," +
-      "%f %f," +
-      "%f %f," +
-      "%f %f" +
-      "))'), geometry)";
 
   @Override
   public void save(Natural entity)
@@ -36,9 +26,7 @@ public class NatureGisDao extends GisDao<Natural>
     }
     else
     {
-      jdbcTemplate.update(String.format(INSERT_SQL, TABLE_NAME, createLineString(entity.getNodes())),
-          entity.getId(), entity.getType(),
-          entity.getName(), entity.getNameRu(), entity.getNameOld());
+      saveEntity(TABLE_NAME, entity, true);
     }
   }
 
@@ -57,32 +45,24 @@ public class NatureGisDao extends GisDao<Natural>
   @Override
   public Collection<Natural> load(int zoomLevel, BoundsLatLon box)
   {
-    double dLat = box.getMaxLat() - box.getMinLat();
-    double dLon = box.getMaxLon() - box.getMinLon();
-    String sql = String.format(SELECT_SQL, TABLE_NAME,
-        box.getMinLon() - dLon, box.getMinLat() - dLat,
-        box.getMinLon() - dLon, box.getMaxLat() + dLat,
-        box.getMaxLon() + dLon, box.getMaxLat() + dLat,
-        box.getMaxLon() + dLon, box.getMinLat() - dLat,
-        box.getMinLon() - dLon, box.getMinLat() - dLat
-    );
-
-    return jdbcTemplate.query(sql, (rs, rowNum) ->
-        {
-          long id = rs.getLong("id");
-          ArrayList<OsmNode> nodes = getOsmNodes(rs, "geometry");
-          String type = rs.getString("type");
-          String name = rs.getString("name");
-          String nameRu = rs.getString("name_ru");
-          String nameOld = rs.getString("name_old");
-          return new Natural(id, nodes, type, name, nameRu, nameOld);
-        }
-    );
+    return loadTileEntities(box, TABLE_NAME, this::mapRow);
   }
 
   @Override
   public Collection<Natural> loadAll()
   {
-    return null;
+    return loadAllEntities(TABLE_NAME, this::mapRow);
+  }
+
+  private Natural mapRow(ResultSet rs, int rowNum) throws SQLException
+  {
+    long id = rs.getLong("id");
+    List<OsmNode> nodes = getOsmNodes(rs, "geometry");
+    String type = rs.getString("type");
+    String name = rs.getString("name");
+    String nameRu = rs.getString("name_ru");
+    String nameOld = rs.getString("name_old");
+
+    return new Natural(id, nodes, type, name, nameRu, nameOld);
   }
 }

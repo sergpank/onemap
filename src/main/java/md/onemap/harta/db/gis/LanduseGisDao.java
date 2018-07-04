@@ -6,8 +6,10 @@ import md.onemap.harta.osm.OsmNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 
 public class LanduseGisDao extends GisDao<Landuse>
 {
@@ -24,7 +26,7 @@ public class LanduseGisDao extends GisDao<Landuse>
     }
     else
     {
-      saveEntity(TABLE_NAME, entity);
+      saveEntity(TABLE_NAME, entity, true);
     }
   }
 
@@ -43,30 +45,24 @@ public class LanduseGisDao extends GisDao<Landuse>
   @Override
   public Collection<Landuse> load(int zoomLevel, BoundsLatLon box)
   {
-    double dLat = box.getMaxLat() - box.getMinLat();
-    double dLon = box.getMaxLon() - box.getMinLon();
-    String sql = String.format(SELECT_TILE, TABLE_NAME,
-        box.getMinLon() - dLon, box.getMinLat() - dLat,
-        box.getMinLon() - dLon, box.getMaxLat() + dLat,
-        box.getMaxLon() + dLon, box.getMaxLat() + dLat,
-        box.getMaxLon() + dLon, box.getMinLat() - dLat,
-        box.getMinLon() - dLon, box.getMinLat() - dLat
-    );
-
-    return jdbcTemplate.query(sql, (rs, rowNum) -> {
-      long id = rs.getLong("id");
-      ArrayList<OsmNode> nodes = getOsmNodes(rs, "geometry");
-      String type = rs.getString("type");
-      String name = rs.getString("name");
-      String nameRu = rs.getString("name_ru");
-      String nameOld = rs.getString("name_old");
-      return new Landuse(id, nodes, type, name, nameRu, nameOld);
-    });
+    return loadTileEntities(box, TABLE_NAME, this::mapRow);
   }
 
   @Override
   public Collection<Landuse> loadAll()
   {
-    return null;
+    return loadAllEntities(TABLE_NAME, this::mapRow);
+  }
+
+  private Landuse mapRow(ResultSet rs, int rowNum) throws SQLException
+  {
+    long id = rs.getLong("id");
+    List<OsmNode> nodes = getOsmNodes(rs, "geometry");
+    String type = rs.getString("type");
+    String name = rs.getString("name");
+    String nameRu = rs.getString("name_ru");
+    String nameOld = rs.getString("name_old");
+
+    return new Landuse(id, nodes, type, name, nameRu, nameOld);
   }
 }
