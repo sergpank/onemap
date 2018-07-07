@@ -21,7 +21,6 @@ public class HighwayPainter extends AbstractPainter
 {
   private static final Font FONT = new Font(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
   private static final FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(FONT);
-  private static final double BORDER_WIDTH_METERS = 1; // 0.5 meters from each side
 
   public HighwayPainter(AbstractProjector projector, BoundsXY bounds)
   {
@@ -38,26 +37,26 @@ public class HighwayPainter extends AbstractPainter
     // First draw road contour (by drawing wider roads)
     for (Highway highway : highwayList)
     {
-      addLabel(labels, highway);
-      CanvasPolygon polygon = createPolygon(highway);
       HighwayType highwayType = highway.getHighwayType();
-      if (level > 16)
+      if (level > 16 && !isFootway(highwayType)) // I draw contour only for levels >= 16
       {
+        CanvasPolygon polygon = createPolygon(highway);
         drawer.setStrokeColor(highwayType.getBorderColor());
         drawer.setFillColor(highwayType.getBorderColor());
         shiftPolygon(polygon);
-        drawer.drawPolyLine(polygon, highwayType.getWidth(projector, true));
+        drawer.drawPolyLine(polygon, highwayType.getWidth(projector, true), false);
       }
     }
 
     // Then draw road (Thicker road over the "contour" road)
     for (Highway highway : highwayList)
     {
+      addLabel(labels, highway);
       CanvasPolygon polygon = createPolygon(highway);
       if (level < 13)
       {
         shiftPolygon(polygon);
-        drawer.drawPolyLine(polygon, 1);
+        drawer.drawPolyLine(polygon, 1, false);
       }
       else
       {
@@ -65,7 +64,7 @@ public class HighwayPainter extends AbstractPainter
         drawer.setStrokeColor(highwayType.getSurfaceColor());
         drawer.setFillColor(highwayType.getSurfaceColor());
         shiftPolygon(polygon);
-        drawer.drawPolyLine(polygon, highwayType.getWidth(projector, false));
+        drawer.drawPolyLine(polygon, highwayType.getWidth(projector, false), isFootway(highwayType));
       }
     }
 
@@ -77,6 +76,16 @@ public class HighwayPainter extends AbstractPainter
         textPainter.paintHighwayLabel(drawer, label);
       }
     }
+  }
+
+  private boolean isFootway(HighwayType highwayType)
+  {
+    return highwayType == HighwayType.pedestrian
+        || highwayType == HighwayType.footway
+        || highwayType == HighwayType.bridleway
+        || highwayType == HighwayType.cycleway
+        || highwayType == HighwayType.steps
+        || highwayType == HighwayType.path;
   }
 
   private void addLabel(List<Label> labels, Highway highway)

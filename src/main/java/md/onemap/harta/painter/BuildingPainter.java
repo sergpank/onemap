@@ -35,7 +35,7 @@ public class BuildingPainter extends AbstractPainter
       drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
 
       drawer.setStrokeColor(Palette.BUILDING_BORDER_COLOR);
-      drawer.drawPolyLine(polygon, 1);
+      drawer.drawPolyLine(polygon, 1, false);
 
       if (level >= 17)
       {

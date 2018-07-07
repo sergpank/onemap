@@ -27,7 +27,7 @@ public class WaterwayPainter extends AbstractPainter {
       drawer.setStrokeColor(Palette.WATER_COLOR);
       drawer.setFillColor(Palette.WATER_COLOR);
       shiftPolygon(polygon);
-      drawer.drawPolyLine(polygon, (int)GeometryUtil.metersToPixels(projector, 8));
+      drawer.drawPolyLine(polygon, (int)GeometryUtil.metersToPixels(projector, 8), false);
     }
   }
 }

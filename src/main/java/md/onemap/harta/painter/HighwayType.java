@@ -33,7 +33,7 @@ public enum HighwayType
   road(2, 40, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),         // - lines that _may be_ are roads. This is a temporary tag
 
   // Roads not for 4-wheeled transport
-  footway(2, 30, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),  // - road for pedestrians, if bicycle=ye - allowed for riding
+  footway(2, 30, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),  // - road for pedestrians, if bicycle=yes - allowed for riding
   cycleway(2, 30, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR), // - road for bicycles, if foot=yes - allowed for walking
   bridleway(2, 30, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),// - road for horse riding
   steps(2, 30, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),    // - stairs on footways

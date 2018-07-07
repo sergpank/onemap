@@ -41,9 +41,12 @@ public class AwtDrawer extends AbstractDrawer
   }
 
   @Override
-  public void drawPolyLine(CanvasPolygon polygon, int width)
+  public void drawPolyLine(CanvasPolygon polygon, int width, boolean dashed)
   {
-    graphics.setStroke(new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+    BasicStroke stroke = dashed
+        ? new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 3f, new float[]{width * 2f, width}, 0.0f)
+        : new BasicStroke(width, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    graphics.setStroke(stroke);
     graphics.drawPolyline(polygon.getIntXPoints(), polygon.getIntYPoints(), polygon.getPointsNumber());
   }
 

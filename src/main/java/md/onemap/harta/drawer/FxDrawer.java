@@ -82,7 +82,7 @@ public class FxDrawer extends AbstractDrawer
   }
 
   @Override
-  public void drawPolyLine(CanvasPolygon polygon, int width)
+  public void drawPolyLine(CanvasPolygon polygon, int width, boolean dashed)
   {
     gc.strokePolyline(polygon.getxPoints(), polygon.getyPoints(), polygon.getPointsNumber());
   }
