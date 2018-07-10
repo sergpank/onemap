@@ -19,14 +19,14 @@ public class NaturePainter extends AbstractPainter
     super(projector, bounds);
   }
 
-  public void drawWater(AbstractDrawer drawer, Collection<Natural> nature, int level)
+  public void draw(AbstractDrawer drawer, Collection<Natural> nature, int level)
   {
     drawer.setFillColor(Palette.WATER_COLOR);
     for (Natural natural : nature)
     {
       if (natural.getType().equals("water"))
       {
-        CanvasPolygon polygon = createPolygon(natural);
+        CanvasPolygon polygon = createPolygon(natural.getNodes());
         shiftPoints(bounds.getXmin(), polygon.getxPoints());
         shiftPoints(bounds.getYmin(), polygon.getyPoints());
         drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());

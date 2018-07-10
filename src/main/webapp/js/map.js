@@ -6,8 +6,8 @@ var map = L.map('map', {
 
 L.control.scale().addTo(map);
 
-//L.tileLayer('http://localhost:8080/onemap/tile?x={x}&y={y}&z={z}', {
-L.tileLayer('http://onemap.md/tile?x={x}&y={y}&z={z}', {
+L.tileLayer('http://localhost:8080/onemap/tile?x={x}&y={y}&z={z}', {
+//L.tileLayer('http://onemap.md/tile?x={x}&y={y}&z={z}', {
   minZoom: 13,
   maxZoom: 21,
   tileSize: 512,

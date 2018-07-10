@@ -17,7 +17,7 @@ public abstract class OsmExporter
   {
     createdDb(Props.dbName());
     exportEntities();
-    normalizeHighwayNames();
+//    normalizeHighwayNames();
   }
 
   protected abstract void createdDb(String dbName);

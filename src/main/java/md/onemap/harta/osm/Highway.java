@@ -47,8 +47,12 @@ public class Highway extends OsmWay {
     }
   }
 
-  private HighwayType defineType(String type)
+  public static HighwayType defineType(String type)
   {
+    if (null == type)
+    {
+      return HighwayType.unclassified;
+    }
     try
     {
       return HighwayType.valueOf(type);

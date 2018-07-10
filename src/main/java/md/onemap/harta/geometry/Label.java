@@ -1,6 +1,8 @@
 package md.onemap.harta.geometry;
 
-import md.onemap.harta.osm.Highway;
+import md.onemap.harta.osm.OsmNode;
+
+import java.util.List;
 
 /**
  * Created by sergpank on 09.05.15.
@@ -10,11 +12,11 @@ public class Label
   private String text;
   private BoundsXY bounds;
   private XYPoint center;
-  private Highway highway;
   private float height;
   private float width;
+  private List<OsmNode> nodes;
 
-  public Label(String text, XYPoint center, float height, float width)
+  public Label(String text, XYPoint center, float height, float width, List<OsmNode> nodes)
   {
     this.text = text;
     this.center = center;
@@ -23,6 +25,8 @@ public class Label
     this.width = width; // +text.length() because distance between characters should be 1 pixel.
     this.bounds = new BoundsXY(center.getX() - width / 2, center.getY() - height / 2,
         center.getX() + width / 2, center.getY() + height / 2);
+
+    this.nodes = nodes;
   }
 
   /**
@@ -79,13 +83,8 @@ public class Label
     return result;
   }
 
-  public void setHighway(Highway highway)
+  public List<OsmNode> getNodes()
   {
-    this.highway = highway;
-  }
-
-  public Highway getHighway()
-  {
-    return highway;
+    return nodes;
   }
 }

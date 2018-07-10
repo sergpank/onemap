@@ -23,7 +23,7 @@ public class WaterwayPainter extends AbstractPainter {
     drawer.setStrokeColor(Palette.WATER_COLOR);
 
     for (Waterway waterway : waterways) {
-      CanvasPolygon polygon = createPolygon(waterway);
+      CanvasPolygon polygon = createPolygon(waterway.getNodes());
       drawer.setStrokeColor(Palette.WATER_COLOR);
       drawer.setFillColor(Palette.WATER_COLOR);
       shiftPolygon(polygon);

@@ -20,6 +20,7 @@ public class AwtDrawer extends AbstractDrawer
   public AwtDrawer(Graphics2D graphics)
   {
     this.graphics = graphics;
+    setAAEnabled(true);
   }
 
   @Override

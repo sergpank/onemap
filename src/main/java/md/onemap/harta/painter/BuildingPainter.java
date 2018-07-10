@@ -5,6 +5,7 @@ import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.geometry.XYPoint;
 import md.onemap.harta.osm.Building;
+import md.onemap.harta.osm.Way;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
 import md.onemap.harta.util.TextUtil;
@@ -27,7 +28,7 @@ public class BuildingPainter extends AbstractPainter
     drawer.setFont("Arial", 12);
     for (Building building : buildings)
     {
-      CanvasPolygon polygon = createPolygon(building);
+      CanvasPolygon polygon = createPolygon(building.getNodes());
       shiftPoints(bounds.getXmin(), polygon.getxPoints());
       shiftPoints(bounds.getYmin(), polygon.getyPoints());
 
@@ -39,17 +40,38 @@ public class BuildingPainter extends AbstractPainter
 
       if (level >= 17)
       {
-        drawHouseNumber(drawer, polygon, building);
+        drawHouseNumber(drawer, polygon, building.getHouseNumber(), building.getBounds().toXY(projector));
       }
     }
   }
 
-  private void drawHouseNumber(AbstractDrawer drawer, CanvasPolygon polygon, Building building)
+  public void drawBuildings(AbstractDrawer drawer, Collection<Way> buildings, int level)
   {
-    String houseNumber = building.getHouseNumber();
+    drawer.setFont("Arial", 12);
+    for (Way way : buildings)
+    {
+      CanvasPolygon polygon = createPolygon(way.getNodes());
+      shiftPoints(bounds.getXmin(), polygon.getxPoints());
+      shiftPoints(bounds.getYmin(), polygon.getyPoints());
+
+      drawer.setFillColor(Palette.BUILDING_COLOR);
+      drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
+
+      drawer.setStrokeColor(Palette.BUILDING_BORDER_COLOR);
+      drawer.drawPolyLine(polygon, 1, false);
+
+      if (level >= 17)
+      {
+        String houseNumber = way.getTags().get("addr:housenumber");
+        drawHouseNumber(drawer, polygon, houseNumber, way.getBoundsLatLon().toXY(projector));
+      }
+    }
+  }
+
+  private void drawHouseNumber(AbstractDrawer drawer, CanvasPolygon polygon, String houseNumber, BoundsXY bounds)
+  {
     if (houseNumber != null)
     {
-      BoundsXY bounds = building.getBounds().toXY(projector);
       double w = bounds.getXmax() - bounds.getXmin();
       double h = bounds.getYmax() - bounds.getYmin();
       float stringWidth = TextUtil.getStringWidth(houseNumber, Palette.BUILDING_FONT_NAME, Palette.BUILDING_FONT_SIZE);

@@ -28,14 +28,14 @@ public class LandusePainter extends AbstractPainter{
       if (LanduseGreen.isGreen(land.getType()))
       {
         drawer.setFillColor(Palette.PARK_COLOR);
-        CanvasPolygon polygon = createPolygon(land);
+        CanvasPolygon polygon = createPolygon(land.getNodes());
         shiftPolygon(polygon);
         drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
       }
       else if (Water.isWater(land.getType()))
       {
         drawer.setFillColor(Palette.WATER_COLOR);
-        CanvasPolygon polygon = createPolygon(land);
+        CanvasPolygon polygon = createPolygon(land.getNodes());
         shiftPolygon(polygon);
         drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
       }

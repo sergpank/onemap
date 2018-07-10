@@ -24,23 +24,24 @@ public class DatabaseCreator
   {
     try (Connection con = createDbIfNotExists(dbName))
     {
-      createTable(con, getCreateNodesTable(), "nodes");
-      createTable(con, getCreateHighwaysTable(), "highways");
-      createTable(con, getCreateBuildingsTable(), "buildings");
-      createTable(con, getCreateBordersTable(), "borders");
-      createTable(con, getCreateLeisureTable(), "leisure");
-      createTable(con, getCreateWaterwayTable(), "waterway");
-      createTable(con, getCreateLanduseTable(), "landuse");
+      createTable(getCreateNodesTable(), "nodes");
+      createTable(getCreateHighwaysTable(), "highways");
+      createTable(getCreateBuildingsTable(), "buildings");
+      createTable(getCreateBordersTable(), "borders");
+      createTable(getCreateLeisureTable(), "leisure");
+      createTable(getCreateWaterwayTable(), "waterway");
+      createTable(getCreateLanduseTable(), "landuse");
 
-      createTable(con, getCreateNormalizedHighwaysTable(), "normalized_highways");
+      createTable(getCreateNormalizedHighwaysTable(), "normalized_highways");
 
       con.createStatement().execute("CREATE SCHEMA IF NOT EXISTS statistics;");
-      createTable(con, getCreateTileCountTable(), "statistics.tile_calls_count");
-      createTable(con, getCreateVisitorsTable(), "statistics.visitors");
+      createTable(getCreateTileCountTable(), "statistics.tile_calls_count");
+      createTable(getCreateVisitorsTable(), "statistics.visitors");
     }
     catch (SQLException e)
     {
       e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 
@@ -48,33 +49,38 @@ public class DatabaseCreator
   {
     try (Connection con = createDbIfNotExists(dbName))
     {
-      createTable(con, getCreateNodesTable(), "nodes");
-      createTable(con, getCreateNormalizedHighwaysTable(), "normalized_highways");
+      createTable(getCreateNormalizedHighwaysTable(), "normalized_highways");
 
       con.createStatement().execute("CREATE EXTENSION IF NOT EXISTS Postgis;");
       con.createStatement().execute("CREATE SCHEMA IF NOT EXISTS gis;");
 
-      createTable(con, getCreateHighwaysGisTable(), HighwayGisDao.TABLE_NAME);
-      createTable(con, getCreateBuildingsGisTable(), BuildingGisDao.TABLE_NAME);
-      createTable(con, getCreateBordersGisTable(), "gis.borders");
-      createTable(con, getCreateLeisureGisTable(), LeisureGisDao.TABLE_NAME);
-      createTable(con, getCreateWaterwayGisTable(), WaterwayGisDao.TABLE_NAME);
-      createTable(con, getCreateLanduseGisTable(), LanduseGisDao.TABLE_NAME);
-      createTable(con, getCreateNaturalGisTable(), NatureGisDao.TABLE_NAME);
+//      createTable(getCreateHighwaysGisTable(), HighwayGisDao.TABLE_NAME);
+//      createTable(getCreateBuildingsGisTable(), BuildingGisDao.TABLE_NAME);
+//      createTable(getCreateBordersGisTable(), "gis.borders");
+//      createTable(getCreateLeisureGisTable(), LeisureGisDao.TABLE_NAME);
+//      createTable(getCreateWaterwayGisTable(), WaterwayGisDao.TABLE_NAME);
+//      createTable(getCreateLanduseGisTable(), LanduseGisDao.TABLE_NAME);
+//      createTable(getCreateNaturalGisTable(), NatureGisDao.TABLE_NAME);
 
       con.createStatement().execute("CREATE SCHEMA IF NOT EXISTS statistics;");
-      createTable(con, getCreateTileCountTable(), "statistics.tile_calls_count");
-      createTable(con, getCreateVisitorsTable(), "statistics.visitors");
+      createTable(getCreateTileCountTable(), "statistics.tile_calls_count");
+      createTable(getCreateVisitorsTable(), "statistics.visitors");
+
+      createTable(getCreateWayGisTable(), WayGisDao.WAY_TABLE_NAME);
+      createTable(getCreateTagTable(), WayGisDao.TAG_TABLE_NAME);
+      con.createStatement().execute("CREATE INDEX ON " + WayGisDao.TAG_TABLE_NAME + " (id)");
+      con.createStatement().execute("CREATE INDEX ON " + WayGisDao.WAY_TABLE_NAME + " USING gist (geometry)");
     }
     catch (SQLException e)
     {
       e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 
-  private static void createTable(Connection con, String query, String tableName)
+  private static void createTable(String query, String tableName)
   {
-    try (Statement statement = con.createStatement())
+    try (Statement statement = DbHelper.getConnection().createStatement())
     {
       statement.execute(query);
       log.info("Table \"{}\" is created.", tableName);
@@ -82,6 +88,7 @@ public class DatabaseCreator
     catch (SQLException e)
     {
       e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 
@@ -89,7 +96,7 @@ public class DatabaseCreator
   {
     if (!isTableExists(con, tableName))
     {
-      createTable(con, query, tableName);
+      createTable(query, tableName);
     }
     else
     {
@@ -152,6 +159,7 @@ public class DatabaseCreator
     catch (SQLException e)
     {
       e.printStackTrace();
+      throw new RuntimeException(e);
     }
     return DbHelper.getConnection();
   }
@@ -351,6 +359,27 @@ public class DatabaseCreator
         "name_local text, " +
         "geometry geometry, " +
         "CONSTRAINT natural_gis_pkey PRIMARY KEY (id)" +
+        ")";
+  }
+
+  private static String getCreateWayGisTable()
+  {
+    return "create table " + WayGisDao.WAY_TABLE_NAME + " ( " +
+        "id bigint, " +
+        "type text, " +
+        "geometry geometry, " +
+        "CONSTRAINT way_gis_pkey PRIMARY KEY (id)" +
+        ")";
+  }
+
+
+
+  private static String getCreateTagTable()
+  {
+    return "create table " + WayGisDao.TAG_TABLE_NAME + " ( " +
+        "id bigint references gis.way(id), " +
+        "key text, " +
+        "value text " +
         ")";
   }
 

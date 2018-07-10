@@ -31,7 +31,7 @@ public class LeisurePainter extends AbstractPainter
       {
         drawer.setFillColor(Palette.WATER_COLOR);
       }
-      CanvasPolygon polygon = createPolygon(leisure);
+      CanvasPolygon polygon = createPolygon(leisure.getNodes());
       shiftPoints(bounds.getXmin(), polygon.getxPoints());
       shiftPoints(bounds.getYmin(), polygon.getyPoints());
       drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());

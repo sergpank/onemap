@@ -4,18 +4,30 @@ import md.onemap.exception.NotImplementedException;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.*;
 import md.onemap.harta.util.XmlUtil;
+
+import org.postgis.PGgeometry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.*;
+import java.util.function.IntFunction;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Created by sergpank on 20.01.2015.
  */
-public class OsmLoader extends AbstractLoader{
+public class OsmLoader extends AbstractLoader
+{
+  private static final Logger LOG = LoggerFactory.getLogger(OsmLoader.class);
+
   private Map<Long, OsmNode> nodeMap = new HashMap<>();
+  private Map<Long, Way> wayMap = new HashMap<>();
+
   private HashMap<Long, Building> buildingMap = new HashMap<>();
   private HashMap<Long, Highway>  highwayMap = new HashMap<>();
   private HashMap<Long, Leisure>  leisureMap = new HashMap<>();
@@ -31,6 +43,11 @@ public class OsmLoader extends AbstractLoader{
 
   public Map<Long, OsmNode> getNodes() {
     return nodeMap;
+  }
+
+  public Map<Long, Way> getWays()
+  {
+    return wayMap;
   }
 
   public Map<Long, Highway> getHighways() {
@@ -175,76 +192,95 @@ public class OsmLoader extends AbstractLoader{
       {
         Element element = (Element) item;
         Long id = Long.parseLong(element.getAttribute("id"));
-        NodeList wayNodeIds = element.getElementsByTagName("nd");
-        List<OsmNode> wayNodes = new ArrayList<>(wayNodeIds.getLength());
-        for (int j = 0; j < wayNodeIds.getLength(); j++)
-        {
-          long nodeId = Long.parseLong(((Element) wayNodeIds.item(j)).getAttribute("ref"));
-          wayNodes.add(nodeMap.get(nodeId));
-        }
-        if (isItWhatWeNeed(element, Building.BUILDING))
-        {
-          Building building = new Building(id, wayNodes, element);
-          buildingMap.put(id, building);
-        }
-        else if (isItWhatWeNeed(element, Highway.HIGHWAY))
-        {
-          Highway highway = new Highway(id, wayNodes, element);
-          highwayMap.put(id, highway);
-        }
-        else if (isItWhatWeNeed(element, Leisure.LEISURE))
-        {
-          Leisure leisure = new Leisure(id, wayNodes, element);
-          leisureMap.put(id, leisure);
-        }
-        else if (isItWhatWeNeed(element, Natural.NATURAL))
-        {
-          Natural natural = new Natural(id, wayNodes, element);
-          natureMap.put(id, natural);
-        }
-        else if (isItWhatWeNeed(element, Waterway.WATERWAY))
-        {
-          Waterway waterway = new Waterway(id, wayNodes, element);
-          waterwayMap.put(id, waterway);
-        }
-        else if (isItWhatWeNeed(element, Border.BORDER))
-        {
-          Border border = new Border(id, wayNodes, element);
-          borderMap.put(id, border);
-        }
-        else if (isItWhatWeNeed(element, Landuse.LANDUSE))
-        {
-          Landuse landuse = new Landuse(id, wayNodes, element);
-          landuseMap.put(id, landuse);
-        }
+        List<OsmNode> nodes = getWayNodes(element);
+        Map<String, String> tags = getTags(element);
+        String type = Way.defineType(tags);
 
-        // Some buildings or landuse or whatever ... can be amenity too.
-        // It is ok to have duplicates
-        if (isItWhatWeNeed(element, Amenity.AMENITY))
-        {
-          Amenity amenity = new Amenity(id, wayNodes, element);
-          amenityMap.put(id, amenity);
-        }
+        wayMap.put(id, new Way(id, type, nodes, tags));
+
+//        if (tags.containsKey(Building.BUILDING))
+//        {
+//          Building building = new Building(id, nodes, element);
+//          buildingMap.put(id, building);
+//        }
+//        else if (tags.containsKey(Highway.HIGHWAY))
+//        {
+//          Highway highway = new Highway(id, nodes, element);
+//          highwayMap.put(id, highway);
+//        }
+//        else if (tags.containsKey(Leisure.LEISURE))
+//        {
+//          Leisure leisure = new Leisure(id, nodes, element);
+//          leisureMap.put(id, leisure);
+//        }
+//        else if (tags.containsKey(Natural.NATURAL))
+//        {
+//          Natural natural = new Natural(id, nodes, element);
+//          natureMap.put(id, natural);
+//        }
+//        else if (tags.containsKey(Landuse.LANDUSE))
+//        {
+//          Landuse landuse = new Landuse(id, nodes, element);
+//          landuseMap.put(id, landuse);
+//        }
+//        else if (tags.containsKey(Waterway.WATERWAY))
+//        {
+//          Waterway waterway = new Waterway(id, nodes, element);
+//          waterwayMap.put(id, waterway);
+//        }
+//        else if (tags.containsKey(Border.BORDER))
+//        {
+//          Border border = new Border(id, nodes, element);
+//          borderMap.put(id, border);
+//        }
+//        else
+//        {
+//          LOG.error("Unknown OsmWay type: id={}", id);
+//        }
+//
+//        // Some buildings or landuse or whatever ... can be amenity too.
+//        // It is ok to have duplicates
+//        if (tags.containsKey(Amenity.AMENITY))
+//        {
+//          Amenity amenity = new Amenity(id, nodes, element);
+//          amenityMap.put(id, amenity);
+//        }
       }
     }
   }
 
-  private boolean isItWhatWeNeed(Element element, String whatWeNeed)
+  private List<OsmNode> getWayNodes(Element element)
   {
-    NodeList tags = getTags(element);
-    for (int i = 0; i < tags.getLength(); i++){
+    NodeList wayNodeIds = element.getElementsByTagName("nd");
+
+    List<OsmNode> wayNodes = new ArrayList<>(wayNodeIds.getLength());
+    for (int j = 0; j < wayNodeIds.getLength(); j++)
+    {
+      long nodeId = Long.parseLong(((Element) wayNodeIds.item(j)).getAttribute("ref"));
+      wayNodes.add(nodeMap.get(nodeId));
+    }
+    return wayNodes;
+  }
+
+  private Map<String, String> getTags(Element element)
+  {
+    NodeList tags = element.getElementsByTagName("tag");
+
+    Map<String, String> tagMap = IntStream
+        .range(0, tags.getLength())
+        .mapToObj(mapFunction(tags))
+        .collect(Collectors.toMap(arr -> arr[0], arr -> arr[1]));
+    return tagMap;
+  }
+
+  private IntFunction<String[]> mapFunction(NodeList tags)
+  {
+    return i -> {
       Element item = (Element) tags.item(i);
       String key = item.getAttribute("k");
-      if (key.equals(whatWeNeed)){
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private NodeList getTags(Element element)
-  {
-    return element.getElementsByTagName("tag");
+      String value = item.getAttribute("v");
+      return new String[] {key, value};
+    };
   }
 
   @Override

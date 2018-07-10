@@ -19,27 +19,24 @@ import java.util.Collection;
 /**
  * Created by sergpank on 04/12/2017.
  */
-public class TileDrawer
+public class CategorizedTileDrawer extends AbstractTileDrawer
 {
-  private static final Logger LOG = LoggerFactory.getLogger(TileDrawer.class);
-  private int tileSize;
+  private static final Logger LOG = LoggerFactory.getLogger(CategorizedTileDrawer.class);
 
-  public TileDrawer(int tileSize)
+
+  public CategorizedTileDrawer(int tileSize)
   {
-    this.tileSize = tileSize;
+    super(tileSize);
   }
 
+  @Override
   public BufferedImage drawTile(int level, int x, int y, AbstractProjector projector,
                                 AbstractLoader loader, BoundsLatLon tileBounds)
   {
     BufferedImage bi = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D graphics = bi.createGraphics();
-
-    graphics.setPaint(Palette.BACKGROUND_COLOR);
-    graphics.fillRect(0, 0, tileSize, tileSize);
+    Graphics2D graphics = createGraphics(bi);
 
     AbstractDrawer drawer = new AwtDrawer(graphics);
-    drawer.setAAEnabled(true);
 
     BoundsXY boundsXY = tileBounds.toXY(projector);
 
@@ -53,7 +50,7 @@ public class TileDrawer
     new LandusePainter(projector,  boundsXY).draw(drawer, landuse, level);
     new LeisurePainter(projector,  boundsXY).draw(drawer, leisure, level);
     new WaterwayPainter(projector, boundsXY).draw(drawer, waterways, level);
-    new NaturePainter(projector, boundsXY).drawWater(drawer, nature, level);
+    new NaturePainter(projector, boundsXY).draw(drawer, nature, level);
     new BuildingPainter(projector, boundsXY).draw(drawer, buildings, level);
     new HighwayPainter(projector,  boundsXY).draw(drawer, highways, level);
 
@@ -68,29 +65,5 @@ public class TileDrawer
     }
 
     return bi;
-  }
-
-  private void drawTileNumber(int x, int y, int level, Graphics2D graphics)
-  {
-    String levelLabel = level + "";
-    String xyLabel = String.format("(%d; %d)", x, y);
-
-    Font font = new Font("Calibri", Font.BOLD, 14);
-    FontMetrics fontMetrics = graphics.getFontMetrics(font);
-
-    int levelWidth = fontMetrics.stringWidth(levelLabel);
-    int xyWidth = fontMetrics.stringWidth(xyLabel);
-    int h = fontMetrics.getHeight();
-
-    graphics.setColor(Color.RED);
-    graphics.drawString(levelLabel, tileSize / 2 - levelWidth / 2, tileSize / 2 + h / 2);
-    graphics.drawString(xyLabel, tileSize / 2 - xyWidth / 2, tileSize / 2 + h / 2 * 3 + 8);
-  }
-
-  private void drawTileBorder(Graphics2D graphics)
-  {
-    graphics.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-    graphics.drawLine(0,            0,            tileSize - 1, 0);
-    graphics.drawLine(0,            0,            0, tileSize - 1);
   }
 }

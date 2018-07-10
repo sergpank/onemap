@@ -169,7 +169,7 @@ public class MapViewerSwing extends JPanel {
 
     landusePainter.draw(new AwtDrawer((Graphics2D)g), landuse, LEVEL);
     leisurePainter.draw(new AwtDrawer((Graphics2D) g), leisure, LEVEL);
-//    naturePainter.drawWater(new AwtDrawer((Graphics2D)g), nature, LEVEL);
+//    naturePainter.draw(new AwtDrawer((Graphics2D)g), nature, LEVEL);
 //    waterwayPainter.draw(new AwtDrawer((Graphics2D)g), waterways, LEVEL);
     highwayPainter.draw(new AwtDrawer((Graphics2D) g), highways, LEVEL);
     buildingPainter.draw(new AwtDrawer((Graphics2D) g), buildings, LEVEL);

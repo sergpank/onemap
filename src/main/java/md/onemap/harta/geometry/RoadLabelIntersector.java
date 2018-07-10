@@ -1,6 +1,5 @@
 package md.onemap.harta.geometry;
 
-import md.onemap.harta.osm.Highway;
 import md.onemap.harta.osm.OsmNode;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.util.TextUtil;
@@ -32,11 +31,11 @@ public class RoadLabelIntersector
     this.fontSize = fontSize;
   }
 
-  public List<Intersection> getIntersections(Highway highway, Label label, AbstractProjector projector)
+  public List<Intersection> getIntersections(Label label, AbstractProjector projector, List<OsmNode> nodes)
   {
     List<Intersection> intersections = new ArrayList<>();
 
-    List<Line> segments = highwayToSegments(highway, projector);
+    List<Line> segments = highwayToSegments(projector, nodes);
 
     for (Line segment : segments) {
       double segLength = GeometryUtil.getDistanceBetweenPoints(segment.getLeftPoint(), segment.getRightPoint());
@@ -90,30 +89,30 @@ public class RoadLabelIntersector
     return intersection;
   }
 
-  protected List<Line> highwayToSegments(Highway highway, AbstractProjector projector)
+  protected List<Line> highwayToSegments(AbstractProjector projector, List<OsmNode> nodes)
   {
-    int numNodes = highway.getNodes().size();
-    OsmNode firstNode = highway.getNodes().get(0);
-    OsmNode lastNode = highway.getNodes().get(numNodes - 1);
+    int numNodes = nodes.size();
+    OsmNode firstNode = nodes.get(0);
+    OsmNode lastNode = nodes.get(numNodes - 1);
 
     if (firstNode.getLon() < lastNode.getLon())
     {
-      return getSegmentsDirect(highway.getNodes(), projector);
+      return getSegmentsDirect(nodes, projector);
     }
     else if (firstNode.getLon() > lastNode.getLon())
     {
-      return getSegmentsReverse(highway.getNodes(), projector);
+      return getSegmentsReverse(nodes, projector);
     }
     else
     {
       // In this case this is a vertical line, label should be written from bottom to top
       if (firstNode.getLat() < lastNode.getLat())
       {
-        return getSegmentsDirect(highway.getNodes(), projector);
+        return getSegmentsDirect(nodes, projector);
       }
       else
       {
-        return getSegmentsReverse(highway.getNodes(), projector);
+        return getSegmentsReverse(nodes, projector);
       }
     }
   }

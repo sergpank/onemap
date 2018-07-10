@@ -39,7 +39,7 @@ public class BorderPainter extends AbstractPainter
     drawer.setStrokeColor(Palette.BORDER_COLOR);
     for (Border border : borders)
     {
-      CanvasPolygon polygon = createPolygon(border);
+      CanvasPolygon polygon = createPolygon(border.getNodes());
       BoundsXY bounds =border.getBounds().toXY(projector);
       double width = bounds.getXmax() - bounds.getXmin();
 
@@ -91,7 +91,7 @@ public class BorderPainter extends AbstractPainter
       center = getLabelCenter(polygon, label, stringWidth, stringHeight);
     }
     //System.out.printf("%s - %d\n", label, (int) font.getSize());
-    return new Label(label, center, stringHeight, stringWidth);
+    return new Label(label, center, stringHeight, stringWidth, null);
   }
 
   private Font calcFontSize(String label, double regionWidth, int fontSize, boolean labelWasWider)
