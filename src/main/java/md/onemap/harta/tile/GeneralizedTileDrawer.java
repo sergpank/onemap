@@ -5,9 +5,7 @@ import md.onemap.harta.drawer.AwtDrawer;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.loader.AbstractLoader;
-import md.onemap.harta.osm.Building;
-import md.onemap.harta.osm.Highway;
-import md.onemap.harta.osm.Way;
+import md.onemap.harta.osm.*;
 import md.onemap.harta.painter.*;
 import md.onemap.harta.projector.AbstractProjector;
 
@@ -32,22 +30,19 @@ public class GeneralizedTileDrawer extends AbstractTileDrawer
 
     Collection<Way> tileData = new WayGisDao().load(level, tileBounds);
 
-    Set<Way> highways = tileData
-        .stream()
-        .filter(w -> w.getType() != null && w.getType().equals(Highway.HIGHWAY))
-        .collect(Collectors.toSet());
-
-    Set<Way> buildings = tileData
-        .stream()
-        .filter(w -> w.getType() != null && w.getType().equals(Building.BUILDING))
-        .collect(Collectors.toSet());
+    Set<Way> highways = getWays(tileData, Highway.HIGHWAY);
+    Set<Way> buildings = getWays(tileData, Building.BUILDING);
+    Set<Way> landuse = getWays(tileData, Landuse.LANDUSE);
+    Set<Way> leisure = getWays(tileData, Leisure.LEISURE);
+    Set<Way> waterways = getWays(tileData, Waterway.WATERWAY);
+    Set<Way> nature = getWays(tileData, Natural.NATURAL);
 
     BoundsXY boundsXY = tileBounds.toXY(projector);
 
-//    new LandusePainter(projector,  boundsXY).draw(drawer, landuse, level);
-//    new LeisurePainter(projector,  boundsXY).draw(drawer, leisure, level);
-//    new WaterwayPainter(projector, boundsXY).draw(drawer, waterways, level);
-//    new NaturePainter(projector, boundsXY).draw(drawer, nature, level);
+    new LandusePainter(projector,  boundsXY).drawLanduse(drawer, landuse, level);
+    new LeisurePainter(projector,  boundsXY).drawLeisure(drawer, leisure, level);
+    new WaterwayPainter(projector, boundsXY).drawWaterways(drawer, waterways, level);
+    new NaturePainter(projector, boundsXY).drawNatural(drawer, nature, level);
 
     new BuildingPainter(projector, boundsXY).drawBuildings(drawer, buildings, level);
     new HighwayPainter(projector, boundsXY).drawHighways(drawer, highways, level);
@@ -55,5 +50,13 @@ public class GeneralizedTileDrawer extends AbstractTileDrawer
 
 
     return bi;
+  }
+
+  private Set<Way> getWays(Collection<Way> tileData, String highway)
+  {
+    return tileData
+        .stream()
+        .filter(w -> w.getType() != null && w.getType().equals(highway))
+        .collect(Collectors.toSet());
   }
 }
