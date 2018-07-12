@@ -26,11 +26,11 @@ public enum HighwayType
   tertiary_link(4, 60, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),
 
   // Special road types
-  living_street(2, 40, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),// - residential rads where pedestrians have legal priority over the cars
-  pedestrian(2, 40, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),   // - residential roads that are allowed mainly/exclusively for pedestrians
-  track(2, 40, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),        // - unpaved surface for agricultural of forestry use
-  raceway(2, 40, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),      // - a racing road
-  road(2, 40, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),         // - lines that _may be_ are roads. This is a temporary tag
+  living_street(2, 40, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),                   // - residential roads where pedestrians have legal priority over the cars
+  pedestrian(2, 40, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),// - residential roads that are allowed mainly/exclusively for pedestrians
+  track(2, 40, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),                           // - unpaved surface for agricultural of forestry use
+  raceway(2, 40, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),              // - a racing road
+  road(2, 40, Palette.HIGHWAY_COLOR, Palette.HIGHWAY_BORDER_COLOR),                            // - lines that _may be_ are roads. This is a temporary tag
 
   // Roads not for 4-wheeled transport
   footway(2, 30, Palette.PEDESTRIAN_HIGHWAY_COLOR, Palette.PEDESTRIAN_HIGHWAY_BORDER_COLOR),  // - road for pedestrians, if bicycle=yes - allowed for riding
