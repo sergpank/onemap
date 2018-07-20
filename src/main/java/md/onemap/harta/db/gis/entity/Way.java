@@ -1,39 +1,31 @@
-package md.onemap.harta.osm;
+package md.onemap.harta.db.gis.entity;
 
-import md.onemap.harta.db.gis.WayGisDao;
 import md.onemap.harta.geometry.BoundsLatLon;
-import md.onemap.harta.projector.MercatorProjector;
-import md.onemap.harta.tile.TileBoundsCalculator;
+import md.onemap.harta.osm.*;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-public class Way
+public class Way extends Unit
 {
-  private long id;
   private String type;
-  private List<OsmNode> nodes;
+  private List<Node> nodes;
   private Map<String, String> tags;
   private BoundsLatLon boundsLatLon;
 
-  public Way(long id, String type, List<OsmNode> nodes, Map<String, String> tags)
+  public Way(long id, String type, List<Node> nodes, Map<String, String> tags)
   {
     this(id, type, nodes, tags, null);
   }
 
-  public Way(long id, String type, List<OsmNode> nodes, Map<String, String> tags, BoundsLatLon boundsLatLon)
+  public Way(long id, String type, List<Node> nodes, Map<String, String> tags, BoundsLatLon boundsLatLon)
   {
-    this.id = id;
+    super(id, UnitType.WAY);
     this.type = type;
     this.nodes = nodes;
     this.tags = tags;
     this.boundsLatLon = boundsLatLon;
-  }
-
-  public long getId()
-  {
-    return id;
   }
 
   public String getType()
@@ -41,7 +33,7 @@ public class Way
     return type;
   }
 
-  public List<OsmNode> getNodes()
+  public List<Node> getNodes()
   {
     return nodes;
   }
@@ -103,16 +95,28 @@ public class Way
     sb.append("id=").append(id);
     sb.append(", type='").append(type).append('\'');
     sb.append(", tags=").append(tags);
-//    sb.append(", nodes=").append(nodes);
     sb.append('}');
     return sb.toString();
   }
 
-  public static void main(String[] args)
+  @Override
+  public boolean equals(Object o)
   {
-    BoundsLatLon tileBounds = new TileBoundsCalculator(512, new MercatorProjector(16)).getTileBounds(19008, 11521);
-    Collection<Way> ways = new WayGisDao().load(16, tileBounds);
+    if (this == o)
+    {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass())
+    {
+      return false;
+    }
+    Way way = (Way) o;
+    return id == way.id;
+  }
 
-    ways.forEach(System.out::println);
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(id);
   }
 }

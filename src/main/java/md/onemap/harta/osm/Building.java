@@ -1,5 +1,7 @@
 package md.onemap.harta.osm;
 
+import md.onemap.harta.db.gis.entity.Node;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -18,7 +20,7 @@ public class Building extends OsmWay{
   private String design;
   private int levels;
 
-  public Building(long id, List<OsmNode> nodes, Element element) {
+  public Building(long id, List<Node> nodes, Element element) {
     super(id, nodes);
 
     NodeList tags = element.getElementsByTagName("tag");
@@ -51,7 +53,7 @@ public class Building extends OsmWay{
     }
   }
 
-  public Building(long id, List<OsmNode> nodes, String houseNumber, String street, String height, int levels, String design) {
+  public Building(long id, List<Node> nodes, String houseNumber, String street, String height, int levels, String design) {
     super(id, nodes);
     this.houseNumber = houseNumber;
     this.street = street;

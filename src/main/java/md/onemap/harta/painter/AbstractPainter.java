@@ -1,9 +1,9 @@
 package md.onemap.harta.painter;
 
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.geometry.XYPoint;
-import md.onemap.harta.osm.OsmNode;
 import md.onemap.harta.projector.AbstractProjector;
 
 import java.util.List;
@@ -20,11 +20,11 @@ public class AbstractPainter {
     this.bounds = bounds;
   }
 
-  protected CanvasPolygon createPolygon(List<OsmNode> nodes) {
+  protected CanvasPolygon createPolygon(List<Node> nodes) {
     double[] xPoints = new double[nodes.size()];
     double[] yPoints = new double[nodes.size()];
     for (int i = 0; i < nodes.size(); i++){
-      OsmNode node = nodes.get(i);
+      Node node = nodes.get(i);
       XYPoint xy = projector.getXY(node.getLat(), node.getLon());
       xPoints[i] = xy.getX();
       yPoints[i] = xy.getY();

@@ -1,11 +1,11 @@
 package md.onemap.harta.painter;
 
+import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.drawer.AbstractDrawer;
 import md.onemap.harta.drawer.AwtDrawer;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.osm.Natural;
-import md.onemap.harta.osm.Way;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
 

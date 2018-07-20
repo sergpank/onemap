@@ -30,10 +30,10 @@ public class TileBoundsCalculator
   {
     XYPoint minXY = new XYPoint(x * tileSize, (y -1) * tileSize);
     XYPoint maxXY = new XYPoint((x + 1) * tileSize, y * tileSize);
-    LatLonPoint minLatLon = projector.getLatLon(minXY);
-    LatLonPoint maxLatLon = projector.getLatLon(maxXY);
+    LatLonPoint min = projector.getLatLon(minXY);
+    LatLonPoint max = projector.getLatLon(maxXY);
 
-    return new BoundsLatLon(minLatLon.getLat(), minLatLon.getLon(), maxLatLon.getLat(), maxLatLon.getLon());
+    return new BoundsLatLon(min.getLat(), min.getLon(), max.getLat(), max.getLon());
   }
 
   public AbstractProjector getProjector()

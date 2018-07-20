@@ -5,6 +5,7 @@ import md.onemap.harta.db.statistics.VisitorStatistics;
 import md.onemap.harta.tile.TileGenerator;
 import md.onemap.harta.tile.TileGeneratorGIS;
 import md.onemap.harta.util.Stopwatch;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,16 +68,7 @@ public class TileGeneratorServlet extends HttpServlet
     }
     catch (Throwable t)
     {
-      LOG.error("Exception: \"{}\" - Message: \"{}\" - Cause: \"{}\"", t.getClass().getName(), t.getMessage(), t.getCause());
-      String collect = ((Set<Map.Entry>) request.getParameterMap().entrySet())
-          .stream()
-          .map(m -> m.getKey() + "::" + Arrays.toString((String[]) m.getValue()))
-          .collect(Collectors.joining("; "));
-      LOG.error("Request parameters: {}", collect);
-
-      StringWriter sw = new StringWriter();
-      t.printStackTrace(new PrintWriter(sw));
-      LOG.error(sw.toString());
+      logError(request, t);
     }
   }
 
@@ -87,5 +79,19 @@ public class TileGeneratorServlet extends HttpServlet
       tileStatistics.incrementTileCalls(z, x, y);
       visitorStatistics.incrementTileCalls(ip);
     }).start();
+  }
+
+  private void logError(HttpServletRequest request, Throwable t)
+  {
+    LOG.error("Exception: \"{}\" - Message: \"{}\" - Cause: \"{}\"", t.getClass().getName(), t.getMessage(), t.getCause());
+    String collect = ((Set<Map.Entry>) request.getParameterMap().entrySet())
+        .stream()
+        .map(m -> m.getKey() + "::" + Arrays.toString((String[]) m.getValue()))
+        .collect(Collectors.joining("; "));
+    LOG.error("Request parameters: {}", collect);
+
+    StringWriter sw = new StringWriter();
+    t.printStackTrace(new PrintWriter(sw));
+    LOG.error(sw.toString());
   }
 }

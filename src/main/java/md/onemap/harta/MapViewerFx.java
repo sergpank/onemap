@@ -1,5 +1,13 @@
 package md.onemap.harta;
 
+import md.onemap.harta.geometry.BoundsLatLon;
+import md.onemap.harta.geometry.BoundsXY;
+import md.onemap.harta.loader.AbstractLoader;
+import md.onemap.harta.loader.OsmLoader;
+import md.onemap.harta.projector.AbstractProjector;
+import md.onemap.harta.projector.MercatorProjector;
+import md.onemap.harta.util.ScaleCalculator;
+
 import com.sun.javafx.collections.ImmutableObservableList;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -14,16 +22,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import md.onemap.harta.drawer.FxDrawer;
-import md.onemap.harta.geometry.BoundsLatLon;
-import md.onemap.harta.geometry.BoundsXY;
-import md.onemap.harta.loader.AbstractLoader;
-import md.onemap.harta.loader.OsmLoader;
-import md.onemap.harta.painter.BuildingPainter;
-import md.onemap.harta.painter.HighwayPainter;
-import md.onemap.harta.projector.AbstractProjector;
-import md.onemap.harta.projector.MercatorProjector;
-import md.onemap.harta.util.ScaleCalculator;
 
 /**
  * Created by sergpank on 25.02.2015.
@@ -109,8 +107,8 @@ public class MapViewerFx extends Application {
     gc.setStroke(Color.BLACK);
     gc.setLineWidth(2);
 
-    new HighwayPainter(projector, bounds).draw(new FxDrawer(gc), loader.getHighways().values(), level);
-    new BuildingPainter(projector, bounds).draw(new FxDrawer(gc), loader.getBuildings().values(), level);
+//    new HighwayPainter(projector, bounds).draw(new FxDrawer(gc), loader.getHighways().values(), level);
+//    new BuildingPainter(projector, bounds).draw(new FxDrawer(gc), loader.getBuildings().values(), level);
 //    new BorderPainter(projector, bounds).drawBorders(drawer, loader.getBorders(), 0, 0, null);
 
     System.out.println("DRAW!\n");

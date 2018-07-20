@@ -1,6 +1,6 @@
 package md.onemap.harta.geometry;
 
-import md.onemap.harta.osm.OsmNode;
+import md.onemap.harta.db.gis.entity.Node;
 
 import java.util.List;
 
@@ -14,9 +14,9 @@ public class Label
   private XYPoint center;
   private float height;
   private float width;
-  private List<OsmNode> nodes;
+  private List<Node> nodes;
 
-  public Label(String text, XYPoint center, float height, float width, List<OsmNode> nodes)
+  public Label(String text, XYPoint center, float height, float width, List<Node> nodes)
   {
     this.text = text;
     this.center = center;
@@ -83,7 +83,7 @@ public class Label
     return result;
   }
 
-  public List<OsmNode> getNodes()
+  public List<Node> getNodes()
   {
     return nodes;
   }

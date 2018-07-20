@@ -2,12 +2,15 @@ package md.onemap.harta.db.gis;
 
 import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.db.dao.Dao;
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.geometry.BoundsLatLon;
-import md.onemap.harta.osm.OsmNode;
 import md.onemap.harta.osm.OsmWay;
+
 import org.postgis.PGgeometry;
 import org.postgis.Point;
 import org.postgresql.util.PGobject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.Connection;
@@ -22,6 +25,8 @@ import java.util.List;
  */
 public abstract class GisDao<T> extends Dao<T>
 {
+  private static final Logger LOG = LoggerFactory.getLogger(GisDao.class);
+
   protected static final String INSERT = "INSERT INTO %s (id, type, name, name_ru, name_old, geometry) VALUES (?, ?, ?, ?, ?, %s)";
   private static final String SELECT_ALL = "SELECT * FROM %s";
   private static final String SELECT_TILE = "SELECT * " +
@@ -79,40 +84,46 @@ public abstract class GisDao<T> extends Dao<T>
     }
   }
 
-  List<OsmNode> getOsmNodes(ResultSet rs, String geometryColumn) throws SQLException
+  List<Node> getNodes(ResultSet rs, String geometryColumn) throws SQLException
   {
-    List<OsmNode> nodes = new ArrayList<>();
+    List<Node> nodes = new ArrayList<>();
     PGgeometry geometry = (PGgeometry) rs.getObject(geometryColumn);
     for (int i = 0; i < geometry.getGeometry().numPoints(); i++)
     {
       Point point = geometry.getGeometry().getPoint(i);
-      nodes.add(new OsmNode(i, point.getY(), point.getX()));
+      nodes.add(new Node(i, point.getX(), point.getY()));
     }
     return nodes;
   }
 
-  protected String createPolygon(List<OsmNode> nodes)
+  protected String createPolygon(List<Node> nodes)
   {
     StringBuilder geometry = new StringBuilder("ST_GeomFromText('POLYGON((");
-    for (OsmNode node : nodes)
+    for (Node node : nodes)
     {
       geometry.append(node.getLon()).append(' ').append(node.getLat()).append(',');
     }
     geometry.append(nodes.get(0).getLon()).append(' ').append(nodes.get(0).getLat()).append("))')");
 
-    return geometry.toString();
+    String polygon = geometry.toString();
+    LOG.debug(polygon);
+
+    return polygon;
   }
 
-  protected String createLineString(List<OsmNode> nodes)
+  protected String createLineString(List<Node> nodes)
   {
     StringBuilder geometry = new StringBuilder("ST_GeomFromText('LINESTRING(");
-    for (OsmNode node : nodes)
+    for (Node node : nodes)
     {
       geometry.append(node.getLon()).append(' ').append(node.getLat()).append(',');
     }
     geometry.delete(geometry.length() - 1, geometry.length());
     geometry.append(")')");
 
-    return geometry.toString();
+    String linestring = geometry.toString();
+    LOG.debug(linestring);
+
+    return linestring;
   }
 }

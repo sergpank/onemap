@@ -1,11 +1,12 @@
 package md.onemap.harta.db.gis;
 
 import md.onemap.harta.db.DbHelper;
+import md.onemap.harta.db.gis.entity.Node;
+import md.onemap.harta.db.gis.entity.Tag;
+import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.Highway;
-import md.onemap.harta.osm.OsmNode;
 import md.onemap.harta.osm.Waterway;
-import md.onemap.harta.osm.Way;
 
 import org.postgis.Geometry;
 import org.postgis.PGgeometry;
@@ -25,16 +26,14 @@ public class WayGisDao extends GisDao<Way>
   private static final Logger LOG = LoggerFactory.getLogger(WayGisDao.class);
 
   public static final String WAY_TABLE_NAME = "gis.way";
-  public static final String TAG_TABLE_NAME = "gis.tag";
 
   private static final String INSERT_WAY = "INSERT INTO " + WAY_TABLE_NAME + " (id, type, geometry) VALUES (?, ?, %s)";
-  private static final String INSERT_TAG = "INSERT INTO " + TAG_TABLE_NAME + " (id, key, value) VALUES (?, ?, ?)";
   private static final String SELECT_WAY = "SELECT w.id, w.type, w.geometry, t.key, t.value, ST_Envelope(w.geometry) " +
       "FROM gis.way w JOIN gis.tag t ON w.id = t.id " +
       "WHERE w.id = ";
   private static final String SELECT_TILE = "SELECT w.id, w.type, w.geometry, t.key, t.value, ST_Envelope(w.geometry) " +
-      "FROM gis.way w " +
-      "JOIN gis.tag t ON w.id = t.id " +
+      "FROM " + WAY_TABLE_NAME + " w " +
+      "JOIN " + TagGisDao.TAG_TABLE_NAME + " t ON w.id = t.id " +
       "WHERE ST_Intersects( " +
       "ST_GeomFromText('Polygon(( " +
       "%f %f, " +
@@ -59,8 +58,7 @@ public class WayGisDao extends GisDao<Way>
 
     String sql = String.format(INSERT_WAY, geometry);
     DbHelper.getJdbcTemplate().update(sql, way.getId(), Way.defineType(tags));
-
-    tags.forEach((key, value) -> DbHelper.getJdbcTemplate().update(INSERT_TAG, way.getId(), key, value));
+    new TagGisDao().save(new Tag(way.getId(), tags));
   }
 
   @Override
@@ -87,6 +85,8 @@ public class WayGisDao extends GisDao<Way>
         box.getMaxLon() + dLon, box.getMinLat() - dLat,
         box.getMinLon() - dLon, box.getMinLat() - dLat
     );
+
+    LOG.info(sql);
 
     return DbHelper.getJdbcTemplate().query(sql, this::extractData);
   }
@@ -133,7 +133,7 @@ public class WayGisDao extends GisDao<Way>
       if (way == null)
       {
         String type = rs.getString("type");
-        List<OsmNode> nodes = getOsmNodes(rs, "geometry");
+        List<Node> nodes = getNodes(rs, "geometry");
         Geometry envelope = ((PGgeometry) rs.getObject("st_envelope")).getGeometry();
         BoundsLatLon boundsLatLon = getBounds(envelope);
 
@@ -162,5 +162,24 @@ public class WayGisDao extends GisDao<Way>
       maxLonLat = envelope.getPoint(2);
     }
     return new BoundsLatLon(minLonLat.y, minLonLat.x, maxLonLat.y, maxLonLat.x);
+  }
+
+  public static void main(String[] args)
+  {
+    Way way = new WayGisDao().load(206834772);
+
+    System.out.println(way);
+    System.out.println(way.getBoundsLatLon());
+    way.getNodes().forEach(System.out::println);
+
+    System.out.println();
+
+
+    System.out.println("\n\nLoading tile:\n\n");
+    BoundsLatLon bounds = new BoundsLatLon(47.022, 28.835, 47.023, 28.845);
+    System.out.println("My bounds: " + bounds);
+
+    Collection<Way> load = new WayGisDao().load(18, bounds);
+    load.forEach(System.out::println);
   }
 }

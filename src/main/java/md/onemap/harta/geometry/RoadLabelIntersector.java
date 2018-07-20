@@ -1,8 +1,9 @@
 package md.onemap.harta.geometry;
 
-import md.onemap.harta.osm.OsmNode;
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.util.TextUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,7 @@ public class RoadLabelIntersector
     this.fontSize = fontSize;
   }
 
-  public List<Intersection> getIntersections(Label label, AbstractProjector projector, List<OsmNode> nodes)
+  public List<Intersection> getIntersections(Label label, AbstractProjector projector, List<Node> nodes)
   {
     List<Intersection> intersections = new ArrayList<>();
 
@@ -89,11 +90,11 @@ public class RoadLabelIntersector
     return intersection;
   }
 
-  protected List<Line> highwayToSegments(AbstractProjector projector, List<OsmNode> nodes)
+  protected List<Line> highwayToSegments(AbstractProjector projector, List<Node> nodes)
   {
     int numNodes = nodes.size();
-    OsmNode firstNode = nodes.get(0);
-    OsmNode lastNode = nodes.get(numNodes - 1);
+    Node firstNode = nodes.get(0);
+    Node lastNode = nodes.get(numNodes - 1);
 
     if (firstNode.getLon() < lastNode.getLon())
     {
@@ -122,7 +123,7 @@ public class RoadLabelIntersector
     return new XYPoint(point.getX() - bounds.getXmin(), point.getY() - bounds.getYmin());
   }
 
-  private List<Line> getSegmentsDirect(List<OsmNode> nodes, AbstractProjector projector)
+  private List<Line> getSegmentsDirect(List<Node> nodes, AbstractProjector projector)
   {
     ArrayList<Line> segments = new ArrayList<>();
     int step = 1;
@@ -133,7 +134,7 @@ public class RoadLabelIntersector
     return segments;
   }
 
-  private List<Line> getSegmentsReverse(List<OsmNode> nodes, AbstractProjector projector)
+  private List<Line> getSegmentsReverse(List<Node> nodes, AbstractProjector projector)
   {
     ArrayList<Line> segments = new ArrayList<>();
     int step = -1;
@@ -144,10 +145,10 @@ public class RoadLabelIntersector
     return segments;
   }
 
-  private void addSegment(List<OsmNode> nodes, AbstractProjector projector, ArrayList<Line> segments, int step, int i)
+  private void addSegment(List<Node> nodes, AbstractProjector projector, ArrayList<Line> segments, int step, int i)
   {
-    OsmNode nodeA = nodes.get(i);
-    OsmNode nodeB = nodes.get(i + step);
+    Node nodeA = nodes.get(i);
+    Node nodeB = nodes.get(i + step);
     XYPoint pointA = shiftPoint(projector.getXY(nodeA.getLat(), nodeA.getLon()));
     XYPoint pointB = shiftPoint(projector.getXY(nodeB.getLat(), nodeB.getLon()));
     segments.add(new Line(pointA, pointB));

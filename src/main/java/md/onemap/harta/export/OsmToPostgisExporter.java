@@ -1,16 +1,14 @@
 package md.onemap.harta.export;
 
 import md.onemap.harta.db.DatabaseCreator;
-import md.onemap.harta.db.gis.HighwayGisDao;
+import md.onemap.harta.db.gis.NodeGisDao;
+import md.onemap.harta.db.gis.RelationGisDao;
 import md.onemap.harta.db.gis.WayGisDao;
 import md.onemap.harta.loader.OsmLoader;
-import md.onemap.harta.osm.Highway;
 
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Collection;
 
 public class OsmToPostgisExporter extends OsmExporter
 {
@@ -35,40 +33,21 @@ public class OsmToPostgisExporter extends OsmExporter
     LOG.info("\n\nReading {} ...", osmFile);
     osmLoader.load(osmFile);
 
+    LOG.info("\n\nSaving nodes ...");
+    new NodeGisDao().saveAll(osmLoader.getNodes().values());
+
     LOG.info("\n\nSaving ways ...");
     new WayGisDao().saveAll(osmLoader.getWays().values());
 
-//    Map<Long, Building> buildings = osmLoader.getBuildings();
-//    Map<Long, Highway> highways = osmLoader.getHighways();
-//    Map<Long, Leisure> leisure = osmLoader.getLeisure();
-//    Map<Long, Landuse> landuse = osmLoader.getLanduse();
-//    Map<Long, Natural> nature = osmLoader.getNature();
-//    Map<Long, Waterway> waterways = osmLoader.getWaterways();
-//
-//    LOG.info("\n\nSaving buildings ...");
-//    new BuildingGisDao().saveAll(buildings.values());
-//
-//    LOG.info("\n\nSaving highways ...");
-//    new HighwayGisDao().saveAll(highways.values());
-//
-//    LOG.info("\n\nSaving leisure ...");
-//    new LeisureGisDao().saveAll(leisure.values());
-//
-//    LOG.info("\n\nSaving landuse ...");
-//    new LanduseGisDao().saveAll(landuse.values());
-//
-//    LOG.info("\n\nSaving waterways ...");
-//    new WaterwayGisDao().saveAll(waterways.values());
-//
-//    LOG.info("\n\nSaving nature ...");
-//    new NatureGisDao().saveAll(nature.values());
-  }
+    LOG.info("\n\nSaving relations ...");
+    new RelationGisDao(osmLoader).saveAll(osmLoader.getRelations().values());
+    }
 
   @Override
   protected void normalizeHighwayNames()
   {
-    LOG.info("Normalizing highway names ...");
-    Collection<Highway> highways = new HighwayGisDao().loadAll();
-    new HighwayNameNormalizer().normalize(highways);
+    LOG.info("Normalizing highway names ... NOT IMPLEMENTED");
+    //Collection<Highway> highways = new HighwayGisDao().loadAll();
+    //new HighwayNameNormalizer().normalize(highways);
   }
 }

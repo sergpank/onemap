@@ -1,6 +1,7 @@
 package md.onemap.harta.tile;
 
 import md.onemap.harta.db.gis.WayGisDao;
+import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.drawer.AwtDrawer;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.geometry.BoundsXY;
@@ -23,7 +24,7 @@ public class GeneralizedTileDrawer extends AbstractTileDrawer
 
   @Override
   public BufferedImage drawTile(int level, int x, int y, AbstractProjector projector,
-                                AbstractLoader loader, BoundsLatLon tileBounds)
+                                AbstractLoader loadekr, BoundsLatLon tileBounds)
   {
     BufferedImage bi = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
     AwtDrawer drawer = new AwtDrawer(createGraphics(bi));
@@ -46,8 +47,6 @@ public class GeneralizedTileDrawer extends AbstractTileDrawer
 
     new BuildingPainter(projector, boundsXY).drawBuildings(drawer, buildings, level);
     new HighwayPainter(projector, boundsXY).drawHighways(drawer, highways, level);
-
-
 
     return bi;
   }

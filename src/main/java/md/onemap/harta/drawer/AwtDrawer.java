@@ -62,7 +62,7 @@ public class AwtDrawer extends AbstractDrawer
   {
     if (text != null)
     {
-      graphics.setFont(new Font(Palette.BUILDING_FONT_NAME, Font.BOLD, Palette.BUILDING_FONT_SIZE));
+      graphics.setFont(new Font(Palette.BUILDING_FONT_NAME, Font.PLAIN, Palette.BUILDING_FONT_SIZE));
       graphics.drawString(text, (float) xCenter, (float) yCenter);
     }
   }

@@ -1,6 +1,6 @@
 package md.onemap.harta.geometry;
 
-import md.onemap.harta.osm.OsmNode;
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.projector.AbstractProjector;
 
 import java.util.List;
@@ -122,13 +122,13 @@ public class GeometryUtil
                          };
   }
 
-  public static double getHighwayLength(AbstractProjector projector, List<OsmNode> nodes)
+  public static double getHighwayLength(AbstractProjector projector, List<Node> nodes)
   {
     double length = 0;
     for (int i = 1; i < nodes.size(); i++)
     {
-      OsmNode nodeA = nodes.get(i - 1);
-      OsmNode nodeB = nodes.get(i);
+      Node nodeA = nodes.get(i - 1);
+      Node nodeB = nodes.get(i);
 
       XYPoint pointA = projector.getXY(nodeA.getLat(), nodeA.getLon());
       XYPoint pointB = projector.getXY(nodeB.getLat(), nodeB.getLon());

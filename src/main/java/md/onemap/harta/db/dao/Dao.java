@@ -1,8 +1,9 @@
 package md.onemap.harta.db.dao;
 
-import generated.BoundsType;
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.geometry.BoundsLatLon;
-import md.onemap.harta.osm.OsmNode;
+
+import generated.BoundsType;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,15 +13,11 @@ import java.util.List;
  */
 public abstract class Dao<T>
 {
-  public static final String SELECT_TILE = "SELECT * FROM %s WHERE " +
-      "NOT( ((max_lon < ?) OR (min_lon > ?)) " +
-      " AND ((max_lat < ?) OR (min_lat > ?)) )";
-
-  public BoundsType getBounds(List<OsmNode> nodes)
+  public BoundsType getBounds(List<Node> nodes)
   {
     double minLat = 90, maxLat = -90, minLon = 180, maxLon = -180;
 
-    for (OsmNode node : nodes)
+    for (Node node : nodes)
     {
       maxLat = node.getLat() > maxLat ? node.getLat() : maxLat;
       minLat = node.getLat() < minLat ? node.getLat() : minLat;
@@ -35,17 +32,6 @@ public abstract class Dao<T>
     bounds.setMaxlon(maxLon);
 
     return bounds;
-  }
-
-  public Long[] getNodeIds(List<OsmNode> nodes)
-  {
-    Long[] ids = new Long[nodes.size()];
-    for (int i = 0; i < nodes.size(); i++)
-    {
-      ids[i] = nodes.get(i).getId();
-    }
-
-    return ids;
   }
 
   public abstract void save(T entity);

@@ -1,9 +1,9 @@
 package md.onemap.harta.painter;
 
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.drawer.AbstractDrawer;
 import md.onemap.harta.geometry.*;
 import md.onemap.harta.geometry.Label;
-import md.onemap.harta.osm.OsmNode;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
 
@@ -71,13 +71,13 @@ public class TextPainter extends AbstractPainter
    */
   private XYPoint getRoadStartPoint(Label label)
   {
-    List<OsmNode> nodes = label.getNodes();
+    List<Node> nodes = label.getNodes();
     if (nodes.isEmpty())
     {
       return null;
     }
-    OsmNode firstNode = nodes.get(0);
-    OsmNode lastNode = nodes.get(nodes.size() - 1);
+    Node firstNode = nodes.get(0);
+    Node lastNode = nodes.get(nodes.size() - 1);
 
     if (firstNode.getLon() < lastNode.getLon())
     {

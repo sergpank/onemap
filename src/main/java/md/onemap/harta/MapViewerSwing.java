@@ -15,6 +15,7 @@ import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.projector.MercatorProjector;
 import md.onemap.harta.tile.TileCutter;
 import md.onemap.harta.util.ScaleCalculator;
+
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,12 +61,12 @@ public class MapViewerSwing extends JPanel {
     map.loader = new OsmLoader();
     map.loader.load(DATA_SOURCE);
 
-    map.highways = map.loader.getHighways().values();
-    map.buildings = map.loader.getBuildings().values();
-    map.leisure = map.loader.getLeisure().values();
+//    map.highways = map.loader.getHighways().values();
+//    map.buildings = map.loader.getBuildings().values();
+//    map.leisure = map.loader.getLeisure().values();
 //    map.nature = map.loader.getNature().values();
 //    map.waterways = map.loader.getWaterways().values();
-    map.landuse = map.loader.getLanduse().values();
+//    map.landuse = map.loader.getLanduse().values();
 
     JScrollPane scrollPane = new JScrollPane(map);
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

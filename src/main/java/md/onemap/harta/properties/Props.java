@@ -153,19 +153,19 @@ public class Props
   @Override public String toString()
   {
     return "Props{" +
-            "startLevel=" + startLevel +
-            ", endLevel=" + endLevel +
-            ", outputDir='" + outputDir + '\'' +
-            ", tileSize=" + tileSize +
-            ", osmFile='" + osmFile + '\'' +
-            ", dbUrl='" + dbUrl + '\'' +
-            ", dbLogin='" + dbLogin + '\'' +
-            ", dbPassword='" + dbPassword + '\'' +
-            ", dbName='" + dbName + '\'' +
-            ", cacheEnabled='" + cacheEnabled + '\'' +
-            ", cacheDir='" + cacheDir + '\'' +
-            ", debugTileNumber=" + debugTileNumber +
-            ", debugTileBorder=" + debugTileBorder +
-            '}';
+            "\n  startLevel=" + startLevel +
+            "\n  endLevel=" + endLevel +
+            "\n  outputDir='" + outputDir + '\'' +
+            "\n  tileSize=" + tileSize +
+            "\n  osmFile='" + osmFile + '\'' +
+            "\n  dbUrl='" + dbUrl + '\'' +
+            "\n  dbLogin='" + dbLogin + '\'' +
+            "\n  dbPassword='" + dbPassword + '\'' +
+            "\n  dbName='" + dbName + '\'' +
+            "\n  cacheEnabled='" + cacheEnabled + '\'' +
+            "\n  cacheDir='" + cacheDir + '\'' +
+            "\n  debugTileNumber=" + debugTileNumber +
+            "\n  debugTileBorder=" + debugTileBorder +
+            "\n}";
   }
 }

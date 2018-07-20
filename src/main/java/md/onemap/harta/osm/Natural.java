@@ -1,5 +1,7 @@
 package md.onemap.harta.osm;
 
+import md.onemap.harta.db.gis.entity.Node;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -13,7 +15,7 @@ public class Natural extends OsmWay
   public static final String NATURAL = "natural";
   public static final String WATER = "water";
 
-  public Natural(long id, List<OsmNode> nodes, Element element)
+  public Natural(long id, List<Node> nodes, Element element)
   {
     super(id, nodes);
 
@@ -44,7 +46,7 @@ public class Natural extends OsmWay
     }
   }
 
-  public Natural(long id, List<OsmNode> nodes, String type, String name, String nameRu, String nameOld)
+  public Natural(long id, List<Node> nodes, String type, String name, String nameRu, String nameOld)
   {
     super(id, nodes, type, name, nameRu, nameOld);
   }

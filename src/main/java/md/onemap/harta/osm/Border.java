@@ -1,5 +1,7 @@
 package md.onemap.harta.osm;
 
+import md.onemap.harta.db.gis.entity.Node;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -15,14 +17,14 @@ public class Border extends OsmWay
   private String nameRu;
   private String type;
 
-  public Border (long id, Double minLat, Double minLon, Double maxLat, Double maxLon, List<OsmNode> nodes, String name, String type)
+  public Border (long id, Double minLat, Double minLon, Double maxLat, Double maxLon, List<Node> nodes, String name, String type)
   {
     super(id, nodes, minLat, minLon, maxLat, maxLon);
     this.name = name;
     this.type = type;
   }
 
-  public Border(long id, List<OsmNode> nodes, Element element)
+  public Border(long id, List<Node> nodes, Element element)
   {
     super(id, nodes);
 

@@ -1,6 +1,9 @@
 package md.onemap.harta.geometry;
 
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.projector.AbstractProjector;
+
+import java.util.List;
 
 /**
  * Created by sergpank on 03.03.2015.
@@ -13,6 +16,36 @@ public class BoundsLatLon {
 
   public BoundsLatLon(double minLat, double minLon, double maxLat, double maxLon)
   {
+    this.minLat = minLat;
+    this.minLon = minLon;
+    this.maxLat = maxLat;
+    this.maxLon = maxLon;
+  }
+
+  public BoundsLatLon(List<Node> nodes)
+  {
+    double minLat = Double.MAX_VALUE, maxLat = Double.MIN_VALUE, minLon = Double.MAX_VALUE, maxLon = Double.MIN_VALUE;
+    for (Node node : nodes)
+    {
+      double lat = node.getLat();
+      double lon = node.getLon();
+      if (minLat > lat)
+      {
+        minLat = lat;
+      }
+      if (maxLat < lat)
+      {
+        maxLat = lat;
+      }
+      if (minLon > lon)
+      {
+        minLon = lon;
+      }
+      if (maxLon < lon)
+      {
+        maxLon = lon;
+      }
+    }
     this.minLat = minLat;
     this.minLon = minLon;
     this.maxLat = maxLat;

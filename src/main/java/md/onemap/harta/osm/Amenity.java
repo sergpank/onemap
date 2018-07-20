@@ -1,5 +1,7 @@
 package md.onemap.harta.osm;
 
+import md.onemap.harta.db.gis.entity.Node;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -14,7 +16,7 @@ public class Amenity extends OsmWay
   private String name;
   private String nameRu;
 
-  public Amenity(long id, List<OsmNode> nodes, Element element)
+  public Amenity(long id, List<Node> nodes, Element element)
   {
     super(id, nodes);
 

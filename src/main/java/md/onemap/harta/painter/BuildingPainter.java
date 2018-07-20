@@ -1,11 +1,11 @@
 package md.onemap.harta.painter;
 
+import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.drawer.AbstractDrawer;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.geometry.XYPoint;
 import md.onemap.harta.osm.Building;
-import md.onemap.harta.osm.Way;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
 import md.onemap.harta.util.TextUtil;
@@ -25,7 +25,7 @@ public class BuildingPainter extends AbstractPainter
 
   public void draw(AbstractDrawer drawer, Collection<Building> buildings, int level)
   {
-    drawer.setFont("Arial", 12);
+    drawer.setFont(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
     for (Building building : buildings)
     {
       CanvasPolygon polygon = createPolygon(building.getNodes());
@@ -47,7 +47,7 @@ public class BuildingPainter extends AbstractPainter
 
   public void drawBuildings(AbstractDrawer drawer, Collection<Way> buildings, int level)
   {
-    drawer.setFont("Arial", 12);
+    drawer.setFont(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
     for (Way way : buildings)
     {
       CanvasPolygon polygon = createPolygon(way.getNodes());

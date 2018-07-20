@@ -1,5 +1,6 @@
 package md.onemap.harta.osm;
 
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.geometry.BoundsLatLon;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public class OsmWay
   public static final String NAME_LOCAL = "loc_name";
 
   protected long id;
-  protected List<OsmNode> nodes;
+  protected List<Node> nodes;
   protected BoundsLatLon bounds;
 
   protected String type;
@@ -24,12 +25,12 @@ public class OsmWay
   protected String nameOld;
   protected String nameLocal;
 
-  public OsmWay(long id, List<OsmNode> nodes)
+  public OsmWay(long id, List<Node> nodes)
   {
     this(id, nodes, null, null, null, null);
   }
 
-  public OsmWay(long id, List<OsmNode> nodes, String type, String name, String nameRu, String nameOld)
+  public OsmWay(long id, List<Node> nodes, String type, String name, String nameRu, String nameOld)
   {
     this.id = id;
     this.nodes = nodes;
@@ -42,7 +43,7 @@ public class OsmWay
     double minLat = Double.MAX_VALUE, maxLat = Double.MIN_VALUE, minLon = Double.MAX_VALUE, maxLon = Double.MIN_VALUE;
     for (int i = 0; i < nodes.size(); i++)
     {
-      OsmNode node = nodes.get(i);
+      Node node = nodes.get(i);
       double lat = node.getLat();
       double lon = node.getLon();
       if (minLat > lat)
@@ -65,7 +66,7 @@ public class OsmWay
     this.bounds = new BoundsLatLon(minLat, minLon, maxLat, maxLon);
   }
 
-  public OsmWay(Long id, List<OsmNode> nodes, Double minLat, Double minLon, Double maxLat, Double maxLon)
+  public OsmWay(Long id, List<Node> nodes, Double minLat, Double minLon, Double maxLat, Double maxLon)
   {
     this.id = id;
     this.nodes = nodes;
@@ -77,7 +78,7 @@ public class OsmWay
     return id;
   }
 
-  public List<OsmNode> getNodes()
+  public List<Node> getNodes()
   {
     return nodes;
   }
