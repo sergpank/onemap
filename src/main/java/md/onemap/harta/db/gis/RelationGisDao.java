@@ -4,6 +4,7 @@ import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.db.gis.entity.Member;
 import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.db.gis.entity.Relation;
+import md.onemap.harta.db.gis.entity.Tag;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.loader.OsmLoader;
 
@@ -32,6 +33,9 @@ public class RelationGisDao extends GisDao<Relation>
   {
     BoundsLatLon bBox = calcBoundingBox(entity);
     DbHelper.getJdbcTemplate().update(String.format(INSERT, createPolygon(bBox)), entity.getId());
+
+    new TagGisDao().save(new Tag(entity.getId(), entity.getTags()));
+
     for (Member m : entity.getMembers())
     {
       DbHelper.getJdbcTemplate().update(INSERT_MEMBER, entity.getId(), m.getRef(), m.getType().name(), m.getRole());
