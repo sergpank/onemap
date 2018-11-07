@@ -3,6 +3,7 @@ package md.onemap.harta.db.gis;
 import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.db.gis.entity.Tag;
+import md.onemap.harta.db.gis.entity.Unit;
 import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.Highway;
@@ -16,10 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class WayGisDao extends GisDao<Way>
 {
@@ -29,7 +27,8 @@ public class WayGisDao extends GisDao<Way>
 
   private static final String INSERT_WAY = "INSERT INTO " + WAY_TABLE_NAME + " (id, type, geometry) VALUES (?, ?, %s)";
   private static final String SELECT_WAY = "SELECT w.id, w.type, w.geometry, t.key, t.value, ST_Envelope(w.geometry) " +
-      "FROM gis.way w JOIN gis.tag t ON w.id = t.id " +
+      "FROM gis.way w " +
+      "LEFT JOIN gis.tag t ON w.id = t.id " +
       "WHERE w.id = ";
   private static final String SELECT_TILE = "SELECT w.id, w.type, w.geometry, t.key, t.value, ST_Envelope(w.geometry) " +
       "FROM " + WAY_TABLE_NAME + " w " +
@@ -57,7 +56,7 @@ public class WayGisDao extends GisDao<Way>
     }
 
     String sql = String.format(INSERT_WAY, geometry);
-    DbHelper.getJdbcTemplate().update(sql, way.getId(), Way.defineType(tags));
+    DbHelper.getJdbcTemplate().update(sql, way.getId(), Unit.defineType(tags));
     new TagGisDao().save(new Tag(way.getId(), tags));
   }
 
@@ -70,7 +69,16 @@ public class WayGisDao extends GisDao<Way>
   @Override
   public Way load(long id)
   {
-    return DbHelper.getJdbcTemplate().query(SELECT_WAY + id, this::extractData).iterator().next();
+    Collection<Way> ways = DbHelper.getJdbcTemplate().query(SELECT_WAY + id, this::extractData);
+    if (ways == null || ways.isEmpty())
+    {
+//      LOG.error("Way not found, id: {}", id);
+      return null;
+    }
+    else
+    {
+      return ways.iterator().next();
+    }
   }
 
   @Override
@@ -86,9 +94,15 @@ public class WayGisDao extends GisDao<Way>
         box.getMinLon() - dLon, box.getMinLat() - dLat
     );
 
-    LOG.info(sql);
+//    LOG.info(sql);
 
-    return DbHelper.getJdbcTemplate().query(sql, this::extractData);
+    Collection<Way> ways = new HashSet<>();
+    Collection<Way> query = DbHelper.getJdbcTemplate().query(sql, this::extractData);
+    if (query != null)
+    {
+      ways.addAll(query);
+    }
+    return ways;
   }
 
   @Override

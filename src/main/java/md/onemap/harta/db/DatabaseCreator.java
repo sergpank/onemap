@@ -180,7 +180,10 @@ public class DatabaseCreator
   {
     return "create table " + RelationGisDao.RELATION_TABLE_NAME + " ( " +
         "id bigint PRIMARY KEY, " +
-        "bounding_box geometry " +
+        "bounding_box geometry, " +
+        "landuse text, " +
+        "nature text, " + // actually this is 'natural' tag
+        "type text" +
         ")";
   }
 

@@ -1,9 +1,6 @@
 package md.onemap.harta.loader;
 
-import md.onemap.harta.db.gis.entity.Member;
-import md.onemap.harta.db.gis.entity.Node;
-import md.onemap.harta.db.gis.entity.Relation;
-import md.onemap.harta.db.gis.entity.Way;
+import md.onemap.harta.db.gis.entity.*;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.OsmBounds;
 import md.onemap.harta.util.XmlUtil;
@@ -137,7 +134,7 @@ public class OsmLoader extends AbstractLoader
       Long id = getId(element);
       List<Node> nodes = getWayNodes(element);
       Map<String, String> tags = getTags(element);
-      String type = Way.defineType(tags);
+      String type = Unit.defineType(tags);
 
       wayMap.put(id, new Way(id, type, nodes, tags));
     }
