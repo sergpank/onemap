@@ -6,17 +6,18 @@
             <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} [%t] %-5p %C{1}.%M:%L - %m%n"/>
         </layout>
     </appender>
-    <appender name="FILE" class="org.apache.log4j.FileAppender">
-        <param name="file" value="log.txt"/>
-        <param name="append" value="false"/>
-        <!--<param name="threshold" value="error"/>-->
+    <appender name="ROLLING" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="${catalina.home}/logs/onemap.log" />
+        <param name="DatePattern" value="'.'yyyy-MM-dd" />
+        <param name="append" value="true" />
+        <param name="encoding" value="UTF-8" />
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%-7r [%t] %-5p %c:%L - %m%n"/>
+            <param name="ConversionPattern" value="%-7r [%t] %-5p %c:%L - %m%n" />
         </layout>
     </appender>
     <root>
         <level value ="INFO"/>
         <appender-ref ref="CONSOLE"/>
-        <!--<appender-ref ref="FILE"/>-->
+        <appender-ref ref="ROLLING"/>
     </root>
 </log4j:configuration>
