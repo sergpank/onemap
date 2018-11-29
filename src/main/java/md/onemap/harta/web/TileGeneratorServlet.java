@@ -64,7 +64,17 @@ public class TileGeneratorServlet extends HttpServlet
 
       LOG.info("Tile {} generation: {}", z + "-" + x + ":" + y, Stopwatch.pretty());
 
-      ImageIO.write(tile, "PNG", response.getOutputStream());
+      try
+      {
+        ImageIO.write(tile, "PNG", response.getOutputStream());
+      }
+      catch (Throwable t)
+      {
+        // Do nothing.
+        // Too many "java.io.IOException: Broken pipe" Exceptions, because user requests tile,
+        // but then moves to other sector and did not read requested tile.
+        // This is fine to have such exception and no need to report it in log and waste computing power.
+      }
     }
     catch (Throwable t)
     {
