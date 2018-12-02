@@ -44,6 +44,12 @@ public class Props
     return instance;
   }
 
+  public static void update()
+  {
+    // Update config without restarting web server.
+    instance = null;
+  }
+
   /**
    * @param propsPath Properties file is expected to be located at [src/main/resources/properties/<file_name></file_name>].
    *                  But we receive its path as [properties/<file_name>].
