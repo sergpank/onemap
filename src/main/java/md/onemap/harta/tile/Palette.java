@@ -14,6 +14,7 @@ public class Palette
   public static final int FONT_SIZE = 15;
 
   public static final Color HIGHWAY_COLOR = new Color(255, 255, 255);
+  public static final Color HIGHWAY_CONTOUR_COLOR = new Color(230, 230, 230);
   public static final Color HIGHWAY_BORDER_COLOR = new Color(200, 196, 184);
   public static final String HIGHWAY_FONT_NAME = "Arial";
   public static final int HIGHWAY_FONT_SIZE = 30;

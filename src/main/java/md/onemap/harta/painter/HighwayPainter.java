@@ -85,6 +85,21 @@ public class HighwayPainter extends AbstractPainter
 
     highwayList.sort(Comparator.comparingInt((Way w) -> Highway.defineType(w.getTags().get("highway")).getPriority()));
 
+    // This cycle adds additional countour to the road (like sideway-footwalk along along the roads)
+    for (Way way : highwayList)
+    {
+      HighwayType highwayType = Highway.defineType(way.getTags().get("highway"));
+      if (level > 16 && !isFootway(highwayType)) // I draw contour only for levels >= 16
+      {
+        CanvasPolygon polygon = createPolygon(way.getNodes());
+        drawer.setStrokeColor(Palette.HIGHWAY_CONTOUR_COLOR);
+        drawer.setFillColor(Palette.HIGHWAY_CONTOUR_COLOR);
+        shiftPolygon(polygon);
+        int width = highwayType.getWidth(projector, true);
+        drawer.drawPolyLine(polygon, width * 2, false);
+      }
+    }
+
     // First draw road contour (by drawing wider roads)
     for (Way way : highwayList)
     {
