@@ -85,7 +85,7 @@ public class HighwayPainter extends AbstractPainter
 
     highwayList.sort(Comparator.comparingInt((Way w) -> Highway.defineType(w.getTags().get("highway")).getPriority()));
 
-    // This cycle adds additional countour to the road (like sideway-footwalk along along the roads)
+    // This cycle adds additional contour to the road (like sideway-footwalk along along the roads)
     for (Way way : highwayList)
     {
       HighwayType highwayType = Highway.defineType(way.getTags().get("highway"));
