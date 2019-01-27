@@ -159,4 +159,17 @@ public class AwtDrawer extends AbstractDrawer
   {
     graphics.fill(shape);
   }
+
+  @Override
+  public void drawTextWithContour(String text, Font font)
+  {
+    Shape outline = font.createGlyphVector(graphics.getFontRenderContext(), text).getOutline();
+
+    graphics.setStroke(new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+    graphics.setPaint(Palette.CONTOUR_COLOR);
+    graphics.draw(outline);
+
+    graphics.setPaint(Palette.FONT_COLOR);
+    graphics.fill(outline);
+  }
 }

@@ -56,8 +56,8 @@ public class GeneralizedTileDrawer extends AbstractTileDrawer
     new WaterwayPainter(projector, boundsXY).drawWaterways(drawer, waterways, level);
     new NaturePainter(projector, boundsXY).drawNatural(drawer, nature, level);
 
-    new BuildingPainter(projector, boundsXY).drawBuildings(drawer, buildings, level);
     new HighwayPainter(projector, boundsXY).drawHighways(drawer, highways, level);
+    new BuildingPainter(projector, boundsXY).drawBuildings(drawer, buildings, level);
 
     if (Props.debugTileBorder())
     {

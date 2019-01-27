@@ -44,4 +44,6 @@ public abstract class AbstractDrawer
   public abstract void translate(int xShift, int yShift);
 
   public abstract void fill(Shape shape);
+
+  public abstract void drawTextWithContour(String character, Font font);
 }

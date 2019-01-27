@@ -8,7 +8,6 @@ import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
 
 import java.awt.*;
-import java.awt.font.GlyphVector;
 import java.util.List;
 
 /**
@@ -29,7 +28,6 @@ public class TextPainter extends AbstractPainter
     String highwayName = label.getText();
     if (highwayName != null && highwayName != null)
     {
-      drawer.setFillColor(Palette.FONT_COLOR);
       drawTiltString(drawer, label);
     }
   }
@@ -50,14 +48,12 @@ public class TextPainter extends AbstractPainter
       for (int i = 0; i < intersections.size(); i++)
       {
         String character = label.getText().charAt(i % label.getText().length()) + "";
-        GlyphVector glyphVector = font.createGlyphVector(drawer.getFontRenderContext(), character);
         Intersection intersection = intersections.get(i);
 
         drawer.translate((int)intersection.getPoint().getX(), (int)intersection.getPoint().getY());
         drawer.rotate(intersection.getAngle());
 
-        Shape outline = glyphVector.getGlyphOutline(0);
-        drawer.fill(outline);
+        drawer.drawTextWithContour(character, font);
 
         drawer.rotate(-(intersection.getAngle()));
         drawer.translate(-(int)intersection.getPoint().getX(), -(int)intersection.getPoint().getY());

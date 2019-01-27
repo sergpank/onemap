@@ -10,6 +10,7 @@ import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
 import md.onemap.harta.util.TextUtil;
 
+import java.awt.*;
 import java.util.Collection;
 
 /**
@@ -78,10 +79,10 @@ public class BuildingPainter extends AbstractPainter
       float stringHeight = TextUtil.getStringHeight(Palette.BUILDING_FONT_NAME, Palette.BUILDING_FONT_SIZE);
       if (((w * h) / (stringWidth * stringHeight)) >= 3)
       {
-        drawer.setFillColor(Palette.BUILDING_FONT_COLOR);
         XYPoint xy = getLabelCenter(polygon, houseNumber, stringWidth, stringHeight);
-
-        drawer.fillText(houseNumber, xy.getX(), xy.getY());
+        drawer.translate((int)xy.getX(), (int)xy.getY());
+        drawer.drawTextWithContour(houseNumber, new Font(Palette.BUILDING_FONT_NAME, Font.PLAIN, Palette.BUILDING_FONT_SIZE));
+        drawer.translate(-(int)xy.getX(), -(int)xy.getY());
       }
     }
   }
