@@ -12,7 +12,7 @@ var z = url_z == null ? default_z : url_z;
 var lat = url_lat == null ? default_lat : url_lat;
 var lon = url_lon == null ? default_lon : url_lon;
 
-// ?z=17&lat=47.02766051366175&lon=28.844984695315368
+// ?z=17&lat=47.654&lon=28.765
 
 var map = L.map('map', {
   zoomSnap: 0.0625,
@@ -22,8 +22,7 @@ var map = L.map('map', {
 
 L.control.scale().addTo(map);
 
-L.tileLayer('http://localhost:8080/onemap/tile?x={x}&y={y}&z={z}', {
-//L.tileLayer('http://onemap.md/tile?x={x}&y={y}&z={z}', {
+L.tileLayer('tile?x={x}&y={y}&z={z}', {
   minZoom: 13,
   maxZoom: 21,
   tileSize: 512,
