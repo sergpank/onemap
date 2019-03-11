@@ -4,11 +4,14 @@ import md.onemap.harta.db.DatabaseCreator;
 import md.onemap.harta.db.gis.NodeGisDao;
 import md.onemap.harta.db.gis.RelationGisDao;
 import md.onemap.harta.db.gis.WayGisDao;
+import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.loader.OsmLoader;
 
 import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Collection;
 
 public class OsmToPostgisExporter extends OsmExporter
 {
@@ -41,13 +44,13 @@ public class OsmToPostgisExporter extends OsmExporter
 
     LOG.info("\n\nSaving relations ...");
     new RelationGisDao(osmLoader).saveAll(osmLoader.getRelations().values());
-    }
+  }
 
   @Override
   protected void normalizeHighwayNames()
   {
-    LOG.info("Normalizing highway names ... NOT IMPLEMENTED");
-    //Collection<Highway> highways = new HighwayGisDao().loadAll();
-    //new HighwayNameNormalizer().normalize(highways);
+    LOG.info("Normalizing highway names ... ");
+    Collection<Way> highways = new WayGisDao().loadAllHighways();
+    new HighwayNameNormalizer().normalize(highways);
   }
 }

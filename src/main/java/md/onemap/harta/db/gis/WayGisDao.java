@@ -41,6 +41,10 @@ public class WayGisDao extends GisDao<Way>
       "%f %f, " +
       "%f %f " +
       "))'), geometry)";
+  private static final String SELECT_ALL_HIGHWAYS = "SELECT w.id, w.type, w.geometry, t.key, t.value, ST_Envelope(w.geometry) " +
+      "FROM " + WAY_TABLE_NAME + " w " +
+      "JOIN " + TagGisDao.TAG_TABLE_NAME + " t ON w.id = t.id " +
+      "WHERE w.type = '" + Highway.HIGHWAY +"'";
 
 
   @Override
@@ -109,6 +113,12 @@ public class WayGisDao extends GisDao<Way>
   public Collection<Way> loadAll()
   {
     return null;
+  }
+
+  public Collection<Way> loadAllHighways()
+  {
+    Collection<Way> highways = DbHelper.getJdbcTemplate().query(SELECT_ALL_HIGHWAYS, this::extractData);
+    return highways;
   }
 
   private Object createGeometry(Way way)

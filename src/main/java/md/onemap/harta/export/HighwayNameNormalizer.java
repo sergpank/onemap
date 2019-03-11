@@ -1,7 +1,7 @@
 package md.onemap.harta.export;
 
 import md.onemap.harta.db.dao.NormalizedHighwayDao;
-import md.onemap.harta.osm.Highway;
+import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.osm.NormalizedHighway;
 
 import java.util.ArrayList;
@@ -9,10 +9,10 @@ import java.util.Collection;
 
 public class HighwayNameNormalizer
 {
-  public void normalize(Collection<Highway> highways) {
+  public void normalize(Collection<Way> highways) {
     Collection<NormalizedHighway> normalizedHighways = new ArrayList<>();
 
-    for (Highway h : highways)
+    for (Way h : highways)
     {
       NormalizedHighway nh = normalizeHighway(h);
       if (nh != null)
@@ -24,16 +24,21 @@ public class HighwayNameNormalizer
     new NormalizedHighwayDao().saveAll(normalizedHighways);
   }
 
-  private NormalizedHighway normalizeHighway(Highway h)
+  private NormalizedHighway normalizeHighway(Way h)
   {
-    if (h.getName() == null || h.getName().isEmpty())
+    String name = h.getTags().get("name");
+    if (name == null || name.isEmpty())
     {
       return null;
     }
 
-    String normalizedName = normalizeName(h.getName());
-    String normalizedNameRu = normalizeName(h.getNameRu());
-    String normalizedNameOld = normalizeName(h.getNameOld());
+    String nameRu = h.getTags().get("name:ru");
+    String nameOld = h.getTags().get("old_name");
+    String nameOldRu = h.getTags().get("old_name:ru");
+
+    String normalizedName = normalizeName(name);
+    String normalizedNameRu = normalizeName(nameRu);
+    String normalizedNameOld = normalizeName(nameOldRu != null ? nameOldRu : nameOld);
 
     return new NormalizedHighway(h.getId(), normalizedName, normalizedNameRu, normalizedNameOld);
   }
