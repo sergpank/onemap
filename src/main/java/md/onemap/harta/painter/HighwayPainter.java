@@ -11,6 +11,8 @@ import md.onemap.harta.tile.Palette;
 import com.sun.javafx.tk.FontMetrics;
 import com.sun.javafx.tk.Toolkit;
 import javafx.scene.text.Font;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -19,12 +21,18 @@ import java.util.*;
  */
 public class HighwayPainter extends AbstractPainter
 {
-  private static final Font FONT = new Font(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
-  private static final FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(FONT);
+  private static final Logger log = LoggerFactory.getLogger(HighwayPainter.class);
+  private final Font FONT;// = new Font(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
+  private final FontMetrics fontMetrics;// = Toolkit.getToolkit().getFontLoader().getFontMetrics(FONT);
 
   public HighwayPainter(AbstractProjector projector, BoundsXY bounds)
   {
     super(projector, bounds);
+    log.info("Initializing font ...");
+    FONT = new Font(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
+    log.info("Initializing font metrics...");
+    fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(FONT);
+    log.info("Highway Painter is initialized.");
   }
 
   public void draw(AbstractDrawer drawer, Collection<Highway> highways, int level)
