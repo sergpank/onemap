@@ -55,9 +55,9 @@ public class Unit
     {
       return Amenity.AMENITY;
     }
-    else if (tags.containsKey(Border.BORDER))
+    else if (tags.containsKey(Boundary.BOUNDARY))
     {
-      return Border.BORDER;
+      return Boundary.BOUNDARY;
     }
     else
     {

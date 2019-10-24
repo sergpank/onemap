@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class WayGisDao extends GisDao<Way>
 {
@@ -123,23 +124,36 @@ public class WayGisDao extends GisDao<Way>
 
   private Object createGeometry(Way way)
   {
-    if (way.getTags().containsKey(Highway.HIGHWAY) || way.getTags().containsKey(Waterway.WATERWAY))
+    LOG.info("processing way : {}", way.getId());
+
+    List<Node> nodes = way.getNodes().stream()
+        .filter(Objects::nonNull)
+        .collect(Collectors.toList());
+
+    if (way.getTags().containsKey(Highway.HIGHWAY)
+        || way.getTags().containsKey(Waterway.WATERWAY)
+        || way.getTags().containsKey("barrier"))
     {
-      if (way.getNodes().size() < 2)
+      if (nodes.size() < 2)
       {
-        LOG.error("Way {} has only {} points and can't be converted to LineString. Tags: {}", way.getId(), way.getNodes().size(), way.getTags());
+        LOG.error("Way {} has only {} points and can't be converted to LineString. Tags: {}", way.getId(), nodes.size(), way.getTags());
         return null;
       }
-      return createLineString(way.getNodes());
+      if (nodes.size() == 2 && nodes.get(0).equals(nodes.get(1)))
+      {
+        LOG.error("Way {} has 2 points and they are same. Probably it stays on border.", way.getId());
+        return null;
+      }
+      return createLineString(nodes);
     }
     else
     {
-      if (way.getNodes().size() < 3)
+      if (nodes.size() < 3)
       {
-        LOG.error("Way {} has only {} points and can't be converted to Polygon. Tags: {}", way.getId(), way.getNodes().size(), way.getTags());
+        LOG.error("Way {} has only {} points and can't be converted to Polygon. Tags: {}", way.getId(), nodes.size(), way.getTags());
         return null;
       }
-      return createPolygon(way.getNodes());
+      return createPolygon(nodes);
     }
   }
 

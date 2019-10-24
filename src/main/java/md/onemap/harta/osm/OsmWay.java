@@ -140,10 +140,6 @@ public class OsmWay
     {
       return false;
     }
-    if (nodes != null ? !nodes.equals(osmWay.nodes) : osmWay.nodes != null)
-    {
-      return false;
-    }
 
     return true;
   }

@@ -26,7 +26,7 @@ L.control.scale().addTo(map);
 
 L.tileLayer('tile?x={x}&y={y}&z={z}',
 {
-  minZoom: 13,
+  minZoom: 11,
   maxZoom: 21,
   tileSize: 512,
   detectRetina: true

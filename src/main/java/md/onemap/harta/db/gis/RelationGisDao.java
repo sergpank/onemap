@@ -1,16 +1,14 @@
 package md.onemap.harta.db.gis;
 
 import md.onemap.harta.db.DbHelper;
-import md.onemap.harta.db.gis.entity.Member;
-import md.onemap.harta.db.gis.entity.Node;
-import md.onemap.harta.db.gis.entity.Relation;
-import md.onemap.harta.db.gis.entity.Tag;
+import md.onemap.harta.db.gis.entity.*;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.loader.OsmLoader;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RelationGisDao extends GisDao<Relation>
 {
@@ -93,9 +91,33 @@ public class RelationGisDao extends GisDao<Relation>
     {
       switch (m.getType())
       {
-        case NODE: result.add(osmLoader.getNodes().get(m.getRef())); break;
-        case WAY: result.addAll(osmLoader.getWays().get(m.getRef()).getNodes()); break;
-        case RELATION: result.addAll(getNodes(osmLoader.getRelations().get(m.getRef()))); break;
+        case NODE:
+        {
+          Node node = osmLoader.getNodes().get(m.getRef());
+          if(node != null)
+          {
+            result.add(node);
+          }
+          break;
+        }
+        case WAY:
+        {
+          Way way = osmLoader.getWays().get(m.getRef());
+          if(way != null)
+          {
+            result.addAll(way.getNodes().stream().filter(Objects::nonNull).collect(Collectors.toList()));
+          }
+          break;
+        }
+        case RELATION:
+        {
+          Relation subrelation = osmLoader.getRelations().get(m.getRef());
+          if(subrelation != null)
+          {
+            result.addAll(getNodes(subrelation).stream().filter(Objects::nonNull).collect(Collectors.toList()));
+          }
+          break;
+        }
       }
     }
     return result;

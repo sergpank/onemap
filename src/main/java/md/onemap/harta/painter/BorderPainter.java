@@ -1,19 +1,20 @@
 package md.onemap.harta.painter;
 
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
-import javafx.scene.text.Font;
 import md.onemap.harta.drawer.AbstractDrawer;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.geometry.Label;
 import md.onemap.harta.geometry.XYPoint;
-import md.onemap.harta.osm.Border;
+import md.onemap.harta.osm.Boundary;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
 import md.onemap.harta.tile.TileCutter;
 import md.onemap.harta.util.BoxIntersector;
 import md.onemap.harta.util.TextUtil;
+
+import com.sun.javafx.tk.FontMetrics;
+import com.sun.javafx.tk.Toolkit;
+import javafx.scene.text.Font;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -32,21 +33,21 @@ public class BorderPainter extends AbstractPainter
     super(projector, bounds);
   }
 
-  public void drawBorders(AbstractDrawer drawer, Collection<Border> borders, int x, int y, TileCutter tileCutter)
+  public void drawBorders(AbstractDrawer drawer, Collection<Boundary> boundaries, int x, int y, TileCutter tileCutter)
   {
     List<Label> labels = new ArrayList<>();
 
     drawer.setStrokeColor(Palette.BORDER_COLOR);
-    for (Border border : borders)
+    for (Boundary boundary : boundaries)
     {
-      CanvasPolygon polygon = createPolygon(border.getNodes());
-      BoundsXY bounds =border.getBounds().toXY(projector);
+      CanvasPolygon polygon = createPolygon(boundary.getNodes());
+      BoundsXY bounds = boundary.getBounds().toXY(projector);
       double width = bounds.getXmax() - bounds.getXmin();
 
       shiftPoints(this.bounds.getXmin(), polygon.getxPoints());
       shiftPoints(this.bounds.getYmin(), polygon.getyPoints());
       drawer.drawPolyLine(polygon, 1, false);
-      labels.add(createRegionLabel(polygon, border.getName()));
+      labels.add(createRegionLabel(polygon, boundary.getName()));
     }
 
     paintLabels(drawer, labels, x, y, tileCutter);

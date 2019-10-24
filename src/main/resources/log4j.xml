@@ -7,7 +7,7 @@
         </layout>
     </appender>
     <appender name="ROLLING" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${catalina.home}/logs/onemap.log" />
+        <param name="file" value="/onemap/logs/onemap.log" />
         <param name="DatePattern" value="'.'yyyy-MM-dd" />
         <param name="append" value="true" />
         <param name="encoding" value="UTF-8" />
