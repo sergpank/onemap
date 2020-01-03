@@ -124,8 +124,6 @@ public class WayGisDao extends GisDao<Way>
 
   private Object createGeometry(Way way)
   {
-    LOG.info("processing way : {}", way.getId());
-
     List<Node> nodes = way.getNodes().stream()
         .filter(Objects::nonNull)
         .collect(Collectors.toList());
