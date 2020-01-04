@@ -1,73 +1,416 @@
-Saving buildings ...
-2020-01-03 21:58:26 [main] INFO  OsmToPostgisExporter.exportEntities:46 - 
+Saving ways ...
+2020-01-04 02:04:18 [main] ERROR WayGisDao.createGeometry:151 - Way 47448246 has only 2 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:04:18 [main] ERROR WayGisDao.createGeometry:151 - Way 47448247 has only 2 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:04:18 [main] ERROR WayGisDao.createGeometry:137 - Way 702032721 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:18 [main] ERROR WayGisDao.createGeometry:137 - Way 702032665 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:18 [main] ERROR WayGisDao.createGeometry:137 - Way 702032661 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:18 [main] ERROR WayGisDao.createGeometry:137 - Way 721037666 has only 1 points and can't be converted to LineString. Tags: {name:ru=Кишинёв-Хынчешты, int_ref=E 584, ref=R3, name=Chișinău-Hîncești, maxspeed=90, lanes=2, highway=trunk, oneway=yes}
+2020-01-04 02:04:18 [main] ERROR WayGisDao.createGeometry:151 - Way 721037669 has only 2 points and can't be converted to Polygon. Tags: {admin_level=6}
+2020-01-04 02:04:19 [main] ERROR WayGisDao.createGeometry:151 - Way 205130221 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, voltage=10000}
+2020-01-04 02:04:19 [main] ERROR WayGisDao.createGeometry:151 - Way 677523010 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:19 [main] ERROR WayGisDao.createGeometry:151 - Way 677522999 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:19 [main] ERROR WayGisDao.createGeometry:151 - Way 677523002 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:19 [main] ERROR WayGisDao.createGeometry:151 - Way 677523000 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:19 [main] ERROR WayGisDao.createGeometry:151 - Way 677523006 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:19 [main] ERROR WayGisDao.createGeometry:151 - Way 106954754 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=siding, railway=rail}
+2020-01-04 02:04:19 [main] ERROR WayGisDao.createGeometry:151 - Way 106954762 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=siding, railway=rail}
+2020-01-04 02:04:19 [main] ERROR WayGisDao.createGeometry:137 - Way 721036183 has only 1 points and can't be converted to LineString. Tags: {name:ru=Кишинёв-Бендеры, ref=R2, name:mo=Chișinău-Bender, name=Chișinău-Bender, maxspeed=90, highway=primary}
+2020-01-04 02:04:19 [main] ERROR WayGisDao.createGeometry:151 - Way 595470373 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:20 [main] ERROR WayGisDao.createGeometry:151 - Way 31985752 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, railway=rail, bridge=yes, layer=2}
+2020-01-04 02:04:20 [main] ERROR WayGisDao.createGeometry:151 - Way 31985749 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, railway=rail, bridge=yes, layer=2}
+2020-01-04 02:04:20 [main] ERROR WayGisDao.createGeometry:151 - Way 721041691 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:20 [main] ERROR WayGisDao.createGeometry:151 - Way 721041692 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:20 [main] ERROR WayGisDao.createGeometry:151 - Way 593769974 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:21 [main] ERROR WayGisDao.createGeometry:151 - Way 358089302 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:21 [main] ERROR WayGisDao.createGeometry:137 - Way 689846069 has only 1 points and can't be converted to LineString. Tags: {ref=L415, name=Calea Chișinăului, highway=tertiary}
+2020-01-04 02:04:21 [main] ERROR WayGisDao.createGeometry:151 - Way 692194256 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:21 [main] ERROR WayGisDao.createGeometry:151 - Way 692194257 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:21 [main] ERROR WayGisDao.createGeometry:151 - Way 692193923 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:22 [main] ERROR WayGisDao.createGeometry:151 - Way 28584853 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, passenger_lines=1, electrified=no, usage=branch, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:22 [main] ERROR WayGisDao.createGeometry:151 - Way 85207162 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=underground, type=heat}
+2020-01-04 02:04:22 [main] ERROR WayGisDao.createGeometry:151 - Way 85207137 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=underground, type=heat}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 85207169 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=overground, type=heat}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 741350641 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 741350642 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 741350643 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 741350645 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 741350628 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 741350629 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 741350615 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 741350616 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 741350607 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 147864631 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, operator=Unión Fenosa, SA, voltage=380}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 147864633 has only 2 points and can't be converted to Polygon. Tags: {power=minor_line}
+2020-01-04 02:04:23 [main] ERROR WayGisDao.createGeometry:151 - Way 344859139 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 692195826 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 692195824 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 692195825 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 692195522 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 692195525 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 738989548 has only 2 points and can't be converted to Polygon. Tags: {landuse=vineyard, crop=grape}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 205403978 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, service=spur, usage=industrial, embankment=yes, railway=rail}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 205403977 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, passenger_lines=1, electrified=no, usage=main, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 727322656 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=heat, location=underground, operator=S.A. Termoelectrica, layer=-1}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 205404051 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=gas, location=overground, operator=Moldovagaz}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 696259994 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=heat, location=underground, layer=-1}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 696259996 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=heat, location=overground}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 696259997 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=heat, location=underground, layer=-1}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 726144968 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=siding, railway=rail}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 726144967 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, usage=main, railway=rail}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 595468005 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 35536128 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, service=yard, railway=rail, tracks=1}
+2020-01-04 02:04:24 [main] ERROR WayGisDao.createGeometry:151 - Way 692197051 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:25 [main] ERROR WayGisDao.createGeometry:151 - Way 104874506 has only 1 points and can't be converted to Polygon. Tags: {power=minor_line}
+2020-01-04 02:04:25 [main] ERROR WayGisDao.createGeometry:137 - Way 104874515 has only 1 points and can't be converted to LineString. Tags: {barrier=fence}
+2020-01-04 02:04:25 [main] ERROR WayGisDao.createGeometry:151 - Way 729181966 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=8}
+2020-01-04 02:04:25 [main] ERROR WayGisDao.createGeometry:151 - Way 129516081 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=8}
+2020-01-04 02:04:25 [main] ERROR WayGisDao.createGeometry:151 - Way 129516084 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=8}
+2020-01-04 02:04:25 [main] ERROR WayGisDao.createGeometry:151 - Way 129516085 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=8}
+2020-01-04 02:04:25 [main] ERROR WayGisDao.createGeometry:151 - Way 129516073 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=8}
+2020-01-04 02:04:25 [main] ERROR WayGisDao.createGeometry:151 - Way 104874488 has only 2 points and can't be converted to Polygon. Tags: {power=minor_line}
+2020-01-04 02:04:26 [main] ERROR WayGisDao.createGeometry:151 - Way 49433569 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=spur, embankment=yes, railway=rail}
+2020-01-04 02:04:26 [main] ERROR WayGisDao.createGeometry:151 - Way 668366018 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:27 [main] ERROR WayGisDao.createGeometry:151 - Way 33186752 has only 2 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:04:28 [main] ERROR WayGisDao.createGeometry:151 - Way 33186750 has only 2 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:04:28 [main] ERROR WayGisDao.createGeometry:151 - Way 33186412 has only 2 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:04:28 [main] ERROR WayGisDao.createGeometry:151 - Way 33187298 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, voltage=110000}
+2020-01-04 02:04:28 [main] ERROR WayGisDao.createGeometry:151 - Way 556680764 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:28 [main] ERROR WayGisDao.createGeometry:151 - Way 556680765 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:28 [main] ERROR WayGisDao.createGeometry:151 - Way 556680763 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:28 [main] ERROR WayGisDao.createGeometry:151 - Way 758923428 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:29 [main] ERROR WayGisDao.createGeometry:151 - Way 205552707 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, service=yard, usage=main, railway=rail, tracks=1}
+2020-01-04 02:04:29 [main] ERROR WayGisDao.createGeometry:151 - Way 205552708 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, service=yard, usage=main, railway=rail, tracks=1}
+2020-01-04 02:04:29 [main] ERROR WayGisDao.createGeometry:151 - Way 55342016 has only 2 points and can't be converted to Polygon. Tags: {disused:aeroway=taxiway}
+2020-01-04 02:04:29 [main] ERROR WayGisDao.createGeometry:151 - Way 80115219 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=underground, type=heat}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:137 - Way 59536452 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443179810 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443179811 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443179808 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443179809 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443179802 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443179803 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443179800 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443179801 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443179806 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443179807 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443179804 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443179805 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 588273920 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443180608 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443180606 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443180607 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443180604 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 443180605 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 568876310 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:30 [main] ERROR WayGisDao.createGeometry:151 - Way 611473738 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:31 [main] ERROR WayGisDao.createGeometry:151 - Way 709252380 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:31 [main] ERROR WayGisDao.createGeometry:151 - Way 709252379 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:31 [main] ERROR WayGisDao.createGeometry:151 - Way 588274889 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:31 [main] ERROR WayGisDao.createGeometry:151 - Way 588274890 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:31 [main] ERROR WayGisDao.createGeometry:151 - Way 593797151 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:32 [main] ERROR WayGisDao.createGeometry:137 - Way 710848155 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:33 [main] ERROR WayGisDao.createGeometry:151 - Way 449877073 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:33 [main] ERROR WayGisDao.createGeometry:151 - Way 449877074 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:33 [main] ERROR WayGisDao.createGeometry:151 - Way 449877075 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:33 [main] ERROR WayGisDao.createGeometry:151 - Way 449874760 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:33 [main] ERROR WayGisDao.createGeometry:151 - Way 449874762 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:33 [main] ERROR WayGisDao.createGeometry:151 - Way 449874764 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:33 [main] ERROR WayGisDao.createGeometry:151 - Way 449874766 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:34 [main] ERROR WayGisDao.createGeometry:151 - Way 37918603 has only 2 points and can't be converted to Polygon. Tags: {man_made=pier}
+2020-01-04 02:04:34 [main] ERROR WayGisDao.createGeometry:151 - Way 449875194 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:34 [main] ERROR WayGisDao.createGeometry:151 - Way 49455236 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=spur, railway=rail}
+2020-01-04 02:04:34 [main] ERROR WayGisDao.createGeometry:151 - Way 49455244 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=spur, embankment=yes, railway=rail}
+2020-01-04 02:04:36 [main] ERROR WayGisDao.createGeometry:151 - Way 699041430 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=6}
+2020-01-04 02:04:36 [main] ERROR WayGisDao.createGeometry:151 - Way 49590404 has only 2 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:04:36 [main] ERROR WayGisDao.createGeometry:151 - Way 151042802 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, operator=Unión Fenosa, SA, voltage=10000}
+2020-01-04 02:04:36 [main] ERROR WayGisDao.createGeometry:151 - Way 151042803 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, operator=Unión Fenosa, SA, voltage=10000}
+2020-01-04 02:04:36 [main] ERROR WayGisDao.createGeometry:137 - Way 740726834 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:37 [main] ERROR WayGisDao.createGeometry:151 - Way 742038320 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:37 [main] ERROR WayGisDao.createGeometry:151 - Way 742038319 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:37 [main] ERROR WayGisDao.createGeometry:151 - Way 742038310 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:37 [main] ERROR WayGisDao.createGeometry:151 - Way 742038309 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:04:38 [main] ERROR WayGisDao.createGeometry:151 - Way 147634148 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, voltage=10000}
+2020-01-04 02:04:38 [main] ERROR WayGisDao.createGeometry:151 - Way 147634151 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, voltage=10000}
+2020-01-04 02:04:38 [main] ERROR WayGisDao.createGeometry:151 - Way 209243453 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=gas, location=overground}
+2020-01-04 02:04:38 [main] ERROR WayGisDao.createGeometry:151 - Way 553706501 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:38 [main] ERROR WayGisDao.createGeometry:137 - Way 147639800 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:38 [main] ERROR WayGisDao.createGeometry:151 - Way 34129862 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, service=yard, railway=rail, bridge=yes, tracks=1}
+2020-01-04 02:04:38 [main] ERROR WayGisDao.createGeometry:151 - Way 163627080 has only 2 points and can't be converted to Polygon. Tags: {location=underground, power=cable}
+2020-01-04 02:04:38 [main] ERROR WayGisDao.createGeometry:137 - Way 147636498 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:38 [main] ERROR WayGisDao.createGeometry:151 - Way 435213283 has only 2 points and can't be converted to Polygon. Tags: {power=line, voltage=10000, frequency=50}
+2020-01-04 02:04:38 [main] ERROR WayGisDao.createGeometry:151 - Way 435213284 has only 2 points and can't be converted to Polygon. Tags: {power=line, voltage=110000}
+2020-01-04 02:04:38 [main] ERROR WayGisDao.createGeometry:151 - Way 553708375 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:39 [main] ERROR WayGisDao.createGeometry:151 - Way 231653583 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:39 [main] ERROR WayGisDao.createGeometry:151 - Way 553709440 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:39 [main] ERROR WayGisDao.createGeometry:151 - Way 553709441 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:39 [main] ERROR WayGisDao.createGeometry:151 - Way 553709442 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:39 [main] ERROR WayGisDao.createGeometry:151 - Way 553709443 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:39 [main] ERROR WayGisDao.createGeometry:151 - Way 49337085 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=gas, location=overground}
+2020-01-04 02:04:40 [main] ERROR WayGisDao.createGeometry:151 - Way 132699193 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=8}
+2020-01-04 02:04:40 [main] ERROR WayGisDao.createGeometry:151 - Way 132699195 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=8}
+2020-01-04 02:04:40 [main] ERROR WayGisDao.createGeometry:151 - Way 169271070 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=gas, location=underground}
+2020-01-04 02:04:40 [main] ERROR WayGisDao.createGeometry:151 - Way 169271071 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=gas, location=underground}
+2020-01-04 02:04:40 [main] ERROR WayGisDao.createGeometry:151 - Way 169271046 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, passenger_lines=1, electrified=no, usage=branch, railway=rail, bridge=yes, operator=CFM, layer=1}
+2020-01-04 02:04:40 [main] ERROR WayGisDao.createGeometry:151 - Way 169271072 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=gas, location=overground}
+2020-01-04 02:04:41 [main] ERROR WayGisDao.createGeometry:151 - Way 132701568 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=8}
+2020-01-04 02:04:41 [main] ERROR WayGisDao.createGeometry:151 - Way 132701569 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=8}
+2020-01-04 02:04:41 [main] ERROR WayGisDao.createGeometry:151 - Way 132701570 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=6}
+2020-01-04 02:04:41 [main] ERROR WayGisDao.createGeometry:151 - Way 26140058 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=spur, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:41 [main] ERROR WayGisDao.createGeometry:151 - Way 26139857 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, passenger_lines=2, electrified=no, usage=main, railway=rail, bridge=yes, layer=2}
+2020-01-04 02:04:41 [main] ERROR WayGisDao.createGeometry:151 - Way 49602401 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=overground, type=heat, layer=1}
+2020-01-04 02:04:41 [main] ERROR WayGisDao.createGeometry:151 - Way 49602399 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:42 [main] ERROR WayGisDao.createGeometry:151 - Way 699056888 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:42 [main] ERROR WayGisDao.createGeometry:151 - Way 134931832 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=10}
+2020-01-04 02:04:43 [main] ERROR WayGisDao.createGeometry:151 - Way 49607429 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, service=yard, usage=main, railway=rail, tracks=1}
+2020-01-04 02:04:43 [main] ERROR WayGisDao.createGeometry:151 - Way 197065071 has only 2 points and can't be converted to Polygon. Tags: {power=minor_line}
+2020-01-04 02:04:43 [main] ERROR WayGisDao.createGeometry:137 - Way 740743251 has only 1 points and can't be converted to LineString. Tags: {construction=residential, highway=construction}
+2020-01-04 02:04:43 [main] ERROR WayGisDao.createGeometry:151 - Way 727113717 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:44 [main] ERROR WayGisDao.createGeometry:151 - Way 38732354 has only 2 points and can't be converted to Polygon. Tags: {man_made=pier}
+2020-01-04 02:04:44 [main] ERROR WayGisDao.createGeometry:151 - Way 585704053 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:44 [main] ERROR WayGisDao.createGeometry:151 - Way 77137351 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=heat, location=overground}
+2020-01-04 02:04:44 [main] ERROR WayGisDao.createGeometry:151 - Way 77137160 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=heat, location=underground}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 584525018 has only 2 points and can't be converted to Polygon. Tags: {railway=disused}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 584525044 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 584525043 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 584525040 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:137 - Way 149884615 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 584525048 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 584525039 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 584525038 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 584525037 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 599337837 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 599337831 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 599337816 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 599337818 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 599337812 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:137 - Way 53283500 has only 1 points and can't be converted to LineString. Tags: {fixme=add name on bridges, bridge=yes, highway=path, layer=1}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 569453251 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 569453261 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 569453262 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 569453216 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 569453207 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 569453208 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:45 [main] ERROR WayGisDao.createGeometry:151 - Way 569453099 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:46 [main] ERROR WayGisDao.createGeometry:151 - Way 569586249 has only 2 points and can't be converted to Polygon. Tags: {railway=platform}
+2020-01-04 02:04:47 [main] ERROR WayGisDao.createGeometry:137 - Way 45422532 has only 1 points and can't be converted to LineString. Tags: {access=agricultural, surface=ground, highway=track}
+2020-01-04 02:04:47 [main] ERROR WayGisDao.createGeometry:151 - Way 33626694 has only 2 points and can't be converted to Polygon. Tags: {ref=E, surface=asphalt, PCN=PCN 61 /F/D/X/T, aeroway=taxiway}
+2020-01-04 02:04:47 [main] ERROR WayGisDao.createGeometry:151 - Way 209261871 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=gas, location=overground, operator=Moldovagaz}
+2020-01-04 02:04:47 [main] ERROR WayGisDao.createGeometry:151 - Way 209261870 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=gas, location=overground, operator=Moldovagaz}
+2020-01-04 02:04:48 [main] ERROR WayGisDao.createGeometry:151 - Way 132064763 has only 2 points and can't be converted to Polygon. Tags: {cables=6, power=line}
+2020-01-04 02:04:48 [main] ERROR WayGisDao.createGeometry:151 - Way 132064762 has only 2 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:04:48 [main] ERROR WayGisDao.createGeometry:151 - Way 132064761 has only 2 points and can't be converted to Polygon. Tags: {cables=6, power=line}
+2020-01-04 02:04:48 [main] ERROR WayGisDao.createGeometry:151 - Way 132064760 has only 2 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:04:48 [main] ERROR WayGisDao.createGeometry:151 - Way 211889982 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:48 [main] ERROR WayGisDao.createGeometry:151 - Way 701959478 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, service=yard, railway=disused, tracks=1}
+2020-01-04 02:04:48 [main] ERROR WayGisDao.createGeometry:151 - Way 46737208 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, passenger_lines=1, electrified=no, usage=main, source=Yahoo, railway=rail, bridge=yes, layer=2}
+2020-01-04 02:04:49 [main] ERROR WayGisDao.createGeometry:151 - Way 37954900 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, usage=main, railway=rail, bridge=yes, layer=2}
+2020-01-04 02:04:49 [main] ERROR WayGisDao.createGeometry:151 - Way 129835261 has only 2 points and can't be converted to Polygon. Tags: {admin_level=6}
+2020-01-04 02:04:49 [main] ERROR WayGisDao.createGeometry:151 - Way 180560877 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, service=yard, usage=main, railway=rail, tracks=1}
+2020-01-04 02:04:49 [main] ERROR WayGisDao.createGeometry:151 - Way 180560881 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=siding, railway=rail}
+2020-01-04 02:04:49 [main] ERROR WayGisDao.createGeometry:151 - Way 123809146 has only 1 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=6}
+2020-01-04 02:04:49 [main] ERROR WayGisDao.createGeometry:137 - Way 123809095 has only 1 points and can't be converted to LineString. Tags: {name:ru=Бык, waterway=river, name:uk=Бик, name=Bîc, name:pl=Byk, wikipedia=ru:Бык (приток Днестра), wikidata=Q843343, boat=no}
+2020-01-04 02:04:49 [main] ERROR WayGisDao.createGeometry:137 - Way 123809097 has only 1 points and can't be converted to LineString. Tags: {name:md=Нистру, waterway=river, name:uk=Дністер, name:pl=Dniestr, name:ro=Nistru, name:ru=Днестр, name:be=Днестр, name:de=Dnestr, name:bg=Днестър, name=Nistru, name:fr=Le Dniestr, name:en=Dniester, wikipedia=ru:Днестр, wikidata=Q131210}
+2020-01-04 02:04:49 [main] ERROR WayGisDao.createGeometry:151 - Way 150938173 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, operator=Unión Fenosa, SA, voltage=10000}
+2020-01-04 02:04:49 [main] ERROR WayGisDao.createGeometry:151 - Way 150938172 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, operator=Unión Fenosa, SA, voltage=10000}
+2020-01-04 02:04:49 [main] ERROR WayGisDao.createGeometry:151 - Way 123809167 has only 1 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=6}
+2020-01-04 02:04:50 [main] ERROR WayGisDao.createGeometry:151 - Way 180560175 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, passenger_lines=1, electrified=no, usage=main, railway=rail}
+2020-01-04 02:04:50 [main] ERROR WayGisDao.createGeometry:151 - Way 180560173 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, passenger_lines=1, electrified=no, usage=main, railway=rail}
+2020-01-04 02:04:51 [main] ERROR WayGisDao.createGeometry:151 - Way 52114619 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=underground, type=heat}
+2020-01-04 02:04:52 [main] ERROR WayGisDao.createGeometry:151 - Way 75839636 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=underground, type=heat}
+2020-01-04 02:04:52 [main] ERROR WayGisDao.createGeometry:151 - Way 75839641 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=underground, type=heat}
+2020-01-04 02:04:52 [main] ERROR WayGisDao.createGeometry:151 - Way 698291667 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:52 [main] ERROR WayGisDao.createGeometry:151 - Way 674698878 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:52 [main] ERROR WayGisDao.createGeometry:151 - Way 674698877 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:52 [main] ERROR WayGisDao.createGeometry:151 - Way 674698876 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:52 [main] ERROR WayGisDao.createGeometry:151 - Way 742353980 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, usage=main, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:52 [main] ERROR WayGisDao.createGeometry:151 - Way 165759948 has only 2 points and can't be converted to Polygon. Tags: {power=minor_line}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999882 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999881 has only 2 points and can't be converted to Polygon. Tags: {religion=christian, denomination=orthodox}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999873 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999849 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999871 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999870 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999869 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999867 has only 2 points and can't be converted to Polygon. Tags: {addr:city=Chișinău}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999865 has only 2 points and can't be converted to Polygon. Tags: {addr:city=Chișinău}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999864 has only 2 points and can't be converted to Polygon. Tags: {addr:city=Chișinău}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999831 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999830 has only 2 points and can't be converted to Polygon. Tags: {landuse=grass}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 669999828 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:137 - Way 741436178 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 75845237 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=gas, location=overground}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 49629187 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, service=yard, usage=main, railway=rail, tracks=1}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 758866245 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 33641059 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, usage=main, railway=rail}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 33641058 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, railway=rail}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 33641062 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, railway=rail}
+2020-01-04 02:04:53 [main] ERROR WayGisDao.createGeometry:151 - Way 664368934 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:137 - Way 56185360 has only 1 points and can't be converted to LineString. Tags: {is_in=Porumbeni, highway=residential}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:137 - Way 56185362 has only 1 points and can't be converted to LineString. Tags: {is_in=Porumbeni, highway=residential}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:151 - Way 706051059 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:151 - Way 117527817 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:151 - Way 569603043 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:151 - Way 569603039 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:151 - Way 569603037 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:137 - Way 56185302 has only 1 points and can't be converted to LineString. Tags: {is_in=Porumbeni, highway=residential}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:137 - Way 56185313 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:137 - Way 107302991 has only 1 points and can't be converted to LineString. Tags: {waterway=stream, tunnel=yes, layer=-1}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:137 - Way 107302926 has only 1 points and can't be converted to LineString. Tags: {surface=unpaved, highway=living_street}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:137 - Way 140730231 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:137 - Way 140730163 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:151 - Way 166682185 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=siding, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:54 [main] ERROR WayGisDao.createGeometry:151 - Way 166682184 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=spur, railway=rail}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 209277026 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, voltage=10000}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 496190361 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 739462341 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=spur, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 90399201 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, railway=rail, bridge=yes}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 90399200 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 90399209 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, railway=rail, bridge=yes, layer=2}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 90399215 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, passenger_lines=1, electrified=no, usage=main, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 90399219 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, railway=rail}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 90399227 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, railway=rail}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 90399231 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, railway=rail}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 90399229 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, railway=rail}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 90399171 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 90399162 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, railway=rail, bridge=yes, layer=2}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 90399164 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:55 [main] ERROR WayGisDao.createGeometry:151 - Way 107831947 has only 2 points and can't be converted to Polygon. Tags: {landuse=forest}
+2020-01-04 02:04:56 [main] ERROR WayGisDao.createGeometry:151 - Way 90399286 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, passenger_lines=1, electrified=no, usage=main, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:56 [main] ERROR WayGisDao.createGeometry:151 - Way 90399234 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, railway=rail, bridge=yes, layer=2}
+2020-01-04 02:04:56 [main] ERROR WayGisDao.createGeometry:151 - Way 90399238 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, passenger_lines=1, electrified=no, usage=main, railway=rail, bridge=yes, layer=2}
+2020-01-04 02:04:56 [main] ERROR WayGisDao.createGeometry:151 - Way 392785934 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:56 [main] ERROR WayGisDao.createGeometry:151 - Way 90399240 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:56 [main] ERROR WayGisDao.createGeometry:151 - Way 90399244 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:56 [main] ERROR WayGisDao.createGeometry:151 - Way 90399249 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, passenger_lines=1, electrified=no, usage=main, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:04:56 [main] ERROR WayGisDao.createGeometry:151 - Way 584533259 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:56 [main] ERROR WayGisDao.createGeometry:151 - Way 711541455 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:57 [main] ERROR WayGisDao.createGeometry:151 - Way 25521769 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, note=Chisinau_centru_boundaries, admin_level=10}
+2020-01-04 02:04:57 [main] ERROR WayGisDao.createGeometry:151 - Way 147683457 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, operator=Unión Fenosa, SA, voltage=10000}
+2020-01-04 02:04:57 [main] ERROR WayGisDao.createGeometry:151 - Way 49639508 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, service=yard, usage=main, railway=rail, tracks=1}
+2020-01-04 02:04:57 [main] ERROR WayGisDao.createGeometry:151 - Way 49639510 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, level=0, electrified=no, service=yard, usage=main, railway=rail, tracks=1}
+2020-01-04 02:04:57 [main] ERROR WayGisDao.createGeometry:151 - Way 620318839 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, usage=main, railway=rail}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:137 - Way 30242497 has only 1 points and can't be converted to LineString. Tags: {name:ru=G106-G112, ref=L543, name=G106-G112, highway=tertiary}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 730291294 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 730291298 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 233272762 has only 2 points and can't be converted to Polygon. Tags: {power=line, voltage=110000}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 33782728 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 721768901 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=overground, type=heat}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 721768900 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=overground, type=heat}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 721768911 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=spur, railway=rail}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 721768904 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=overground, type=heat}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 721768912 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=spur, covered=yes, railway=rail}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 721768914 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=spur, covered=yes, railway=rail}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 104561290 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 104561293 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 104561280 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 104561393 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 104561373 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 104561353 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:04:58 [main] ERROR WayGisDao.createGeometry:151 - Way 151877258 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, operator=Unión Fenosa, SA, voltage=10000}
+2020-01-04 02:04:59 [main] ERROR WayGisDao.createGeometry:151 - Way 454924847 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, circuits=1, voltage=10000, frequency=50}
+2020-01-04 02:04:59 [main] ERROR WayGisDao.createGeometry:151 - Way 454924846 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, circuits=1, voltage=10000, frequency=50}
+2020-01-04 02:04:59 [main] ERROR WayGisDao.createGeometry:151 - Way 454924842 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, circuits=1, voltage=10000, frequency=50}
+2020-01-04 02:04:59 [main] ERROR WayGisDao.createGeometry:151 - Way 150178919 has only 2 points and can't be converted to Polygon. Tags: {aeroway=taxiway}
+2020-01-04 02:05:01 [main] ERROR WayGisDao.createGeometry:151 - Way 727301385 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:05:01 [main] ERROR WayGisDao.createGeometry:151 - Way 727301387 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:05:01 [main] ERROR WayGisDao.createGeometry:151 - Way 727301388 has only 2 points and can't be converted to Polygon. Tags: {natural=tree_row}
+2020-01-04 02:05:02 [main] ERROR WayGisDao.createGeometry:151 - Way 369462682 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:02 [main] ERROR WayGisDao.createGeometry:151 - Way 33136262 has only 2 points and can't be converted to Polygon. Tags: {power=line, voltage=110000}
+2020-01-04 02:05:02 [main] ERROR WayGisDao.createGeometry:151 - Way 33136952 has only 1 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:05:03 [main] ERROR WayGisDao.createGeometry:137 - Way 59221267 has only 1 points and can't be converted to LineString. Tags: {is_in=Bîc, highway=residential}
+2020-01-04 02:05:03 [main] ERROR WayGisDao.createGeometry:137 - Way 59221237 has only 1 points and can't be converted to LineString. Tags: {is_in=Bîc, highway=residential}
+2020-01-04 02:05:03 [main] ERROR WayGisDao.createGeometry:151 - Way 33138255 has only 2 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:05:03 [main] ERROR WayGisDao.createGeometry:151 - Way 33138254 has only 2 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:05:04 [main] ERROR WayGisDao.createGeometry:151 - Way 33533472 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, voltage=110000}
+2020-01-04 02:05:05 [main] ERROR WayGisDao.createGeometry:151 - Way 552570897 has only 2 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:05:05 [main] ERROR WayGisDao.createGeometry:137 - Way 445229248 has only 1 points and can't be converted to LineString. Tags: {surface=ground, highway=track}
+2020-01-04 02:05:05 [main] ERROR WayGisDao.createGeometry:151 - Way 33534830 has only 2 points and can't be converted to Polygon. Tags: {power=line}
+2020-01-04 02:05:05 [main] ERROR WayGisDao.createGeometry:137 - Way 130004163 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:05:05 [main] ERROR WayGisDao.createGeometry:151 - Way 224115000 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:05 [main] ERROR WayGisDao.createGeometry:151 - Way 224114998 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:05 [main] ERROR WayGisDao.createGeometry:151 - Way 224114996 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:06 [main] ERROR WayGisDao.createGeometry:151 - Way 195670488 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:06 [main] ERROR WayGisDao.createGeometry:151 - Way 147698734 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, operator=Unión Fenosa, SA, voltage=10000}
+2020-01-04 02:05:06 [main] ERROR WayGisDao.createGeometry:137 - Way 38781450 has only 1 points and can't be converted to LineString. Tags: {highway=footway}
+2020-01-04 02:05:06 [main] ERROR WayGisDao.createGeometry:151 - Way 60539026 has only 2 points and can't be converted to Polygon. Tags: {name:ru=Дачи, name=Vile, landuse=residential}
+2020-01-04 02:05:06 [main] ERROR WayGisDao.createGeometry:137 - Way 60539101 has only 1 points and can't be converted to LineString. Tags: {highway=residential}
+2020-01-04 02:05:07 [main] ERROR WayGisDao.createGeometry:151 - Way 28691605 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:08 [main] ERROR WayGisDao.createGeometry:151 - Way 115853699 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=gas, location=underground}
+2020-01-04 02:05:08 [main] ERROR WayGisDao.createGeometry:151 - Way 49795572 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, railway=rail}
+2020-01-04 02:05:08 [main] ERROR WayGisDao.createGeometry:151 - Way 602534136 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:08 [main] ERROR WayGisDao.createGeometry:151 - Way 49795560 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, service=yard, usage=main, railway=rail, tracks=1}
+2020-01-04 02:05:09 [main] ERROR WayGisDao.createGeometry:151 - Way 758119276 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:09 [main] ERROR WayGisDao.createGeometry:151 - Way 104714653 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:09 [main] ERROR WayGisDao.createGeometry:137 - Way 676065433 has only 1 points and can't be converted to LineString. Tags: {construction=residential, highway=construction}
+2020-01-04 02:05:10 [main] ERROR WayGisDao.createGeometry:151 - Way 147707454 has only 2 points and can't be converted to Polygon. Tags: {wires=single, cables=3, power=minor_line, operator=Unión Fenosa, SA, voltage=10000}
+2020-01-04 02:05:10 [main] ERROR WayGisDao.createGeometry:151 - Way 201184507 has only 1 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=6}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583910988 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583910991 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583910987 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583910986 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583910981 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583910983 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583910982 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583911005 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583911004 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583911007 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583911001 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583911000 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583911003 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583910997 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583910992 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 583910995 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 233170340 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, voltage=110000}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 233170336 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, voltage=110000}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 233170339 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, voltage=110000}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 233170333 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, voltage=110000}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 233170332 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, voltage=110000}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 233170335 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, voltage=110000}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 233170328 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, voltage=110000}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 233170331 has only 2 points and can't be converted to Polygon. Tags: {cables=3, power=line, voltage=110000}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 706069137 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 51112238 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=underground, type=heat}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 51112244 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 705414665 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 589025235 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 589025233 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 589025232 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 589025239 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 589025227 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 589025226 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 589025228 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:11 [main] ERROR WayGisDao.createGeometry:151 - Way 589025223 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:12 [main] ERROR WayGisDao.createGeometry:151 - Way 606980911 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:12 [main] ERROR WayGisDao.createGeometry:151 - Way 606980904 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:12 [main] ERROR WayGisDao.createGeometry:151 - Way 606980900 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:12 [main] ERROR WayGisDao.createGeometry:151 - Way 131593636 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=8}
+2020-01-04 02:05:12 [main] ERROR WayGisDao.createGeometry:151 - Way 131593635 has only 2 points and can't be converted to Polygon. Tags: {boundary=administrative, admin_level=6}
+2020-01-04 02:05:12 [main] ERROR WayGisDao.createGeometry:151 - Way 458090728 has only 2 points and can't be converted to Polygon. Tags: {line=busbar, power=line}
+2020-01-04 02:05:12 [main] ERROR WayGisDao.createGeometry:151 - Way 458090725 has only 2 points and can't be converted to Polygon. Tags: {power=portal}
+2020-01-04 02:05:12 [main] ERROR WayGisDao.createGeometry:151 - Way 458090724 has only 2 points and can't be converted to Polygon. Tags: {power=portal}
+2020-01-04 02:05:12 [main] ERROR WayGisDao.createGeometry:151 - Way 458090727 has only 2 points and can't be converted to Polygon. Tags: {line=busbar, power=line}
+2020-01-04 02:05:12 [main] ERROR WayGisDao.createGeometry:151 - Way 458090726 has only 2 points and can't be converted to Polygon. Tags: {line=busbar, power=line}
+2020-01-04 02:05:12 [main] ERROR WayGisDao.createGeometry:137 - Way 504753138 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:05:12 [main] ERROR WayGisDao.createGeometry:137 - Way 504753124 has only 1 points and can't be converted to LineString. Tags: {highway=track}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 106954751 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, railway=rail}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 106954745 has only 2 points and can't be converted to Polygon. Tags: {gauge=1520, electrified=no, usage=main, railway=rail, bridge=yes, layer=1}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 106954735 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=spur, railway=rail}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 106954734 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=siding, railway=rail}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 602529466 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 33684571 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=spur, railway=rail, bridge=yes}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 33684572 has only 2 points and can't be converted to Polygon. Tags: {electrified=no, service=spur, railway=rail, bridge=yes}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 91093785 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=overground, type=heat}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 655088078 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=heat, location=underground}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 655088077 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=heat, location=overground}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 655088081 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=heat, location=underground}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 655088080 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, substance=heat, location=underwater}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 103676250 has only 2 points and can't be converted to Polygon. Tags: {tracktype=grade5}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 608951090 has only 2 points and can't be converted to Polygon. Tags: {}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 91093707 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=underground, type=heat}
+2020-01-04 02:05:13 [main] ERROR WayGisDao.createGeometry:151 - Way 91093716 has only 2 points and can't be converted to Polygon. Tags: {man_made=pipeline, location=overground, type=heat}
+2020-01-04 02:05:13 [main] INFO  OsmToPostgisExporter.exportEntities:45 - 
 
-Saving highways ...
-2020-01-03 21:58:26 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 702032721
-2020-01-03 21:58:26 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 702032665
-2020-01-03 21:58:26 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 702032661
-2020-01-03 21:58:26 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: Chișinău-Hîncești; id: 721037666
-2020-01-03 21:58:26 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 710848155
-2020-01-03 21:58:27 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 149884615
-2020-01-03 21:58:27 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: Chișinău-Bender; id: 721036183
-2020-01-03 21:58:27 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 53283500
-2020-01-03 21:58:28 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 45422532
-2020-01-03 21:58:28 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: Calea Chișinăului; id: 689846069
-2020-01-03 21:58:29 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 59221267
-2020-01-03 21:58:29 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 59221237
-2020-01-03 21:58:30 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 445229248
-2020-01-03 21:58:30 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 130004163
-2020-01-03 21:58:30 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 740726834
-2020-01-03 21:58:31 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 38781450
-2020-01-03 21:58:31 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 60539101
-2020-01-03 21:58:31 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 147639800
-2020-01-03 21:58:32 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 741436178
-2020-01-03 21:58:32 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 147636498
-2020-01-03 21:58:32 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 56185360
-2020-01-03 21:58:32 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 56185362
-2020-01-03 21:58:32 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 56185302
-2020-01-03 21:58:32 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 56185313
-2020-01-03 21:58:33 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 107302926
-2020-01-03 21:58:33 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 140730231
-2020-01-03 21:58:33 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 140730163
-2020-01-03 21:58:33 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 676065433
-2020-01-03 21:58:34 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 740743251
-2020-01-03 21:58:35 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 504753138
-2020-01-03 21:58:35 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 504753124
-2020-01-03 21:58:35 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: G106-G112; id: 30242497
-2020-01-03 21:58:35 [main] ERROR HighwayGisDao.save:28 - Unable to save highway with 1 point(s); name: null; id: 59536452
-2020-01-03 21:58:35 [main] INFO  OsmToPostgisExporter.exportEntities:49 - 
+Saving relations ...
+2020-01-04 02:05:29 [main] INFO  OsmToPostgisExporter.normalizeHighwayNames:52 - Normalizing highway names ... 
 
-Saving leisure ...
-2020-01-03 21:58:36 [main] INFO  OsmToPostgisExporter.exportEntities:52 - 
-
-Saving landuse ...
-2020-01-03 21:58:36 [main] ERROR LanduseGisDao.save:25 - Unable to save landuse 60539026 with 2 point(s) : Vile-residential
-2020-01-03 21:58:36 [main] ERROR LanduseGisDao.save:25 - Unable to save landuse 107831947 with 2 point(s) : null-forest
-2020-01-03 21:58:36 [main] ERROR LanduseGisDao.save:25 - Unable to save landuse 669999830 with 2 point(s) : null-grass
-2020-01-03 21:58:36 [main] ERROR LanduseGisDao.save:25 - Unable to save landuse 738989548 with 2 point(s) : null-vineyard
-2020-01-03 21:58:37 [main] INFO  OsmToPostgisExporter.exportEntities:55 - 
-
-Saving waterways ...
-2020-01-03 21:58:37 [main] ERROR WaterwayGisDao.save:27 - Unable to save waterway 123809095 with 1 nodes: Bîc -> river
-2020-01-03 21:58:37 [main] ERROR WaterwayGisDao.save:27 - Unable to save waterway 123809097 with 1 nodes: Nistru -> river
-2020-01-03 21:58:37 [main] ERROR WaterwayGisDao.save:27 - Unable to save waterway 107302991 with 1 nodes: null -> stream
-2020-01-03 21:58:37 [main] INFO  OsmToPostgisExporter.exportEntities:58 - 
-
-Saving nature ...
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 741350641 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 741350642 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 741350643 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 741350645 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 741350628 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 741350629 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 741350615 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 741350616 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 741350607 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 727301385 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 727301387 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 727301388 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 742038320 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 742038319 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 742038310 --> null
-2020-01-03 21:58:37 [main] ERROR NatureGisDao.save:25 - Unable to save Natural with 2 points: 742038309 --> null
-2020-01-03 21:58:37 [main] INFO  OsmToPostgisExporter.normalizeHighwayNames:65 - Normalizing highway names ...
+Process finished with exit code 0
