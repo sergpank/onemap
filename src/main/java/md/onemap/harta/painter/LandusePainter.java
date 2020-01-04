@@ -1,5 +1,6 @@
 package md.onemap.harta.painter;
 
+import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.drawer.AbstractDrawer;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
@@ -7,6 +8,7 @@ import md.onemap.harta.osm.Landuse;
 import md.onemap.harta.osm.Water;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
+
 import org.apache.log4j.Logger;
 
 import java.util.Collection;
@@ -28,14 +30,35 @@ public class LandusePainter extends AbstractPainter{
       if (LanduseGreen.isGreen(land.getType()))
       {
         drawer.setFillColor(Palette.PARK_COLOR);
-        CanvasPolygon polygon = createPolygon(land);
+        CanvasPolygon polygon = createPolygon(land.getNodes());
         shiftPolygon(polygon);
         drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
       }
       else if (Water.isWater(land.getType()))
       {
         drawer.setFillColor(Palette.WATER_COLOR);
-        CanvasPolygon polygon = createPolygon(land);
+        CanvasPolygon polygon = createPolygon(land.getNodes());
+        shiftPolygon(polygon);
+        drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
+      }
+    }
+  }
+
+  public void drawLanduse(AbstractDrawer drawer, Collection<Way> landuse, int level)
+  {
+    for (Way land : landuse) {
+      String type = land.getTags().get(Landuse.LANDUSE);
+      if (LanduseGreen.isGreen(type))
+      {
+        drawer.setFillColor(Palette.PARK_COLOR);
+        CanvasPolygon polygon = createPolygon(land.getNodes());
+        shiftPolygon(polygon);
+        drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
+      }
+      else if (Water.isWater(type))
+      {
+        drawer.setFillColor(Palette.WATER_COLOR);
+        CanvasPolygon polygon = createPolygon(land.getNodes());
         shiftPolygon(polygon);
         drawer.fillPolygon(polygon.getxPoints(), polygon.getyPoints());
       }

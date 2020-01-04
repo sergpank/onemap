@@ -25,9 +25,14 @@
     <servlet-class>md.onemap.harta.web.SearchServlet</servlet-class>
   </servlet>
 
-`  <servlet>
+  <servlet>
     <servlet-name>dbTest</servlet-name>
     <servlet-class>md.onemap.harta.web.DbTestServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>updateConfig</servlet-name>
+    <servlet-class>md.onemap.harta.web.UpdateConfigServlet</servlet-class>
   </servlet>
 
   <servlet-mapping>
@@ -54,5 +59,10 @@
     <servlet-name>dbTest</servlet-name>
     <url-pattern>/dbTest</url-pattern>
   </servlet-mapping>
-  
+
+  <servlet-mapping>
+    <servlet-name>updateConfig</servlet-name>
+    <url-pattern>/UPDATE_CONFIG</url-pattern>
+  </servlet-mapping>
+
 </web-app>

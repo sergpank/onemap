@@ -13,11 +13,9 @@
   <title>onemap.md</title>
 
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <link 
-    rel="stylesheet" 
-    href="css/leaflet.css"
-  />
+  <link rel="stylesheet" href="css/leaflet.css" />
 
   <style>
     body {
@@ -35,6 +33,108 @@
   <div id="map"></div>
   <script src="js/leaflet.js"></script>
   <script src="js/map.js"></script>
+
+  <script>
+    var geoJsonFeatures =
+    {
+      "type": "FeatureCollection",
+      "features":
+      [
+        {
+          "geometry":
+            {
+              "type": "LineString",
+              "coordinates":
+              [
+                [28.8304317, 47.0261996],
+                [28.8307366, 47.0264058],
+                [28.8308053, 47.0264537],
+                [28.8323075, 47.0274996],
+                [28.8323572, 47.0275342]
+              ]
+            },
+            "type": "Feature",
+            "properties":
+            {
+               "popupContent": "Stradela Teatrului",
+               "underConstruction": false
+            },
+            "id": 3
+        },
+        {
+          "geometry":
+            {
+              "type": "LineString",
+              "coordinates":
+              [
+                [28.831685, 47.0279866],
+                [28.8317586, 47.0280343],
+                [28.8324489, 47.0284839],
+                [28.8327796, 47.0286992],
+                [28.8328498, 47.0287449]
+              ]
+            },
+            "type": "Feature",
+            "properties":
+            {
+              "popupContent": "Strada Tricolorului 2",
+            },
+            "id": 12
+        },
+        {
+          "geometry":
+            {
+              "type": "LineString",
+              "coordinates":
+              [
+                [28.8295305, 47.0265518],
+                [28.8296733, 47.0266513],
+                [28.8301357, 47.0269589],
+                [28.8310914, 47.0275928],
+                [28.8315105, 47.0278708],
+                [28.831685, 47.0279866]
+              ]
+            },
+            "type": "Feature",
+            "properties":
+            {
+              "popupContent": "Strada Tricolorului 3",
+            },
+            "id": 13
+        }
+      ]
+    };
+
+  L.geoJSON(geoJsonFeatures,
+  {
+    filter: function (feature, layer)
+    {
+      if (feature.properties)
+      {
+        // If the property "underConstruction" exists and is true, return false (don't render features under construction)
+        return feature.properties.underConstruction !== undefined ? !feature.properties.underConstruction : true;
+      }
+      return false;
+    },
+    onEachFeature: onEachFeature
+  }
+  ).addTo(map);
+
+  function onEachFeature(feature, layer)
+  {
+    var popupContent = "<p>I started out as a GeoJSON " +
+    feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
+
+    if (feature.properties && feature.properties.popupContent)
+    {
+      popupContent += feature.properties.popupContent;
+    }
+
+    layer.bindPopup(popupContent);
+  }
+
+  </script>
+
 </body>
 
 </html>

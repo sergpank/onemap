@@ -1,5 +1,7 @@
 package md.onemap.harta.web;
 
+import md.onemap.harta.properties.Props;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +34,7 @@ public class DbTestServlet extends HttpServlet
     }
 
     try (Connection connection = DriverManager.getConnection(
-        "jdbc:postgresql://localhost:5432/kishinev", "postgres", "postgres"))
+        Props.dbUrl() + Props.dbName(), Props.dbLogin(), Props.dbPassword()))
     {
       Statement statement = connection.createStatement();
       ResultSet resultSet = statement.executeQuery("SELECT * FROM test");

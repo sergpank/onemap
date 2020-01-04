@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Test</title>
+  <link rel="stylesheet" href="css/search.css"/>
+</head>
+
+<body>
+
+<script src="js/search.js"></script>
+
+<div>
+  <h1>Query streets direct and show JSON (for testing purposes):</h1>
+  <form action="http://onemap.md/search">
+    <p>
+      <input type="text" name="key">
+    </p>
+    <p>
+      <input type="submit" value="Search">
+    </p>
+  </form>
+</div>
+
+<div>
+  <h1>Query streets using AJAX:</h1>
+  <form action="JavaScript:searchStreets()">
+    <p>
+      <input type="text" id="key">
+    </p>
+    <p>
+      <input type="button" value="Search" onclick="searchStreets()">
+    </p>
+  </form>
+</div>
+
+<div id="demo">
+  <button onclick="loadDoc()">Click ME!</button>
+</div>
+
+</body>
+</html>

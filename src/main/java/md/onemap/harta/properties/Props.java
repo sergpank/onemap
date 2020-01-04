@@ -3,6 +3,7 @@ package md.onemap.harta.properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -44,6 +45,12 @@ public class Props
     return instance;
   }
 
+  public static void update()
+  {
+    // Update config without restarting web server.
+    instance = null;
+  }
+
   /**
    * @param propsPath Properties file is expected to be located at [src/main/resources/properties/<file_name></file_name>].
    *                  But we receive its path as [properties/<file_name>].
@@ -51,12 +58,13 @@ public class Props
   private Props(String propsPath)
   {
     Properties props = new Properties();
+    loadFonts();
     try
     {
-      String resourcePath = getClass().getClassLoader().getResource(propsPath).getFile();
-      LOG.info("Loading properties from file: " + new File(resourcePath).getAbsolutePath());
+      File resourceFile = getResourceFile(propsPath);
+      LOG.info("Loading properties from file: " + resourceFile.getAbsolutePath());
 
-      props.load(new FileReader(resourcePath));
+      props.load(new FileReader(resourceFile));
 
       startLevel = Integer.parseInt(props.getProperty("level.start"));
       endLevel = Integer.parseInt(props.getProperty("level.end"));
@@ -83,6 +91,35 @@ public class Props
       e.printStackTrace();
       throw new RuntimeException(e);
     }
+  }
+
+  private void loadFonts()
+  {
+    try
+    {
+      GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getResourceFile("fonts/Roboto-Thin.ttf")));
+      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getResourceFile("fonts/Roboto-Light.ttf")));
+      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getResourceFile("fonts/Roboto-Regular.ttf")));
+      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getResourceFile("fonts/Roboto-Medium.ttf")));
+      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getResourceFile("fonts/Roboto-Bold.ttf")));
+      ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, getResourceFile("fonts/Roboto-Black.ttf")));
+
+      LOG.info("Roboto fonts are registered");
+    }
+    catch (IOException | FontFormatException e)
+    {
+      LOG.error("Unable to register Roboto fonts", e);
+    }
+  }
+
+  private File getResourceFile(String propsPath)
+  {
+    String resourcePath = getClass()
+        .getClassLoader()
+        .getResource(propsPath)
+        .getFile();
+    return new File(resourcePath);
   }
 
   public static String outputDir()
@@ -150,22 +187,23 @@ public class Props
     return inst().debugTileBorder;
   }
 
-  @Override public String toString()
+  @Override
+  public String toString()
   {
     return "Props{" +
-            "startLevel=" + startLevel +
-            ", endLevel=" + endLevel +
-            ", outputDir='" + outputDir + '\'' +
-            ", tileSize=" + tileSize +
-            ", osmFile='" + osmFile + '\'' +
-            ", dbUrl='" + dbUrl + '\'' +
-            ", dbLogin='" + dbLogin + '\'' +
-            ", dbPassword='" + dbPassword + '\'' +
-            ", dbName='" + dbName + '\'' +
-            ", cacheEnabled='" + cacheEnabled + '\'' +
-            ", cacheDir='" + cacheDir + '\'' +
-            ", debugTileNumber=" + debugTileNumber +
-            ", debugTileBorder=" + debugTileBorder +
-            '}';
+        "\n  startLevel=" + startLevel +
+        "\n  endLevel=" + endLevel +
+        "\n  outputDir='" + outputDir + '\'' +
+        "\n  tileSize=" + tileSize +
+        "\n  osmFile='" + osmFile + '\'' +
+        "\n  dbUrl='" + dbUrl + '\'' +
+        "\n  dbLogin='" + dbLogin + '\'' +
+        "\n  dbPassword='" + dbPassword + '\'' +
+        "\n  dbName='" + dbName + '\'' +
+        "\n  cacheEnabled='" + cacheEnabled + '\'' +
+        "\n  cacheDir='" + cacheDir + '\'' +
+        "\n  debugTileNumber=" + debugTileNumber +
+        "\n  debugTileBorder=" + debugTileBorder +
+        "\n}";
   }
 }

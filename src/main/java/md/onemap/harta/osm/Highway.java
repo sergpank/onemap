@@ -1,6 +1,8 @@
 package md.onemap.harta.osm;
 
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.painter.HighwayType;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -21,7 +23,7 @@ public class Highway extends OsmWay {
     return name + super.toString();
   }
 
-  public Highway(long id, List<OsmNode> nodes, Element element) {
+  public Highway(long id, List<Node> nodes, Element element) {
     super(id, nodes);
 
     NodeList tags = element.getElementsByTagName("tag");
@@ -47,8 +49,12 @@ public class Highway extends OsmWay {
     }
   }
 
-  private HighwayType defineType(String type)
+  public static HighwayType defineType(String type)
   {
+    if (null == type)
+    {
+      return HighwayType.unclassified;
+    }
     try
     {
       return HighwayType.valueOf(type);
@@ -59,7 +65,7 @@ public class Highway extends OsmWay {
     }
   }
 
-  public Highway(Long id, String name, String nameRu, String nameOld, String type, List<OsmNode> nodes)
+  public Highway(Long id, String name, String nameRu, String nameOld, String type, List<Node> nodes)
   {
     super(id, nodes);
     this.name = name;

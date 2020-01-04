@@ -1,15 +1,13 @@
 package md.onemap.harta.painter;
 
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.drawer.AbstractDrawer;
 import md.onemap.harta.geometry.*;
 import md.onemap.harta.geometry.Label;
-import md.onemap.harta.osm.Highway;
-import md.onemap.harta.osm.OsmNode;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
 
 import java.awt.*;
-import java.awt.font.GlyphVector;
 import java.util.List;
 
 /**
@@ -27,10 +25,9 @@ public class TextPainter extends AbstractPainter
 
   public void paintHighwayLabel(AbstractDrawer drawer, Label label)
   {
-    Highway highway = label.getHighway();
-    if (highway != null && highway.getName() != null)
+    String highwayName = label.getText();
+    if (highwayName != null && highwayName != null)
     {
-      drawer.setFillColor(Palette.FONT_COLOR);
       drawTiltString(drawer, label);
     }
   }
@@ -42,23 +39,21 @@ public class TextPainter extends AbstractPainter
     {
       return;
     }
-    double roadLength = GeometryUtil.getHighwayLength(label.getHighway(), projector);
+    double roadLength = GeometryUtil.getHighwayLength(projector, label.getNodes());
 
     if (roadLength > label.getWidth())
     {
       RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
-      List<Intersection> intersections = intersector.getIntersections(label.getHighway(), label, projector);
+      List<Intersection> intersections = intersector.getIntersections(label, projector, label.getNodes());
       for (int i = 0; i < intersections.size(); i++)
       {
         String character = label.getText().charAt(i % label.getText().length()) + "";
-        GlyphVector glyphVector = font.createGlyphVector(drawer.getFontRenderContext(), character);
         Intersection intersection = intersections.get(i);
 
         drawer.translate((int)intersection.getPoint().getX(), (int)intersection.getPoint().getY());
         drawer.rotate(intersection.getAngle());
 
-        Shape outline = glyphVector.getGlyphOutline(0);
-        drawer.fill(outline);
+        drawer.drawTextWithContour(character, font);
 
         drawer.rotate(-(intersection.getAngle()));
         drawer.translate(-(int)intersection.getPoint().getX(), -(int)intersection.getPoint().getY());
@@ -72,13 +67,13 @@ public class TextPainter extends AbstractPainter
    */
   private XYPoint getRoadStartPoint(Label label)
   {
-    List<OsmNode> nodes = label.getHighway().getNodes();
+    List<Node> nodes = label.getNodes();
     if (nodes.isEmpty())
     {
       return null;
     }
-    OsmNode firstNode = nodes.get(0);
-    OsmNode lastNode = nodes.get(nodes.size() - 1);
+    Node firstNode = nodes.get(0);
+    Node lastNode = nodes.get(nodes.size() - 1);
 
     if (firstNode.getLon() < lastNode.getLon())
     {

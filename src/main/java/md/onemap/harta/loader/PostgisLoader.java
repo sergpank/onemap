@@ -1,19 +1,14 @@
 package md.onemap.harta.loader;
 
-import md.onemap.exception.NotImplementedException;
 import md.onemap.harta.db.DbHelper;
-import md.onemap.harta.db.gis.*;
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.geometry.BoundsLatLon;
-import md.onemap.harta.osm.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Collection;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * Created by serg on 11/8/15.
@@ -21,7 +16,7 @@ import java.util.stream.Collectors;
 public class PostgisLoader extends AbstractLoader
 {
   @Override
-  public Map<Long, OsmNode> getNodes()
+  public Map<Long, Node> getNodes()
   {
     return null;
   }
@@ -30,92 +25,6 @@ public class PostgisLoader extends AbstractLoader
   public void load(String dataSource)
   {
 
-  }
-
-  @Override
-  public Map<Long, Highway> getHighways()
-  {
-    Collection<Highway> highways = new HighwayGisDao().loadAll();
-
-    Map<Long, Highway> result = highways.stream().collect(Collectors.toMap(Highway::getId, Function.identity()));
-
-    return result;
-  }
-
-  @Override
-  public Map<Long, Building> getBuildings()
-  {
-    Collection<Building> buildings = new BuildingGisDao().loadAll();
-
-    Map<Long, Building> result = buildings.stream().collect(Collectors.toMap(b -> b.getId(), b -> b));
-
-    return result;
-  }
-
-  @Override
-  public Map<Long, Leisure> getLeisure()
-  {
-    return null;
-  }
-
-  @Override
-  public Map<Long, Natural> getNature()
-  {
-    return null;
-  }
-
-  @Override
-  public Map<Long, Waterway> getWaterways()
-  {
-    return null;
-  }
-
-  @Override
-  public Map<Long, Landuse> getLanduse()
-  {
-    throw new NotImplementedException();
-  }
-
-  @Override
-  public Collection<Border> getBorders(int level, BoundsLatLon tileBounds)
-  {
-    return null;
-  }
-
-  @Override
-  public Collection<Highway> getHighways(int level, BoundsLatLon tileBounds)
-  {
-    return new HighwayGisDao().load(level, tileBounds);
-  }
-
-  @Override
-  public Collection<Building> getBuildings(int level, BoundsLatLon tileBounds)
-  {
-    return new BuildingGisDao().load(level, tileBounds);
-  }
-
-  @Override
-  public Collection<Leisure> getLeisure(int level, BoundsLatLon tileBounds)
-  {
-    return new LeisureGisDao().load(level, tileBounds);
-  }
-
-  @Override
-  public Collection<Natural> getNature(int level, BoundsLatLon tileBounds)
-  {
-    return new NatureGisDao().load(level, tileBounds);
-  }
-
-  @Override
-  public Collection<Waterway> getWaterways(int level, BoundsLatLon tileBounds)
-  {
-    return new WaterwayGisDao().load(level, tileBounds);
-  }
-
-  @Override
-  public Collection<Landuse> getLanduse(int level, BoundsLatLon tileBounds)
-  {
-    return new LanduseGisDao().load(level, tileBounds);
   }
 
   @Override

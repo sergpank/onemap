@@ -1,12 +1,17 @@
 package md.onemap.harta.db.statistics;
 
 import md.onemap.harta.db.DbHelper;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
 public class VisitorStatistics
 {
+  private static final Logger LOG = LoggerFactory.getLogger(VisitorStatistics.class);
+
   public static final String TABLE_NAME = "statistics.visitors";
 
   private static final String SELECT = "SELECT tile_cnt FROM " + TABLE_NAME + " WHERE ip = ?";
@@ -26,10 +31,12 @@ public class VisitorStatistics
 
     if (requestedTileCount.isEmpty())
     {
+      LOG.info("New user: {}", ip);
       jdbcTemplate.update(INSERT, ip);
     }
     else
     {
+      LOG.info("Returning user: {}, cnt = {}", ip, requestedTileCount.get(0));
       jdbcTemplate.update(INCREMENT, ip);
     }
   }

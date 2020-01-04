@@ -6,6 +6,7 @@ import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.projector.MercatorProjector;
 import md.onemap.harta.properties.Props;
 import md.onemap.harta.util.TimePrettyPrint;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +23,7 @@ import java.util.Map;
 public abstract class TileGenerator
 {
   private static Logger LOG = LoggerFactory.getLogger(TileGenerator.class);
+
   private Map<Integer, TileBoundsCalculator> tileBoundsCache = new HashMap<>();
 
   protected AbstractLoader loader;
@@ -86,7 +88,7 @@ public abstract class TileGenerator
 
   public BufferedImage generateTile(int x, int y, int level, AbstractProjector projector, BoundsLatLon tileBounds)
   {
-    TileDrawer tileDrawer = new TileDrawer(tileSize);
+    AbstractTileDrawer tileDrawer = new GeneralizedTileDrawer(tileSize);
     BufferedImage tile = tileDrawer.drawTile(level, x, y, projector, loader, tileBounds);
 
     return tile;

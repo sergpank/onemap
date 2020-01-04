@@ -1,30 +1,38 @@
 package md.onemap.harta.painter;
 
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
-import javafx.scene.text.Font;
+import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.drawer.AbstractDrawer;
+import md.onemap.harta.drawer.AwtDrawer;
 import md.onemap.harta.geometry.*;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import com.sun.javafx.tk.FontMetrics;
+import com.sun.javafx.tk.Toolkit;
+import javafx.scene.text.Font;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 /**
  * Created by sergpank on 03.03.2015.
  */
 public class HighwayPainter extends AbstractPainter
 {
-  private static final Font FONT = new Font(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
-  private static final FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(FONT);
+  private static final Logger log = LoggerFactory.getLogger(HighwayPainter.class);
+  private final Font FONT;// = new Font(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
+  private final FontMetrics fontMetrics;// = Toolkit.getToolkit().getFontLoader().getFontMetrics(FONT);
 
   public HighwayPainter(AbstractProjector projector, BoundsXY bounds)
   {
     super(projector, bounds);
+    log.info("Initializing font ...");
+    FONT = new Font(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
+    log.info("Initializing font metrics...");
+    fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(FONT);
+    log.info("Highway Painter is initialized.");
   }
 
   public void draw(AbstractDrawer drawer, Collection<Highway> highways, int level)
@@ -40,7 +48,7 @@ public class HighwayPainter extends AbstractPainter
       HighwayType highwayType = highway.getHighwayType();
       if (level > 16 && !isFootway(highwayType)) // I draw contour only for levels >= 16
       {
-        CanvasPolygon polygon = createPolygon(highway);
+        CanvasPolygon polygon = createPolygon(highway.getNodes());
         drawer.setStrokeColor(highwayType.getBorderColor());
         drawer.setFillColor(highwayType.getBorderColor());
         shiftPolygon(polygon);
@@ -52,7 +60,7 @@ public class HighwayPainter extends AbstractPainter
     for (Highway highway : highwayList)
     {
       addLabel(labels, highway);
-      CanvasPolygon polygon = createPolygon(highway);
+      CanvasPolygon polygon = createPolygon(highway.getNodes());
       if (level < 13)
       {
         shiftPolygon(polygon);
@@ -78,6 +86,73 @@ public class HighwayPainter extends AbstractPainter
     }
   }
 
+  public void drawHighways(AwtDrawer drawer, Set<Way> highways, int level)
+  {
+    List<Label> labels = new ArrayList<>();
+    List<Way> highwayList = new ArrayList<>(highways);
+
+    highwayList.sort(Comparator.comparingInt((Way w) -> Highway.defineType(w.getTags().get("highway")).getPriority()));
+
+    // This cycle adds additional contour to the road (like sideway-footwalk along along the roads)
+    for (Way way : highwayList)
+    {
+      HighwayType highwayType = Highway.defineType(way.getTags().get("highway"));
+      if (level > 16 && !isFootway(highwayType)) // I draw contour only for levels >= 16
+      {
+        CanvasPolygon polygon = createPolygon(way.getNodes());
+        drawer.setStrokeColor(Palette.HIGHWAY_CONTOUR_COLOR);
+        drawer.setFillColor(Palette.HIGHWAY_CONTOUR_COLOR);
+        shiftPolygon(polygon);
+        int width = highwayType.getWidth(projector, true);
+        drawer.drawPolyLine(polygon, width * 2, false);
+      }
+    }
+
+    // First draw road contour (by drawing wider roads)
+    for (Way way : highwayList)
+    {
+      HighwayType highwayType = Highway.defineType(way.getTags().get("highway"));
+      if (level > 16 && !isFootway(highwayType)) // I draw contour only for levels >= 16
+      {
+        CanvasPolygon polygon = createPolygon(way.getNodes());
+        drawer.setStrokeColor(highwayType.getBorderColor());
+        drawer.setFillColor(highwayType.getBorderColor());
+        shiftPolygon(polygon);
+        drawer.drawPolyLine(polygon, highwayType.getWidth(projector, true), false);
+      }
+    }
+
+    // Then draw road (Thicker road over the "contour" road)
+    for (Way way : highwayList)
+    {
+      addWayLabel(labels, way);
+      CanvasPolygon polygon = createPolygon(way.getNodes());
+      if (level < 13)
+      {
+        shiftPolygon(polygon);
+        drawer.drawPolyLine(polygon, 1, false);
+      }
+      else
+      {
+        HighwayType highwayType = Highway.defineType(way.getTags().get("highway"));
+        drawer.setStrokeColor(highwayType.getSurfaceColor());
+        drawer.setFillColor(highwayType.getSurfaceColor());
+        shiftPolygon(polygon);
+        drawer.drawPolyLine(polygon, highwayType.getWidth(projector, false), isFootway(highwayType));
+      }
+    }
+
+    if (level > 15)
+    {
+      TextPainter textPainter = new TextPainter(projector, bounds);
+      for (Label label : labels)
+      {
+        textPainter.paintHighwayLabel(drawer, label);
+      }
+    }
+
+  }
+
   private boolean isFootway(HighwayType highwayType)
   {
     return highwayType == HighwayType.pedestrian
@@ -94,21 +169,29 @@ public class HighwayPainter extends AbstractPainter
     XYPoint minXY = shiftPoint(new XYPoint(bounds.getXmin(), bounds.getYmin()));
     XYPoint maxXY = shiftPoint(new XYPoint(bounds.getXmax(), bounds.getYmax()));
 
-//    drawer.setFillColor(Color.RED);
-//    drawer.setStrokeColor(Color.RED);
-//    drawer.setLineWidth(1);
-//    CanvasPolygon boundingRectangle = new CanvasPolygon(0,
-//        new double[]{minXY.getX(), maxXY.getX(), maxXY.getX(), minXY.getX()},
-//        new double[]{minXY.getY(), minXY.getY(), maxXY.getY(), maxXY.getY()});
-//    drawer.drawPolyLine(boundingRectangle);
-
     XYPoint highwayCenter = new XYPoint((minXY.getX() + maxXY.getX()) / 2, (minXY.getY() + maxXY.getY()) / 2);
     if (highway.getName() != null && !highway.getName().isEmpty())
     {
       float height = fontMetrics.getLineHeight() / 2;
       float width = fontMetrics.computeStringWidth(highway.getName()) + highway.getName().length();
-      Label label = new Label(highway.getName(), highwayCenter, height, width);
-      label.setHighway(highway);
+      Label label = new Label(highway.getName(), highwayCenter, height, width, highway.getNodes());
+      labels.add(label);
+    }
+  }
+
+  private void addWayLabel(List<Label> labels, Way way)
+  {
+    BoundsXY bounds = way.getBoundsLatLon().toXY(projector);
+    XYPoint minXY = shiftPoint(new XYPoint(bounds.getXmin(), bounds.getYmin()));
+    XYPoint maxXY = shiftPoint(new XYPoint(bounds.getXmax(), bounds.getYmax()));
+
+    XYPoint highwayCenter = new XYPoint((minXY.getX() + maxXY.getX()) / 2, (minXY.getY() + maxXY.getY()) / 2);
+    String name = way.getTags().get("name");
+    if (name != null && !name.isEmpty())
+    {
+      float height = fontMetrics.getLineHeight() / 2;
+      float width = fontMetrics.computeStringWidth(name) + name.length();
+      Label label = new Label(name, highwayCenter, height, width, way.getNodes());
       labels.add(label);
     }
   }

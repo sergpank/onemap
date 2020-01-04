@@ -1,11 +1,12 @@
 package md.onemap.harta.painter;
 
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.geometry.XYPoint;
-import md.onemap.harta.osm.OsmNode;
-import md.onemap.harta.osm.OsmWay;
 import md.onemap.harta.projector.AbstractProjector;
+
+import java.util.List;
 
 /**
  * Created by sergpank on 03.03.2015.
@@ -19,16 +20,16 @@ public class AbstractPainter {
     this.bounds = bounds;
   }
 
-  protected CanvasPolygon createPolygon(OsmWay way) {
-    double[] xPoints = new double[way.getNodes().size()];
-    double[] yPoints = new double[way.getNodes().size()];
-    for (int i = 0; i < way.getNodes().size(); i++){
-      OsmNode node = way.getNodes().get(i);
+  protected CanvasPolygon createPolygon(List<Node> nodes) {
+    double[] xPoints = new double[nodes.size()];
+    double[] yPoints = new double[nodes.size()];
+    for (int i = 0; i < nodes.size(); i++){
+      Node node = nodes.get(i);
       XYPoint xy = projector.getXY(node.getLat(), node.getLon());
       xPoints[i] = xy.getX();
       yPoints[i] = xy.getY();
     }
-    return new CanvasPolygon(way.getId(), xPoints, yPoints);
+    return new CanvasPolygon(xPoints, yPoints);
   }
 
   protected void shiftPoints(double shift, double[] points) {

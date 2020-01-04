@@ -13,6 +13,7 @@
         <mkdir dir="${output_dir}"/>
     </target>
 
+    <!-- xjc -d src -p generated OSM.xsd -->
     <target name="generate">
         <exec executable="xjc">
             <arg value="-d"/>

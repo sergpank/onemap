@@ -20,6 +20,7 @@ public class AwtDrawer extends AbstractDrawer
   public AwtDrawer(Graphics2D graphics)
   {
     this.graphics = graphics;
+    setAAEnabled(true);
   }
 
   @Override
@@ -61,7 +62,7 @@ public class AwtDrawer extends AbstractDrawer
   {
     if (text != null)
     {
-      graphics.setFont(new Font(Palette.BUILDING_FONT_NAME, Font.BOLD, Palette.BUILDING_FONT_SIZE));
+      graphics.setFont(new Font(Palette.BUILDING_FONT_NAME, Font.PLAIN, Palette.BUILDING_FONT_SIZE));
       graphics.drawString(text, (float) xCenter, (float) yCenter);
     }
   }
@@ -157,5 +158,18 @@ public class AwtDrawer extends AbstractDrawer
   public void fill(Shape shape)
   {
     graphics.fill(shape);
+  }
+
+  @Override
+  public void drawTextWithContour(String text, Font font)
+  {
+    Shape outline = font.createGlyphVector(graphics.getFontRenderContext(), text).getOutline();
+
+    graphics.setStroke(new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+    graphics.setPaint(Palette.CONTOUR_COLOR);
+    graphics.draw(outline);
+
+    graphics.setPaint(Palette.FONT_COLOR);
+    graphics.fill(outline);
   }
 }

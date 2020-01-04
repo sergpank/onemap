@@ -1,13 +1,14 @@
 package md.onemap.harta.drawer;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import md.onemap.exception.NotImplementedException;
 import md.onemap.harta.geometry.CanvasPolygon;
 import md.onemap.harta.geometry.Label;
 import md.onemap.harta.geometry.XYPoint;
 import md.onemap.harta.tile.TileCutter;
+
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -119,6 +120,12 @@ public class FxDrawer extends AbstractDrawer
 
   @Override
   public void fill(Shape shape)
+  {
+    throw new NotImplementedException();
+  }
+
+  @Override
+  public void drawTextWithContour(String character, java.awt.Font font)
   {
     throw new NotImplementedException();
   }

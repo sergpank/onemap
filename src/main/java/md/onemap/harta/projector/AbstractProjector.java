@@ -1,8 +1,8 @@
 package md.onemap.harta.projector;
 
+import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.geometry.LatLonPoint;
 import md.onemap.harta.geometry.XYPoint;
-import md.onemap.harta.osm.OsmNode;
 
 /**
  * Created by sergpank on 20.02.2015.
@@ -39,7 +39,7 @@ public abstract class AbstractProjector {
     return height;
   }
 
-  public XYPoint getXY(OsmNode node) {
+  public XYPoint getXY(Node node) {
     return getXY(node.getLat(), node.getLon());
   }
 }
