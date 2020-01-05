@@ -14,7 +14,13 @@ import java.util.Set;
 
 public class NormalizedHighwayDao extends Dao<NormalizedHighway>
 {
-  private static final String FIND_SQL = "SELECT * FROM normalized_highways WHERE name ~ ? OR name_ru ~ ? OR name_old ~ ?";
+    private static final String FIND_SQL = "SELECT data.id, data.name, data.name_ru, data.name_old, "
+            + "json_build_object('type', 'FeatureCollection', 'features', json_agg(ST_AsGeoJSON(data)::json)) geojson "
+            + "FROM "
+            + "(SELECT geometry, w.id, type, name, name_ru, name_old FROM normalized_highways nh "
+            + "JOIN gis.way AS w on w.id = nh.id "
+            + "WHERE nh.name ~ ? OR nh.name_ru ~ ? OR nh.name_old ~ ?) data "
+            + "GROUP BY data.id, data.name, data.name_ru, data.name_old";
 
   private static final String INSERT_SQL = "INSERT INTO normalized_highways (id, name, name_ru, name_old) VALUES (?, ?, ?, ?)";
 
@@ -42,8 +48,9 @@ public class NormalizedHighwayDao extends Dao<NormalizedHighway>
         String name = rs.getString("name");
         String nameRu = rs.getString("name_ru");
         String nameOld = rs.getString("name_old");
+        String geoJson = rs.getString("geojson");
 
-        result.add(new NormalizedHighway(id, name, nameRu, nameOld));
+        result.add(new NormalizedHighway(id, name, nameRu, nameOld, geoJson));
       }
     }
     catch (SQLException e)

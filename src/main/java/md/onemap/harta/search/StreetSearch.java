@@ -23,8 +23,8 @@ public class StreetSearch
 
   public static void main(String[] args)
   {
-    NormalizedHighway highway1 = new NormalizedHighway(111, "Name1", "Имя", "Наименованiе");
-    NormalizedHighway highway2 = new NormalizedHighway(222, "Name2", "Имя", "Наименованiе");
+    NormalizedHighway highway1 = new NormalizedHighway(111, "Name1", "Имя", "Наименованiе", null);
+    NormalizedHighway highway2 = new NormalizedHighway(222, "Name2", "Имя", "Наименованiе", null);
 
 //    Gson gson = new Gson();
     Gson gson = new GsonBuilder().setPrettyPrinting().create();

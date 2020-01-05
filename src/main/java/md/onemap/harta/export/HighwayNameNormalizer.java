@@ -40,7 +40,7 @@ public class HighwayNameNormalizer
     String normalizedNameRu = normalizeName(nameRu);
     String normalizedNameOld = normalizeName(nameOldRu != null ? nameOldRu : nameOld);
 
-    return new NormalizedHighway(h.getId(), normalizedName, normalizedNameRu, normalizedNameOld);
+    return new NormalizedHighway(h.getId(), normalizedName, normalizedNameRu, normalizedNameOld, null);
   }
 
   public String normalizeName(String name)

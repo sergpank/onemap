@@ -9,7 +9,7 @@ function searchStreets(ev)
       var response = JSON.parse(this.responseText);
 
       var htmlResponse = "<table>";
-      htmlResponse += "<tr> <td>ID</td> <td>NAME</td> <td>NAME_RU</td> <td>NAME_OLD</td> </tr>"
+      htmlResponse += "<tr> <td>ID</td> <td>NAME</td> <td>NAME_RU</td> <td>NAME_OLD</td> <td>GEO_JSON</td> </tr>"
 
       for (var i = 0; i < response.length; i++)
       {
@@ -18,8 +18,9 @@ function searchStreets(ev)
         var name = element.name;
         var nameRu = element.nameRu == undefined ? "N/A" : element.nameRu;
         var nameOld = element.nameOld == undefined ? "N/A" : element.nameOld;
+        var geoJSON = element.geoJSON;
 
-        htmlResponse += "<tr> <td>" + id + "</td> <td>" + name + "</td> <td>" + nameRu + "</td> <td>" + nameOld + "</td> </tr>"
+        htmlResponse += "<tr> <td>" + id + "</td> <td>" + name + "</td> <td>" + nameRu + "</td> <td>" + nameOld + "</td> <td>" + geoJSON + "</td> </tr>"
       }
       htmlResponse += "</table>";
       document.getElementById("demo").innerHTML = htmlResponse;
@@ -28,8 +29,8 @@ function searchStreets(ev)
 
   var key = document.getElementById("key").value;
 
-  xhttp.open("GET", "http://onemap.md/search?key=" + key, true);
-//  xhttp.open("GET", "http://localhost:8080/onemap/search?key=" + key, true);
+  // xhttp.open("GET", "http://onemap.md/search?key=" + key, true);
+  xhttp.open("GET", "http://localhost:8080/onemap/search?key=" + key, true);
   xhttp.send();
 };
 
