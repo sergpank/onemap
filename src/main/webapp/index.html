@@ -34,22 +34,22 @@
   <script src="js/leaflet.js"></script>
   <script src="js/map.js"></script>
 
-  <script>
+<!--  <script>-->
 
-    function onEachFeature(feature, layer)
-    {
-      var popupContent = "<p>I started out as a GeoJSON " +
-      feature.geometry.type + ", but now I'm a Leaflet vector!</p>";
+<!--    function onEachFeature(feature, layer)-->
+<!--    {-->
+<!--      var popupContent = "<p>I started out as a GeoJSON " +-->
+<!--      feature.geometry.type + ", but now I'm a Leaflet vector!</p>";-->
 
-      if (feature.properties && feature.properties.popupContent)
-      {
-        popupContent += feature.properties.popupContent;
-      }
+<!--      if (feature.properties && feature.properties.popupContent)-->
+<!--      {-->
+<!--        popupContent += feature.properties.popupContent;-->
+<!--      }-->
 
-      layer.bindPopup(popupContent);
-    }
+<!--      layer.bindPopup(popupContent);-->
+<!--    }-->
 
-  </script>
+<!--  </script>-->
 
 </body>
 
