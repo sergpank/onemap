@@ -97,6 +97,7 @@
         const feature = JSON.parse(data.rows[4].cells[1].innerText);
         var layer = L.geoJson(feature);
         layer.addTo(map);
+        map.fitBounds(layer.getBounds(), {padding : [50, 50]});
         previousLayer = layer;
     }
 </script>
