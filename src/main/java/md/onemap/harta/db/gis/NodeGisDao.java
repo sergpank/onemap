@@ -11,12 +11,12 @@ public class NodeGisDao extends GisDao<Node>
 {
   public static final String NODE_TABLE_NAME = "gis.node";
 
-  private static final String INSERT = "INSERT INTO gis.node VALUES (?, ST_POINT(%f, %f))";
+  private static final String INSERT = "INSERT INTO gis.node VALUES (?, ST_POINT(?, ?))";
 
   @Override
   public void save(Node node)
   {
-    DbHelper.getJdbcTemplate().update(String.format(INSERT, node.getLon(), node.getLat()), node.getId());
+    DbHelper.getJdbcTemplate().update(INSERT, node.getId(), node.getLon(), node.getLat());
     new TagGisDao().save(new Tag(node.getId(), node.getTags()));
   }
 

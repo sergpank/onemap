@@ -4,14 +4,17 @@ import md.onemap.harta.db.DbHelper;
 import md.onemap.harta.db.gis.entity.*;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.loader.OsmLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class RelationGisDao extends GisDao<Relation>
-{
+public class RelationGisDao extends GisDao<Relation> {
+  private static final Logger log = LoggerFactory.getLogger(RelationGisDao.class);
+
   public static final String RELATION_TABLE_NAME = "gis.relation";
   public static final String RELATION_MEMBERS_TABLE_NAME = "gis.relation_members";
 
@@ -31,7 +34,7 @@ public class RelationGisDao extends GisDao<Relation>
       // THIS IS DONE FOR QUERY PERFORMANCE OPTIMISATION !!!
       "WHERE landuse IN ('cemetery', 'recreation_ground', 'forest') " +
       "OR nature IN ('water', 'wood', 'spring', 'wetland') " +
-      // OTHERWISE WE WILL SELECT ALL BORDER AND STREETS AND SO ON ... FOR EACH TILE !!!
+      // OTHERWISE WE WILL SELECT ALL BORDERS AND STREETS AND SO ON ... FOR EACH TILE !!!
       "AND ST_Intersects( " +
       "ST_GeomFromText('Polygon(( " +
       "%f %f, " +
@@ -43,14 +46,12 @@ public class RelationGisDao extends GisDao<Relation>
 
   private OsmLoader osmLoader;
 
-  public RelationGisDao(OsmLoader osmLoader)
-  {
+  public RelationGisDao(OsmLoader osmLoader) {
     this.osmLoader = osmLoader;
   }
 
   @Override
-  public void save(Relation entity)
-  {
+  public void save(Relation entity) {
     BoundsLatLon bBox = calcBoundingBox(entity);
     String type = entity.getTags().get("type");
     String landuse = entity.getTags().get("landuse");
@@ -59,14 +60,12 @@ public class RelationGisDao extends GisDao<Relation>
 
     new TagGisDao().save(new Tag(entity.getId(), entity.getTags()));
 
-    for (Member m : entity.getMembers())
-    {
+    for (Member m : entity.getMembers()) {
       DbHelper.getJdbcTemplate().update(INSERT_MEMBER, entity.getId(), m.getRef(), m.getType().name(), m.getRole());
     }
   }
 
-  protected String createPolygon(BoundsLatLon bBox)
-  {
+  protected String createPolygon(BoundsLatLon bBox) {
     StringBuilder geometry = new StringBuilder("ST_GeomFromText('POLYGON((");
     geometry.append(bBox.getMinLon()).append(' ').append(bBox.getMinLat()).append(',');
     geometry.append(bBox.getMinLon()).append(' ').append(bBox.getMaxLat()).append(',');
@@ -77,43 +76,33 @@ public class RelationGisDao extends GisDao<Relation>
     return geometry.toString();
   }
 
-  private BoundsLatLon calcBoundingBox(Relation relation)
-  {
+  private BoundsLatLon calcBoundingBox(Relation relation) {
     List<Node> nodes = getNodes(relation);
     return new BoundsLatLon(nodes);
   }
 
-  private List<Node> getNodes(Relation relation)
-  {
+  private List<Node> getNodes(Relation relation) {
     List<Node> result = new ArrayList<>();
     Set<Member> members = relation.getMembers();
-    for (Member m : members)
-    {
-      switch (m.getType())
-      {
-        case NODE:
-        {
+    for (Member m : members) {
+      switch (m.getType()) {
+        case NODE: {
           Node node = osmLoader.getNodes().get(m.getRef());
-          if(node != null)
-          {
+          if (node != null) {
             result.add(node);
           }
           break;
         }
-        case WAY:
-        {
+        case WAY: {
           Way way = osmLoader.getWays().get(m.getRef());
-          if(way != null)
-          {
+          if (way != null) {
             result.addAll(way.getNodes().stream().filter(Objects::nonNull).collect(Collectors.toList()));
           }
           break;
         }
-        case RELATION:
-        {
+        case RELATION: {
           Relation subrelation = osmLoader.getRelations().get(m.getRef());
-          if(subrelation != null)
-          {
+          if (subrelation != null) {
             result.addAll(getNodes(subrelation).stream().filter(Objects::nonNull).collect(Collectors.toList()));
           }
           break;
@@ -124,23 +113,23 @@ public class RelationGisDao extends GisDao<Relation>
   }
 
   @Override
-  public void saveAll(Collection<Relation> entities)
-  {
+  public void saveAll(Collection<Relation> entities) {
     entities.forEach(this::save);
   }
 
   @Override
-  public Relation load(long id)
-  {
+  public Relation load(long id) {
     return DbHelper.getJdbcTemplate().query(LOAD + id, this::extract).iterator().next();
   }
 
   @Override
-  public Collection<Relation> load(int zoomLevel, BoundsLatLon box)
-  {
+  public Collection<Relation> load(int zoomLevel, BoundsLatLon box) {
     double dLat = box.getMaxLat() - box.getMinLat();
     double dLon = box.getMaxLon() - box.getMinLon();
-    String sql = String.format(LOAD_TILE,
+
+    log.info("Reading tile ...");
+
+    String sql = String.format(Locale.ENGLISH, LOAD_TILE,
         box.getMinLon() - dLon, box.getMinLat() - dLat,
         box.getMinLon() - dLon, box.getMaxLat() + dLat,
         box.getMaxLon() + dLon, box.getMaxLat() + dLat,
@@ -158,18 +147,15 @@ public class RelationGisDao extends GisDao<Relation>
   }
 
   @Override
-  public Collection<Relation> loadAll()
-  {
+  public Collection<Relation> loadAll() {
     return null;
   }
 
-  private Collection<Relation> extract(ResultSet rs) throws SQLException
-  {
+  private Collection<Relation> extract(ResultSet rs) throws SQLException {
     Map<Long, Set<Member>> membersMap = new HashMap<>();
     Map<Long, Map<String, String>> tagsMap = new HashMap<>();
 
-    while (rs.next())
-    {
+    while (rs.next()) {
       long id = rs.getLong("id");
 
       String key = rs.getString("key");
@@ -187,8 +173,7 @@ public class RelationGisDao extends GisDao<Relation>
     }
 
     List<Relation> relations = new ArrayList<>();
-    for (Long id : membersMap.keySet())
-    {
+    for (Long id : membersMap.keySet()) {
       relations.add(new Relation(id, tagsMap.get(id), membersMap.get(id)));
     }
 

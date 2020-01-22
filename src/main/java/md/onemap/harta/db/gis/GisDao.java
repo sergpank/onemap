@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by serg on 11/7/15.
@@ -50,7 +51,7 @@ public abstract class GisDao<T> extends Dao<T>
   {
     double dLat = box.getMaxLat() - box.getMinLat();
     double dLon = box.getMaxLon() - box.getMinLon();
-    String sql = String.format(SELECT_TILE, tableName,
+    String sql = String.format(Locale.ENGLISH, SELECT_TILE, tableName,
         box.getMinLon() - dLon, box.getMinLat() - dLat,
         box.getMinLon() - dLon, box.getMaxLat() + dLat,
         box.getMaxLon() + dLon, box.getMaxLat() + dLat,

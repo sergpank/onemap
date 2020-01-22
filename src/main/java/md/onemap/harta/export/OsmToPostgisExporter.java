@@ -11,7 +11,12 @@ import org.apache.log4j.xml.DOMConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.text.DecimalFormatSymbols;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 public class OsmToPostgisExporter extends OsmExporter
 {
@@ -20,6 +25,26 @@ public class OsmToPostgisExporter extends OsmExporter
   public static void main(String[] args)
   {
     DOMConfigurator.configure("log4j.xml");
+
+    System.out.printf("Format: %f\n", 123.45);
+    System.out.println("Concat: " + 123.45);
+
+    System.out.println("Decimal Separator: " + DecimalFormatSymbols.getInstance().getDecimalSeparator());
+    RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
+
+    Map<String, String> systemProperties = runtimeBean.getSystemProperties();
+    Set<String> keys = systemProperties.keySet();
+
+    System.out.println("LOCALE_USER_DEFAULT: " + systemProperties.get("LOCALE_USER_DEFAULT"));
+    System.out.println("LOCALE_SDECIMAL: " + systemProperties.get("LOCALE_SDECIMAL"));
+
+    System.out.println("SYSTEM PROPERTIES:");
+    for (String key : keys) {
+      String value = systemProperties.get(key);
+      System.out.printf("[%s] = %s.\n", key, value);
+    }
+    System.out.println();
+
     new OsmToPostgisExporter().export();
   }
 

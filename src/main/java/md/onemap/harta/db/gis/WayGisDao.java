@@ -91,15 +91,13 @@ public class WayGisDao extends GisDao<Way>
   {
     double dLat = box.getMaxLat() - box.getMinLat();
     double dLon = box.getMaxLon() - box.getMinLon();
-    String sql = String.format(SELECT_TILE,
+    String sql = String.format(Locale.ENGLISH, SELECT_TILE,
         box.getMinLon() - dLon, box.getMinLat() - dLat,
         box.getMinLon() - dLon, box.getMaxLat() + dLat,
         box.getMaxLon() + dLon, box.getMaxLat() + dLat,
         box.getMaxLon() + dLon, box.getMinLat() - dLat,
         box.getMinLon() - dLon, box.getMinLat() - dLat
     );
-
-//    LOG.info(sql);
 
     Collection<Way> ways = new HashSet<>();
     Collection<Way> query = DbHelper.getJdbcTemplate().query(sql, this::extractData);

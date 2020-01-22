@@ -67,44 +67,6 @@ public class DatabaseCreator
     }
   }
 
-  private static void reCreateTable(Connection con, String query, String tableName)
-  {
-    if (!isTableExists(con, tableName))
-    {
-      createTable(query, tableName);
-    }
-    else
-    {
-      try (Statement st = con.createStatement())
-      {
-        log.info("\"{}\" table already exists.", tableName);
-        st.execute(String.format(DROP_TABLE, tableName));
-        st.execute(query);
-        log.info("Table \"{}\" is REcreated.\n", tableName);
-      }
-      catch (SQLException e)
-      {
-        e.printStackTrace();
-      }
-    }
-  }
-
-  private static boolean isTableExists(Connection con, String tableName)
-  {
-    boolean result = false;
-    try (Statement stmt = con.createStatement())
-    {
-      ResultSet rs = stmt.executeQuery("SELECT 1 FROM pg_catalog.pg_tables WHERE schemaname = 'public' " +
-          "AND tablename  = '" + tableName + "'");
-      result = rs.next();
-    }
-    catch (SQLException e)
-    {
-      e.printStackTrace();
-    }
-    return result;
-  }
-
   private static Connection createDbIfNotExists(String dbName)
   {
     dbName = dbName.toLowerCase();
