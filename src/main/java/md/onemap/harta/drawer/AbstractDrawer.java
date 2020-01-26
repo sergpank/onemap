@@ -37,6 +37,8 @@ public abstract class AbstractDrawer
 
   public abstract FontRenderContext getFontRenderContext();
 
+  public abstract Graphics2D getGraphics();
+
   public abstract void rotate(double angleRad);
 
   public abstract void rotate(double angleRad, double xCenter, double yCenter);

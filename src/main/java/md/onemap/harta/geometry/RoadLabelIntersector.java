@@ -3,10 +3,10 @@ package md.onemap.harta.geometry;
 import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.util.TextUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class RoadLabelIntersector
     this.fontSize = fontSize;
   }
 
-  public List<Intersection> getIntersections(Label label, AbstractProjector projector, List<Node> nodes)
+  public List<Intersection> getIntersections(Label label, AbstractProjector projector, List<Node> nodes, Graphics2D g)
   {
     List<Intersection> intersections = new ArrayList<>();
 
@@ -46,21 +46,21 @@ public class RoadLabelIntersector
 
         for (int i = 0; i < repeats; i++) {
           double shift = offset + (label.getWidth() * i) + (offset * i);
-          intersections.addAll(calculateIntersections(label, segment, shift));
+          intersections.addAll(calculateIntersections(label, segment, shift, g));
         }
       }
     }
     return intersections;
   }
 
-  private List<Intersection> calculateIntersections(Label label, Line segment, double shift)
+  private List<Intersection> calculateIntersections(Label label, Line segment, double shift, Graphics2D g)
   {
     List<Intersection> intersections = new ArrayList<>();
 
     for (int i = 0; i < label.getText().length(); i++)
     {
       char ch = label.getText().charAt(i);
-      int charWidth = calcCharWidth(ch);
+      int charWidth = calcCharWidth(ch, g);
 
       XYPoint intersectionPoint = calcIntersectionPoint(segment, shift, label.getHeight());
 
@@ -73,8 +73,8 @@ public class RoadLabelIntersector
     return intersections;
   }
 
-  private int calcCharWidth(char ch) {
-    return (int) TextUtil.getCharWidth(ch, fontName, fontSize);
+  private int calcCharWidth(char ch, Graphics2D g) {
+    return (int) TextUtil.getCharWidth(ch, fontName, fontSize, g);
   }
 
   private XYPoint calcIntersectionPoint(Line line, double shift, float labelHeight)

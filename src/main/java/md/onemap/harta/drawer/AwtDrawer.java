@@ -137,6 +137,11 @@ public class AwtDrawer extends AbstractDrawer
   }
 
   @Override
+  public Graphics2D getGraphics() {
+    return graphics;
+  }
+
+  @Override
   public void rotate(double angleRad)
   {
     graphics.rotate(angleRad);

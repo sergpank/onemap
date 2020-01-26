@@ -3,18 +3,26 @@ package md.onemap.harta.painter;
 import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.drawer.AbstractDrawer;
 import md.onemap.harta.drawer.AwtDrawer;
-import md.onemap.harta.geometry.*;
+import md.onemap.harta.geometry.BoundsXY;
+import md.onemap.harta.geometry.CanvasPolygon;
+import md.onemap.harta.geometry.GeometryUtil;
+import md.onemap.harta.geometry.Label;
+import md.onemap.harta.geometry.LatLonPoint;
+import md.onemap.harta.geometry.Line;
+import md.onemap.harta.geometry.XYPoint;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
-
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
-import javafx.scene.text.Font;
+import md.onemap.harta.util.TextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by sergpank on 03.03.2015.
@@ -22,16 +30,12 @@ import java.util.*;
 public class HighwayPainter extends AbstractPainter
 {
   private static final Logger log = LoggerFactory.getLogger(HighwayPainter.class);
-  private final Font FONT;// = new Font(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
-  private final FontMetrics fontMetrics;// = Toolkit.getToolkit().getFontLoader().getFontMetrics(FONT);
 
   public HighwayPainter(AbstractProjector projector, BoundsXY bounds)
   {
     super(projector, bounds);
     log.info("Initializing font ...");
-    FONT = new Font(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
     log.info("Initializing font metrics...");
-    fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(FONT);
     log.info("Highway Painter is initialized.");
   }
 
@@ -59,7 +63,7 @@ public class HighwayPainter extends AbstractPainter
     // Then draw road (Thicker road over the "contour" road)
     for (Highway highway : highwayList)
     {
-      addLabel(labels, highway);
+      addLabel(labels, highway, drawer.getGraphics());
       CanvasPolygon polygon = createPolygon(highway.getNodes());
       if (level < 13)
       {
@@ -125,7 +129,7 @@ public class HighwayPainter extends AbstractPainter
     // Then draw road (Thicker road over the "contour" road)
     for (Way way : highwayList)
     {
-      addWayLabel(labels, way);
+      addWayLabel(labels, way, drawer.getGraphics());
       CanvasPolygon polygon = createPolygon(way.getNodes());
       if (level < 13)
       {
@@ -163,7 +167,7 @@ public class HighwayPainter extends AbstractPainter
         || highwayType == HighwayType.path;
   }
 
-  private void addLabel(List<Label> labels, Highway highway)
+  private void addLabel(List<Label> labels, Highway highway, Graphics2D g)
   {
     BoundsXY bounds = highway.getBounds().toXY(projector);
     XYPoint minXY = shiftPoint(new XYPoint(bounds.getXmin(), bounds.getYmin()));
@@ -172,14 +176,14 @@ public class HighwayPainter extends AbstractPainter
     XYPoint highwayCenter = new XYPoint((minXY.getX() + maxXY.getX()) / 2, (minXY.getY() + maxXY.getY()) / 2);
     if (highway.getName() != null && !highway.getName().isEmpty())
     {
-      float height = fontMetrics.getLineHeight() / 2;
-      float width = fontMetrics.computeStringWidth(highway.getName()) + highway.getName().length();
+      float height = TextUtil.getStringHeight(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE, g);//fontMetrics.getLineHeight() / 2;
+      float width = TextUtil.getStringWidth(highway.getName(), Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE, g) + highway.getName().length();
       Label label = new Label(highway.getName(), highwayCenter, height, width, highway.getNodes());
       labels.add(label);
     }
   }
 
-  private void addWayLabel(List<Label> labels, Way way)
+  private void addWayLabel(List<Label> labels, Way way, Graphics2D g)
   {
     BoundsXY bounds = way.getBoundsLatLon().toXY(projector);
     XYPoint minXY = shiftPoint(new XYPoint(bounds.getXmin(), bounds.getYmin()));
@@ -189,8 +193,8 @@ public class HighwayPainter extends AbstractPainter
     String name = way.getTags().get("name");
     if (name != null && !name.isEmpty())
     {
-      float height = fontMetrics.getLineHeight() / 2;
-      float width = fontMetrics.computeStringWidth(name) + name.length();
+      float height = TextUtil.getStringHeight(Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE, g);
+      float width = TextUtil.getStringWidth(name, Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE, g) + name.length();
       Label label = new Label(name, highwayCenter, height, width, way.getNodes());
       labels.add(label);
     }

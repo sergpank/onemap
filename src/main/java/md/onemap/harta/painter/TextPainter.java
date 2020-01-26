@@ -44,7 +44,7 @@ public class TextPainter extends AbstractPainter
     if (roadLength > label.getWidth())
     {
       RoadLabelIntersector intersector = new RoadLabelIntersector(bounds, Palette.HIGHWAY_FONT_NAME, Palette.HIGHWAY_FONT_SIZE);
-      List<Intersection> intersections = intersector.getIntersections(label, projector, label.getNodes());
+      List<Intersection> intersections = intersector.getIntersections(label, projector, label.getNodes(), drawer.getGraphics());
       for (int i = 0; i < intersections.size(); i++)
       {
         String character = label.getText().charAt(i % label.getText().length()) + "";

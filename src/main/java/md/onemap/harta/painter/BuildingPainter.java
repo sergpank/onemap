@@ -75,8 +75,8 @@ public class BuildingPainter extends AbstractPainter
     {
       double w = bounds.getXmax() - bounds.getXmin();
       double h = bounds.getYmax() - bounds.getYmin();
-      float stringWidth = TextUtil.getStringWidth(houseNumber, Palette.BUILDING_FONT_NAME, Palette.BUILDING_FONT_SIZE);
-      float stringHeight = TextUtil.getStringHeight(Palette.BUILDING_FONT_NAME, Palette.BUILDING_FONT_SIZE);
+      float stringWidth = TextUtil.getStringWidth(houseNumber, Palette.BUILDING_FONT_NAME, Palette.BUILDING_FONT_SIZE, drawer.getGraphics());
+      float stringHeight = TextUtil.getStringHeight(Palette.BUILDING_FONT_NAME, Palette.BUILDING_FONT_SIZE, drawer.getGraphics());
       if (((w * h) / (stringWidth * stringHeight)) >= 3)
       {
         XYPoint xy = getLabelCenter(polygon, houseNumber, stringWidth, stringHeight);

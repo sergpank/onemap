@@ -12,10 +12,7 @@ import md.onemap.harta.tile.TileCutter;
 import md.onemap.harta.util.BoxIntersector;
 import md.onemap.harta.util.TextUtil;
 
-import com.sun.javafx.tk.FontMetrics;
-import com.sun.javafx.tk.Toolkit;
-import javafx.scene.text.Font;
-
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,7 +44,7 @@ public class BorderPainter extends AbstractPainter
       shiftPoints(this.bounds.getXmin(), polygon.getxPoints());
       shiftPoints(this.bounds.getYmin(), polygon.getyPoints());
       drawer.drawPolyLine(polygon, 1, false);
-      labels.add(createRegionLabel(polygon, boundary.getName()));
+      labels.add(createRegionLabel(polygon, boundary.getName(), drawer.getGraphics()));
     }
 
     paintLabels(drawer, labels, x, y, tileCutter);
@@ -80,60 +77,18 @@ public class BorderPainter extends AbstractPainter
     }
   }
 
-  private Label createRegionLabel(CanvasPolygon polygon, String label)
+  private Label createRegionLabel(CanvasPolygon polygon, String label, Graphics2D graphics)
   {
     XYPoint center = null;
     float stringWidth = 0;
     float stringHeight = 0;
     if (label != null)
     {
-      stringWidth = TextUtil.getStringWidth(label, FONT_NAME, FONT_SIZE);
-      stringHeight = TextUtil.getStringHeight(FONT_NAME, FONT_SIZE);
+      stringWidth = TextUtil.getStringWidth(label, FONT_NAME, FONT_SIZE, graphics);
+      stringHeight = TextUtil.getStringHeight(FONT_NAME, FONT_SIZE, graphics);
       center = getLabelCenter(polygon, label, stringWidth, stringHeight);
     }
     //System.out.printf("%s - %d\n", label, (int) font.getSize());
     return new Label(label, center, stringHeight, stringWidth, null);
-  }
-
-  private Font calcFontSize(String label, double regionWidth, int fontSize, boolean labelWasWider)
-  {
-    if (labelWasWider)
-    {
-      fontSize--;
-      Font font = new Font(FONT_NAME, fontSize);
-      FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(font);
-      float labelWidth = fontMetrics.computeStringWidth(label);
-      if (labelWidth <= regionWidth)
-      {
-        return font;
-      }
-      else
-      {
-        if (fontSize >= 25)
-        {
-          return font;
-        }
-        return calcFontSize(label, regionWidth, fontSize, true);
-      }
-    }
-    else
-    {
-      fontSize++;
-      Font font = new Font(FONT_NAME, fontSize);
-      FontMetrics fontMetrics = Toolkit.getToolkit().getFontLoader().getFontMetrics(font);
-      float labelWidth = fontMetrics.computeStringWidth(label);
-      if (labelWidth >= regionWidth)
-      {
-        return font;
-      }
-      else
-      {
-        if (fontSize >= 25)
-        {
-          return font;
-        }
-        return calcFontSize(label, regionWidth, fontSize, false);
-      }
-    }
   }
 }
