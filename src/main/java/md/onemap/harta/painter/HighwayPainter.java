@@ -80,7 +80,7 @@ public class HighwayPainter extends AbstractPainter
       }
     }
 
-    if (level > 15)
+    if (level > Palette.STREET_LABEL_LEVEL)
     {
       TextPainter textPainter = new TextPainter(projector, bounds);
       for (Label label : labels)
@@ -90,7 +90,7 @@ public class HighwayPainter extends AbstractPainter
     }
   }
 
-  public void drawHighways(AwtDrawer drawer, Set<Way> highways, int level)
+  public List<Label> drawHighways(AwtDrawer drawer, Set<Way> highways, int level)
   {
     List<Label> labels = new ArrayList<>();
     List<Way> highwayList = new ArrayList<>(highways);
@@ -146,15 +146,7 @@ public class HighwayPainter extends AbstractPainter
       }
     }
 
-    if (level > 15)
-    {
-      TextPainter textPainter = new TextPainter(projector, bounds);
-      for (Label label : labels)
-      {
-        textPainter.paintHighwayLabel(drawer, label);
-      }
-    }
-
+    return labels;
   }
 
   private boolean isFootway(HighwayType highwayType)

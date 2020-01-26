@@ -2,12 +2,16 @@ package md.onemap.harta.painter;
 
 import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.drawer.AbstractDrawer;
-import md.onemap.harta.geometry.*;
+import md.onemap.harta.geometry.BoundsXY;
+import md.onemap.harta.geometry.GeometryUtil;
+import md.onemap.harta.geometry.Intersection;
 import md.onemap.harta.geometry.Label;
+import md.onemap.harta.geometry.RoadLabelIntersector;
+import md.onemap.harta.geometry.XYPoint;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
 
-import java.awt.*;
+import java.awt.Font;
 import java.util.List;
 
 /**
@@ -30,6 +34,14 @@ public class TextPainter extends AbstractPainter
     {
       drawTiltString(drawer, label);
     }
+  }
+
+  public void paintHouseLabel(AbstractDrawer drawer, Label label) {
+    String houseNumber = label.getText();
+    XYPoint xy = label.getCenter();
+    drawer.translate((int) xy.getX(), (int) xy.getY());
+    drawer.drawTextWithContour(houseNumber, new Font(Palette.BUILDING_FONT_NAME, Font.PLAIN, Palette.BUILDING_FONT_SIZE));
+    drawer.translate(-(int) xy.getX(), -(int) xy.getY());
   }
 
   private void drawTiltString(AbstractDrawer drawer, Label label)

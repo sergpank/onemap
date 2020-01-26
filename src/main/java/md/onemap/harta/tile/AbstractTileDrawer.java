@@ -33,7 +33,7 @@ public abstract class AbstractTileDrawer
     String levelLabel = level + "";
     String xyLabel = String.format("(%d; %d)", x, y);
 
-    Font font = new Font("Calibri", Font.BOLD, 14);
+    Font font = new Font(Font.MONOSPACED, Font.BOLD, 14);
     FontMetrics fontMetrics = graphics.getFontMetrics(font);
 
     int levelWidth = fontMetrics.stringWidth(levelLabel);

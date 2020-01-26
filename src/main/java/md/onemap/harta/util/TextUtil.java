@@ -1,6 +1,7 @@
 package md.onemap.harta.util;
 
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 
 /**
@@ -22,6 +23,7 @@ public class TextUtil {
 
   public static float getStringHeight(String fontName, int fontSize, Graphics2D graphics) {
     Font font = new Font(fontName, FONT_STYLE, fontSize);
-    return graphics.getFontMetrics(font).getHeight();
+    FontMetrics fontMetrics = graphics.getFontMetrics(font);
+    return fontMetrics.getHeight() - fontMetrics.getAscent() + fontMetrics.getDescent();
   }
 }

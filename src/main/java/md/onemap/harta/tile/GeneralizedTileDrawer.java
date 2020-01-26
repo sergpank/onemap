@@ -9,16 +9,31 @@ import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.drawer.AwtDrawer;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.geometry.BoundsXY;
+import md.onemap.harta.geometry.Label;
 import md.onemap.harta.loader.AbstractLoader;
-import md.onemap.harta.osm.*;
-import md.onemap.harta.painter.*;
+import md.onemap.harta.osm.Building;
+import md.onemap.harta.osm.Highway;
+import md.onemap.harta.osm.Landuse;
+import md.onemap.harta.osm.Leisure;
+import md.onemap.harta.osm.Natural;
+import md.onemap.harta.osm.Waterway;
+import md.onemap.harta.painter.BuildingPainter;
+import md.onemap.harta.painter.HighwayPainter;
+import md.onemap.harta.painter.LandusePainter;
+import md.onemap.harta.painter.LeisurePainter;
+import md.onemap.harta.painter.NaturePainter;
+import md.onemap.harta.painter.TextPainter;
+import md.onemap.harta.painter.WaterwayPainter;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.properties.Props;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,23 +66,39 @@ public class GeneralizedTileDrawer extends AbstractTileDrawer
 
     BoundsXY boundsXY = tileBounds.toXY(projector);
 
-    new LeisurePainter(projector,  boundsXY).drawLeisure(drawer, leisure, level);
-    new LandusePainter(projector,  boundsXY).drawLanduse(drawer, landuse, level);
+    new LeisurePainter(projector, boundsXY).drawLeisure(drawer, leisure, level);
+    new LandusePainter(projector, boundsXY).drawLanduse(drawer, landuse, level);
     new WaterwayPainter(projector, boundsXY).drawWaterways(drawer, waterways, level);
     new NaturePainter(projector, boundsXY).drawNatural(drawer, nature, level);
 
-    new HighwayPainter(projector, boundsXY).drawHighways(drawer, highways, level);
-    new BuildingPainter(projector, boundsXY).drawBuildings(drawer, buildings, level);
+    List<Label> highwayLabels = new HighwayPainter(projector, boundsXY).drawHighways(drawer, highways, level);
+    List<Label> houseLabels = new BuildingPainter(projector, boundsXY).drawBuildings(drawer, buildings, level);
 
-    if (Props.debugTileBorder())
+    if (level > Palette.BUILDING_LABEL_LEVEL) {
+      TextPainter textPainter = new TextPainter(projector, boundsXY);
+      for (Label label : houseLabels)
+      {
+        textPainter.paintHouseLabel(drawer, label);
+      }
+    }
+
+    if (level > Palette.STREET_LABEL_LEVEL)
     {
+      TextPainter textPainter = new TextPainter(projector, boundsXY);
+      for (Label label : highwayLabels)
+      {
+        textPainter.paintHighwayLabel(drawer, label);
+      }
+    }
+
+    if (Props.debugTileBorder()) {
       graphics.setPaint(Color.RED);
       graphics.setStroke(new BasicStroke(1));
 
       int max = Props.tileSize() - 1;
 
-      graphics.drawLine(0,0, max,0);
-      graphics.drawLine(0,0,0, max);
+      graphics.drawLine(0, 0, max, 0);
+      graphics.drawLine(0, 0, 0, max);
       graphics.drawLine(max, max, 0, max);
       graphics.drawLine(max, max, max, 0);
     }
