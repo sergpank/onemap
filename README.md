@@ -21,12 +21,24 @@ The project is running on [onemap.md](http://onemap.md)
 3. Установить свежий `PostgreSQL + PostGIS`
     1. `login: postgres`
     2. `pass: postgres`
+    3. Как запускать PostgreSQL на маке из консоли
+    ```bash 
+    #Start manually:
+    pg_ctl -D /usr/local/var/postgres start
+    
+    #Stop manually:
+    pg_ctl -D /usr/local/var/postgres stop
+    
+    # Start automatically:
+    # "To have launchd start postgresql now and restart at login:"
+    brew services start postgresql
+    ```
 4. Сгерерировать БД из OSM файла
     1. Проверить настройки в `application.properties`
     2. Запустить `OsmToPostgisExporter` в IDEA
     3. Дождаться окончания импорта
 5. Запустить проект: `mvn clean install jetty:run`
-6. Открыть карту: `localhost:8080/onemap`
+6. Открыть карту: `http://localhost`
 
 ### Setup Environment (Ubuntu 18.04.3 (LTS) x64):
 1. Create project dir:
@@ -50,7 +62,7 @@ The project is running on [onemap.md](http://onemap.md)
     export M2_HOME="/onemap/apache-maven-3.6.3"
     export PATH="$M2_HOME/bin:$PATH"
     ```
-4. Install `PostgreSQL-12` and `PostGIS-2.5`
+4. Install `PostgreSQL-12` and `PostGIS-2.5`: ([More Details](https://wiki.postgresql.org/wiki/Apt))
     ```bash
     # Import the repository key from https://www.postgresql.org/media/keys/ACCC4CF8.asc:
     sudo apt-get install curl ca-certificates gnupg
@@ -69,3 +81,53 @@ The project is running on [onemap.md](http://onemap.md)
     # PostgresSQL installation directory: /var/lib/postgresql/12/main
     sudo apt install postgresql-12-postgis-2.5
     ```
+5. Upload database to Prod server:
+    ```bash
+    1. pg_dump -U postgres kishinev > kishinev.sql
+    2. upload somehow dump (kishinev.sql) to server (I use mc)
+    3. restore dump on server:
+      - su postgres
+      - psql
+      - CREATE DATABASE kishinev OWNER postgres;
+      - psql kishinev < kishinev.sql
+    ```
+6. Enable access to postgres by password:
+    1. Configure password for user "postgres":
+        ```
+        su postgres
+        psql
+        \password
+        ... enter new pass twice ...
+        \q
+        ```
+    2. Find data directory (for fun):
+        ```
+        sudo -u postgres psql -c "show data_directory;"
+        > /var/lib/postgresql/12/main
+        ```
+    3. Find config file:
+        ```
+        sudo -u postgres psql -c 'SHOW config_file;'
+        > /etc/postgresql/12/main/postgresql.conf
+        ```
+    4. Edit config file:
+        ```
+        1. cd /etc/postgresql/12/main/
+        2. vi pg_hba.conf
+        3. find section:
+        # Database administrative login by Unix domain socket
+        local   all             postgres                                peer
+        > change to:
+        local   all             postgres                                md5
+        ```
+    5. Restart postgres:
+        ```
+        sudo service postgresql restart
+        ```
+    6. Check that you can access DB:
+        ```
+        psql -U postgres kishinev
+        > enter your pass
+        select * from gis.node limit 10;
+        > ... some query results ...
+        ```

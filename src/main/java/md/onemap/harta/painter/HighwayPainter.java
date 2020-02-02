@@ -5,10 +5,7 @@ import md.onemap.harta.drawer.AbstractDrawer;
 import md.onemap.harta.drawer.AwtDrawer;
 import md.onemap.harta.geometry.BoundsXY;
 import md.onemap.harta.geometry.CanvasPolygon;
-import md.onemap.harta.geometry.GeometryUtil;
 import md.onemap.harta.geometry.Label;
-import md.onemap.harta.geometry.LatLonPoint;
-import md.onemap.harta.geometry.Line;
 import md.onemap.harta.geometry.XYPoint;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.projector.AbstractProjector;
@@ -65,6 +62,9 @@ public class HighwayPainter extends AbstractPainter
     {
       addLabel(labels, highway, drawer.getGraphics());
       CanvasPolygon polygon = createPolygon(highway.getNodes());
+      HighwayType highwayType = highway.getHighwayType();
+      drawer.setStrokeColor(highwayType.getSurfaceColor());
+      drawer.setFillColor(highwayType.getSurfaceColor());
       if (level < 13)
       {
         shiftPolygon(polygon);
@@ -72,9 +72,6 @@ public class HighwayPainter extends AbstractPainter
       }
       else
       {
-        HighwayType highwayType = highway.getHighwayType();
-        drawer.setStrokeColor(highwayType.getSurfaceColor());
-        drawer.setFillColor(highwayType.getSurfaceColor());
         shiftPolygon(polygon);
         drawer.drawPolyLine(polygon, highwayType.getWidth(projector, false), isFootway(highwayType));
       }
@@ -131,6 +128,9 @@ public class HighwayPainter extends AbstractPainter
     {
       addWayLabel(labels, way, drawer.getGraphics());
       CanvasPolygon polygon = createPolygon(way.getNodes());
+      HighwayType highwayType = Highway.defineType(way.getTags().get("highway"));
+      drawer.setStrokeColor(highwayType.getSurfaceColor());
+      drawer.setFillColor(highwayType.getSurfaceColor());
       if (level < 13)
       {
         shiftPolygon(polygon);
@@ -138,9 +138,6 @@ public class HighwayPainter extends AbstractPainter
       }
       else
       {
-        HighwayType highwayType = Highway.defineType(way.getTags().get("highway"));
-        drawer.setStrokeColor(highwayType.getSurfaceColor());
-        drawer.setFillColor(highwayType.getSurfaceColor());
         shiftPolygon(polygon);
         drawer.drawPolyLine(polygon, highwayType.getWidth(projector, false), isFootway(highwayType));
       }
@@ -190,54 +187,5 @@ public class HighwayPainter extends AbstractPainter
       Label label = new Label(name, highwayCenter, height, width, way.getNodes());
       labels.add(label);
     }
-  }
-
-  private void drawLinesAsPolygons(CanvasPolygon polygon, AbstractDrawer drawer, double roadWidth)
-  {
-    for (int i = 0; i < polygon.getPointsNumber() - 1; i++)
-    {
-      XYPoint startPoint = new XYPoint(polygon.getxPoints()[i], polygon.getyPoints()[i]);
-      XYPoint endPoint = new XYPoint(polygon.getxPoints()[i + 1], polygon.getyPoints()[i + 1]);
-
-        Line line = new Line(startPoint, endPoint);
-
-        LatLonPoint latLonStart = projector.getLatLon(startPoint);
-        LatLonPoint latLonEnd = projector.getLatLon(endPoint);
-
-        drawRoadPolygon(drawer, roadWidth, line, latLonStart, latLonEnd);
-        drawJunctionCircles(drawer, roadWidth, startPoint, endPoint, latLonStart, latLonEnd);
-    }
-  }
-
-  private void drawRoadPolygon(AbstractDrawer drawer, double roadWidth, Line line, LatLonPoint latLonStart, LatLonPoint latLonEnd)
-  {
-    XYPoint[] startPoints = GeometryUtil.getPerpendicularPoints(line, latLonStart, roadWidth, projector);
-    XYPoint[] endPoints = GeometryUtil.getPerpendicularPoints(line, latLonEnd, roadWidth, projector);
-
-    double[] xPoints = new double[]
-        {
-            startPoints[0].getX(), startPoints[1].getX(), endPoints[1].getX(), endPoints[0].getX(), startPoints[0].getX()
-        };
-    double[] yPoints = new double[]
-        {
-            startPoints[0].getY(), startPoints[1].getY(), endPoints[1].getY(), endPoints[0].getY(), startPoints[0].getY()
-        };
-
-    shiftPoints(bounds.getXmin(), xPoints);
-    shiftPoints(bounds.getYmin(), yPoints);
-
-    drawer.fillPolygon(xPoints, yPoints);
-  }
-
-  private void drawJunctionCircles(AbstractDrawer drawer, double roadWidth, XYPoint startPoint, XYPoint endPoint, LatLonPoint latLonStart, LatLonPoint latLonEnd)
-  {
-    double startDiameter = projector.getScale(latLonStart) * roadWidth;
-    double endDiameter = projector.getScale(latLonEnd) * roadWidth;
-
-    startPoint = shiftPoint(startPoint);
-    endPoint = shiftPoint(endPoint);
-
-    drawer.fillOval(startPoint.getX() - startDiameter / 2.0, startPoint.getY() - startDiameter / 2.0, startDiameter, startDiameter);
-    drawer.fillOval(endPoint.getX() - endDiameter / 2.0, endPoint.getY() - endDiameter / 2.0, endDiameter, endDiameter);
   }
 }
