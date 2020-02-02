@@ -33,8 +33,8 @@ function searchStreets(ev)
 
   var key = document.getElementById("key").value;
 
-  // xhttp.open("GET", "http://onemap.md/search?key=" + key, true);
-  xhttp.open("GET", "http://localhost/search?key=" + key, true);
+  xhttp.open("GET", "http://onemap.md/search?key=" + key, true);
+  // xhttp.open("GET", "http://localhost/search?key=" + key, true);
   xhttp.send();
 };
 

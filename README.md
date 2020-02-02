@@ -119,6 +119,8 @@ The project is running on [onemap.md](http://onemap.md)
         local   all             postgres                                peer
         > change to:
         local   all             postgres                                md5
+
+        4. NOTE: login as "postgres" is a temporary solution.
         ```
     5. Restart postgres:
         ```
@@ -131,3 +133,8 @@ The project is running on [onemap.md](http://onemap.md)
         select * from gis.node limit 10;
         > ... some query results ...
         ```
+7. Start jetty in background:
+    ```bash
+    # NOTE: this is a temporary solution.
+    mvn jetty:run &
+    ```
