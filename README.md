@@ -18,6 +18,7 @@ The project is running on [onemap.md](http://onemap.md)
     1. Скачать и распаковать свежий архив с `maven`
     2. Создать переменую `M2_HOME=путь_к_папке_с_maven`
     3. Добавить `M2_HOME/bin` в `PATH`
+    4. Включить самые самые свежие фичи java: `export MAVEN_OPTS="--enable-preview"`
 3. Установить свежий `PostgreSQL + PostGIS`
     1. `login: postgres`
     2. `pass: postgres`

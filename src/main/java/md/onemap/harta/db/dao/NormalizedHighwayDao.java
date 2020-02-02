@@ -19,28 +19,31 @@ public class NormalizedHighwayDao extends Dao<NormalizedHighway> {
   // 2. потомн нахожу все релейшны которые содержат эти дороги
   // 3. потом трансформирую эти релейшны в гео ГСОН
 
-  private static final String FIND_SQL = "SELECT t.id, t.value as name," +
-      "    json_build_object(" +
-      "    'type', 'FeatureCollection'," +
-      "    'features'," +
-      "        json_agg(json_build_object(" +
-      "            'type', 'Feature'," +
-      "            'geometry', w.geometry," +
-      "            'properties', " +
-      "             json_build_object(" +
-      "               'id', nh.id, " +
-      "               'name', nh.name, " +
-      "               'name_ru', nh.name_ru, " +
-      "               'name_old', nh.name_old)))) as geojson" +
-      " FROM gis.relation_members rm" +
-      "    JOIN gis.relation r on r.id = rm.relation_id" +
-      "    JOIN gis.way w ON w.id = rm.member_id" +
-      "    JOIN normalized_highways nh ON nh.id = w.id" +
-      "    JOIN gis.tag t ON t.id = rm.relation_id" +
-      "    WHERE (nh.name ~ ? OR nh.name_ru ~ ? OR nh.name_old ~ ?)" +
-      "    AND t.key = 'name'" +
-      "    AND r.type = 'associatedStreet'" +
-      "    GROUP BY rm.relation_id, t.value, t.id";
+  private static final String FIND_SQL =
+"""
+SELECT t.id, t.value as name,
+    json_build_object(
+    'type', 'FeatureCollection',
+    'features',
+        json_agg(json_build_object(
+            'type', 'Feature',
+            'geometry', st_asgeojson(w.geometry)::json,
+            'properties',
+             json_build_object(
+               'id', nh.id,
+               'name', nh.name,
+               'name_ru', nh.name_ru,
+               'name_old', nh.name_old)))) as geojson
+FROM gis.relation_members rm
+   JOIN gis.relation r on r.id = rm.relation_id
+   JOIN gis.way w ON w.id = rm.member_id
+   JOIN normalized_highways nh ON nh.id = w.id
+   JOIN gis.tag t ON t.id = rm.relation_id
+   WHERE (nh.name ~ ? OR nh.name_ru ~ ? OR nh.name_old ~ ?)
+   AND t.key = 'name'
+   AND r.type = 'associatedStreet'
+   GROUP BY rm.relation_id, t.value, t.id;
+""";
 
   private static final String INSERT_SQL = "INSERT INTO normalized_highways (id, name, name_ru, name_old) VALUES (?, ?, ?, ?)";
 
