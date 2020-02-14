@@ -6,11 +6,11 @@ import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.OsmWay;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.postgis.PGgeometry;
 import org.postgis.Point;
 import org.postgresql.util.PGobject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.Connection;
@@ -26,7 +26,7 @@ import java.util.Locale;
  */
 public abstract class GisDao<T> extends Dao<T>
 {
-  private static final Logger LOG = LoggerFactory.getLogger(GisDao.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   protected static final String INSERT = "INSERT INTO %s (id, type, name, name_ru, name_old, geometry) VALUES (?, ?, ?, ?, ?, %s)";
   private static final String SELECT_ALL = "SELECT * FROM %s";

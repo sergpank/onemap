@@ -11,8 +11,9 @@ import md.onemap.harta.osm.Highway;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
 import md.onemap.harta.util.TextUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -26,14 +27,11 @@ import java.util.Set;
  */
 public class HighwayPainter extends AbstractPainter
 {
-  private static final Logger log = LoggerFactory.getLogger(HighwayPainter.class);
+  private static final Logger log = LogManager.getLogger();
 
   public HighwayPainter(AbstractProjector projector, BoundsXY bounds)
   {
     super(projector, bounds);
-    log.info("Initializing font ...");
-    log.info("Initializing font metrics...");
-    log.info("Highway Painter is initialized.");
   }
 
   public void draw(AbstractDrawer drawer, Collection<Highway> highways, int level)

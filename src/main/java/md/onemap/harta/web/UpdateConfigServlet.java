@@ -2,8 +2,8 @@ package md.onemap.harta.web;
 
 import md.onemap.harta.properties.Props;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class UpdateConfigServlet extends HttpServlet
 {
-  private static final Logger LOG = LoggerFactory.getLogger(UpdateConfigServlet.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)

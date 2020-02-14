@@ -1,10 +1,12 @@
 package md.onemap.harta.db;
 
+import md.onemap.harta.properties.Props;
+
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import md.onemap.harta.properties.Props;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
@@ -18,7 +20,7 @@ import java.util.Properties;
  */
 public class DbHelper
 {
-  private static final Logger LOG = LoggerFactory.getLogger(DbHelper.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   private static final String DATA_SOURCE_CLASS_NAME = "org.postgresql.ds.PGSimpleDataSource";
 

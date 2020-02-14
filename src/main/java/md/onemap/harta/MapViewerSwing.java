@@ -16,9 +16,8 @@ import md.onemap.harta.projector.MercatorProjector;
 import md.onemap.harta.tile.TileCutter;
 import md.onemap.harta.util.ScaleCalculator;
 
-import org.apache.log4j.xml.DOMConfigurator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +30,7 @@ import java.util.Collection;
  */
 public class MapViewerSwing extends JPanel {
 
-  private static final Logger LOG = LoggerFactory.getLogger(MapViewerSwing.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   public static int LEVEL = 18;
   public static String DATA_SOURCE = "osm/victory_park.osm";
@@ -50,8 +49,6 @@ public class MapViewerSwing extends JPanel {
 
   public static void main(String[] args)
   {
-    DOMConfigurator.configure("log4j.xml");
-
     double radiusForLevel = ScaleCalculator.getRadiusForLevel(LEVEL);
     MercatorProjector projector = new MercatorProjector(radiusForLevel, MercatorProjector.MAX_LAT);
     MapViewerSwing map = new MapViewerSwing(new OsmLoader(), projector);

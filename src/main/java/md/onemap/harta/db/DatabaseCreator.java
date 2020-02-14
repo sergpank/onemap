@@ -7,8 +7,8 @@ import md.onemap.harta.db.gis.WayGisDao;
 import md.onemap.harta.db.statistics.TileStatistics;
 import md.onemap.harta.db.statistics.VisitorStatistics;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -20,7 +20,7 @@ import java.sql.Statement;
  */
 public class DatabaseCreator
 {
-  private static Logger log = LoggerFactory.getLogger(DatabaseCreator.class);
+  private static Logger log = LogManager.getLogger();
 
   public static final String DROP_TABLE = "DROP TABLE %s";
 

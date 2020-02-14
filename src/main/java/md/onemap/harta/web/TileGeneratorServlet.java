@@ -6,8 +6,8 @@ import md.onemap.harta.tile.TileGenerator;
 import md.onemap.harta.tile.TileGeneratorGIS;
 import md.onemap.harta.util.Stopwatch;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
  */
 public class TileGeneratorServlet extends HttpServlet
 {
-  private static final Logger LOG = LoggerFactory.getLogger(TileGeneratorServlet.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   private TileGenerator tileGenerator = new TileGeneratorGIS();
   private TileStatistics tileStatistics = new TileStatistics();

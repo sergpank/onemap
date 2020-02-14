@@ -1,9 +1,11 @@
 package md.onemap.harta.properties;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,7 +16,7 @@ import java.util.Properties;
  */
 public class Props
 {
-  private static final Logger LOG = LoggerFactory.getLogger(Props.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   private static Props instance;
 

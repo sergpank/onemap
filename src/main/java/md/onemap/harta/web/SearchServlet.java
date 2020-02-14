@@ -1,11 +1,13 @@
 package md.onemap.harta.web;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import md.onemap.harta.osm.NormalizedHighway;
 import md.onemap.harta.search.StreetSearch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +25,7 @@ public class SearchServlet extends HttpServlet
   // House number may contain not only digits, but it always starts with a digit
   public static final String STARTS_WITH_DIGIT = "^\\d.*";
 
-  private static final Logger LOG = LoggerFactory.getLogger(SearchServlet.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   @Override
   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException

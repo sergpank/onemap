@@ -1,0 +1,15 @@
+Configuration:
+  status: INFO
+  name: YAMLConfigTest
+  appenders:
+    Console:
+      name: STDOUT
+      PatternLayout:
+        Pattern: "%d{HH:mm:ss} %-5level %class:%line - %msg%n"
+  Loggers:
+    Root:
+      level: DEBUG
+      includeLocation: true
+      additivity: false
+      AppenderRef:
+        - ref: STDOUT

@@ -8,8 +8,8 @@ import md.onemap.harta.osm.Landuse;
 import md.onemap.harta.osm.Water;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.tile.Palette;
-
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
 
@@ -18,7 +18,7 @@ import java.util.Collection;
  */
 public class LandusePainter extends AbstractPainter{
 
-  private static Logger log = Logger.getLogger("landuse_painter");
+  private static Logger log = LogManager.getLogger();
 
   public LandusePainter(AbstractProjector projector, BoundsXY bounds) {
     super(projector, bounds);

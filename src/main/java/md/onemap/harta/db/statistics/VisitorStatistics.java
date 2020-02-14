@@ -2,15 +2,15 @@ package md.onemap.harta.db.statistics;
 
 import md.onemap.harta.db.DbHelper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 
 public class VisitorStatistics
 {
-  private static final Logger LOG = LoggerFactory.getLogger(VisitorStatistics.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   public static final String TABLE_NAME = "statistics.visitors";
 

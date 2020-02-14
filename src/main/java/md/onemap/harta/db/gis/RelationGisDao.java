@@ -1,19 +1,32 @@
 package md.onemap.harta.db.gis;
 
 import md.onemap.harta.db.DbHelper;
-import md.onemap.harta.db.gis.entity.*;
+import md.onemap.harta.db.gis.entity.Member;
+import md.onemap.harta.db.gis.entity.Node;
+import md.onemap.harta.db.gis.entity.Relation;
+import md.onemap.harta.db.gis.entity.Tag;
+import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.loader.OsmLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RelationGisDao extends GisDao<Relation> {
-  private static final Logger log = LoggerFactory.getLogger(RelationGisDao.class);
+  private static final Logger log = LogManager.getLogger();
 
   public static final String RELATION_TABLE_NAME = "gis.relation";
   public static final String RELATION_MEMBERS_TABLE_NAME = "gis.relation_members";

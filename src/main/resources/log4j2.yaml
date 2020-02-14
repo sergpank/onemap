@@ -1,0 +1,31 @@
+Configuration:
+  status: INFO
+  name: YAMLConfigTest
+  properties:
+    property:
+      - name: basedir
+        value: /onemap/logs
+      - name: filename
+        value: ${basedir}/onemap.log
+  appenders:
+    Console:
+      name: STDOUT
+      PatternLayout:
+        Pattern: "%d{HH:mm:ss} %-5level %class:%line - %msg%n"
+    RollingFile:
+      name: ROLLING
+      fileName: ${filename}
+      filePattern: "${basedir}/onemap-%d{yyyy-MM-dd-HH}-%i.log"
+      PatternLayout:
+        Pattern: "%d %5p %c{1.} [%t] %m%n"
+      policies:
+        - TimeBasedTriggeringPolicy
+
+  Loggers:
+    Root:
+      level: INFO
+      includeLocation: true
+      additivity: false
+      AppenderRef:
+        - ref: ROLLING
+        - ref: STDOUT

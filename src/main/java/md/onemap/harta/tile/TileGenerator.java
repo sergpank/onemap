@@ -7,8 +7,8 @@ import md.onemap.harta.projector.MercatorProjector;
 import md.onemap.harta.properties.Props;
 import md.onemap.harta.util.TimePrettyPrint;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public abstract class TileGenerator
 {
-  private static Logger LOG = LoggerFactory.getLogger(TileGenerator.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   private Map<Integer, TileBoundsCalculator> tileBoundsCache = new HashMap<>();
 

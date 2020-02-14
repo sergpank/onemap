@@ -1,17 +1,25 @@
 package md.onemap.harta.loader;
 
-import md.onemap.harta.db.gis.entity.*;
+import md.onemap.harta.db.gis.entity.Member;
+import md.onemap.harta.db.gis.entity.Node;
+import md.onemap.harta.db.gis.entity.Relation;
+import md.onemap.harta.db.gis.entity.Unit;
+import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.OsmBounds;
 import md.onemap.harta.util.XmlUtil;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -21,7 +29,7 @@ import java.util.stream.IntStream;
  */
 public class OsmLoader extends AbstractLoader
 {
-  private static final Logger LOG = LoggerFactory.getLogger(OsmLoader.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   private Map<Long, Node> nodeMap = new HashMap<>();
   private Map<Long, Way> wayMap = new HashMap<>();

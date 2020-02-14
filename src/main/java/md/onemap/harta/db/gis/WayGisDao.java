@@ -9,20 +9,26 @@ import md.onemap.harta.geometry.BoundsLatLon;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.osm.Waterway;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.postgis.Geometry;
 import org.postgis.PGgeometry;
 import org.postgis.Point;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class WayGisDao extends GisDao<Way>
 {
-  private static final Logger LOG = LoggerFactory.getLogger(WayGisDao.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   public static final String WAY_TABLE_NAME = "gis.way";
 

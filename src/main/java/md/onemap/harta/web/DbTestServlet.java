@@ -2,8 +2,8 @@ package md.onemap.harta.web;
 
 import md.onemap.harta.properties.Props;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +18,7 @@ import java.sql.Statement;
 
 public class DbTestServlet extends HttpServlet
 {
-  private static final Logger LOG = LoggerFactory.getLogger(DbTestServlet.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException

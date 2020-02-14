@@ -3,8 +3,9 @@ package md.onemap.harta.geometry;
 import md.onemap.harta.db.gis.entity.Node;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.util.TextUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class RoadLabelIntersector
 {
-  private static final Logger LOG = LoggerFactory.getLogger(RoadLabelIntersector.class);
+  private static final Logger LOG = LogManager.getLogger();
 
   private BoundsXY bounds;
   private String fontName;
