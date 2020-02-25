@@ -2,6 +2,7 @@ package md.onemap.harta.web;
 
 import md.onemap.harta.db.statistics.TileStatistics;
 import md.onemap.harta.db.statistics.VisitorStatistics;
+import md.onemap.harta.properties.Props;
 import md.onemap.harta.tile.TileGenerator;
 import md.onemap.harta.tile.TileGeneratorGIS;
 import md.onemap.harta.util.Stopwatch;
@@ -44,8 +45,9 @@ public class TileGeneratorServlet extends HttpServlet
       String xParam = request.getParameter("x");
       String yParam = request.getParameter("y");
       String zParam = request.getParameter("z");
+      String size = request.getParameter("size");
 
-      LOG.info("Requested tile zxy: {} - {}:{}", zParam, xParam, yParam);
+      LOG.info("Requested tile zxy: {} - {}:{} [{}px]", zParam, xParam, yParam, size);
 
       if (xParam == null || yParam == null || zParam == null)
       {
@@ -55,11 +57,12 @@ public class TileGeneratorServlet extends HttpServlet
       int x = Integer.parseInt(xParam);
       int y = Integer.parseInt(yParam);
       int z = Integer.parseInt(zParam);
+      int tileSize = size == null ? Props.tileSize() : Integer.parseInt(size);
 
       doSomeStatistics(x, y, z, request.getRemoteAddr());
 
       Stopwatch.start();
-      BufferedImage tile = tileGenerator.generateTileCached(x, y, z);
+      BufferedImage tile = tileGenerator.generateTileCached(x, y, z, tileSize);
       Stopwatch.stop();
 
       LOG.info("Tile {} generation: {}", z + "-" + x + ":" + y, Stopwatch.pretty());
