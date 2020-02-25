@@ -28,7 +28,7 @@ L.tileLayer('tile?x={x}&y={y}&z={z}',
 {
   minZoom: 11,
   maxZoom: 21,
-  tileSize: 512,
+  tileSize: 256,
   detectRetina: true,
   attribution: "(c) OpenStreetMap contributor (OSM is awesome)"
 }).addTo(map);
