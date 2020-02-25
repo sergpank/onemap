@@ -71,7 +71,7 @@ public abstract class TileGenerator
     {
       for (int x = tileCutter.getMinTileXindex(); x <= tileCutter.getMaxTileXindex(); x++)
       {
-        BufferedImage tile = generateTile(x, y, level, tileSize, projector, tileCutter.getTileBounds(x, y));
+        BufferedImage tile = generateTile(x, y, level, projector, tileCutter.getTileBounds(x, y));
         writeTile(tile, level, x, y);
 
         tileCnt++;
@@ -86,17 +86,17 @@ public abstract class TileGenerator
     LOG.info("level {} -> {}; {} tiles; {} ms per tile", level, TimePrettyPrint.prettyPrint(end - start), tileCnt, (end - start) / tileCnt);
   }
 
-  public BufferedImage generateTile(int x, int y, int level, int sizePx, AbstractProjector projector, BoundsLatLon tileBounds)
+  public BufferedImage generateTile(int x, int y, int level, AbstractProjector projector, BoundsLatLon tileBounds)
   {
-    AbstractTileDrawer tileDrawer = new GeneralizedTileDrawer(sizePx);
+    AbstractTileDrawer tileDrawer = new GeneralizedTileDrawer(tileSize);
     BufferedImage tile = tileDrawer.drawTile(level, x, y, projector, loader, tileBounds);
 
     return tile;
   }
 
-  public BufferedImage generateTileCached(int x, int y, int level, int sizePx)
+  public BufferedImage generateTileCached(int x, int y, int level)
   {
-    BufferedImage tile = new BufferedImage(sizePx, sizePx, BufferedImage.TYPE_INT_ARGB);
+    BufferedImage tile = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
     File tileFile = null;
 
     if (Props.cacheEnabled())
@@ -123,7 +123,7 @@ public abstract class TileGenerator
       TileBoundsCalculator boundsCalculator = getTileBoundsCalculator(level);
       BoundsLatLon tileBounds = boundsCalculator.getTileBounds(x, y);
 
-      tile = generateTile(x, y, level, sizePx, boundsCalculator.getProjector(), tileBounds);
+      tile = generateTile(x, y, level, boundsCalculator.getProjector(), tileBounds);
       if (Props.cacheEnabled())
       {
         writeTile(tile, level, x, y);
