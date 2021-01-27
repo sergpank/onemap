@@ -55,7 +55,7 @@ public class RelationGisDao extends GisDao<Relation> {
       "%f %f, " +
       "%f %f, " +
       "%f %f " +
-      "))'), bounding_box);";
+      "))'), bounding_box)";
 
   private OsmLoader osmLoader;
 

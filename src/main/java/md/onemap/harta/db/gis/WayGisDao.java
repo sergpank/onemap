@@ -6,6 +6,7 @@ import md.onemap.harta.db.gis.entity.Tag;
 import md.onemap.harta.db.gis.entity.Unit;
 import md.onemap.harta.db.gis.entity.Way;
 import md.onemap.harta.geometry.BoundsLatLon;
+import md.onemap.harta.osm.Building;
 import md.onemap.harta.osm.Highway;
 import md.onemap.harta.osm.Waterway;
 
@@ -29,6 +30,8 @@ import java.util.stream.Collectors;
 public class WayGisDao extends GisDao<Way>
 {
   private static final Logger LOG = LogManager.getLogger();
+
+  public static final int MAX_BUILDING_LEVEL = 15;
 
   public static final String WAY_TABLE_NAME = "gis.way";
 
@@ -104,6 +107,12 @@ public class WayGisDao extends GisDao<Way>
         box.getMaxLon() + dLon, box.getMinLat() - dLat,
         box.getMinLon() - dLon, box.getMinLat() - dLat
     );
+
+    if (zoomLevel < MAX_BUILDING_LEVEL)
+    {
+      // Exclude buildings from less detailed levels
+      sql += " AND type <> '" + Building.BUILDING + "'";
+    }
 
     Collection<Way> ways = new HashSet<>();
     Collection<Way> query = DbHelper.getJdbcTemplate().query(sql, this::extractData);

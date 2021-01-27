@@ -26,6 +26,7 @@ import md.onemap.harta.painter.TextPainter;
 import md.onemap.harta.painter.WaterwayPainter;
 import md.onemap.harta.projector.AbstractProjector;
 import md.onemap.harta.properties.Props;
+import md.onemap.harta.util.Stopwatch;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -46,7 +47,7 @@ public class GeneralizedTileDrawer extends AbstractTileDrawer
 
   @Override
   public BufferedImage drawTile(int level, int x, int y, AbstractProjector projector,
-                                AbstractLoader loadekr, BoundsLatLon tileBounds)
+                                AbstractLoader loader, BoundsLatLon tileBounds)
   {
     BufferedImage bi = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
     Graphics2D graphics = createGraphics(bi);
@@ -107,6 +108,13 @@ public class GeneralizedTileDrawer extends AbstractTileDrawer
     {
       int pos = Props.tileSize() / 2;
       drawer.fillText(String.format("z :: %d\nx :: %d\ny :: %d", level, x, y), pos / 2, pos);
+    }
+
+    if (Props.debugTileTime())
+    {
+      graphics.setStroke(new BasicStroke(2));
+      int pos = Props.tileSize() / 2;
+      drawer.fillText(Stopwatch.stop() + " ms", pos / 2, pos);
     }
 
     return bi;

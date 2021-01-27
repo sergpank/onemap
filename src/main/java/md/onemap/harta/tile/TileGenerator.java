@@ -72,7 +72,8 @@ public abstract class TileGenerator
       for (int x = tileCutter.getMinTileXindex(); x <= tileCutter.getMaxTileXindex(); x++)
       {
         BufferedImage tile = generateTile(x, y, level, projector, tileCutter.getTileBounds(x, y));
-        writeTile(tile, level, x, y);
+        String tileName = getTileName(level, x, y);
+        writeTile(tile, tileName);
 
         tileCnt++;
         if (logTileStep > 0 && tileCnt % logTileStep == 0)
@@ -97,13 +98,12 @@ public abstract class TileGenerator
   public BufferedImage generateTileCached(int x, int y, int level)
   {
     BufferedImage tile = new BufferedImage(tileSize, tileSize, BufferedImage.TYPE_INT_ARGB);
+    String tileName = getTileName(level, x, y);
     File tileFile = null;
 
     if (Props.cacheEnabled())
     {
-      String tileName = getTileName(level, x, y);
       tileFile = new File(Props.cacheDir(), tileName);
-      LOG.info("Look for cache @: {}", tileFile.getAbsolutePath());
     }
 
     if (tileFile != null && tileFile.exists())
@@ -120,27 +120,26 @@ public abstract class TileGenerator
     }
     else
     {
+      LOG.info("Tile {} not found in cache. Drawing new tile ...", tileName);
       TileBoundsCalculator boundsCalculator = getTileBoundsCalculator(level);
       BoundsLatLon tileBounds = boundsCalculator.getTileBounds(x, y);
 
       tile = generateTile(x, y, level, boundsCalculator.getProjector(), tileBounds);
       if (Props.cacheEnabled())
       {
-        writeTile(tile, level, x, y);
+        writeTile(tile, tileName);
       }
     }
 
     return tile;
   }
 
-  private void writeTile(BufferedImage bi, int level, int x, int y)
+  private void writeTile(BufferedImage bi, String tileName)
   {
     try
     {
-      String tileName = getTileName(level, x, y);
       File tileFile = new File(Props.cacheDir(), tileName);
 
-      LOG.info("Generating tile: {}", tileFile.getAbsolutePath());
       tileFile.mkdirs();
 
       ImageIO.write(bi, "PNG", tileFile);

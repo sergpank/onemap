@@ -38,6 +38,7 @@ public class Props
 
   private final boolean debugTileNumber;
   private final boolean debugTileBorder;
+  private final boolean debugTileTime;
 
   private static Props inst()
   {
@@ -87,6 +88,7 @@ public class Props
 
       debugTileNumber = Boolean.parseBoolean(props.getProperty("debug.tile.number"));
       debugTileBorder = Boolean.parseBoolean(props.getProperty("debug.tile.border"));
+      debugTileTime = Boolean.parseBoolean(props.getProperty("debug.tile.time"));
 
       LOG.info("Loaded properties: " + toString());
     }
@@ -195,6 +197,11 @@ public class Props
     return inst().debugTileBorder;
   }
 
+  public static boolean debugTileTime()
+  {
+    return inst().debugTileTime;
+  }
+
   @Override
   public String toString()
   {
@@ -213,6 +220,7 @@ public class Props
         "\n  cacheDir='" + cacheDir + '\'' +
         "\n  debugTileNumber=" + debugTileNumber +
         "\n  debugTileBorder=" + debugTileBorder +
+        "\n  debugTileTime=" + debugTileTime +
         "\n}";
   }
 }
