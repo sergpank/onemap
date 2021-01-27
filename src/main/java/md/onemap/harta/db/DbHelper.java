@@ -31,14 +31,16 @@ public class DbHelper
   private static void init()
   {
     Properties props = new Properties();
-
+    // Configure data source
     props.setProperty("dataSourceClassName", DATA_SOURCE_CLASS_NAME);
     props.setProperty("dataSource.databaseName", Props.dbName());
     props.setProperty("dataSource.user", Props.dbLogin());
     props.setProperty("dataSource.password", Props.dbPassword());
-    props.setProperty("dataSource.maximumPoolSize", Props.dbMaxPoolSize());
 
     HikariConfig config = new HikariConfig(props);
+    // Tune connection pool
+    config.setMaximumPoolSize(Props.dbMaxPoolSize());
+
     dataSource = new HikariDataSource(config);
     jdbcTemplate = new JdbcTemplate(dataSource);
   }

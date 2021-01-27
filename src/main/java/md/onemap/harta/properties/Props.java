@@ -31,7 +31,7 @@ public class Props
   private String dbLogin;
   private String dbPassword;
   private String dbName;
-  private String dbMaxPoolSize;
+  private int dbMaxPoolSize;
 
   private boolean cacheEnabled;
   private String cacheDir;
@@ -80,7 +80,7 @@ public class Props
       dbLogin = props.getProperty("db.login");
       dbPassword = props.getProperty("db.password");
       dbName = props.getProperty("db.name");
-      dbMaxPoolSize = props.getProperty("db.max.pool.size");
+      dbMaxPoolSize = Integer.parseInt(props.getProperty("db.max.pool.size"));
 
       cacheEnabled = Boolean.valueOf(props.getProperty("cache.enabled"));
       cacheDir = props.getProperty("cache.dir");
@@ -171,7 +171,7 @@ public class Props
     return inst().dbName;
   }
 
-  public static String dbMaxPoolSize() {
+  public static int dbMaxPoolSize() {
     return inst().dbMaxPoolSize;
   }
 
@@ -208,7 +208,7 @@ public class Props
         "\n  dbLogin='" + dbLogin + '\'' +
         "\n  dbPassword='" + dbPassword + '\'' +
         "\n  dbName='" + dbName + '\'' +
-        "\n  dbPoolSize='" + dbMaxPoolSize + '\'' +
+        "\n  dbMaxPoolSize='" + dbMaxPoolSize + '\'' +
         "\n  cacheEnabled='" + cacheEnabled + '\'' +
         "\n  cacheDir='" + cacheDir + '\'' +
         "\n  debugTileNumber=" + debugTileNumber +
