@@ -36,8 +36,7 @@ public class DbHelper
     props.setProperty("dataSource.databaseName", Props.dbName());
     props.setProperty("dataSource.user", Props.dbLogin());
     props.setProperty("dataSource.password", Props.dbPassword());
-//    props.setProperty("jdbcUrl", Props.dbUrl());
-//    props.put("dataSource.logWriter", new PrintWriter(System.out));
+    props.setProperty("dataSource.maximumPoolSize", Props.dbMaxPoolSize());
 
     HikariConfig config = new HikariConfig(props);
     dataSource = new HikariDataSource(config);
