@@ -126,7 +126,7 @@ FROM gis.relation_members rm
   }
 
   @Override
-  public Collection load(int zoomLevel, BoundsLatLon box) {
+  public Collection<NormalizedHighway> load(int zoomLevel, BoundsLatLon box) {
     throw new UnsupportedOperationException();
   }
 

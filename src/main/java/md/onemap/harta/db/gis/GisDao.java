@@ -76,6 +76,7 @@ public abstract class GisDao<T> extends Dao<T>
        * must cast the connection to the pgsql-specific connection
        * implementation before calling the addDataType() method.
        */
+      @SuppressWarnings("unchecked")
       Class<? extends PGobject> geometryClass = (Class<? extends PGobject>) Class.forName("org.postgis.PGgeometry");
       ((org.postgresql.PGConnection)connection).addDataType("geometry", geometryClass);
     }

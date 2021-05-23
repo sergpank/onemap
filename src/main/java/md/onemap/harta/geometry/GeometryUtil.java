@@ -164,17 +164,6 @@ public class GeometryUtil
     return distance;
   }
 
-  public static double getDistanceВелосипед(LatLonPoint pointA, LatLonPoint pointB) {
-    /*
-    1 - Сконвертировать точки из сверических координат в декартовы и покрыть это тестами
-    2 - Из декартовых координат составить векторы
-    3 - Из векторов скалярным произведением вычислить угол между ними
-    4 - Зная угол вычисляем расстояние между точками т.к 1 градус = диаметр Земли / 360
-        Кроме того угол в радианах между точками помноженый на радиус земли даёт длину дуги между точками
-     */
-    return 0;
-  }
-
   public static XYPoint getLineIntersection(Line line1, Line line2, XYPoint startPoint, XYPoint endPoint, boolean checkBounds)
   {
     // A1x + B1y + C1 = 0

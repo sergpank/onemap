@@ -9,17 +9,17 @@ public class Line {
   private XYPoint leftPoint;
   private XYPoint rightPoint;
 
-  private double a;
-  private double b;
-  private double c;
+  // normal form of line equation Ax + By + C = 0
+  final private double a;
+  final private double b;
+  final private double c;
 
-  private Double slope;
+  final private Double slope;
 
   /**
    * This is not safe declaration of line.
    * Use it carefully, only if you know what you are doing.
    */
-  @Deprecated
   public Line(double a, double b, double c) {
     this.a = a;
     this.b = b;

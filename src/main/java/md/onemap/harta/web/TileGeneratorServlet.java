@@ -9,18 +9,17 @@ import md.onemap.harta.util.Stopwatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import javax.imageio.ImageIO;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -94,9 +93,9 @@ public class TileGeneratorServlet extends HttpServlet
   private void logError(HttpServletRequest request, Throwable t)
   {
     LOG.error("Exception: \"{}\" - Message: \"{}\" - Cause: \"{}\"", t.getClass().getName(), t.getMessage(), t.getCause());
-    String collect = ((Set<Map.Entry>) request.getParameterMap().entrySet())
+    String collect = request.getParameterMap().entrySet()
         .stream()
-        .map(m -> m.getKey() + "::" + Arrays.toString((String[]) m.getValue()))
+        .map(m -> m.getKey() + "::" + Arrays.toString(m.getValue()))
         .collect(Collectors.joining("; "));
     LOG.error("Request parameters: {}", collect);
 
