@@ -4,9 +4,15 @@ var url_z = url_href.searchParams.get("z");
 var url_lat = url_href.searchParams.get("lat");
 var url_lon = url_href.searchParams.get("lon");
 
-var default_lat = 47.0247;
-var default_lon = 28.8326;
-var default_z = 17;
+// Kishinev
+// var default_lat = 47.0247;
+// var default_lon = 28.8326;
+// var default_z = 17;
+
+// 7 km
+var default_lat = 46.44148;
+var default_lon = 30.64119;
+var default_z = 16;
 
 var z = url_z == null ? default_z : url_z;
 var lat = url_lat == null ? default_lat : url_lat;
@@ -26,8 +32,8 @@ L.control.scale().addTo(map);
 
 L.tileLayer('tile?x={x}&y={y}&z={z}',
 {
-  minZoom: 11,
-  maxZoom: 21,
+  minZoom: 16,
+  maxZoom: 22,
   tileSize: 256,
   detectRetina: true,
   attribution: "(c) OpenStreetMap contributor (OSM is awesome)"
