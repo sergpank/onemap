@@ -7,7 +7,7 @@ Typical tile size is 512x512px, and it can be configured to any size and zoom le
 The backend is in plain Java + PostGIS.  
 Frontent is based on Leaflet.
 
-The project is running on [onemap.md](http://onemap.md)
+The project was running on [onemap.md](http://onemap.md)
 
 ### Как запустить проект:
 1. Установить JDK 8
